@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.example.user.service;
+package com.bell.thingdong.domain.user.service;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
