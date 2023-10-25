@@ -18,7 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.bell.thingdong.domain.example.user.repository.UserRepository;
+import com.bell.thingdong.domain.user.repository.UserRepository;
 import com.bell.thingdong.global.config.jwt.JwtAuthenticationFilter;
 import com.bell.thingdong.global.config.jwt.JwtTokenProvider;
 import com.bell.thingdong.global.config.jwt.exception.RestAuthenticationEntryPoint;
@@ -41,26 +41,23 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf(AbstractHttpConfigurer::disable)
-			.httpBasic(AbstractHttpConfigurer::disable)
-			.formLogin(AbstractHttpConfigurer::disable)
-			.cors(c -> c.configurationSource(corsConfigurationSource()))
-			.sessionManagement(c -> c.sessionCreationPolicy((SessionCreationPolicy.STATELESS)))
+		            .httpBasic(AbstractHttpConfigurer::disable)
+		            .formLogin(AbstractHttpConfigurer::disable)
+		            .cors(c -> c.configurationSource(corsConfigurationSource()))
+		            .sessionManagement(c -> c.sessionCreationPolicy((SessionCreationPolicy.STATELESS)))
 
-			.authorizeHttpRequests(auth -> auth.requestMatchers(
-					Stream.of(WHITE_LIST).map(AntPathRequestMatcher::antMatcher).toArray(AntPathRequestMatcher[]::new))
-				.permitAll()
-				.requestMatchers(AntPathRequestMatcher.antMatcher("/user/**"))
-				.hasAnyRole("USER")
-				.requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**"))
-				.hasAnyRole("ADMIN")
-				.anyRequest()
-				.authenticated())
-			.exceptionHandling(c -> c.authenticationEntryPoint(new RestAuthenticationEntryPoint())
-				.accessDeniedHandler(tokenAccessDeniedHandler))
-			// jwt exception filter 추가 ㄱㄱ
+		            .authorizeHttpRequests(auth -> auth.requestMatchers(Stream.of(WHITE_LIST).map(AntPathRequestMatcher::antMatcher).toArray(AntPathRequestMatcher[]::new))
+		                                               .permitAll()
+		                                               .requestMatchers(AntPathRequestMatcher.antMatcher("/user/**"))
+		                                               .hasAnyRole("USER")
+		                                               .requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**"))
+		                                               .hasAnyRole("ADMIN")
+		                                               .anyRequest()
+		                                               .authenticated())
+		            .exceptionHandling(c -> c.authenticationEntryPoint(new RestAuthenticationEntryPoint()).accessDeniedHandler(tokenAccessDeniedHandler))
+		            // jwt exception filter 추가 ㄱㄱ
 
-			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate),
-				UsernamePasswordAuthenticationFilter.class);
+		            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
 	}

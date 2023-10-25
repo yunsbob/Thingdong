@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.example.user.controller;
+package com.bell.thingdong.domain.user.controller;
 
 import java.security.Principal;
 
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bell.thingdong.domain.example.user.service.UserService;
+import com.bell.thingdong.domain.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.example.user.service;
+package com.bell.thingdong.domain.user.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

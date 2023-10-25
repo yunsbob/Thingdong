@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.example.user.entity;
+package com.bell.thingdong.domain.user.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
