@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.object.service;
+package com.bell.thingdong.domain.thing.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,5 +10,5 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ObjectServiceImpl implements ObjectService {
+public class ThingHistoryService {
 }
