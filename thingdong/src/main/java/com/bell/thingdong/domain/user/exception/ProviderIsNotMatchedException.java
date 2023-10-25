@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.example.user.exception;
+package com.bell.thingdong.domain.user.exception;
 
 import com.bell.thingdong.global.error.ErrorCode;
 import com.bell.thingdong.global.error.exception.BusinessException;
