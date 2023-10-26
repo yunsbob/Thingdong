@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: smartthings
+    build:
+      context: ./smartthings
+    networks:
+      - deploy
+
+networks:
+  deploy:
+    external: true
+
