@@ -29,17 +29,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
-public class Users implements UserDetails {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long id;
 
+	@Column(name = "email", nullable = false)
+	private String email;
+
 	@Column(name = "nickname", nullable = false)
 	private String nickname;
 
-	@Column(name = "email", nullable = false)
-	private String email;
+	@Column(name = "password", nullable = false)
+	private String password;
 
 	@Builder.Default
 	@Column(name = "roles")
@@ -58,7 +61,7 @@ public class Users implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return null;
+		return password;
 	}
 
 	@Override
