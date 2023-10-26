@@ -28,23 +28,23 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user")
-public class User implements UserDetails {
+@Table(name = "users")
+public class Users implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long id;
 
-	@Column(name = "email", length = 80, nullable = false)
+	@Column(name = "nickname", nullable = false)
+	private String nickname;
+
+	@Column(name = "email", nullable = false)
 	private String email;
 
+	@Builder.Default
 	@Column(name = "roles")
 	@ElementCollection(fetch = FetchType.LAZY)
-	@Builder.Default
 	private List<String> roles = new ArrayList<>();
-
-	@Column(name = "monthly_spending_goal")
-	private Integer monthlySpendingGoal;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -52,13 +52,13 @@ public class User implements UserDetails {
 	}
 
 	@Override
-	public String getPassword() {
-		return null;
+	public String getUsername() {
+		return email;
 	}
 
 	@Override
-	public String getUsername() {
-		return email;
+	public String getPassword() {
+		return null;
 	}
 
 	@Override

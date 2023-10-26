@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.user;
+package com.bell.thingdong.domain.user.dto;
 
 public enum UserRole {
 	ROLE_USER,

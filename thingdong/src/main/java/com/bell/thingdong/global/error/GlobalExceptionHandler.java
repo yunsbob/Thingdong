@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BusinessException.class)
 	protected ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException e) {
-		log.error("사용자 정의 Exception 발생", e);
+		log.error("비즈니스 로직 Exception 발생", e);
 		final ErrorCode errorCode = e.getErrorCode();
 		final ErrorResponse response = ErrorResponse.of(errorCode);
 		return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
@@ -94,7 +94,7 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleException(final Exception e) {
 		log.error("서버 내부 에러", e);
 		final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
-		response.setMessage(e.getMessage());
+		response.setMessage("서버 내부 에러 입니다." + e.getMessage());
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
