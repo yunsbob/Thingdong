@@ -27,7 +27,7 @@ public class UserObject {
 	@Column(name = "user_objcet_id", nullable = false)
 	private Long userObjectId;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "object_id")
 	private Object object;
 
