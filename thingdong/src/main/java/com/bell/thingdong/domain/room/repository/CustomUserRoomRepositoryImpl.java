@@ -2,7 +2,13 @@ package com.bell.thingdong.domain.room.repository;
 
 import static com.bell.thingdong.domain.room.entity.QUserRoom.*;
 
+import java.util.List;
+
+import com.bell.thingdong.domain.object.dto.UserObjectDto;
+import com.bell.thingdong.domain.object.entity.UserObject;
+import com.bell.thingdong.domain.room.dto.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -11,7 +17,36 @@ import lombok.RequiredArgsConstructor;
 public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public void example() {
-		UserRoom userRoomOne = jpaQueryFactory.selectFrom(userRoom).fetchFirst();
+	@Override
+	public UserRoomRes findRoomByUserIdOrRoomId(Long userId, Long roomId) {
+		UserRoom userRoomOne = jpaQueryFactory.selectFrom(userRoom).where(userIdEq(userId), roomIdEq(roomId)).fetchFirst();
+
+		UserRoomRes userRoomRes = new UserRoomRes();
+		for (UserObject userObject : userRoomOne.getUserObjectList()) {
+			UserObjectDto userObjectDto = UserObjectDto.builder()
+			                                           .userObjectId(userObject.getUserObjectId())
+			                                           .userObjectStatus(userObject.getUserObjectStatus().name())
+			                                           .objectPath(userObject.getObject().getObjectPath())
+			                                           .build();
+			userRoomRes.getUserObjectList().add(userObjectDto);
+		}
+		userRoomRes.setRoomColor(userRoomOne.getRoomColor());
+		userRoomRes.setUserId(userRoomOne.getUserId());
+		userRoomRes.setRoomId(userRoomOne.getRoomId());
+
+		return userRoomRes;
+	}
+
+	@Override
+	public List<Long> findRoomIdByUserId(Long userId) {
+		return jpaQueryFactory.select(userRoom.roomId).from(userRoom).where(userRoom.userId.eq(userId)).orderBy(userRoom.roomId.asc()).fetch();
+	}
+
+	private BooleanExpression userIdEq(Long userId) {
+		return userId == null ? null : userRoom.userId.eq(userId);
+	}
+
+	private BooleanExpression roomIdEq(Long roomId) {
+		return roomId == null ? null : userRoom.roomId.eq(roomId);
 	}
 }
