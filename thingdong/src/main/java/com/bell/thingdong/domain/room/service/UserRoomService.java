@@ -3,9 +3,10 @@ package com.bell.thingdong.domain.room.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bell.thingdong.domain.room.dto.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
-import com.bell.thingdong.domain.user.entity.Users;
+import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,16 @@ public class UserRoomService {
 
 	@Transactional
 	public void createRoom(String email) {
-		Users user = userRepository.findByEmail(email).orElseThrow();
+		User user = userRepository.findByEmail(email).orElseThrow();
 
 		UserRoom userRoom = UserRoom.builder().userId(user.getId()).roomColor("000000").build();
 
 		userRoomRepository.save(userRoom);
+	}
+
+	public UserRoomRes loadRoom(String email) {
+		User user = userRepository.findByEmail(email).orElseThrow();
+
+		return new UserRoomRes();
 	}
 }
