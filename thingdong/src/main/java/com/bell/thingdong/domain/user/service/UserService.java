@@ -1,7 +1,6 @@
 package com.bell.thingdong.domain.user.service;
 
 import java.util.Collections;
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -82,25 +81,31 @@ public class UserService {
 
 	@Transactional
 	public void signUp(SignUpReq signUpReq) {
-		// Email 중복 확인
 		checkDuplicatedEmail(signUpReq.getEmail());
-		// 닉네임 자동 생성 or 그대로
+
 		String nickname = signUpReq.getNickname();
 		if (nickname == null || nickname.isEmpty()) {
 			nickname = generateRandomNickName();
 		}
-		// user En
+
 		User build = User.builder()
 			.email(signUpReq.getEmail())
 			.password(passwordEncoder.encode(signUpReq.getPassword()))
 			.nickname(nickname)
 			.roles(Collections.singletonList(UserRole.ROLE_USER.name()))
 			.build();
+
 		userRepository.save(build);
 	}
 
 	public UserInfoRes readUserInfo(String email) {
-		return UserInfoRes.builder().build();
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		return UserInfoRes.builder()
+			.userId(user.getEmail())
+			.nickName(user.getNickname())
+			.PAToken(user.getPAToken())
+			.thingAmount(user.getThingAmount())
+			.build();
 	}
 
 	private String generateRandomNickName() {
@@ -109,8 +114,7 @@ public class UserService {
 	}
 
 	public void checkDuplicatedEmail(String email) {
-		Optional<User> byEmail = userRepository.findByEmail(email);
-		if (byEmail.isPresent()) {
+		if (userRepository.existsByEmail(email)) {
 			throw new EmailDuplicationException();
 		}
 	}
