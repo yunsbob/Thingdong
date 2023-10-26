@@ -29,3 +29,5 @@ logging:
 
 jwt:
   key: fsdnvnskvnnfnvfksdvfgvkbnsdjflbajkdvsdnfklsndvklnfsdvkkdlsfnklsfdvnkl
+server:
+  port: 9000
