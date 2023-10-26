@@ -31,3 +31,7 @@ jwt:
   key: fsdnvnskvnnfnvfksdvfgvkbnsdjflbajkdvsdnfklsndvklnfsdvkkdlsfnklsfdvnkl
 server:
   port: 9000
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: ssafy
+    key-store-type: PKCS12
