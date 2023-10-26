@@ -49,7 +49,9 @@ public class JwtTokenProvider {
 			.stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.joining(","));
+
 		long now = new Date().getTime();
+
 		String accessToken = Jwts.builder()
 			.setSubject(authentication.getName())
 			.claim(AUTHORITIES_KEY, authorities)
@@ -62,6 +64,7 @@ public class JwtTokenProvider {
 			.setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
+
 		return TokenInfo.builder()
 			.grantType(BEARER_TYPE)
 			.accessToken(accessToken)

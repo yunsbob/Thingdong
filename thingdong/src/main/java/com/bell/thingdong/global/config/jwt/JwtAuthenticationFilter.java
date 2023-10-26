@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		// 토큰 검증 -> 유효한 경우 : 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
 		String validateResult = jwtTokenProvider.validateToken(token);
-		if (Objects.equals(validateResult, "vaild")) {
+		if (Objects.equals(validateResult, "valid")) {
 			setSecurityContextHolder(token);
 		}
 

@@ -20,6 +20,7 @@ spring:
           batch_size: 10
         format_sql: true
     show-sql: true
+    open-in-view: false
 
 logging:
   level:
@@ -32,6 +33,6 @@ jwt:
 
 server:
   ssl:
-    key-store:
-    key-store-password:
-    key-store-type:
+    key-store: classpath:keystore.p12
+    key-store-password: ssafy
+    key-store-type: PKCS12
