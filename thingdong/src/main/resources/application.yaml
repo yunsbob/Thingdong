@@ -30,3 +30,6 @@ logging:
 
 jwt:
   key: fsdnvnskvnnfnvfksdvfgvkbnsdjflbajkdvsdnfklsndvklnfsdvkkdlsfnklsfdvnkl
+
+server:
+  host: https://thingdong.com

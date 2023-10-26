@@ -57,7 +57,7 @@ public class UserController {
 	@GetMapping("/checkEmailDuplication")
 	@Operation(summary = "이메일 중복확인용 API", description = "입력한 이메일의 중복을 확인한다. 409error -> 중복 , 200 -> 중복 아님")
 	public ResponseEntity<?> checkEmailDuplication(
-		@Parameter(description = "검증할 사용자 이메일을 입력한다.", required = true, example = "test@naver.com") @RequestParam(
+		@Parameter(description = "검증할 사용자 이메일을 입력한다.", required = true, example = "ssafy") @RequestParam(
 			"email") String email) {
 		userService.checkDuplicatedEmail(email);
 		return ResponseEntity.ok().build();

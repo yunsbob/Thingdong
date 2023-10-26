@@ -18,13 +18,13 @@ import lombok.NoArgsConstructor;
 public class LoginReq {
 
 	@NotEmpty(message = "이메일은 필수 입력값입니다.")
-	@Schema(description = "이메일", example = "ssafyTest")
+	@Schema(description = "이메일", example = "ssafy")
 	@Pattern(regexp = "^[A-Za-z0-9._%+-]+$", message = "ID 형식에 맞지 않습니다.")
 	@Size(min = 4, max = 16, message = "ID는 4자에서 16자 사이여야 합니다.")
 	private String email;
 
 	@NotEmpty(message = "비밀번호는 필수 입력값입니다.")
-	@Schema(description = "비밀번호", example = "1Q2w3e4r!")
+	@Schema(description = "비밀번호", example = "1q2w3e4r!")
 	private String password;
 
 	public UsernamePasswordAuthenticationToken toAuthentication() {

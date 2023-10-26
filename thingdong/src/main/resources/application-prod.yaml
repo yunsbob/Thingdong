@@ -32,6 +32,7 @@ jwt:
   key: fsdnvnskvnnfnvfksdvfgvkbnsdjflbajkdvsdnfklsndvklnfsdvkkdlsfnklsfdvnkl
 
 server:
+  host: https://thingdong.com
   ssl:
     key-store: classpath:keystore.p12
     key-store-password: ssafy
