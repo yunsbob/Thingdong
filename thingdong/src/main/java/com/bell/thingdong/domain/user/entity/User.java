@@ -44,6 +44,13 @@ public class User implements UserDetails {
 	@Column(name = "password", nullable = false)
 	private String password;
 
+	@Column(name = "thing_amount")
+	@Builder.Default
+	private Long thingAmount = 0L;
+
+	@Column(name = "personal_authentication_token")
+	private String PAToken;
+
 	@Builder.Default
 	@Column(name = "roles")
 	@ElementCollection(fetch = FetchType.LAZY)

@@ -11,9 +11,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRes {
-
 	@Schema(description = "사용자 accessToken", example = "echnvjfjhlsdambklweabntb1012fasdglkjghkj23hj8")
 	private String accessToken;
 
-	// 사용자 정보 추가
+	@Schema(description = "사용자 PAT", example = "dfnasjfdnib23ierhg82")
+	private String PAToken;
+
+	@Schema(description = "사용자 ID", example = "ssafyTest")
+	private String userId;
+
+	@Schema(description = "사용자 NickName", example = "돌아온 옥수수")
+	private String nickName;
+
+	@Schema(description = "사용자 보유 Thing", example = "100")
+	private String thingAmount;
 }

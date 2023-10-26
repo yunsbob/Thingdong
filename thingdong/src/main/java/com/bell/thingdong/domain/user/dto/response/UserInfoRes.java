@@ -11,6 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfoRes {
-	@Schema(description = "id(PK)", example = "1")
-	private Long id;
+	@Schema(description = "사용자 PAT", example = "dfnasjfdnib23ierhg82")
+	private String PAToken;
+
+	@Schema(description = "사용자 ID", example = "ssafyTest")
+	private String userId;
+
+	@Schema(description = "사용자 NickName", example = "돌아온 옥수수")
+	private String nickName;
+
+	@Schema(description = "사용자 보유 Thing", example = "100")
+	private Long thingAmount;
 }
