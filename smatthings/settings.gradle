@@ -1,0 +1,2 @@
+// include ':examples:java-springboot-smartapp'
+rootProject.name = 'smatthings'
