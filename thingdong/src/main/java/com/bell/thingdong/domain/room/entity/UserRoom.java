@@ -33,6 +33,9 @@ public class UserRoom {
 	@Column(name = "user_id", nullable = false)
 	private Long userId;
 
+	@Column(name = "room_color", nullable = false)
+	private String roomColor;
+
 	@OneToMany
 	@JoinColumn(name = "room_id")
 	private List<UserObject> userObjectList;
