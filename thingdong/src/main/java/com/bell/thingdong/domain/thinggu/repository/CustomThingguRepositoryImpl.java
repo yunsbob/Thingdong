@@ -1,6 +1,7 @@
 package com.bell.thingdong.domain.thinggu.repository;
 
 import static com.bell.thingdong.domain.thinggu.entity.QThinggu.*;
+import static com.bell.thingdong.domain.user.entity.QUser.*;
 
 import java.util.List;
 
@@ -15,6 +16,6 @@ public class CustomThingguRepositoryImpl implements CustomThingguRepository {
 
 	@Override
 	public List<Thinggu> findThingguByUserId(Long userId) {
-		return jpaQueryFactory.selectFrom(thinggu).where(thinggu.userId.id.eq(userId)).fetch();
+		return jpaQueryFactory.selectFrom(thinggu).join(thinggu.userId, user).where(user.id.eq(userId)).fetch();
 	}
 }
