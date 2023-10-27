@@ -1,10 +1,15 @@
 package com.bell.thingdong.domain.thinggu.entity;
 
+import com.bell.thingdong.domain.user.entity.User;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,8 +29,9 @@ public class Thinggu {
 	@Column(name = "thinggu_id", nullable = false)
 	private Long thingguId;
 
-	@Column(name = "user_id", nullable = false)
-	private Long userId;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User userId;
 
 	@Column(name = "thinggu_status", nullable = false)
 	private String thingguStatus;

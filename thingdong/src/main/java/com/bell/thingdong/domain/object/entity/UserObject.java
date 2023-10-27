@@ -1,6 +1,7 @@
 package com.bell.thingdong.domain.object.entity;
 
 import com.bell.thingdong.domain.object.dto.UserObjectStatus;
+import com.bell.thingdong.domain.room.entity.UserRoom;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,8 +37,9 @@ public class UserObject {
 	@Column(name = "user_id", nullable = false)
 	private Long userId;
 
-	@Column(name = "room_id")
-	private Long roomId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "room_id")
+	private UserRoom roomId;
 
 	@Column(name = "user_object_status", nullable = false)
 	private UserObjectStatus userObjectStatus;
