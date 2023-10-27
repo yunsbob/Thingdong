@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.user.dto.UserRole;
 import com.bell.thingdong.domain.user.dto.request.LoginReq;
 import com.bell.thingdong.domain.user.dto.request.SignUpReq;
@@ -36,16 +38,11 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 public class UserService {
 	private static final String REFRESH_TOKEN = "refresh_token";
-	private static final String[] nickHead = {
-		"강한", "큰", "작은", "용감한", "명랑한",
-		"빠른", "멋진", "예쁜", "행운의", "똑똑한"
-	};
-	private static final String[] nickBody = {
-		"사자", "호랑이", "기린", "팬더", "원숭이",
-		"코알라", "팽귄", "호랭이", "토끼", "고릴라"
-	};
+	private static final String[] nickHead = {"강한", "큰", "작은", "용감한", "명랑한", "빠른", "멋진", "예쁜", "행운의", "똑똑한"};
+	private static final String[] nickBody = {"사자", "호랑이", "기린", "팬더", "원숭이", "코알라", "팽귄", "호랭이", "토끼", "고릴라"};
 	private final RedisRepository redisRepository;
 	private final UserRepository userRepository;
+	private final UserRoomRepository userRoomRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -69,18 +66,16 @@ public class UserService {
 		TokenInfo tokenInfo = jwtTokenProvider.createToken(authentication);
 		// 쿠키 값 갱신
 		CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-		CookieUtil.addCookie(response, REFRESH_TOKEN, tokenInfo.getRefreshToken(),
-			JwtTokenProvider.getRefreshTokenExpireTimeCookie());
+		CookieUtil.addCookie(response, REFRESH_TOKEN, tokenInfo.getRefreshToken(), JwtTokenProvider.getRefreshTokenExpireTimeCookie());
 		// RT 발급
-		redisRepository.setValues("RT:" + authentication.getName(), tokenInfo.getRefreshToken(),
-			tokenInfo.getExpireTime());
+		redisRepository.setValues("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getExpireTime());
 		return LoginRes.builder()
-			.accessToken(tokenInfo.getAccessToken())
-			.PAToken(user.getPAToken())
-			.userId(user.getEmail())
-			.nickName(user.getNickname())
-			.thingAmount(user.getThingAmount())
-			.build();
+		               .accessToken(tokenInfo.getAccessToken())
+		               .PAToken(user.getPAToken())
+		               .userId(user.getEmail())
+		               .nickName(user.getNickname())
+		               .thingAmount(user.getThingAmount())
+		               .build();
 	}
 
 	@Transactional
@@ -93,23 +88,22 @@ public class UserService {
 		}
 
 		User build = User.builder()
-			.email(signUpReq.getEmail())
-			.password(passwordEncoder.encode(signUpReq.getPassword()))
-			.nickname(nickname)
-			.roles(Collections.singletonList(UserRole.ROLE_USER.name()))
-			.build();
+		                 .email(signUpReq.getEmail())
+		                 .password(passwordEncoder.encode(signUpReq.getPassword()))
+		                 .nickname(nickname)
+		                 .roles(Collections.singletonList(UserRole.ROLE_USER.name()))
+		                 .build();
 
 		userRepository.save(build);
+
+		UserRoom userRoom = UserRoom.builder().userId(build.getId()).roomColor("000000").build();
+
+		userRoomRepository.save(userRoom);
 	}
 
 	public UserInfoRes readUserInfo(String email) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		return UserInfoRes.builder()
-			.userId(user.getEmail())
-			.nickName(user.getNickname())
-			.PAToken(user.getPAToken())
-			.thingAmount(user.getThingAmount())
-			.build();
+		return UserInfoRes.builder().userId(user.getEmail()).nickName(user.getNickname()).PAToken(user.getPAToken()).thingAmount(user.getThingAmount()).build();
 	}
 
 	private String generateRandomNickName() {

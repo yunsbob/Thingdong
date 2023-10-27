@@ -13,6 +13,7 @@ import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.service.UserRoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +34,7 @@ public class UserRoomController {
 		return ResponseEntity.ok().build();
 	}
 
-	@Operation(summary = "나의 방 불러오기", description = "토큰으로 나의 첫번째 방을 불러온다.")
+	@Operation(summary = "나의 방 불러오기", description = "나의 첫번째 방을 불러온다.")
 	@GetMapping
 	public ResponseEntity<UserRoomRes> loadMyRoom(Principal principal) {
 		String email = principal.getName();
@@ -45,7 +46,7 @@ public class UserRoomController {
 
 	@Operation(summary = "띵구 방 불러오기", description = "userID로 띵구의 첫번째 방을 불러온다.")
 	@GetMapping("/thinggus")
-	public ResponseEntity<UserRoomRes> loadThingguRoom(@RequestParam Long userId) {
+	public ResponseEntity<UserRoomRes> loadThingguRoom(@Parameter(description = "띵구 ID", example = "1") @RequestParam("userId") Long userId) {
 		UserRoomRes userRoomRes = userRoomService.loadRoom(null, userId, null);
 
 		return ResponseEntity.ok(userRoomRes);
@@ -53,7 +54,7 @@ public class UserRoomController {
 
 	@Operation(summary = "방 불러오기", description = "roomID로 다음이나 이전 방을 불러온다.")
 	@GetMapping("/detail")
-	public ResponseEntity<UserRoomRes> loadNextRoom(@RequestParam Long roomId) {
+	public ResponseEntity<UserRoomRes> loadNextRoom(@Parameter(description = "방 번호", example = "1") @RequestParam("roomId") Long roomId) {
 		UserRoomRes userRoomRes = userRoomService.loadRoom(null, null, roomId);
 
 		return ResponseEntity.ok(userRoomRes);
