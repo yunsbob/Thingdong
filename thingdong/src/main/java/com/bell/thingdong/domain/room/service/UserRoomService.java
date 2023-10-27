@@ -9,6 +9,7 @@ import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.user.entity.User;
+import com.bell.thingdong.domain.user.exception.UserNotFoundException;
 import com.bell.thingdong.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class UserRoomService {
 
 	@Transactional
 	public void createRoom(String email) {
-		User user = userRepository.findByEmail(email).orElseThrow();
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
 		UserRoom userRoom = UserRoom.builder().userId(user.getId()).roomColor("000000").build();
 
@@ -36,7 +37,7 @@ public class UserRoomService {
 		List<Long> rooms;
 
 		if (email != null) {
-			User user = userRepository.findByEmail(email).orElseThrow();
+			User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
 			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(user.getId(), null);
 			rooms = userRoomRepository.findRoomIdByUserId(user.getId());

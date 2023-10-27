@@ -11,6 +11,7 @@ import com.bell.thingdong.domain.thinggu.dto.response.ThingguRes;
 import com.bell.thingdong.domain.thinggu.entity.Thinggu;
 import com.bell.thingdong.domain.thinggu.repository.ThingguRepository;
 import com.bell.thingdong.domain.user.entity.User;
+import com.bell.thingdong.domain.user.exception.UserNotFoundException;
 import com.bell.thingdong.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class ThingguService {
 	private final ThingguRepository thingguRepository;
 
 	public ThingguRes getThinggus(String email) {
-		User user = userRepository.findByEmail(email).orElseThrow();
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
 		List<Thinggu> thinggus = thingguRepository.findThingguByUserIdOrThingguId(user.getId(), null);
 
@@ -53,7 +54,7 @@ public class ThingguService {
 
 	@Transactional
 	public void requestThinggu(String email, Long thingguId) {
-		User userMe = userRepository.findByEmail(email).orElseThrow();
+		User userMe = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		User userThinggu = userRepository.findById(thingguId).orElseThrow();
 		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu).thingguStatus("N").build();
 
@@ -62,7 +63,7 @@ public class ThingguService {
 
 	@Transactional
 	public void acceptThinggu(String email, Long thingguId) {
-		User userMe = userRepository.findByEmail(email).orElseThrow();
+		User userMe = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
 		Thinggu userThinggu = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId).get(0);
 
@@ -75,7 +76,7 @@ public class ThingguService {
 
 	@Transactional
 	public void deleteThinggu(String email, Long thingguId) {
-		User userMe = userRepository.findByEmail(email).orElseThrow();
+		User userMe = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
 		Thinggu thingguMe = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId).get(0);
 
