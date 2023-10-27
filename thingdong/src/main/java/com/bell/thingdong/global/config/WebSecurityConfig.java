@@ -4,7 +4,6 @@ import java.util.stream.Stream;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,7 +19,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.bell.thingdong.global.config.jwt.JwtAuthenticationFilter;
 import com.bell.thingdong.global.config.jwt.JwtTokenProvider;
 import com.bell.thingdong.global.config.jwt.RestAuthenticationEntryPoint;
-import com.bell.thingdong.global.handler.TokenAccessDeniedHandler;
+import com.bell.thingdong.global.config.jwt.TokenAccessDeniedHandler;
+import com.bell.thingdong.global.redis.RedisRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WebSecurityConfig {
 	private static final String[] WHITE_LIST = {"/swagger-ui/**", "/v3/**"};
 	private final JwtTokenProvider jwtTokenProvider;
-	private final RedisTemplate<String, String> redisTemplate;
+	private final RedisRepository redisRepository;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 
 	@Bean
@@ -53,13 +53,15 @@ public class WebSecurityConfig {
 				.authenticated())
 			.exceptionHandling(c -> c.authenticationEntryPoint(new RestAuthenticationEntryPoint())
 				.accessDeniedHandler(tokenAccessDeniedHandler))
-			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate),
+			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisRepository),
 				UsernamePasswordAuthenticationFilter.class).build();
 	}
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

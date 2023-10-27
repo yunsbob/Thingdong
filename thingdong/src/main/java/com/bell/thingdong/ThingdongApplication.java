@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @EnableJpaAuditing
 @SpringBootApplication
-@OpenAPIDefinition(servers = {@Server(url = "${server.host}", description = "EC2 Server URL"),
+@OpenAPIDefinition(servers = {@Server(url = "${server.ec2-url}", description = "EC2 Server URL"),
 	@Server(url = "http://localhost:8080", description = "Local Server URL")
 })
 public class ThingdongApplication {

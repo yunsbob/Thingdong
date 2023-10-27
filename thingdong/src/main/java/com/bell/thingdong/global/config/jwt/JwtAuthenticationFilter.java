@@ -5,14 +5,13 @@ import static com.bell.thingdong.global.config.jwt.JwtTokenProvider.*;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.bell.thingdong.global.redis.RedisRepository;
 import com.bell.thingdong.global.util.CookieUtil;
 
 import io.jsonwebtoken.Claims;
@@ -31,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private static final String REFRESH_TOKEN = "refresh_token";
 	private static final String BEARER_TYPE = "Bearer";
 	private final JwtTokenProvider jwtTokenProvider;
-	private final RedisTemplate<String, String> redisTemplate;
+	private final RedisRepository redisRepository;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws
@@ -68,14 +67,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			String email = claims.getSubject();
 			String role = claims.get(AUTHORITIES_KEY, String.class);
 
-			String refreshTokenFromRedis = redisTemplate.opsForValue().get("RT" + email);
+			String refreshTokenFromRedis = redisRepository.getValues("RT" + email);
 			if (refreshTokenFromRedis == null) {
 				chain.doFilter(request, response);
 				return;
 			}
 
 			if (!Objects.equals(refreshTokenFromRedis, refreshTokenFromCookie)) {
-				redisTemplate.opsForValue().getOperations().delete("RT" + email);
+				redisRepository.deleteValues("RT" + email);
 				chain.doFilter(request, response);
 				return;
 			}
@@ -83,11 +82,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			// 토큰 생성. RTR
 			TokenInfo tokenInfo = jwtTokenProvider.createToken(email, role);
 			// from Redis 기존 토큰 burn 그리고 새로 생성후 cookie 에 추가
-			redisTemplate.opsForValue().getOperations().delete("RT" + email);
-			redisTemplate.opsForValue()
-				.set("RT" + email, tokenInfo.getRefreshToken(), tokenInfo.getExpireTime(),
-					TimeUnit.MILLISECONDS);
-
+			redisRepository.deleteValues("RT" + email);
+			redisRepository.setValues("RT" + email, tokenInfo.getRefreshToken(), tokenInfo.getExpireTime());
 			// refresh Token -> Http only 쿠키.
 			CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
 			CookieUtil.addCookie(response, REFRESH_TOKEN, tokenInfo.getRefreshToken(),

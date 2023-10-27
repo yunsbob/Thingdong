@@ -2,9 +2,7 @@ package com.bell.thingdong.domain.user.service;
 
 import java.util.Collections;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -24,6 +22,7 @@ import com.bell.thingdong.domain.user.exception.UserNotFoundException;
 import com.bell.thingdong.domain.user.repository.UserRepository;
 import com.bell.thingdong.global.config.jwt.JwtTokenProvider;
 import com.bell.thingdong.global.config.jwt.TokenInfo;
+import com.bell.thingdong.global.redis.RedisRepository;
 import com.bell.thingdong.global.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,15 +44,15 @@ public class UserService {
 		"사자", "호랑이", "기린", "팬더", "원숭이",
 		"코알라", "팽귄", "호랭이", "토끼", "고릴라"
 	};
+	private final RedisRepository redisRepository;
 	private final UserRepository userRepository;
-	private final RedisTemplate<String, Object> redisTemplate;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
 
 	public void logout(HttpServletRequest request, HttpServletResponse response, String email) {
 		// redis 토큰 삭제
-		redisTemplate.delete("RT:" + email);
+		redisRepository.deleteValues("RT:" + email);
 		// 쿠키 삭제
 		CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
 	}
@@ -72,10 +71,10 @@ public class UserService {
 		CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
 		CookieUtil.addCookie(response, REFRESH_TOKEN, tokenInfo.getRefreshToken(),
 			JwtTokenProvider.getRefreshTokenExpireTimeCookie());
+
 		// RT 발급
-		redisTemplate.opsForValue()
-			.set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getExpireTime(),
-				TimeUnit.MILLISECONDS);
+		redisRepository.setValues("RT:" + authentication.getName(), tokenInfo.getRefreshToken(),
+			tokenInfo.getExpireTime());
 		return LoginRes.builder().accessToken(tokenInfo.getAccessToken()).build();
 	}
 

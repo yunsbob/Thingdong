@@ -1,4 +1,4 @@
-package com.bell.thingdong.global.handler;
+package com.bell.thingdong.global.config.jwt;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

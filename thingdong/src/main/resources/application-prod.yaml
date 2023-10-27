@@ -1,8 +1,13 @@
 spring:
   data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
     redis:
       host: thingdong.com
       port: 1234
+      repositories:
+        enabled: false
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -24,15 +29,15 @@ spring:
 
 logging:
   level:
-    com.bell.thingdong: DEBUG
+    com.bell.thingdong: debug
     org:
-      hibernate: debug
+      hibernate: info
 
 jwt:
   key: fsdnvnskvnnfnvfksdvfgvkbnsdjflbajkdvsdnfklsndvklnfsdvkkdlsfnklsfdvnkl
 
 server:
-  host: https://thingdong.com
+  ec2-url: https://thingdong.com
   ssl:
     key-store: classpath:keystore.p12
     key-store-password: ssafy
