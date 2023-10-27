@@ -46,7 +46,7 @@ public class User implements UserDetails {
 
 	@Column(name = "thing_amount")
 	@Builder.Default
-	private Long thingAmount = 0L;
+	private Long thingAmount = 100L;
 
 	@Column(name = "personal_authentication_token")
 	private String PAToken;
