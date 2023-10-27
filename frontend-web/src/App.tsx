@@ -1,8 +1,12 @@
+import MainPage from '@/pages/Main/MainPage';
 import React from 'react';
 
 const App = () => (
   <>
-    <h1>Thing Dong 폰트적용됐니?</h1>
+    {/* 로그인 안 되어 있다면 로그인 페이지  */}
+
+    {/* 로그인 되어 있다면 메인 페이지  */}
+    <MainPage />
   </>
 );
 
