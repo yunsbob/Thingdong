@@ -1,8 +1,17 @@
 import React from 'react';
+import { Text } from '@/components/atoms/Text/Text.styles';
 
 const App = () => (
   <>
-    <h1>Thing Dong 폰트적용됐니?</h1>
+    <Text size="heading1" fontWeight="regular">
+      띵동 heading1 & regular
+    </Text>
+    <Text size="heading2" fontWeight="bold">
+      띵동 heading2 & bold
+    </Text>
+    <Text size="heading2">
+      띵동 heading3
+    </Text>
   </>
 );
 
