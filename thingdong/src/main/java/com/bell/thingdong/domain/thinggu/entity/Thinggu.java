@@ -37,4 +37,8 @@ public class Thinggu {
 
 	@Column(name = "thinggu_status", nullable = false)
 	private String thingguStatus;
+
+	public void setThingguStatus(String thingguStatus) {
+		this.thingguStatus = thingguStatus;
+	}
 }
