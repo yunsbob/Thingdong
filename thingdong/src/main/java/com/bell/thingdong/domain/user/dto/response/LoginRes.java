@@ -24,5 +24,5 @@ public class LoginRes {
 	private String nickName;
 
 	@Schema(description = "사용자 보유 Thing", example = "100")
-	private String thingAmount;
+	private Long thingAmount;
 }

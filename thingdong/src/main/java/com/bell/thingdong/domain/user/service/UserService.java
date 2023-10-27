@@ -71,11 +71,16 @@ public class UserService {
 		CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
 		CookieUtil.addCookie(response, REFRESH_TOKEN, tokenInfo.getRefreshToken(),
 			JwtTokenProvider.getRefreshTokenExpireTimeCookie());
-
 		// RT 발급
 		redisRepository.setValues("RT:" + authentication.getName(), tokenInfo.getRefreshToken(),
 			tokenInfo.getExpireTime());
-		return LoginRes.builder().accessToken(tokenInfo.getAccessToken()).build();
+		return LoginRes.builder()
+			.accessToken(tokenInfo.getAccessToken())
+			.PAToken(user.getPAToken())
+			.userId(user.getEmail())
+			.nickName(user.getNickname())
+			.thingAmount(user.getThingAmount())
+			.build();
 	}
 
 	@Transactional
