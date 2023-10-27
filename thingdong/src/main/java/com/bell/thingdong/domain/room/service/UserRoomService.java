@@ -31,12 +31,22 @@ public class UserRoomService {
 		userRoomRepository.save(userRoom);
 	}
 
-	public UserRoomRes loadRoom(String email) {
-		User user = userRepository.findByEmail(email).orElseThrow();
+	public UserRoomRes loadRoom(String email, Long userId, Long roomId) {
+		UserRoomRes userRoomRes;
+		List<Long> rooms;
 
-		UserRoomRes userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(user.getId(), null);
+		if (email != null) {
+			User user = userRepository.findByEmail(email).orElseThrow();
 
-		List<Long> rooms = userRoomRepository.findRoomIdByUserId(user.getId());
+			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(user.getId(), null);
+			rooms = userRoomRepository.findRoomIdByUserId(user.getId());
+		} else if (userId != null) {
+			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(userId, null);
+			rooms = userRoomRepository.findRoomIdByUserId(userId);
+		} else {
+			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(null, roomId);
+			rooms = userRoomRepository.findRoomIdByUserId(userRoomRes.getUserId());
+		}
 
 		for (int i = 0; i < rooms.size(); i++) {
 			if (rooms.get(i) == userRoomRes.getRoomId()) {
@@ -56,4 +66,5 @@ public class UserRoomService {
 
 		return userRoomRes;
 	}
+
 }
