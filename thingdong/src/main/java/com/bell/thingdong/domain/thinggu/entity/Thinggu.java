@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "thinggus")
 public class Thinggu {
 	@Id
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "thinggu_id")
 	private User thingguId;
 
@@ -37,4 +37,8 @@ public class Thinggu {
 
 	@Column(name = "thinggu_status", nullable = false)
 	private String thingguStatus;
+
+	public void setThingguStatus(String thingguStatus) {
+		this.thingguStatus = thingguStatus;
+	}
 }

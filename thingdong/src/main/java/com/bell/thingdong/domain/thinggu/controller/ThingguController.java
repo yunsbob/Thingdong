@@ -3,10 +3,14 @@ package com.bell.thingdong.domain.thinggu.controller;
 import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bell.thingdong.domain.thinggu.dto.request.ThingguReq;
@@ -39,7 +43,33 @@ public class ThingguController {
 	public ResponseEntity<?> requestThinggu(Principal principal, @RequestBody ThingguReq thingguReq) {
 		String email = principal.getName();
 
-		thingguService.addThinggu(email, thingguReq.getThingguId());
+		thingguService.requestThinggu(email, thingguReq.getThingguId());
+
+		return ResponseEntity.ok().build();
+	}
+
+	@Operation(summary = "띵구 결정", description = "알람 목록에서 띵구 요청을 수락하거나 거절한다.")
+	@PutMapping
+	public ResponseEntity<?> decisionThinggu(Principal principal, @RequestParam("userId") Long userId, @RequestParam("check") String check) {
+		String email = principal.getName();
+
+		if (check.equals("Y")) {
+			thingguService.acceptThinggu(email, userId);
+		} else if (check.equals("N")) {
+			thingguService.deleteThinggu(email, userId);
+		} else {
+			return ResponseEntity.badRequest().build();
+		}
+
+		return ResponseEntity.ok().build();
+	}
+
+	@Operation(summary = "띵구 삭제", description = "띵구 목록에서 띵구를 삭제 한다.")
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<?> removeThinggu(Principal principal, @PathVariable("userId") Long userId) {
+		String email = principal.getName();
+
+		thingguService.deleteThinggu(email, userId);
 
 		return ResponseEntity.ok().build();
 	}
