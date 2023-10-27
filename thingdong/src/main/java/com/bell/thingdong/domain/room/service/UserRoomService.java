@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bell.thingdong.domain.room.dto.UserRoomRes;
+import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.user.entity.User;
