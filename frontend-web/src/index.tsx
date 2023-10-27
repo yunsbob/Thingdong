@@ -1,15 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './App';
+import GlobalStyle from '@/styles/GlobalStyle';
 import { Provider } from 'jotai';
-import "frontend-web/public/font.css";
+import '@/styles/font.css';
+import { ThemeProvider } from 'styled-components';
+import theme from '@/styles/theme';
 
-const rootElement = document.getElementById('root');
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider>
-      <App />
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider>
+        <GlobalStyle />
+        <App />
+      </Provider>
+    </ThemeProvider>
   </React.StrictMode>,
-  rootElement,
 );
