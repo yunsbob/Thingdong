@@ -30,7 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-	private static final String[] WHITE_LIST = {"/swagger-ui/**", "/v3/**"};
+	private static final String[] WHITE_LIST = {"/swagger-ui/**", "/v3/**", "/api/users/login",
+		"/api/users/checkEmailDuplication", "/api/users/signUp"};
 	private final JwtTokenProvider jwtTokenProvider;
 	private final RedisRepository redisRepository;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
