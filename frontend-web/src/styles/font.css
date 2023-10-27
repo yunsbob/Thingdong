@@ -1,11 +1,25 @@
+
+
 @font-face {
     font-family: "NanumSquareNeo";
-    src: local("NanumSquareNeo"), url('@/assets/fonts/NanumSquareNeo-aLt.ttf') format('truetype');
+    src: local("NanumSquareNeo"), url('@/assets/fonts/NanumSquareNeo-bRg.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "NanumSquareNeo";
+    src: local("NanumSquareNeo"), url('@/assets/fonts/NanumSquareNeo-cBd.ttf') format('truetype');
     font-weight: 700;
 }
 
 @font-face {
     font-family: "NanumSquareNeo";
-    src: local("NanumSquareNeo"), url('@/assets/fonts/NanumSquareNeo-aLt.ttf') format('truetype');
-    font-weight: 700;
+    src: local("NanumSquareNeo"), url('@/assets/fonts/NanumSquareNeo-dEb.ttf') format('truetype');
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: "NanumSquareNeo";
+    src: local("NanumSquareNeo"), url('@/assets/fonts/NanumSquareNeo-eHv.ttf') format('truetype');
+    font-weight: 900;
 }
