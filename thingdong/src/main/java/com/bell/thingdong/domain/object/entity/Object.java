@@ -22,7 +22,7 @@ public class Object {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "object_id", nullable = false)
-	private Long objcetId;
+	private Long objectId;
 
 	@Column(name = "object_path", nullable = false)
 	private String objectPath;

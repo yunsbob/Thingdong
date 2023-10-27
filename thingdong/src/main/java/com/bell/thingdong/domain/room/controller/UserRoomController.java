@@ -6,9 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bell.thingdong.domain.room.dto.UserRoomRes;
+import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.service.UserRoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,12 +33,28 @@ public class UserRoomController {
 		return ResponseEntity.ok().build();
 	}
 
-	@Operation(summary = "방 불러오기", description = "아직 미구현")
+	@Operation(summary = "나의 방 불러오기", description = "토큰으로 나의 첫번째 방을 불러온다.")
 	@GetMapping
 	public ResponseEntity<?> loadMyRoom(Principal principal) {
 		String email = principal.getName();
 
-		UserRoomRes userRoomRes = userRoomService.loadRoom(email);
+		UserRoomRes userRoomRes = userRoomService.loadRoom(email, null, null);
+
+		return ResponseEntity.ok(userRoomRes);
+	}
+
+	@Operation(summary = "띵구 방 불러오기", description = "userID로 띵구의 첫번째 방을 불러온다.")
+	@GetMapping
+	public ResponseEntity<?> loadThingguRoom(@RequestParam Long userId) {
+		UserRoomRes userRoomRes = userRoomService.loadRoom(null, userId, null);
+
+		return ResponseEntity.ok(userRoomRes);
+	}
+
+	@Operation(summary = "방 불러오기", description = "roomID로 다음이나 이전 방을 불러온다.")
+	@GetMapping
+	public ResponseEntity<?> loadNextRoom(@RequestParam Long roomId) {
+		UserRoomRes userRoomRes = userRoomService.loadRoom(null, null, roomId);
 
 		return ResponseEntity.ok(userRoomRes);
 	}

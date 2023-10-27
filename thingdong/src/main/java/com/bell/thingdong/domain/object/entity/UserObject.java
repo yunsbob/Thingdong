@@ -1,5 +1,7 @@
 package com.bell.thingdong.domain.object.entity;
 
+import com.bell.thingdong.domain.object.dto.UserObjectStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
