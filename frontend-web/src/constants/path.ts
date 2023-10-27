@@ -2,4 +2,11 @@ const PATH = {
   ROOT: '/',
 };
 
-export { PATH };
+const CHILDREN_PATH = {
+  HOME: 'home',
+  FRIEND: 'friend',
+  INVENTORY: 'inventory',
+  THINGS: 'things',
+};
+
+export { PATH, CHILDREN_PATH };
