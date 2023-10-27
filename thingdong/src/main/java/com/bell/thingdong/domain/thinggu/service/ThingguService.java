@@ -27,7 +27,7 @@ public class ThingguService {
 	public ThingguRes getThinggus(String email) {
 		User user = userRepository.findByEmail(email).orElseThrow();
 
-		List<Thinggu> thinggus = thingguRepository.findThingguByUserId(user.getId());
+		List<Thinggu> thinggus = thingguRepository.findThingguByUserIdOrThingguId(user.getId(), null);
 
 		List<ThingguDto> thingguList = new ArrayList<>(), thingguAlarmList = new ArrayList<>();
 		for (Thinggu thinggu : thinggus) {
@@ -52,11 +52,39 @@ public class ThingguService {
 	}
 
 	@Transactional
-	public void addThinggu(String email, Long thingguId) {
+	public void requestThinggu(String email, Long thingguId) {
 		User userMe = userRepository.findByEmail(email).orElseThrow();
 		User userThinggu = userRepository.findById(thingguId).orElseThrow();
 		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu).thingguStatus("N").build();
 
 		thingguRepository.save(thinggu);
+	}
+
+	@Transactional
+	public void acceptThinggu(String email, Long thingguId) {
+		User userMe = userRepository.findByEmail(email).orElseThrow();
+
+		Thinggu userThinggu = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId).get(0);
+
+		userThinggu.setThingguStatus("Y");
+
+		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu.getThingguId()).thingguStatus("Y").build();
+
+		thingguRepository.save(thinggu);
+	}
+
+	@Transactional
+	public void deleteThinggu(String email, Long thingguId) {
+		User userMe = userRepository.findByEmail(email).orElseThrow();
+
+		Thinggu thingguMe = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId).get(0);
+
+		// 친구 목록인 경우 상대의 띵구 목록에서도 나를 삭제
+		if (thingguMe.getThingguStatus().equals("Y")) {
+			thingguRepository.deleteById(userMe.getId());
+		}
+
+		// 내 목록에 있는 띵구 삭제
+		thingguRepository.delete(thingguMe);
 	}
 }
