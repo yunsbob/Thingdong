@@ -4,7 +4,6 @@ import { Text } from '@/components/atoms/Text/Text.styles';
 
 const App = () => (
   <>
-  {/* Text Test */}
     <Text size="heading1" fontWeight="regular">
       띵동 heading1 & regular
     </Text>

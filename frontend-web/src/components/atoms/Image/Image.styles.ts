@@ -5,7 +5,7 @@ export interface ImageProps extends ComponentPropsWithRef<"img"> {
   width?: number;
   height?: number;
   $margin?: string;
-  $unit?: "rem" | "px" | "em" | "%";
+  $unit: "rem" | "px" | "em" | "%";
   alignItems?: string;
 }
 
