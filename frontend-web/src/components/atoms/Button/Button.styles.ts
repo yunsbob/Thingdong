@@ -5,7 +5,6 @@ const getOptionStyling = (option: Required<ButtonProps>['option']) => {
   const styles = {
     activated: css`
       background: ${({ theme }) => theme.color.blue};
-      /* color: ${({ theme }) => theme.color.white}; // 기본이 화이트라면? */
     `,
     deactivated: css`
       background: ${({ theme }) => theme.color.grey4};
@@ -13,7 +12,6 @@ const getOptionStyling = (option: Required<ButtonProps>['option']) => {
     `,
     danger: css`
       background: ${({ theme }) => theme.color.danger};
-      /* color: ${({ theme }) => theme.color.white}; */
     `,
     ghost: css`
       background: ${({ theme }) => theme.color.white};
@@ -36,24 +34,18 @@ const getSizeStyling = (size: Required<ButtonProps>['size']) => {
       height: 76px;
       border-radius: 30px;
       font-size: ${({ theme }) => theme.fontSize.subtitle2};
-      /* font-weight: 800; //extraBold */
     `,
     medium: css`
       height: 60px;
       font-size: ${({ theme }) => theme.fontSize.body2};
-      /* font-weight: 800; //extraBold */
-      /* border-radius: 21px; */
     `,
     small: css`
       height: 56px;
       font-size: ${({ theme }) => theme.fontSize.body3}; 
-      /* font-weight: 800; //extraBold */
-      /* border-radius: 21px; */
     `,
     extraSmall: css`
       height: 42px;
       font-size: ${({ theme }) => theme.fontSize.body3};
-      /* font-weight: 800; //extraBold */
       border-radius: 15px;
     `,
   };
