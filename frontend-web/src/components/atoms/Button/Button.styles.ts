@@ -66,7 +66,8 @@ const Button = styled.button<ButtonProps>`
   text-align: center;
   border-radius: 21px;
   color: white;
-  font-weight: 800;
+  font-family: 'NanumSquareNeo';
+  font-weight: 700;
   ${({ size = 'large' }) => getSizeStyling(size)};
   ${({ option = 'activated'}) => getOptionStyling(option)};
   background-color: ${props => props.$backgroundColor};
