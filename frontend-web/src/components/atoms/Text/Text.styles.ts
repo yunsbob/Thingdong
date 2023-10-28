@@ -16,7 +16,7 @@ export interface TextProps {
   color?: typeof theme.color;
   width?: number;
   fontWeight?: 'regular' | 'bold' | 'extraBold' | 'heavy';
-  $margin?: string;
+  $margin: string;
   $marginLeft?: string;
   $marginTop?: string;
 }
