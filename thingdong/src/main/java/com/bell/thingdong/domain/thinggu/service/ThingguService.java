@@ -89,8 +89,12 @@ public class ThingguService {
 
 		// 친구 목록인 경우 상대의 띵구 목록에서도 나를 삭제
 		if (thingguMe.get(0).getThingguStatus().equals("Y")) {
-			Thinggu thinggu = thingguRepository.findThingguByUserIdOrThingguId(thingguId, userMe.getId()).get(0);
-			thingguRepository.delete(thinggu);
+			List<Thinggu> thinggu = thingguRepository.findThingguByUserIdOrThingguId(thingguId, userMe.getId());
+
+			if (thinggu.isEmpty())
+				throw new ThingguNotFoundException();
+
+			thingguRepository.delete(thinggu.get(0));
 		}
 
 		// 내 목록에 있는 띵구 삭제
