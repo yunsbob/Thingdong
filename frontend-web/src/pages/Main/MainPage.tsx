@@ -1,13 +1,15 @@
 import { Background } from '@/components/atoms/Background/Background.style';
-import BottomNavBar from '@/components/molecules/BottomNavBar';
+import BottomNavBar from '@/components/molecules/BottomNavBar/BottomNavBar';
 import { Outlet } from 'react-router-dom';
 
 const MainPage = () => {
   return (
-    <Background>
-      <Outlet />
+    <>
+      <Background>
+        <Outlet />
+      </Background>
       <BottomNavBar />
-    </Background>
+    </>
   );
 };
 

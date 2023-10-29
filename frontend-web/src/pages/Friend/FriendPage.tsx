@@ -1,38 +1,18 @@
 import * as S from '@/pages/Friend/FriendPage.style';
-import Button from '@/components/atoms/Button/Button';
-import Input from '@/components/atoms/Input/Input';
-import theme from '@/styles/theme';
+import Header from '@/components/molecules/Header/Header';
+import { Image } from '@/components/atoms/Image/Image';
+import notification from '@/assets/images/friend/notification.png';
+import search from '@/assets/images/friend/search.png';
 
 const FriendPage = () => {
   return (
     <S.FriendContainer>
-      FriendPage
-      {/* Input 활용 예시용 임시 */}
-      <div
-        style={{
-          padding: '40px',
-          gap: '20px 20px',
-          backgroundColor: theme.color.grey3,
-        }}
-      >
-        <Input
-          option="default"
-          $inputSize="medium"
-          placeholder={'default, medium input'}
-        />
-      </div>
-      <div
-        style={{
-          padding: '40px',
-          gap: '20px 20px',
-        }}
-      >
-        <Input
-          option="grey"
-          $inputSize="small"
-          placeholder="grey, small input"
-        />
-      </div>
+      <Header text="띵구">
+        <S.FriendHeaderIcons>
+          <Image src={notification} width={100} height={100} $unit="%" />
+          <Image src={search} width={2.5} height={2.5} />
+        </S.FriendHeaderIcons>
+      </Header>
     </S.FriendContainer>
   );
 };

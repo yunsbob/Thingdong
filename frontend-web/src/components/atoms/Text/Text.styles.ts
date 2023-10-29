@@ -1,21 +1,25 @@
 import theme from '@/styles/theme';
 import styled, { css } from 'styled-components';
 
+export type TextSize =
+  | 'heading1'
+  | 'heading2'
+  | 'subtitle1'
+  | 'subtitle2'
+  | 'body1'
+  | 'body2'
+  | 'body3'
+  | 'body4'
+  | 'small1'
+  | 'small2';
+
+export type FontWeightType = 'regular' | 'bold' | 'extraBold' | 'heavy';
+
 export interface TextProps {
-  size?:
-    | 'heading1'
-    | 'heading2'
-    | 'subtitle1'
-    | 'subtitle2'
-    | 'body1'
-    | 'body2'
-    | 'body3'
-    | 'body4'
-    | 'small1'
-    | 'small2';
+  size?: TextSize;
   color?: keyof typeof theme.color;
   width?: number;
-  fontWeight?: 'regular' | 'bold' | 'extraBold' | 'heavy';
+  fontWeight?: FontWeightType;
   $margin?: string;
   $marginLeft?: string;
   $marginTop?: string;
@@ -75,7 +79,8 @@ const Text = styled.p<TextProps>`
   margin-left: ${props => props.$marginLeft};
   margin-top: ${props => props.$marginTop};
   ${({ size = 'heading1' }) => getSizeStyling(size)};
-  color: ${props => (props.color ? props.theme.color[props.color] : props.theme.color.black1)};
+  color: ${props =>
+    props.color ? props.theme.color[props.color] : props.theme.color.black1};
   font-weight: ${props => getFontWeightStyling(props.fontWeight)};
 `;
 
