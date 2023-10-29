@@ -21,10 +21,10 @@ public class CustomThingguRepositoryImpl implements CustomThingguRepository {
 	}
 
 	private BooleanExpression userIdEq(Long userId) {
-		return userId == null ? null : user.id.eq(userId);
+		return userId == null ? null : thinggu.userId.id.eq(userId);
 	}
 
 	private BooleanExpression thingguIdEq(Long thingguId) {
-		return thingguId == null ? null : user.id.eq(thingguId);
+		return thingguId == null ? null : thinggu.thingguId.id.eq(thingguId);
 	}
 }

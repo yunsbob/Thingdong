@@ -65,11 +65,11 @@ public class ThingguController {
 	}
 
 	@Operation(summary = "띵구 삭제", description = "띵구 목록에서 띵구를 삭제 한다.")
-	@DeleteMapping("/{userId}")
-	public ResponseEntity<?> removeThinggu(Principal principal, @PathVariable("userId") Long userId) {
+	@DeleteMapping("/{thingguId}")
+	public ResponseEntity<?> removeThinggu(Principal principal, @PathVariable("thingguId") Long thingguId) {
 		String email = principal.getName();
 
-		thingguService.deleteThinggu(email, userId);
+		thingguService.deleteThinggu(email, thingguId);
 
 		return ResponseEntity.ok().build();
 	}

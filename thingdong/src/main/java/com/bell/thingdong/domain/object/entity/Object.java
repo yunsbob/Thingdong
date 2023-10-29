@@ -1,5 +1,7 @@
 package com.bell.thingdong.domain.object.entity;
 
+import com.bell.thingdong.domain.object.dto.ObjectCategory;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,4 +31,7 @@ public class Object {
 
 	@Column(name = "object_thing")
 	private Long objectThing;
+
+	@Column(name = "object_category", nullable = false)
+	private ObjectCategory objectCategory;
 }
