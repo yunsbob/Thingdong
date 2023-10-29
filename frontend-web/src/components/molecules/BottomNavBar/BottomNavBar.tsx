@@ -1,8 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  BottomNavContainer,
-  BottomNavWrpper,
-} from '@/components/molecules/BottomNavBar/BottomNavBar.styles';
+import * as S from '@/components/molecules/BottomNavBar/BottomNavBar.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import { CHILDREN_PATH } from '@/constants/path';
 
@@ -19,8 +16,8 @@ const BottomNavBar = () => {
   const srcs = Object.keys(CHILDREN_PATH) as Array<keyof typeof CHILDREN_PATH>;
 
   return (
-    <BottomNavContainer>
-      <BottomNavWrpper>
+    <S.BottomNavContainer>
+      <S.BottomNavWrpper>
         {srcs.map(src => {
           let imageSrc = src.toLowerCase();
 
@@ -43,8 +40,8 @@ const BottomNavBar = () => {
             ></Image>
           );
         })}
-      </BottomNavWrpper>
-    </BottomNavContainer>
+      </S.BottomNavWrpper>
+    </S.BottomNavContainer>
   );
 };
 
