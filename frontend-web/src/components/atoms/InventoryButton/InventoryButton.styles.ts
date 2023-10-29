@@ -5,6 +5,7 @@ const getOptionStyling = (option: Required<InventoryButtonProps>['option']) => {
   const styles = {
     activated: css`
       background: ${({ theme }) => theme.color.lightYellow};
+      color: ${({ theme }) => theme.color.grey1};
     `,
     deactivated: css`
       background: ${({ theme }) => theme.color.white};

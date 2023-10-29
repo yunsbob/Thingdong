@@ -9,21 +9,21 @@ export interface InventoryButtonProps extends React.ButtonHTMLAttributes<HTMLBut
   $fontWeight?: number;
 }
 
-const InventoryButton = (
-  { option, size, $backgroundColor, $fontWeight, children }: InventoryButtonProps,
-  ref: ForwardedRef<HTMLButtonElement>
-) => {
-  return (
-    <S.InventoryButton
-      ref={ref}
-      option={option}
-      size={size}
-      $backgroundColor={$backgroundColor}
-      $fontWeight={$fontWeight}
-    >
-      {children}
-    </S.InventoryButton>
-  );
-};
+const InventoryButton = forwardRef<HTMLButtonElement, InventoryButtonProps>(
+  ({ option, size, $backgroundColor, $fontWeight, children, ...rest }, ref) => {
+    return (
+      <S.InventoryButton
+        ref={ref}
+        option={option}
+        size={size}
+        $backgroundColor={$backgroundColor}
+        $fontWeight={$fontWeight}
+        {...rest}
+      >
+        {children}
+      </S.InventoryButton>
+    );
+  }
+);
 
-export default forwardRef(InventoryButton);
+export default InventoryButton;

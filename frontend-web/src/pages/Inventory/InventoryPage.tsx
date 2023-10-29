@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import styled from "styled-components";
+import * as S from './InventoryPage.styles';
 import InventoryButtons from "@/components/molecules/InventoryButtons/InventoryButtons";
+import Header from '@/components/molecules/Header/Header';
 
 
 type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
 
-const InventoryContainer = styled.div`
-  padding: 0 26px;
-`;
+
 console.log("InventoryPage 렌더링");
 const InventoryPage = () => {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
@@ -17,9 +16,10 @@ const InventoryPage = () => {
     console.log("선택된 카테고리:", category);
   };
   return (
-    <InventoryContainer>
+    <S.InventoryContainer>
+      <Header text="인벤토리"></Header>
       <InventoryButtons activeCategory={activeCategory} onCategoryClick={handleCategoryClick}/>
-    </InventoryContainer>
+    </S.InventoryContainer>
   );
 };
 
