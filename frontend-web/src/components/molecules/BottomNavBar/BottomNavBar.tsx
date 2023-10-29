@@ -1,5 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { BottomNavContainer, BottomNavWrpper } from '@/components/molecules/BottomNavBar.styles';
+import {
+  BottomNavContainer,
+  BottomNavWrpper,
+} from '@/components/molecules/BottomNavBar/BottomNavBar.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import { CHILDREN_PATH } from '@/constants/path';
 
@@ -31,7 +34,9 @@ const BottomNavBar = () => {
           return (
             <Image
               key={src}
-              src={require(`@/assets/images/bottomNavBar/${imageSrc}.png`).default}
+              src={
+                require(`@/assets/images/bottomNavBar/${imageSrc}.png`).default
+              }
               onClick={() => changePath(src)}
               width={3}
               height={3}
