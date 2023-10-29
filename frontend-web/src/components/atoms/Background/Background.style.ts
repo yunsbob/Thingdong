@@ -13,6 +13,8 @@ const Background = styled.div<BackgroundProps>`
       : props.theme.color.coolGrey};
   width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   padding: 1.3rem;
 `;
 
