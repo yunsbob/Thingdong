@@ -1,9 +1,6 @@
-import "styled-components";
+import 'styled-components';
+import { ThemeType } from './theme';
 
-declare module "styled-components" {
-  export interface DefaultTheme {
-    [key: string]: {
-      [key: string]: string | { [key: string]: string };
-    };
-  }
+declare module 'styled-components' {
+  export interface DefaultTheme extends ThemeType {}
 }

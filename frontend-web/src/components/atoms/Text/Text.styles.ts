@@ -13,7 +13,7 @@ export interface TextProps {
     | 'body4'
     | 'small1'
     | 'small2';
-  color?: typeof theme.color;
+  color?: keyof typeof theme.color;
   width?: number;
   fontWeight?: 'regular' | 'bold' | 'extraBold' | 'heavy';
   $margin?: string;
