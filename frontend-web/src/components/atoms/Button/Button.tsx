@@ -5,13 +5,12 @@ import * as S from './Button.styles';
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   option?: 'activated' | 'deactivated' | 'danger' | 'ghost' | 'flat';
   size?: 'large' | 'medium' | 'small' | 'extraSmall';
-  $width?: string;
   $backgroundColor?: string;
   $fontWeight?: number;
 }
 
 const Button = (
-  { option, size, $width, $backgroundColor, $fontWeight, children }: ButtonProps,
+  { option, size, $backgroundColor, $fontWeight, children }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
   return (
@@ -19,7 +18,6 @@ const Button = (
       ref={ref}
       option={option}
       size={size}
-      $width={$width}
       $backgroundColor={$backgroundColor}
       $fontWeight={$fontWeight}
     >
