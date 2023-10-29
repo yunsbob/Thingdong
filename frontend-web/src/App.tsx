@@ -1,6 +1,5 @@
 import MainPage from '@/pages/Main/MainPage';
 import React from 'react';
-import { Text } from '@/components/atoms/Text/Text.styles';
 
 const App = () => (
   <>

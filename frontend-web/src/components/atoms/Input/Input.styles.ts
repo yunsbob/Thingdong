@@ -13,7 +13,9 @@ const getOptionStyling = (option: Required<InputProps>['option']) => {
   return styles[option];
 };
 
-const getInputSizeStyling = (inputSize: Required<InputProps>['inputSize']) => {
+const getInputSizeStyling = (
+  $inputSize: Required<InputProps>['$inputSize']
+) => {
   const styles = {
     medium: css`
       font-size: ${({ theme }) => theme.fontSize.body1};
@@ -25,7 +27,7 @@ const getInputSizeStyling = (inputSize: Required<InputProps>['inputSize']) => {
     `,
   };
 
-  return styles[inputSize];
+  return styles[$inputSize];
 };
 
 const Input = styled.input<InputProps>`
@@ -39,7 +41,7 @@ const Input = styled.input<InputProps>`
   justify-content: center;
   font-family: 'NanumSquareNeo';
   ${({ option = 'default' }) => getOptionStyling(option)};
-  ${({ inputSize = 'medium' }) => getInputSizeStyling(inputSize)};
+  ${({ $inputSize = 'medium' }) => getInputSizeStyling($inputSize)};
 
   &::placeholder {
     color: ${({ theme }) => theme.color.grey2};

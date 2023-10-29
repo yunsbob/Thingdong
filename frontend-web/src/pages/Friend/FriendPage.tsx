@@ -1,10 +1,11 @@
+import * as S from '@/pages/Friend/FriendPage.style';
 import Button from '@/components/atoms/Button/Button';
 import Input from '@/components/atoms/Input/Input';
 import theme from '@/styles/theme';
 
 const FriendPage = () => {
   return (
-    <>
+    <S.FriendContainer>
       FriendPage
       {/* Input 활용 예시용 임시 */}
       <div
@@ -16,7 +17,7 @@ const FriendPage = () => {
       >
         <Input
           option="default"
-          inputSize="medium"
+          $inputSize="medium"
           placeholder={'default, medium input'}
         />
       </div>
@@ -28,11 +29,11 @@ const FriendPage = () => {
       >
         <Input
           option="grey"
-          inputSize="small"
+          $inputSize="small"
           placeholder="grey, small input"
         />
       </div>
-    </>
+    </S.FriendContainer>
   );
 };
 
