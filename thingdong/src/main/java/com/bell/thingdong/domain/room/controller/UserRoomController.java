@@ -39,7 +39,7 @@ public class UserRoomController {
 	public ResponseEntity<UserRoomRes> loadMyRoom(Principal principal) {
 		String email = principal.getName();
 
-		UserRoomRes userRoomRes = userRoomService.loadRoom(email, null, null);
+		UserRoomRes userRoomRes = userRoomService.getRoom(email, null, null);
 
 		return ResponseEntity.ok(userRoomRes);
 	}
@@ -47,7 +47,7 @@ public class UserRoomController {
 	@Operation(summary = "띵구 방 불러오기", description = "userID로 띵구의 첫번째 방을 불러온다.")
 	@GetMapping("/thinggus")
 	public ResponseEntity<UserRoomRes> loadThingguRoom(@Parameter(description = "띵구 ID", example = "1") @RequestParam("userId") Long userId) {
-		UserRoomRes userRoomRes = userRoomService.loadRoom(null, userId, null);
+		UserRoomRes userRoomRes = userRoomService.getRoom(null, userId, null);
 
 		return ResponseEntity.ok(userRoomRes);
 	}
@@ -55,7 +55,7 @@ public class UserRoomController {
 	@Operation(summary = "방 불러오기", description = "roomID로 다음이나 이전 방을 불러온다.")
 	@GetMapping("/detail")
 	public ResponseEntity<UserRoomRes> loadNextRoom(@Parameter(description = "방 번호", example = "1") @RequestParam("roomId") Long roomId) {
-		UserRoomRes userRoomRes = userRoomService.loadRoom(null, null, roomId);
+		UserRoomRes userRoomRes = userRoomService.getRoom(null, null, roomId);
 
 		return ResponseEntity.ok(userRoomRes);
 	}

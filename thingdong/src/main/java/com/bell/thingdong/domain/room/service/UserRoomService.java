@@ -32,7 +32,7 @@ public class UserRoomService {
 		userRoomRepository.save(userRoom);
 	}
 
-	public UserRoomRes loadRoom(String email, Long userId, Long roomId) {
+	public UserRoomRes getRoom(String email, Long userId, Long roomId) {
 		UserRoomRes userRoomRes;
 		List<Long> rooms;
 
