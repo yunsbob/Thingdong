@@ -6,10 +6,11 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>{
   inputSize?: 'medium' | 'small';
   $borderRadius?: number;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
 }
 
 const Input = (
-  { option, inputSize, $borderRadius, onChange }: InputProps,
+  { option, inputSize, $borderRadius, onChange, placeholder }: InputProps,
   ref?: React.LegacyRef<HTMLInputElement>
 ) => {
   return (
@@ -19,6 +20,7 @@ const Input = (
       inputSize={inputSize}
       $borderRadius={$borderRadius}
       onChange={onChange}
+      placeholder={placeholder}
     ></S.Input>
   );
 };

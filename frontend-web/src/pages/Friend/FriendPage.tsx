@@ -1,4 +1,6 @@
-import Input from "@/components/atoms/Input/Input";
+import Button from '@/components/atoms/Button/Button';
+import Input from '@/components/atoms/Input/Input';
+import theme from '@/styles/theme';
 
 const FriendPage = () => {
   return (
@@ -8,11 +10,28 @@ const FriendPage = () => {
       <div
         style={{
           padding: '40px',
-          display: 'flex',
-          flexWrap: 'wrap',
+          gap: '20px 20px',
+          backgroundColor: theme.color.grey3,
+        }}
+      >
+        <Input
+          option="default"
+          inputSize="medium"
+          placeholder={'default, medium input'}
+        />
+      </div>
+      <div
+        style={{
+          padding: '40px',
           gap: '20px 20px',
         }}
-      ><Input option='default' inputSize='medium' placeholder='아무거나 입력하세요'> </Input></div>
+      >
+        <Input
+          option="grey"
+          inputSize="small"
+          placeholder="grey, small input"
+        />
+      </div>
     </>
   );
 };

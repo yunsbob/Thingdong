@@ -7,7 +7,6 @@ const getOptionStyling = (option: Required<InputProps>['option']) => {
       background-color: white;
     `,
     grey: css`
-      /* border: none; */
       background-color: ${({ theme }) => theme.color.grey5};
     `,
   };
@@ -38,16 +37,16 @@ const Input = styled.input<InputProps>`
   outline: none;
   flex-direction: row;
   justify-content: center;
+  font-family: 'NanumSquareNeo';
   ${({ option = 'default' }) => getOptionStyling(option)};
   ${({ inputSize = 'medium' }) => getInputSizeStyling(inputSize)};
 
-  &:placeholder {
+  &::placeholder {
     color: ${({ theme }) => theme.color.grey2};
   }
 
   &:focus {
-    outline: none;
-    border: 0.1rem solid ${({ theme }) => theme.color.blue3};
+    border: 0.2rem solid ${({ theme }) => theme.color.blue3};
   }
 
   &:focus::placeholder {
