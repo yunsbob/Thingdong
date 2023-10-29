@@ -12,7 +12,7 @@ const FriendPage = () => {
           flexWrap: 'wrap',
           gap: '20px 20px',
         }}
-      ></div>
+      ><Input option='default' inputSize='medium' placeholder='아무거나 입력하세요'> </Input></div>
     </>
   );
 };

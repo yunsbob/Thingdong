@@ -1,22 +1,22 @@
 import React, { ChangeEvent } from 'react';
 import * as S from './Input.styles';
 
-export interface InputProps {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>{
   option?: 'default' | 'grey';
-  size?: 'medium' | 'small';
+  inputSize?: 'medium' | 'small';
   $borderRadius?: number;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input = (
-  { option, size, $borderRadius, onChange }: InputProps,
+  { option, inputSize, $borderRadius, onChange }: InputProps,
   ref?: React.LegacyRef<HTMLInputElement>
 ) => {
   return (
     <S.Input
       ref={ref}
       option={option}
-      size={size}
+      inputSize={inputSize}
       $borderRadius={$borderRadius}
       onChange={onChange}
     ></S.Input>
