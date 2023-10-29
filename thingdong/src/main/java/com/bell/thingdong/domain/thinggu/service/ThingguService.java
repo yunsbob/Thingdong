@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bell.thingdong.domain.thinggu.dto.ThingguDto;
 import com.bell.thingdong.domain.thinggu.dto.response.ThingguRes;
 import com.bell.thingdong.domain.thinggu.entity.Thinggu;
+import com.bell.thingdong.domain.thinggu.exception.ThingguNotFoundException;
 import com.bell.thingdong.domain.thinggu.repository.ThingguRepository;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
@@ -55,7 +56,7 @@ public class ThingguService {
 	@Transactional
 	public void requestThinggu(String email, Long thingguId) {
 		User userMe = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		User userThinggu = userRepository.findById(thingguId).orElseThrow();
+		User userThinggu = userRepository.findById(thingguId).orElseThrow(UserNotFoundException::new);
 		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu).thingguStatus("N").build();
 
 		thingguRepository.save(thinggu);
@@ -65,11 +66,14 @@ public class ThingguService {
 	public void acceptThinggu(String email, Long thingguId) {
 		User userMe = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-		Thinggu userThinggu = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId).get(0);
+		List<Thinggu> userThinggu = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId);
 
-		userThinggu.setThingguStatus("Y");
+		if (userThinggu.isEmpty())
+			throw new ThingguNotFoundException();
 
-		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu.getThingguId()).thingguStatus("Y").build();
+		userThinggu.get(0).setThingguStatus("Y");
+
+		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu.get(0).getThingguId()).thingguStatus("Y").build();
 
 		thingguRepository.save(thinggu);
 	}
@@ -80,15 +84,16 @@ public class ThingguService {
 
 		List<Thinggu> thingguMe = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId);
 
-		if (thingguMe.size() > 0) {
-			// 친구 목록인 경우 상대의 띵구 목록에서도 나를 삭제
-			if (thingguMe.get(0).getThingguStatus().equals("Y")) {
-				Thinggu thinggu = thingguRepository.findThingguByUserIdOrThingguId(thingguId, userMe.getId()).get(0);
-				thingguRepository.delete(thinggu);
-			}
+		if (thingguMe.isEmpty())
+			throw new ThingguNotFoundException();
 
-			// 내 목록에 있는 띵구 삭제
-			thingguRepository.delete(thingguMe.get(0));
+		// 친구 목록인 경우 상대의 띵구 목록에서도 나를 삭제
+		if (thingguMe.get(0).getThingguStatus().equals("Y")) {
+			Thinggu thinggu = thingguRepository.findThingguByUserIdOrThingguId(thingguId, userMe.getId()).get(0);
+			thingguRepository.delete(thinggu);
 		}
+
+		// 내 목록에 있는 띵구 삭제
+		thingguRepository.delete(thingguMe.get(0));
 	}
 }

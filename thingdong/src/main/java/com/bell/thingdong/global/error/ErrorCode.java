@@ -24,7 +24,9 @@ public enum ErrorCode {
 	QUERY_TIMEOUT(400, "C007", "Query Timeout"),
 	CAN_CREATE(400, "C008", "Can Create Card"),
 	ALREADY_IN_PROGRESS(400, "C009", "Already In Process"),
-	CARD_NOT_FOUND(400, "C010", "Card not found");
+	CARD_NOT_FOUND(400, "C010", "Card not found"),
+	// Thinggu
+	THINGGU_NOT_FOUND(400, "T001", "Thinggu Not Found");
 
 	private final String code;
 	private final String message;
