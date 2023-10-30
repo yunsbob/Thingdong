@@ -71,10 +71,10 @@ public class UserController {
 
 	@GetMapping
 	@Operation(summary = "유저 검색 API", description = "검색창에서 유저들을 검색한다.")
-	public ResponseEntity<List<UserSearchRes>> userSearch(Principal principal, @Parameter(description = "유저 아이디를 입력한다.", example = "hello") @RequestParam("id") String id) {
+	public ResponseEntity<List<UserSearchRes>> userSearch(Principal principal, @Parameter(description = "유저 아이디를 입력한다.", example = "hello") @RequestParam("userId") String userId) {
 		String email = principal.getName();
 
-		List<UserSearchRes> userSearches = userService.getUserSearchInfo(email, id);
+		List<UserSearchRes> userSearches = userService.getUserSearchInfo(email, userId);
 
 		return ResponseEntity.ok(userSearches);
 	}
