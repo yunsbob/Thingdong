@@ -8,19 +8,20 @@ import Modal from '@/components/molecules/Modal/Modal';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import styled from 'styled-components';
 import { Image } from '@/components/atoms/Image/Image';
+import Button from '@/components/atoms/Button/Button';
 
 // 임시 더미 데이터
 type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
 
 const inventoryItems = [
-  { price: 10, isOwned: false, imagePath: 'face-blue.png' },
-  { price: 100, isOwned: true, imagePath: 'face-blue.png' },
-  { price: 40, isOwned: true, imagePath: 'face-blue.png' },
-  { price: 50, isOwned: false, imagePath: 'face-blue.png' },
-  { price: 70, isOwned: false, imagePath: 'face-blue.png' },
-  { price: 20, isOwned: true, imagePath: 'face-blue.png' },
-  { price: 10, isOwned: true, imagePath: 'face-blue.png' },
-  { price: 5, isOwned: false, imagePath: 'face-blue.png' },
+  { price: 10, isOwned: false, imagePath: 'chair.png' },
+  { price: 100, isOwned: true, imagePath: 'chair.png' },
+  { price: 40, isOwned: true, imagePath: 'chair.png' },
+  { price: 50, isOwned: false, imagePath: 'chair.png' },
+  { price: 70, isOwned: false, imagePath: 'chair.png' },
+  { price: 20, isOwned: true, imagePath: 'chair.png' },
+  { price: 10, isOwned: true, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
 ];
 
 const availableThing = 1000;
@@ -28,12 +29,18 @@ const availableThing = 1000;
 const ItemWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 10px 0;
+  margin: 20px 0;
 `;
 const ThingWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-left: 15px;
+`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 20px;
 `;
 const InventoryPage = () => {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
@@ -63,7 +70,7 @@ const InventoryPage = () => {
           <Image
             src={
               selectedItemImagePath
-                ? require(`@/assets/images/friend/${selectedItemImagePath}`)
+                ? require(`@/assets/images/inventory/${selectedItemImagePath}`)
                     .default
                 : undefined
             }
@@ -79,7 +86,7 @@ const InventoryPage = () => {
               height={31}
             />
             <Text
-              size="subtitle1"
+              size="subtitle2"
               fontWeight="extraBold"
               color="grey1"
               $marginLeft="5px"
@@ -88,6 +95,17 @@ const InventoryPage = () => {
             </Text>
           </ThingWrapper>
         </ItemWrapper>
+        <Text size="body2" fontWeight="bold">
+          구매하시겠어요?
+        </Text>
+        <ButtonWrapper>
+          <Button option={'ghost'} size={'small'} >
+            취소
+          </Button>
+          <Button option={'activated'} size={'small'} >
+            확인
+          </Button>
+        </ButtonWrapper>
       </Modal>
       <S.InventoryContainer>
         <Header text="인벤토리">

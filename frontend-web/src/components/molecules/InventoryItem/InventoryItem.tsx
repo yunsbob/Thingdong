@@ -17,12 +17,14 @@ const InventoryItem: React.FC<InventoryItemProps> = ({
 }) => {
   return (
     <S.InventoryItemContainer $isOwned={isOwned} onClick={onClick}>
-      <Image
-        src={require('@/assets/images/friend/' + imagePath).default}
-        $unit={'px'}
-        width={80}
-        height={80}
-      />
+      <S.ContentWrapper $isOwned={isOwned}>
+        <Image
+          src={require('@/assets/images/inventory/' + imagePath).default}
+          $unit={'px'}
+          width={80}
+          height={80}
+        />
+      </S.ContentWrapper>
       {!isOwned && (
         <S.ThingWrapper>
           <Thing price={price} />

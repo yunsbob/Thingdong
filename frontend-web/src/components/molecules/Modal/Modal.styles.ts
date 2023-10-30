@@ -7,6 +7,17 @@ export interface ModalStyleProps {
   unit?: 'px' | 'rem' | 'em' | '%';
 }
 
+const ModalWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+`;
+
 const ModalBackground = styled.div`
   height: 100%;
   width: 100%;
@@ -17,6 +28,7 @@ const ModalBackground = styled.div`
   left: 0;
   top: 0;
   background: ${({ theme }) => theme.color.black1};
+  opacity: 0.8;
 `;
 
 const ModalContainer = styled.div<ModalStyleProps>`
@@ -25,8 +37,9 @@ const ModalContainer = styled.div<ModalStyleProps>`
   position: relative;
   border-radius: ${props => `${props.$borderRadius}px`};
   text-align: center;
-  padding: 3vh;
+  padding: 36px;
+  margin: 0 28px;
   background-color: ${({ theme }) => theme.color.white};
 `;
 
-export { ModalBackground, ModalContainer };
+export { ModalBackground, ModalContainer, ModalWrapper };

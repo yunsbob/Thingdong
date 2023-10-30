@@ -5,8 +5,6 @@ const InventoryItemContainer = styled.div<{ $isOwned: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* width: 104px;
-  height: 104px; */
   width: 100%;
   height: 100%;
   padding: 10px;
@@ -15,7 +13,16 @@ const InventoryItemContainer = styled.div<{ $isOwned: boolean }>`
   ${({ $isOwned }) =>
     !$isOwned &&
     css`
-      opacity: 0.5;
+      background-color: ${({ theme }) => theme.color.white2};
+    `}
+`;
+const ContentWrapper = styled.div<{ $isOwned: boolean }>`
+  width: 100%;
+  height: 100%;
+  ${({ $isOwned }) =>
+    !$isOwned &&
+    css`
+      opacity: 0.4;
     `}
 `;
 const ThingWrapper = styled.div`
@@ -24,4 +31,4 @@ const ThingWrapper = styled.div`
   right: 7px;
 `;
 
-export { InventoryItemContainer, ThingWrapper };
+export { InventoryItemContainer, ContentWrapper, ThingWrapper };

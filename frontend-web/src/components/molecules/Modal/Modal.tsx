@@ -21,7 +21,8 @@ const Modal = ({
     <>
       {isOpen && (
         <ModalPortal>
-          <S.ModalBackground onClick={onClose}>
+          <S.ModalWrapper>
+          <S.ModalBackground onClick={onClose} />
             <S.ModalContainer
               width={width}
               height={height}
@@ -33,7 +34,7 @@ const Modal = ({
             >
               {children}
             </S.ModalContainer>
-          </S.ModalBackground>
+          </S.ModalWrapper>
         </ModalPortal>
       )}
     </>
