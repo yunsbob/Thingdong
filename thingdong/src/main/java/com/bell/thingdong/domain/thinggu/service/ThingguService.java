@@ -33,7 +33,7 @@ public class ThingguService {
 
 		List<ThingguDto> thingguList = new ArrayList<>(), thingguAlarmList = new ArrayList<>();
 		for (Thinggu thinggu : thinggus) {
-			ThingguDto thingguDto = ThingguDto.builder().nickname(thinggu.getThingguId().getNickname()).thingguId(thinggu.getThingguId().getEmail()).build();
+			ThingguDto thingguDto = ThingguDto.builder().nickname(thinggu.getThingguId().getNickname()).userId(thinggu.getThingguId().getEmail()).build();
 
 			if (thinggu.getThingguStatus().equals("Y")) {
 				thingguList.add(thingguDto);

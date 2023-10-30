@@ -15,5 +15,5 @@ public class ThingguDto {
 	private String nickname;
 
 	@Schema(description = "해당 유저의 아이디", example = "hello")
-	private String thingguId;
+	private String userId;
 }
