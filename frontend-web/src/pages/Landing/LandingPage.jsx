@@ -4,7 +4,9 @@ import {
   LandingContainer,
   LandingTextContainer,
   SceneContainer,
+  LandingButtonWrapper,
 } from '@/pages/Landing/LandingPage.style';
+import Button from '@/components/atoms/Button/Button';
 import { Text } from '@/components/atoms/Text/Text.styles';
 
 function LandingScene() {
@@ -17,6 +19,14 @@ export default function LandingPage() {
   return (
     <>
       <LandingContainer>
+        <LandingButtonWrapper>
+          <Button size="large" option="activated">
+            LogIn
+          </Button>
+          <Button size="large" option="flat">
+            SignUp
+          </Button>
+        </LandingButtonWrapper>
         <SceneContainer>
           <LandingScene />
         </SceneContainer>

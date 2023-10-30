@@ -27,9 +27,10 @@ const LandingTextContainer = styled.div`
   top: 45%;
   opacity: 0;
   overflow-y: visible;
-  animation: 
-    fadeIn 0.5s 2s forwards, 
-    scaleUp 0.5s 2s forwards;
+  transform: translate(-50%, -50%) rotate(-6deg);
+  animation:
+    fadeIn 0.5s 2s forwards;
+    /* scaleUp 3.5s 2.5s forwards; */
 
   @keyframes fadeIn {
     from {
@@ -40,15 +41,36 @@ const LandingTextContainer = styled.div`
     }
   }
 
-  @keyframes scaleUp {
+  /* @keyframes scaleUp {
     from {
-      transform: translate(-50%, -50%) rotate(-6deg) scale(85%);
+      transform: translate(-50%, 0%) rotate(-6deg);
     }
     to {
-      transform: translate(-50%, -50%) rotate(-6deg) scale(100%);
+      transform: translate(-50%, -50%) rotate(-6deg);
     }
-  }
-
+  } */
 `;
 
-export { LandingContainer, LandingTextContainer, SceneContainer };
+const LandingButtonWrapper = styled.div`
+  z-index: 1;
+  position: relative;
+  padding: 56px;
+  transform: translateY(65vh);
+  animation: fadeIn 1s 2s forwards;
+  opacity: 0;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+export {
+  LandingContainer,
+  LandingTextContainer,
+  SceneContainer,
+  LandingButtonWrapper,
+};
