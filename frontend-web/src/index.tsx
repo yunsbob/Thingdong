@@ -6,13 +6,12 @@ import '@/styles/font.css';
 import { ThemeProvider } from 'styled-components';
 import theme from '@/styles/theme';
 import AppRouter from '@/router/routes';
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Provider>
-        <GlobalStyle />
-        <AppRouter />
+          <GlobalStyle />
+          <AppRouter />
       </Provider>
     </ThemeProvider>
   </React.StrictMode>

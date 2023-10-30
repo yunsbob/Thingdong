@@ -1,13 +1,15 @@
-import MainPage from '@/pages/Main/MainPage';
 import React from 'react';
+import MainPage from '@/pages/Main/MainPage';
+import LandingPage from '@/pages/Landing/LandingPage';
+import { useState } from 'react';
 
-const App = () => (
-  <>
-    {/* 로그인 안 되어 있다면 로그인 페이지  */}
-
-    {/* 로그인 되어 있다면 메인 페이지  */}
-    <MainPage />
-  </>
-);
+const App = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  return (
+    <>
+      {isLogin ? <MainPage /> : <LandingPage />}
+    </>
+  );
+};
 
 export default App;
