@@ -48,15 +48,13 @@ public class ThingguController {
 		return ResponseEntity.ok().build();
 	}
 
-	@Operation(summary = "띵구 결정", description = "알람 목록에서 띵구 요청을 수락하거나 거절한다.")
+	@Operation(summary = "띵구 수락", description = "알람 목록에서 띵구 요청을 수락한다.")
 	@PutMapping
-	public ResponseEntity<?> decisionThinggu(Principal principal, @RequestParam("userId") String userId, @RequestParam("check") String check) {
+	public ResponseEntity<?> acceptThinggu(Principal principal, @RequestParam("userId") String userId, @RequestParam("check") String check) {
 		String email = principal.getName();
 
 		if (check.equals("Y")) {
 			thingguService.acceptThinggu(email, userId);
-		} else if (check.equals("N")) {
-			thingguService.deleteThinggu(email, userId);
 		} else {
 			return ResponseEntity.badRequest().build();
 		}
@@ -64,7 +62,7 @@ public class ThingguController {
 		return ResponseEntity.ok().build();
 	}
 
-	@Operation(summary = "띵구 삭제", description = "띵구 목록에서 띵구를 삭제 한다.")
+	@Operation(summary = "띵구 삭제 또는 거절", description = "띵구 목록에서 띵구를 삭제 또는 거절 한다.")
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> removeThinggu(Principal principal, @PathVariable("userId") String userId) {
 		String email = principal.getName();
