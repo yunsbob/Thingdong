@@ -43,21 +43,17 @@ public class ThingguController {
 	public ResponseEntity<?> requestThinggu(Principal principal, @RequestBody ThingguReq thingguReq) {
 		String email = principal.getName();
 
-		thingguService.requestThinggu(email, thingguReq.getThingguId());
+		thingguService.requestThinggu(email, thingguReq.getUserId());
 
 		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "띵구 수락", description = "알람 목록에서 띵구 요청을 수락한다.")
 	@PutMapping
-	public ResponseEntity<?> acceptThinggu(Principal principal, @RequestParam("userId") String userId, @RequestParam("check") String check) {
+	public ResponseEntity<?> acceptThinggu(Principal principal, @RequestParam("userId") String userId) {
 		String email = principal.getName();
 
-		if (check.equals("Y")) {
-			thingguService.acceptThinggu(email, userId);
-		} else {
-			return ResponseEntity.badRequest().build();
-		}
+		thingguService.acceptThinggu(email, userId);
 
 		return ResponseEntity.ok().build();
 	}

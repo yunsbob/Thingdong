@@ -90,20 +90,27 @@ public class ThingguService {
 
 		List<Thinggu> thingguMe = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), userThinggu.getId());
 
-		if (thingguMe.isEmpty())
-			throw new ThingguNotFoundException();
+		if (thingguMe.isEmpty()) {
+			List<Thinggu> thingguRequest = thingguRepository.findThingguByUserIdOrThingguId(userThinggu.getId(), userMe.getId());
 
-		// 친구 목록인 경우 상대의 띵구 목록에서도 나를 삭제
-		if (thingguMe.get(0).getThingguStatus().equals("Y")) {
-			List<Thinggu> thinggu = thingguRepository.findThingguByUserIdOrThingguId(userThinggu.getId(), userMe.getId());
-
-			if (thinggu.isEmpty())
+			// 내가 띵구 요청을 한 경우에 요청 삭제
+			if (thingguRequest.isEmpty())
 				throw new ThingguNotFoundException();
+			else
+				thingguRepository.delete(thingguRequest.get(0));
+		} else {
+			// 친구 목록인 경우 상대의 띵구 목록에서도 나를 삭제
+			if (thingguMe.get(0).getThingguStatus().equals("Y")) {
+				List<Thinggu> thinggu = thingguRepository.findThingguByUserIdOrThingguId(userThinggu.getId(), userMe.getId());
 
-			thingguRepository.delete(thinggu.get(0));
+				if (thinggu.isEmpty())
+					throw new ThingguNotFoundException();
+
+				thingguRepository.delete(thinggu.get(0));
+			}
+
+			// 내 목록에 있는 띵구 삭제
+			thingguRepository.delete(thingguMe.get(0));
 		}
-
-		// 내 목록에 있는 띵구 삭제
-		thingguRepository.delete(thingguMe.get(0));
 	}
 }

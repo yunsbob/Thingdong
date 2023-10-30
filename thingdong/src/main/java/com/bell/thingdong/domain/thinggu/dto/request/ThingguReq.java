@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ThingguReq {
 	@Schema(description = "띵구 id", example = "hello")
-	private String thingguId;
+	private String userId;
 }
