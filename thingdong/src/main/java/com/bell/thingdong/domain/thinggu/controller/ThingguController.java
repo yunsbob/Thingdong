@@ -50,7 +50,7 @@ public class ThingguController {
 
 	@Operation(summary = "띵구 결정", description = "알람 목록에서 띵구 요청을 수락하거나 거절한다.")
 	@PutMapping
-	public ResponseEntity<?> decisionThinggu(Principal principal, @RequestParam("userId") Long userId, @RequestParam("check") String check) {
+	public ResponseEntity<?> decisionThinggu(Principal principal, @RequestParam("userId") String userId, @RequestParam("check") String check) {
 		String email = principal.getName();
 
 		if (check.equals("Y")) {
@@ -65,11 +65,11 @@ public class ThingguController {
 	}
 
 	@Operation(summary = "띵구 삭제", description = "띵구 목록에서 띵구를 삭제 한다.")
-	@DeleteMapping("/{thingguId}")
-	public ResponseEntity<?> removeThinggu(Principal principal, @PathVariable("thingguId") Long thingguId) {
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<?> removeThinggu(Principal principal, @PathVariable("userId") String userId) {
 		String email = principal.getName();
 
-		thingguService.deleteThinggu(email, thingguId);
+		thingguService.deleteThinggu(email, userId);
 
 		return ResponseEntity.ok().build();
 	}

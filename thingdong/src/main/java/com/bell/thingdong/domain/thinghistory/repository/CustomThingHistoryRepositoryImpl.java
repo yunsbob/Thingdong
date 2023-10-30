@@ -1,8 +1,8 @@
-package com.bell.thingdong.domain.thing.repository;
+package com.bell.thingdong.domain.thinghistory.repository;
 
-import static com.bell.thingdong.domain.thing.entity.QThingHistory.*;
+import static com.bell.thingdong.domain.thinghistory.entity.QThingHistory.*;
 
-import com.bell.thingdong.domain.thing.entity.ThingHistory;
+import com.bell.thingdong.domain.thinghistory.entity.ThingHistory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;

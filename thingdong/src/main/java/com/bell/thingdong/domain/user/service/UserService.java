@@ -116,4 +116,11 @@ public class UserService {
 			throw new EmailDuplicationException();
 		}
 	}
+
+	@Transactional
+	public void changeThing(String email, Long thing) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		
+		user.setThingAmount(thing);
+	}
 }
