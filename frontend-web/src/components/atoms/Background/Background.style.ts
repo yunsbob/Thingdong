@@ -3,7 +3,8 @@ import theme from '@/styles/theme';
 import styled from 'styled-components';
 
 interface BackgroundProps extends TextProps {
-  $backgroundColor?: typeof theme.color;
+  // $backgroundColor?: typeof theme.color;
+  $backgroundColor?: string;
 }
 
 const Background = styled.div<BackgroundProps>`
