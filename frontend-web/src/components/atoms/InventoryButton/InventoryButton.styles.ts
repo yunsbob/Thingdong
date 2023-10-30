@@ -11,19 +11,6 @@ const getOptionStyling = (option: Required<InventoryButtonProps>['option']) => {
       background: ${({ theme }) => theme.color.white};
       color: ${({ theme }) => theme.color.grey1};
     `,
-    // danger: css`
-    //   background: ${({ theme }) => theme.color.danger};
-    // `,
-    // ghost: css`
-    //   background: ${({ theme }) => theme.color.white};
-    //   color: ${({ theme }) => theme.color.blue};
-    //   border: 0.1em solid;
-    //   border-color: ${({ theme }) => theme.color.blue};
-    // `,
-    // flat: css`
-    //   background: none;
-    //   color: ${({ theme }) => theme.color.blue};
-    // `,
   };
 
   return styles[option] || styles.activated;
