@@ -38,4 +38,7 @@ public class UserRoom {
 	@OneToMany(mappedBy = "roomId")
 	private List<UserObject> userObjectList;
 
+	public void setRoomColor(String roomColor) {
+		this.roomColor = roomColor;
+	}
 }

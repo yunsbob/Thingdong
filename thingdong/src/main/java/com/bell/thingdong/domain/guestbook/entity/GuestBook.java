@@ -31,16 +31,16 @@ public class GuestBook {
 	@Column(name = "guest_book_id", nullable = false)
 	private Long guestBookId;
 
-	@Column(name = "user_id", nullable = false)
-	private Long userId;
+	@Column(name = "user_email", nullable = false)
+	private String userEmail;
 
-	@Column(name = "guest_book_writer_id", nullable = false)
-	private String guestBookWriterId;
+	@Column(name = "writer_email", nullable = false)
+	private String writerEmail;
 
-	@Column(name = "guest_book_content", nullable = false)
-	private String guestBookContent;
+	@Column(name = "content", nullable = false)
+	private String content;
 
 	@CreatedDate
-	@Column(name = "guest_book_day", updatable = false)
-	private LocalDateTime guestBookDay;
+	@Column(name = "write_day", updatable = false)
+	private LocalDateTime writeDay;
 }

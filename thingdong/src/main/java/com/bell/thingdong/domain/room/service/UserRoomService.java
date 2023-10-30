@@ -72,4 +72,13 @@ public class UserRoomService {
 		return userRoomRes;
 	}
 
+	public void updateRoomColor(String email, String roomColor) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+		List<UserRoom> userRoomList = userRoomRepository.findAllByUserId(user.getId());
+
+		for (UserRoom userRoom : userRoomList) {
+			userRoom.setRoomColor(roomColor);
+		}
+	}
 }
