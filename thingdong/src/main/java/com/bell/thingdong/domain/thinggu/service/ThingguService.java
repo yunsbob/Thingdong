@@ -33,11 +33,7 @@ public class ThingguService {
 
 		List<ThingguDto> thingguList = new ArrayList<>(), thingguAlarmList = new ArrayList<>();
 		for (Thinggu thinggu : thinggus) {
-			ThingguDto thingguDto = ThingguDto.builder()
-			                                  .userId(thinggu.getThingguId().getId())
-			                                  .nickname(thinggu.getThingguId().getNickname())
-			                                  .email(thinggu.getThingguId().getEmail())
-			                                  .build();
+			ThingguDto thingguDto = ThingguDto.builder().nickname(thinggu.getThingguId().getNickname()).thingguId(thinggu.getThingguId().getEmail()).build();
 
 			if (thinggu.getThingguStatus().equals("Y")) {
 				thingguList.add(thingguDto);
@@ -54,42 +50,52 @@ public class ThingguService {
 	}
 
 	@Transactional
-	public void requestThinggu(String email, Long thingguId) {
+	public void requestThinggu(String email, String thingguEmail) {
 		User userMe = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		User userThinggu = userRepository.findById(thingguId).orElseThrow(UserNotFoundException::new);
-		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu).thingguStatus("N").build();
+		User userThinggu = userRepository.findByEmail(thingguEmail).orElseThrow(UserNotFoundException::new);
 
-		thingguRepository.save(thinggu);
+		List<Thinggu> findThinggu = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), userThinggu.getId());
+
+		if (!findThinggu.isEmpty()) {
+			findThinggu.get(0).setThingguStatus("Y");
+			Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu).thingguStatus("Y").build();
+			thingguRepository.save(thinggu);
+		} else {
+			Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu).thingguStatus("N").build();
+			thingguRepository.save(thinggu);
+		}
 	}
 
 	@Transactional
-	public void acceptThinggu(String email, Long thingguId) {
+	public void acceptThinggu(String email, String thingguEmail) {
 		User userMe = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		User userThinggu = userRepository.findByEmail(thingguEmail).orElseThrow(UserNotFoundException::new);
 
-		List<Thinggu> userThinggu = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId);
+		List<Thinggu> findThinggu = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), userThinggu.getId());
 
-		if (userThinggu.isEmpty())
+		if (findThinggu.isEmpty())
 			throw new ThingguNotFoundException();
 
-		userThinggu.get(0).setThingguStatus("Y");
+		findThinggu.get(0).setThingguStatus("Y");
 
-		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu.get(0).getThingguId()).thingguStatus("Y").build();
+		Thinggu thinggu = Thinggu.builder().thingguId(userMe).userId(userThinggu).thingguStatus("Y").build();
 
 		thingguRepository.save(thinggu);
 	}
 
 	@Transactional
-	public void deleteThinggu(String email, Long thingguId) {
+	public void deleteThinggu(String email, String thingguEmail) {
 		User userMe = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		User userThinggu = userRepository.findByEmail(thingguEmail).orElseThrow(UserNotFoundException::new);
 
-		List<Thinggu> thingguMe = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), thingguId);
+		List<Thinggu> thingguMe = thingguRepository.findThingguByUserIdOrThingguId(userMe.getId(), userThinggu.getId());
 
 		if (thingguMe.isEmpty())
 			throw new ThingguNotFoundException();
 
 		// 친구 목록인 경우 상대의 띵구 목록에서도 나를 삭제
 		if (thingguMe.get(0).getThingguStatus().equals("Y")) {
-			List<Thinggu> thinggu = thingguRepository.findThingguByUserIdOrThingguId(thingguId, userMe.getId());
+			List<Thinggu> thinggu = thingguRepository.findThingguByUserIdOrThingguId(userThinggu.getId(), userMe.getId());
 
 			if (thinggu.isEmpty())
 				throw new ThingguNotFoundException();
