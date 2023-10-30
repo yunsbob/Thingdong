@@ -6,9 +6,9 @@ import InventoryItem from '@/components/molecules/InventoryItem/InventoryItem';
 import Thing from '@/components/molecules/Thing/Thing';
 import Modal from '@/components/molecules/Modal/Modal';
 import { Text } from '@/components/atoms/Text/Text.styles';
-import styled from 'styled-components';
 import { Image } from '@/components/atoms/Image/Image';
 import Button from '@/components/atoms/Button/Button';
+import UnboxingItem from '@/components/molecules/UnboxingItem/UnboxingItem';
 
 // 임시 더미 데이터
 type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
@@ -26,22 +26,6 @@ const inventoryItems = [
 
 const availableThing = 1000;
 
-const ItemWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-`;
-const ThingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 15px;
-`;
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  margin-top: 20px;
-`;
 const InventoryPage = () => {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -66,7 +50,7 @@ const InventoryPage = () => {
         <Text size="body2" fontWeight="extraBold">
           선택하신 가구는 다음과 같아요!
         </Text>
-        <ItemWrapper>
+        <S.ItemWrapper>
           <Image
             src={
               selectedItemImagePath
@@ -78,7 +62,7 @@ const InventoryPage = () => {
             width={80}
             height={80}
           />
-          <ThingWrapper>
+          <S.ThingWrapper>
             <Image
               src={require('@/assets/images/Thing/thing.png').default}
               $unit={'px'}
@@ -93,39 +77,51 @@ const InventoryPage = () => {
             >
               20
             </Text>
-          </ThingWrapper>
-        </ItemWrapper>
+          </S.ThingWrapper>
+        </S.ItemWrapper>
         <Text size="body2" fontWeight="bold">
           구매하시겠어요?
         </Text>
-        <ButtonWrapper>
-          <Button option={'ghost'} size={'small'} >
+        <S.ButtonWrapper>
+          <Button option={'ghost'} size={'small'}>
             취소
           </Button>
-          <Button option={'activated'} size={'small'} >
+          <Button option={'activated'} size={'small'}>
             확인
           </Button>
-        </ButtonWrapper>
+        </S.ButtonWrapper>
       </Modal>
       <S.InventoryContainer>
         <Header text="인벤토리">
           <Thing price={availableThing} />
         </Header>
-        <InventoryButtons
-          activeCategory={activeCategory}
-          onCategoryClick={handleCategoryClick}
-        />
-        <S.InventoryItemWrapper>
-          {inventoryItems.map((item, index) => (
-            <InventoryItem
-              key={index}
-              price={item.price}
-              isOwned={item.isOwned}
-              imagePath={item.imagePath}
-              onClick={() => handleItemClick(item.imagePath)}
+        {activeCategory === '언박띵' ? (
+          <>
+            <InventoryButtons
+              activeCategory={activeCategory}
+              onCategoryClick={handleCategoryClick}
             />
-          ))}
-        </S.InventoryItemWrapper>
+            <UnboxingItem />
+          </>
+        ) : (
+          <>
+            <InventoryButtons
+              activeCategory={activeCategory}
+              onCategoryClick={handleCategoryClick}
+            />
+            <S.InventoryItemWrapper>
+              {inventoryItems.map((item, index) => (
+                <InventoryItem
+                  key={index}
+                  price={item.price}
+                  isOwned={item.isOwned}
+                  imagePath={item.imagePath}
+                  onClick={() => handleItemClick(item.imagePath)}
+                />
+              ))}
+            </S.InventoryItemWrapper>
+          </>
+        )}
       </S.InventoryContainer>
     </>
   );
