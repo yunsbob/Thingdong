@@ -1,6 +1,8 @@
 package com.bell.thingdong.domain.user.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,11 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
+import com.bell.thingdong.domain.thinggu.entity.Thinggu;
+import com.bell.thingdong.domain.thinggu.repository.ThingguRepository;
 import com.bell.thingdong.domain.user.dto.UserRole;
 import com.bell.thingdong.domain.user.dto.request.LoginReq;
 import com.bell.thingdong.domain.user.dto.request.SignUpReq;
 import com.bell.thingdong.domain.user.dto.response.LoginRes;
 import com.bell.thingdong.domain.user.dto.response.UserInfoRes;
+import com.bell.thingdong.domain.user.dto.response.UserSearchRes;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.EmailDuplicationException;
 import com.bell.thingdong.domain.user.exception.PasswordIsNotMatchedException;
@@ -43,6 +48,7 @@ public class UserService {
 	private final RedisRepository redisRepository;
 	private final UserRepository userRepository;
 	private final UserRoomRepository userRoomRepository;
+	private final ThingguRepository thingguRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -120,7 +126,41 @@ public class UserService {
 	@Transactional
 	public void changeThing(String email, Long thing) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		
+
 		user.setThingAmount(thing);
+	}
+
+	public List<UserSearchRes> getUserSearchInfo(String email, String searchEmail) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+		List<User> findUsers = userRepository.findUsersByEmail(searchEmail);
+
+		List<UserSearchRes> userSearchResList = new ArrayList<>();
+		for (User u : findUsers) {
+			if (u.getEmail().equals(email))
+				continue;
+			
+			UserSearchRes userSearchRes = UserSearchRes.builder().userId(u.getEmail()).nickname(u.getNickname()).build();
+
+			List<Thinggu> thinggu = thingguRepository.findThingguByUserIdOrThingguId(user.getId(), u.getId());
+			if (thinggu.isEmpty()) {
+				List<Thinggu> thingguRequest = thingguRepository.findThingguByUserIdOrThingguId(u.getId(), user.getId());
+				if (thingguRequest.isEmpty()) {
+					userSearchRes.setThingguStatus("N");
+				} else {
+					userSearchRes.setThingguStatus("Y");
+				}
+			} else {
+				if (thinggu.get(0).getThingguStatus().equals("Y")) {
+					userSearchRes.setThingguStatus("Y");
+				} else {
+					userSearchRes.setThingguStatus("N");
+				}
+			}
+
+			userSearchResList.add(userSearchRes);
+		}
+
+		return userSearchResList;
 	}
 }
