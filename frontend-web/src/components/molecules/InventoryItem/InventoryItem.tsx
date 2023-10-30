@@ -3,7 +3,7 @@ import Thing from '@/components/molecules/Thing/Thing';
 import * as S from './InventoryItem.styles';
 
 type InventoryItemProps = {
-  price: string;
+  price: number;
   isOwned: boolean;
   imagePath: string;
 };

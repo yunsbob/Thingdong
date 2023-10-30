@@ -3,19 +3,22 @@ import * as S from './InventoryPage.styles';
 import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryButtons';
 import Header from '@/components/molecules/Header/Header';
 import InventoryItem from '@/components/molecules/InventoryItem/InventoryItem';
+import Thing from '@/components/molecules/Thing/Thing';
 
 type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
 
 const inventoryItems = [
-  { price: '10', isOwned: false, imagePath: 'face-blue.png' },
-  { price: '100', isOwned: true, imagePath: 'face-blue.png' },
-  { price: '40', isOwned: true, imagePath: 'face-blue.png' },
-  { price: '50', isOwned: false, imagePath: 'face-blue.png' },
-  { price: '70', isOwned: false, imagePath: 'face-blue.png' },
-  { price: '20', isOwned: true, imagePath: 'face-blue.png' },
-  { price: '10', isOwned: true, imagePath: 'face-blue.png' },
-  { price: '5', isOwned: false, imagePath: 'face-blue.png' },
+  { price: 10, isOwned: false, imagePath: 'face-blue.png' },
+  { price: 100, isOwned: true, imagePath: 'face-blue.png' },
+  { price: 40, isOwned: true, imagePath: 'face-blue.png' },
+  { price: 50, isOwned: false, imagePath: 'face-blue.png' },
+  { price: 70, isOwned: false, imagePath: 'face-blue.png' },
+  { price: 20, isOwned: true, imagePath: 'face-blue.png' },
+  { price: 10, isOwned: true, imagePath: 'face-blue.png' },
+  { price: 5, isOwned: false, imagePath: 'face-blue.png' },
 ];
+
+const availableThing = 1000;
 
 console.log('InventoryPage 렌더링');
 const InventoryPage = () => {
@@ -27,7 +30,9 @@ const InventoryPage = () => {
   };
   return (
     <S.InventoryContainer>
-      <Header text="인벤토리" />
+      <Header text="인벤토리">
+        <Thing price={availableThing} />
+      </Header>
       <InventoryButtons
         activeCategory={activeCategory}
         onCategoryClick={handleCategoryClick}
