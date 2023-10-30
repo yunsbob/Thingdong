@@ -46,7 +46,7 @@ public class UserRoomController {
 
 	@Operation(summary = "띵구 방 불러오기", description = "userID로 띵구의 첫번째 방을 불러온다.")
 	@GetMapping("/thinggus")
-	public ResponseEntity<UserRoomRes> loadThingguRoom(@Parameter(description = "띵구 ID", example = "1") @RequestParam("userId") Long userId) {
+	public ResponseEntity<UserRoomRes> loadThingguRoom(@Parameter(description = "띵구 ID", example = "hello") @RequestParam("userId") String userId) {
 		UserRoomRes userRoomRes = userRoomService.getRoom(null, userId, null);
 
 		return ResponseEntity.ok(userRoomRes);
