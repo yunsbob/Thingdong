@@ -5,10 +5,13 @@ import java.security.Principal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bell.thingdong.domain.room.dto.request.ColorReq;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.service.UserRoomService;
 
@@ -58,5 +61,15 @@ public class UserRoomController {
 		UserRoomRes userRoomRes = userRoomService.getRoom(null, null, roomId);
 
 		return ResponseEntity.ok(userRoomRes);
+	}
+
+	@Operation(summary = "벽지 색상 변경", description = "방 색상을 변경한다.")
+	@PutMapping("/colors")
+	public ResponseEntity<?> changeRoomColor(Principal principal, @RequestBody ColorReq colorReq) {
+		String email = principal.getName();
+
+		userRoomService.updateRoomColor(email, colorReq.getRoomColor());
+
+		return ResponseEntity.ok().build();
 	}
 }
