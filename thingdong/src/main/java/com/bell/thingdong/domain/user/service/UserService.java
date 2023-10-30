@@ -56,7 +56,7 @@ public class UserService {
 
 	public LoginRes login(LoginReq loginReq, HttpServletRequest request, HttpServletResponse response) {
 		//비밀번호 검증
-		User user = userRepository.findByEmail(loginReq.getEmail()).orElseThrow(UserNotFoundException::new);
+		User user = userRepository.findByEmail(loginReq.getUserId()).orElseThrow(UserNotFoundException::new);
 		if (!passwordEncoder.matches(loginReq.getPassword(), user.getPassword())) {
 			throw new PasswordIsNotMatchedException();
 		}
@@ -80,7 +80,7 @@ public class UserService {
 
 	@Transactional
 	public void signUp(SignUpReq signUpReq) {
-		checkDuplicatedEmail(signUpReq.getEmail());
+		checkDuplicatedEmail(signUpReq.getUserId());
 
 		String nickname = signUpReq.getNickname();
 		if (nickname == null || nickname.isEmpty()) {
@@ -88,7 +88,7 @@ public class UserService {
 		}
 
 		User build = User.builder()
-		                 .email(signUpReq.getEmail())
+		                 .email(signUpReq.getUserId())
 		                 .password(passwordEncoder.encode(signUpReq.getPassword()))
 		                 .nickname(nickname)
 		                 .roles(Collections.singletonList(UserRole.ROLE_USER.name()))

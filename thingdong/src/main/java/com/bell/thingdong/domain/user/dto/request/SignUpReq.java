@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 public class SignUpReq {
 	@NotEmpty(message = "ID는 필수 입력값입니다.")
 	@Pattern(regexp = "^[A-Za-z0-9._%+-]+$", message = "ID 형식에 맞지 않습니다.")
-	@Schema(description = "userID", example = "ssafyTest")
+	@Schema(description = "userID", example = "ssafy")
 	@Size(min = 4, max = 16, message = "ID는 4자에서 16자 사이여야 합니다.")
-	private String email;
+	private String userId;
 
 	@NotEmpty(message = "비밀번호는 필수 입력값입니다.")
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$", message =
