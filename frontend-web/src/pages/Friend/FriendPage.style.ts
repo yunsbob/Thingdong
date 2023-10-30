@@ -23,6 +23,7 @@ const FriendList = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   &::-webkit-scrollbar {
     display: none;

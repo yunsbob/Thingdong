@@ -5,12 +5,7 @@ import { Text } from '@/components/atoms/Text/Text.styles';
 
 import notification from '@/assets/images/friend/notification.png';
 import search from '@/assets/images/friend/search.png';
-
-import redFace from '@/assets/images/friend/face-red.png';
-import greenFace from '@/assets/images/friend/face-green.png';
-import blueFace from '@/assets/images/friend/face-blue.png';
-
-import deleteIcon from '@/assets/images/friend/delete.png';
+import FriendList from '@/components/organisms/FriendList/FriendList';
 
 const FriendPage = () => {
   return (
@@ -21,141 +16,8 @@ const FriendPage = () => {
           <Image src={search} width={100} height={100} $unit="%" />
         </S.FriendHeaderIcons>
       </Header>
-      <S.FriendList>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-        <S.FriendBlock>
-          <S.FriendBlockProfile>
-            <Image src={redFace} width={3} height={3} />
-            <S.FriendBlockText size="body2" fontWeight="regular">
-              못생긴토마토
-            </S.FriendBlockText>
-            <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
-              @hellobaemin
-            </S.FriendBlockText>
-          </S.FriendBlockProfile>
-          <Image src={deleteIcon} width={1.3} height={1.3} />
-        </S.FriendBlock>
-      </S.FriendList>
       <S.Sun />
+      <FriendList />
     </S.FriendContainer>
   );
 };
