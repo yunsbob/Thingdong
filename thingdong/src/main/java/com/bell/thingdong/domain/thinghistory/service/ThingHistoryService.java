@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.thing.service;
+package com.bell.thingdong.domain.thinghistory.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

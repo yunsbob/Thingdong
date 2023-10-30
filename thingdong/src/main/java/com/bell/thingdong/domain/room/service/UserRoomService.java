@@ -32,21 +32,25 @@ public class UserRoomService {
 		userRoomRepository.save(userRoom);
 	}
 
-	public UserRoomRes getRoom(String email, Long userId, Long roomId) {
+	public UserRoomRes getRoom(String email, String thingguEmail, Long roomId) {
 		UserRoomRes userRoomRes;
 		List<Long> rooms;
 
 		if (email != null) {
 			User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-
 			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(user.getId(), null);
+			userRoomRes.setUserId(email);
 			rooms = userRoomRepository.findRoomIdByUserId(user.getId());
-		} else if (userId != null) {
-			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(userId, null);
-			rooms = userRoomRepository.findRoomIdByUserId(userId);
+		} else if (thingguEmail != null) {
+			User user = userRepository.findByEmail(thingguEmail).orElseThrow(UserNotFoundException::new);
+			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(user.getId(), null);
+			userRoomRes.setUserId(thingguEmail);
+			rooms = userRoomRepository.findRoomIdByUserId(user.getId());
 		} else {
 			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(null, roomId);
-			rooms = userRoomRepository.findRoomIdByUserId(userRoomRes.getUserId());
+			User user = userRepository.findById(Long.parseLong(userRoomRes.getUserId())).orElseThrow(UserNotFoundException::new);
+			userRoomRes.setUserId(user.getEmail());
+			rooms = userRoomRepository.findRoomIdByUserId(user.getId());
 		}
 
 		for (int i = 0; i < rooms.size(); i++) {
