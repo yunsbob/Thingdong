@@ -6,15 +6,17 @@ type InventoryItemProps = {
   price: number;
   isOwned: boolean;
   imagePath: string;
+  onClick: () => void;
 };
 
 const InventoryItem: React.FC<InventoryItemProps> = ({
   price,
   isOwned,
   imagePath,
+  onClick,
 }) => {
   return (
-    <S.InventoryItemContainer $isOwned={isOwned}>
+    <S.InventoryItemContainer $isOwned={isOwned} onClick={onClick}>
       <Image
         src={require('@/assets/images/friend/' + imagePath).default}
         $unit={'px'}
