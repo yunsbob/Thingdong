@@ -1,6 +1,6 @@
 import FriendBlock from '@/components/molecules/FriendBlock/FriendBlock';
 import * as S from '@/components/organisms/FriendList/FriendList.style';
-import { User } from '@/interfaces/User';
+import { User } from '@/interfaces/user';
 
 interface FriendListProps {
   friends: User[];

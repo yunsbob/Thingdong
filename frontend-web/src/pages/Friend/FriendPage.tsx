@@ -6,9 +6,12 @@ import { Text } from '@/components/atoms/Text/Text.styles';
 import notification from '@/assets/images/friend/notification.png';
 import search from '@/assets/images/friend/search.png';
 import FriendList from '@/components/organisms/FriendList/FriendList';
-import { User } from '@/interfaces/User';
+import { User } from '@/interfaces/user';
+import { useGetFriends } from '@/apis/Friend/Queries/useGetFriends';
 
 const FriendPage = () => {
+  const { thingguAlarmList, thingguList } = useGetFriends();
+
   let mockData: Array<User>;
 
   mockData = [
@@ -64,11 +67,11 @@ const FriendPage = () => {
       </Header>
       <S.NotificationNumberIcon>
         <Text size="small2" fontWeight="heavy" color="white">
-          {mockData.length}
+          {thingguAlarmList.length}
         </Text>
       </S.NotificationNumberIcon>
       <S.Sun />
-      <FriendList friends={mockData} />
+      <FriendList friends={thingguList} />
     </S.FriendContainer>
   );
 };

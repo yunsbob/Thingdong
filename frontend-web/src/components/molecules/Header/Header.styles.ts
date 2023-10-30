@@ -4,7 +4,6 @@ const HeaderContainer = styled.div`
   display: flex;
   width: 100%;
   height: 2.5rem;
-  /* flex-grow: 5; */
   position: sticky;
   top: 0;
   align-items: center;

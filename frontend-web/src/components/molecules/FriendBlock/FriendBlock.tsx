@@ -6,7 +6,7 @@ import greenFace from '@/assets/images/friend/face-green.png';
 import blueFace from '@/assets/images/friend/face-blue.png';
 import deleteIcon from '@/assets/images/friend/delete.png';
 import { getRandomInt } from '@/utils/getRandomInt';
-import { User } from '@/interfaces/User';
+import { User } from '@/interfaces/user';
 
 const FriendBlock = ({ nickname, userId }: User) => {
   const imageSrcs = [redFace, greenFace, blueFace];
