@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class GuestBookController {
 	private final GuestBookService guestBookService;
 
-	@io.swagger.v3.oas.annotations.parameters.RequestBody
 	@Operation(summary = "방명록 작성", description = "방명록을 작성한다.")
 	@PostMapping
 	public ResponseEntity<?> createGuestBook(Principal principal, @RequestBody GuestBookReq guestBookReq) {
