@@ -1,21 +1,10 @@
 import { Image } from '@/components/atoms/Image/Image';
 import { Text, TextProps } from '@/components/atoms/Text/Text.styles';
-import styled from 'styled-components';
+import { ThingContainer } from '@/components/molecules/Thing/Thing.styles';
 
 interface ThingProps extends TextProps {
-  price: string;
+  price: number;
 }
-
-const ThingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  height: 29px;
-  padding: 10px;
-  border-radius: 50px;
-  background-color: ${({ theme }) => theme.color.white};
-`;
 
 const Thing = ({ price }: ThingProps) => {
   return (
