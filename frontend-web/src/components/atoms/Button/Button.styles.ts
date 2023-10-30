@@ -41,7 +41,7 @@ const getSizeStyling = (size: Required<ButtonProps>['size']) => {
     `,
     small: css`
       height: 56px;
-      font-size: ${({ theme }) => theme.fontSize.body3}; 
+      font-size: ${({ theme }) => theme.fontSize.body3};
     `,
     extraSmall: css`
       height: 42px;
@@ -59,9 +59,9 @@ const Button = styled.button<ButtonProps>`
   border-radius: 21px;
   color: white;
   font-family: 'NanumSquareNeo';
-  font-weight: 700;
+  font-weight: 800;
   ${({ size = 'large' }) => getSizeStyling(size)};
-  ${({ option = 'activated'}) => getOptionStyling(option)};
+  ${({ option = 'activated' }) => getOptionStyling(option)};
   background-color: ${props => props.$backgroundColor};
 `;
 
