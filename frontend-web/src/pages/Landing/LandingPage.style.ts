@@ -6,6 +6,10 @@ const LandingContainer = styled.div`
 
 const SceneContainer = styled.div`
   animation: fadeIn 2.5s forwards;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
 
   @keyframes fadeIn {
     from {
@@ -19,11 +23,32 @@ const SceneContainer = styled.div`
 
 const LandingTextContainer = styled.div`
   position: absolute;
-  transform: translate(-50%, -50%) rotate(-6deg);
   left: 50%;
   top: 45%;
   opacity: 0;
-  animation: fadeIn 1s 2s forwards;
+  overflow-y: visible;
+  animation: 
+    fadeIn 0.5s 2s forwards, 
+    scaleUp 0.5s 2s forwards;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleUp {
+    from {
+      transform: translate(-50%, -50%) rotate(-6deg) scale(85%);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(-6deg) scale(100%);
+    }
+  }
+
 `;
 
 export { LandingContainer, LandingTextContainer, SceneContainer };
