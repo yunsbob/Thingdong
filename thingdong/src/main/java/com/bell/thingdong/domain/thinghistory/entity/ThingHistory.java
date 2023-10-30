@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.thing.entity;
+package com.bell.thingdong.domain.thinghistory.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
