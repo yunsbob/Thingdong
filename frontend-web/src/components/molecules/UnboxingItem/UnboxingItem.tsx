@@ -4,16 +4,17 @@ import styled from 'styled-components';
 
 const UnboxingItemContainer = styled.div`
   width: 100%;
-  
+  height: 162px;
+  background-color: white;
 `;
 
 const UnboxingItem = () => {
   return (
     <UnboxingItemContainer>
       <Image
-        src={require('@/assets/images/inventory/unboxing_enter.png').default}
-        $unit={'%'}
-        width={100}
+        src={require('@/assets/images/inventory/car.png').default}
+        $unit={'px'}
+        width={130}
       />
     </UnboxingItemContainer>
   );

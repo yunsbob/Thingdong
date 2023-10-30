@@ -7,7 +7,8 @@ const App = () => {
   const [isLogin, setIsLogin] = useState(false);
   return (
     <>
-      {isLogin ? <MainPage /> : <LandingPage />}
+      <MainPage />
+      {/* {isLogin ? <MainPage /> : <LandingPage />} */}
     </>
   );
 };

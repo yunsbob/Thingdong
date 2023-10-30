@@ -8,7 +8,7 @@ import Modal from '@/components/molecules/Modal/Modal';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import Button from '@/components/atoms/Button/Button';
-import UnboxingItem from '@/components/molecules/UnboxingItem/UnboxingItem';
+import Unboxing from '@/components/organisms/Unboxing/Unboxing';
 
 // 임시 더미 데이터
 type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
@@ -101,7 +101,7 @@ const InventoryPage = () => {
               activeCategory={activeCategory}
               onCategoryClick={handleCategoryClick}
             />
-            <UnboxingItem />
+            <Unboxing />
           </>
         ) : (
           <>
