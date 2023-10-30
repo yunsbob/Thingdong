@@ -3,6 +3,8 @@ package com.bell.thingdong.domain.guestbook.controller;
 import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,16 @@ public class GuestBookController {
 		String email = principal.getName();
 
 		guestBookService.createGuestBook(email, guestBookReq);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@Operation(summary = "방명록 삭제", description = "방명록을 삭제한다.")
+	@DeleteMapping("/{guestBookId}")
+	public ResponseEntity<?> removeGuestBook(Principal principal, @PathVariable("guestBookId") Long guestBookId) {
+		String email = principal.getName();
+
+		guestBookService.deleteGuestBook(email, guestBookId);
 
 		return ResponseEntity.ok().build();
 	}

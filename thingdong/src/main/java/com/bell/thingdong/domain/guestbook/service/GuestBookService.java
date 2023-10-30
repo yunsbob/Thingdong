@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bell.thingdong.domain.guestbook.dto.request.GuestBookReq;
 import com.bell.thingdong.domain.guestbook.entity.GuestBook;
+import com.bell.thingdong.domain.guestbook.exception.GuestBookNotFoundException;
 import com.bell.thingdong.domain.guestbook.repository.GuestBookRepository;
 import com.bell.thingdong.domain.user.repository.UserRepository;
 
@@ -26,5 +27,16 @@ public class GuestBookService {
 		System.out.println(guestBookReq.getContent());
 
 		guestBookRepository.save(guestBook);
+	}
+
+	@Transactional
+	public void deleteGuestBook(String email, Long guestBookId) {
+		GuestBook guestBook = guestBookRepository.findById(guestBookId).orElseThrow(GuestBookNotFoundException::new);
+
+		if (guestBook.getUserEmail().equals(email) || guestBook.getWriterEmail().equals(email)) {
+			guestBookRepository.delete(guestBook);
+		} else {
+			throw new GuestBookNotFoundException();
+		}
 	}
 }
