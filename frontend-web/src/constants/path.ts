@@ -1,5 +1,6 @@
 const PATH = {
   ROOT: '/',
+  LANDING: 'landing',
 };
 
 const CHILDREN_PATH = {
