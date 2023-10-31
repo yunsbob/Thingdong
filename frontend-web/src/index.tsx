@@ -6,13 +6,30 @@ import '@/styles/font.css';
 import { ThemeProvider } from 'styled-components';
 import theme from '@/styles/theme';
 import AppRouter from '@/router/routes';
-ReactDOM.createRoot(document.getElementById('root')!).render(
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      suspense: true,
+    },
+  },
+});
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
+
+root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider>
           <GlobalStyle />
           <AppRouter />
-      </Provider>
+        </Provider>
+      </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>
 );
