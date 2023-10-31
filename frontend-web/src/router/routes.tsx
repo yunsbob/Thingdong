@@ -8,6 +8,7 @@ import ThingsPage from '@/pages/Things/ThinsPage';
 import InventoryPage from '@/pages/Inventory/InventoryPage';
 import FriendSearchPage from '@/pages/Friend/Search/FriendSearchPage';
 import SignUpPage from '@/pages/SignUp/SignUpPage';
+import SplashPage from '@/pages/Splash/SplashPage';
 import LoginPage from '@/pages/Login/LoginPage';
 
 const router = createBrowserRouter([
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: PATH.SIGNUP, element: <SignUpPage /> },
+  { path: PATH.SPLASH, element: <SplashPage /> },
   { path: PATH.LOGIN, element: <LoginPage /> },
 ]);
 
