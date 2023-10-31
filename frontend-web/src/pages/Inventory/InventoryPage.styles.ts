@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const InventoryContainer = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 const InventoryItemWrapper = styled.div`
@@ -27,4 +28,10 @@ const ButtonWrapper = styled.div`
   gap: 18px;
   margin-top: 20px;
 `;
-export { InventoryContainer, InventoryItemWrapper, ItemWrapper, ThingWrapper, ButtonWrapper };
+export {
+  InventoryContainer,
+  InventoryItemWrapper,
+  ItemWrapper,
+  ThingWrapper,
+  ButtonWrapper,
+};

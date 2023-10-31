@@ -9,6 +9,7 @@ const ThingContainer = styled.div`
   padding: 10px;
   border-radius: 50px;
   background-color: ${({ theme }) => theme.color.white};
+  box-shadow: ${({ theme }) => theme.shadow.shadow};
 `;
 
 export { ThingContainer };

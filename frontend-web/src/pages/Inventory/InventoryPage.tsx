@@ -91,10 +91,10 @@ const InventoryPage = () => {
           </Button>
         </S.ButtonWrapper>
       </Modal>
+      <Header text="인벤토리">
+        <Thing price={availableThing} />
+      </Header>
       <S.InventoryContainer>
-        <Header text="인벤토리">
-          <Thing price={availableThing} />
-        </Header>
         {activeCategory === '언박띵' ? (
           <>
             <InventoryButtons
