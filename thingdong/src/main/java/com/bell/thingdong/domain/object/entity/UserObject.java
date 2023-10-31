@@ -45,4 +45,8 @@ public class UserObject {
 	private UserObjectStatus userObjectStatus;
 
 	// 설계에 따라 방 내부 위치별 컬럼 추가 예정
+
+	public void setUserObjectStatus(UserObjectStatus userObjectStatus) {
+		this.userObjectStatus = userObjectStatus;
+	}
 }
