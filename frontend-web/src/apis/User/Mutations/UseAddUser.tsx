@@ -2,9 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import { addUser } from '../userAPI';
 import { UserInfo } from '@/types/user';
 import { useAddLogin } from '@/apis/User/Mutations/useAddLogin';
+import { PATH } from '@/constants/path';
 
 const useAddUser = () => {
-  const addLoginMutation = useAddLogin();
+  const addLoginMutation = useAddLogin(PATH.SPLASH);
   return useMutation({
     mutationFn: (user: UserInfo) => addUser(user),
     onSuccess: (_, variables: UserInfo) => {

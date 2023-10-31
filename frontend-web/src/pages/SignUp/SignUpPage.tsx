@@ -45,7 +45,6 @@ const SignUpPage = () => {
 
   const handleSignUpClick = () => {
     addUserMutation.mutate({ userId, password, nickname });
-    navigatePage(PATH.SPLASH);
   };
 
   return (
