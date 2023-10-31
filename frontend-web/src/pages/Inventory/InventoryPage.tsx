@@ -96,7 +96,9 @@ const InventoryPage = () => {
         </S.ButtonWrapper>
       </Modal>
       <Header text="인벤토리">
-        <Thing price={availableThing} />
+        <S.ThingBox onClick={() => navigate('/thingstory')}>
+          <Thing price={availableThing} />
+        </S.ThingBox>
       </Header>
       <S.InventoryContainer>
         {activeCategory === '언박띵' ? (

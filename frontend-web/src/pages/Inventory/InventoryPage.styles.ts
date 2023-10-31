@@ -22,6 +22,7 @@ const ThingWrapper = styled.div`
   align-items: center;
   margin-left: 15px;
 `;
+const ThingBox = styled.div``;
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -34,4 +35,5 @@ export {
   ItemWrapper,
   ThingWrapper,
   ButtonWrapper,
+  ThingBox,
 };
