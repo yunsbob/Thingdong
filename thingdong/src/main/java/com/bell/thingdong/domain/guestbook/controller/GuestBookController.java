@@ -4,13 +4,16 @@ import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bell.thingdong.domain.guestbook.dto.request.GuestBookReq;
+import com.bell.thingdong.domain.guestbook.dto.response.GuestBookRes;
 import com.bell.thingdong.domain.guestbook.service.GuestBookService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,5 +45,21 @@ public class GuestBookController {
 		guestBookService.deleteGuestBook(email, guestBookId);
 
 		return ResponseEntity.ok().build();
+	}
+
+	@Operation(summary = "방명록 조회", description = "userID로 해당 유저의 첫번째 방명록을 조회한다.")
+	@GetMapping
+	public ResponseEntity<GuestBookRes> loadGuestBook(@RequestParam("userId") String userId) {
+		GuestBookRes guestBookRes = guestBookService.getGuestBook(userId, null);
+
+		return ResponseEntity.ok(guestBookRes);
+	}
+
+	@Operation(summary = "방명록 조회", description = "guestBookID로 다음이나 이전의 방명록을 조회한다.")
+	@GetMapping("/detail")
+	public ResponseEntity<GuestBookRes> loadNextGuestBook(@RequestParam("guestBookId") Long guestBookId) {
+		GuestBookRes guestBookRes = guestBookService.getGuestBook(null, guestBookId);
+
+		return ResponseEntity.ok(guestBookRes);
 	}
 }
