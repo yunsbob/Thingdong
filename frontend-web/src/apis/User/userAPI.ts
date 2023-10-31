@@ -11,7 +11,8 @@ const addUser = async (data: UserInfo) => {
 
 const addLogin = async (data: UserLoginInfo) => {
   try {
-    await instance.post('/users/login', data);
+    const response = await instance.post('/users/login', data);
+    return response.data;
   } catch {
     new Error('login error');
   }

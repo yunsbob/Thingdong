@@ -1,17 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 import { addLogin } from '../userAPI';
-import { UserLoginInfo } from '@/types/user';
-// import { useUpdateAtom } from 'jotai/utils';
+import { UserLoginInfo, CurrentUser } from '@/types/user';
+import { useAtom } from 'jotai';
 import { userState } from '@/states/userStates';
 
-// const setUser = useUpdateAtom(userState);
-
 const useAddLogin = () => {
-  return useMutation({
+  const [user, setUser] = useAtom(userState);
+
+  return useMutation<CurrentUser, unknown, UserLoginInfo>({
     mutationFn: (user: UserLoginInfo) => addLogin(user),
-    onSuccess: () => {
+    onSuccess: (data) => {
       console.log('로그인 완료');
-    //   setUser(user);
+      localStorage.setItem('accessToken', data.accessToken);
+      setUser(data);
     },
   });
 };
