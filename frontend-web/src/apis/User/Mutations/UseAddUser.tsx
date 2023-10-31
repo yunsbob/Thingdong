@@ -1,12 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 import { addUser } from '../userAPI';
 import { UserInfo } from '@/types/user';
+import { useAddLogin } from '@/apis/User/Mutations/useAddLogin';
 
 const useAddUser = () => {
+  const addLoginMutation = useAddLogin();
   return useMutation({
     mutationFn: (user: UserInfo) => addUser(user),
-    onSuccess: () => {
+    onSuccess: (_, variables: UserInfo) => {
       console.log('회원 등록! 로그인 자동으로 시켜주기');
+      addLoginMutation.mutate({
+        userId: variables.userId,
+        password: variables.password,
+      });
     },
     // onError: (err: Error) => {
     //   console.log(err);
