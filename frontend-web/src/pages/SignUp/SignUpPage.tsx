@@ -1,10 +1,12 @@
 import theme from '@/styles/theme';
 import { Background } from '@/components/atoms/Background/Background.style';
+
 import {
   SignUpEllipse,
   SignUpTextWrapper,
   SignUpInputWrapper,
 } from '@/pages/SignUp/SignUpPage.styles';
+
 import { Text } from '@/components/atoms/Text/Text.styles';
 import Input from '@/components/atoms/Input/Input';
 import Button from '@/components/atoms/Button/Button';
