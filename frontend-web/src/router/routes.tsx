@@ -13,11 +13,6 @@ const router = createBrowserRouter([
   {
     path: PATH.ROOT,
     element: <App />,
-    // errorElement: <NotFoundPage />
-    // children: [
-    //     {path: 'example', element: <SomePage /> },
-    //     {path: 'example2', element: <SomePage2 /> },
-    // ],
     children: [
       { index: true, element: <HomePage /> },
       {

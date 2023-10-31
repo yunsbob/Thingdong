@@ -3,31 +3,84 @@ import { Background } from '@/components/atoms/Background/Background.style';
 import {
   SignUpEllipse,
   SignUpTextWrapper,
-  SignUpInputWrapper
+  SignUpInputWrapper,
 } from '@/pages/SignUp/SignUpPage.styles';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import Input from '@/components/atoms/Input/Input';
 import Button from '@/components/atoms/Button/Button';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 
 const SignUpPage = () => {
-  const navigate = useNavigate();
+  const [userId, setUserId] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
 
+  // const updateUserMutation = useUpdateUser();
+
+  const navigate = useNavigate();
   const navigatePage = (path: string) => {
     navigate(path);
-  }
+  };
+
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newNickname = e.target.value;
+    setNickname(newNickname);
+  };
+
+  const handleUserIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newUserId = e.target.value;
+    setUserId(newUserId);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+  };
+
+  const handleSignUpClick = () => {
+    console.log(userId, password, nickname);
+
+    // updateUserMutation.mutate({
+    //   userId,
+    //   password,
+    //   nickname,
+    // });
+
+    navigatePage(PATH.SPLASH);
+  };
 
   return (
     <Background $backgroundColor={theme.color.lightYellow}>
       <SignUpTextWrapper>
-        <Text size="heading2" color="blue">Sign Up</Text>
+        <Text size="heading2" color="blue">
+          Sign Up
+        </Text>
       </SignUpTextWrapper>
       <SignUpInputWrapper>
-        <Input placeholder="NickName"></Input>
-        <Input placeholder="ID"></Input>
-        <Input placeholder="Password"></Input>
-        <Button option='deactivated' size='large' onClick={() => navigatePage(PATH.SPLASH)}>계정 만들기</Button>
+        <Input
+          placeholder="NickName"
+          onChange={e => {
+            handleNicknameChange(e);
+          }}
+        ></Input>
+        <Input
+          placeholder="ID"
+          onChange={e => {
+            handleUserIdChange(e);
+          }}
+        ></Input>
+        <Input
+          placeholder="Password"
+          type="password"
+          onChange={e => {
+            handlePasswordChange(e);
+          }}
+        ></Input>
+        <Button option="deactivated" size="large" onClick={handleSignUpClick}>
+          계정 만들기
+        </Button>
       </SignUpInputWrapper>
       <SignUpEllipse></SignUpEllipse>
     </Background>

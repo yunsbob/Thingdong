@@ -5,11 +5,7 @@ import { useState } from 'react';
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(false);
-  return (
-    <>
-      {isLogin ? <MainPage /> : <LandingPage />}
-    </>
-  );
+  return <>{isLogin ? <MainPage /> : <LandingPage />}</>;
 };
 
 export default App;
