@@ -4,11 +4,12 @@ import { ThingContainer } from '@/components/molecules/Thing/Thing.styles';
 
 interface ThingProps extends TextProps {
   price: number;
+  onClick?: () => void;
 }
 
-const Thing = ({ price }: ThingProps) => {
+const Thing = ({ price, onClick }: ThingProps) => {
   return (
-    <ThingContainer>
+    <ThingContainer onClick={onClick}>
       <Image
         src={require('@/assets/images/Thing/thing.png').default}
         $unit={'px'}
