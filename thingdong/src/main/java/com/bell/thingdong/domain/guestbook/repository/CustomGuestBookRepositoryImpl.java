@@ -19,6 +19,9 @@ public class CustomGuestBookRepositoryImpl implements CustomGuestBookRepository 
 	public GuestBookRes findGuestBookByUserIdOrGuestBookId(String userEmail, Long guestBookId) {
 		GuestBook guestBookOne = jpaQueryFactory.selectFrom(guestBook).where(userEmailEq(userEmail), guestBookIdEq(guestBookId)).fetchFirst();
 
+		if (guestBookOne == null)
+			return null;
+
 		return GuestBookRes.builder()
 		                   .guestBookId(guestBookOne.getGuestBookId())
 		                   .writerId(guestBookOne.getWriterEmail())

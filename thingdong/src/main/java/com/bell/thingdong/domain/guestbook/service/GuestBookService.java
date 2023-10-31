@@ -52,6 +52,8 @@ public class GuestBookService {
 
 		if (email != null) {
 			guestBookRes = guestBookRepository.findGuestBookByUserIdOrGuestBookId(email, null);
+			if (guestBookRes == null)
+				return new GuestBookRes();
 			writer = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 			guestBookRes.setWriterName(writer.getNickname());
 		} else {
