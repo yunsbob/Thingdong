@@ -31,7 +31,7 @@ public class UserObject {
 	private Long userObjectId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "object_id")
+	@JoinColumn(name = "object_id", nullable = false)
 	private Object object;
 
 	@Column(name = "user_id", nullable = false)
@@ -45,4 +45,8 @@ public class UserObject {
 	private UserObjectStatus userObjectStatus;
 
 	// 설계에 따라 방 내부 위치별 컬럼 추가 예정
+
+	public void setUserObjectStatus(UserObjectStatus userObjectStatus) {
+		this.userObjectStatus = userObjectStatus;
+	}
 }
