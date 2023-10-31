@@ -8,7 +8,7 @@ const App = () => {
   const [isLogin, setIsLogin] = useState(localStorage.getItem('accessToken'));
   return (
     <Suspense fallback={<Spinner></Spinner>}>
-      {isLogin ? <MainPage /> : <LandingPage />}
+      {isLogin ? <MainPage /> : <MainPage />}
     </Suspense>
   );
 };
