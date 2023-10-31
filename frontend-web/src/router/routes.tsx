@@ -6,7 +6,7 @@ import HomePage from '@/pages/Home/HomePage';
 import FriendPage from '@/pages/Friend/FriendPage';
 import ThingsPage from '@/pages/Things/ThinsPage';
 import InventoryPage from '@/pages/Inventory/InventoryPage';
-import ThingStoryPage from '@/pages/ThingStory/ThingStory';
+import ThingStoryPage from '@/pages/ThingStory/ThingStoryPage';
 import FriendSearchPage from '@/pages/Friend/Search/FriendSearchPage';
 import SignUpPage from '@/pages/SignUp/SignUpPage';
 import SplashPage from '@/pages/Splash/SplashPage';
