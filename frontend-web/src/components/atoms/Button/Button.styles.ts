@@ -63,6 +63,7 @@ const Button = styled.button<ButtonProps>`
   ${({ size = 'large' }) => getSizeStyling(size)};
   ${({ option = 'activated' }) => getOptionStyling(option)};
   background-color: ${props => props.$backgroundColor};
+  margin: ${props => props.$margin || '0'};
 `;
 
 export { Button };
