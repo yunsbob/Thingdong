@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.translate.service;
+package com.bell.thingdong.domain.generate3D.service;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,8 +15,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import com.bell.thingdong.domain.translate.dto.PapagoRes;
+import com.bell.thingdong.domain.generate3D.dto.PapagoRes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TranslatedServiceImpl implements TranslateService {
+public class TranslationService {
 	@Value("${translator.papago.url}")
 	private String apiURL;
 
@@ -35,6 +36,9 @@ public class TranslatedServiceImpl implements TranslateService {
 
 	@Value("${translator.papago.client-secret}")
 	private String clientSecret;
+
+
+
 
 	private static String post(String apiUrl, Map<String, String> requestHeaders, String text) {
 		HttpURLConnection con = connect(apiUrl);
@@ -90,8 +94,25 @@ public class TranslatedServiceImpl implements TranslateService {
 		}
 	}
 
-	@Override
-	public String PaPago(String sentence) {
+	public String translateByPapago2(String sentence){
+		return webClient
+			.post()
+			.uri(uriBuilder -> uriBuilder
+				.queryParam("source", "ko")
+				.queryParam("target", "en")
+				.queryParam("text", sentence)
+				.build())
+			.header("X-Naver-Client-Id", clientId)
+			.header("X-Naver-Client-Secret", clientSecret)
+			.retrieve()
+			.bodyToMono(PapagoRes.class)
+			.map(response -> response.getMessage().getResult().getTranslatedText())
+			.block();
+	}
+
+	public String translateByPapago(String sentence) {
+
+
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		String text;
@@ -112,4 +133,5 @@ public class TranslatedServiceImpl implements TranslateService {
 		}
 		return papagoRes.getMessage().getResult().getTranslatedText();
 	}
+
 }

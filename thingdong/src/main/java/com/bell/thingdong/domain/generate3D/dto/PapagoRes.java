@@ -1,4 +1,4 @@
-package com.bell.thingdong.domain.translate.dto;
+package com.bell.thingdong.domain.generate3D.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
