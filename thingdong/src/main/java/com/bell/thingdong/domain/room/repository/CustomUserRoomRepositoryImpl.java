@@ -25,11 +25,7 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 		UserRoomRes userRoomRes = new UserRoomRes();
 		List<UserObjectDto> userObjectDtoList = new ArrayList<>();
 		for (UserObject userObject : userRoomOne.getUserObjectList()) {
-			UserObjectDto userObjectDto = UserObjectDto.builder()
-			                                           .userObjectId(userObject.getUserObjectId())
-			                                           .objectId(userObject.getObject().getObjectId())
-			                                           .objectPath(userObject.getObject().getObjectPath())
-			                                           .build();
+			UserObjectDto userObjectDto = UserObjectDto.builder().userObjectId(userObject.getUserObjectId()).objectPath(userObject.getObject().getObjectPath()).build();
 			userObjectDtoList.add(userObjectDto);
 		}
 		userRoomRes.setUserObjectList(userObjectDtoList);
