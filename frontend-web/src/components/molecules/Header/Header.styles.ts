@@ -4,7 +4,6 @@ const HeaderContainer = styled.div`
   display: flex;
   width: 100%;
   height: 2.5rem;
-  /* flex-grow: 5; */
   position: sticky;
   top: 0;
   align-items: center;
@@ -12,4 +11,13 @@ const HeaderContainer = styled.div`
   margin-bottom: 1.3rem;
 `;
 
-export { HeaderContainer };
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  img:first-child {
+    margin-right: 1rem;
+  }
+`;
+
+export { HeaderContainer, HeaderWrapper };

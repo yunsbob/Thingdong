@@ -5,7 +5,7 @@ const FriendContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  position: relative;
+  /* position: relative; */
 `;
 
 const FriendHeaderIcons = styled.div`
@@ -17,39 +17,17 @@ const FriendHeaderIcons = styled.div`
   }
 `;
 
-const FriendList = styled.div`
-  height: calc(100% - 7rem); // subtract sun height
-  padding-bottom: 5rem;
-  overflow-y: auto;
+const NotificationNumberIcon = styled.div`
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: ${({ theme }) => theme.color.blue};
+  position: absolute;
+  right: 0.5rem;
+  top: 1rem;
+  border-radius: 100%;
   display: flex;
-  flex-direction: column;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const FriendBlock = styled.div`
-  display: flex;
-  background-color: ${({ theme }) => theme.color.white};
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  border-radius: 4rem;
-  padding: 0.4rem;
-  margin-bottom: 1.5rem;
-
-  img:last-child {
-    margin-right: 0.5rem;
-  }
-`;
-
-const FriendBlockProfile = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const FriendBlockText = styled(Text)`
-  margin-left: 0.5rem;
 `;
 
 const Sun = styled.div`
@@ -59,15 +37,7 @@ const Sun = styled.div`
   border-radius: 100%;
   position: absolute;
   right: 2rem;
-  bottom: 3rem;
+  bottom: 4rem;
 `;
 
-export {
-  FriendContainer,
-  FriendHeaderIcons,
-  FriendList,
-  FriendBlock,
-  FriendBlockProfile,
-  FriendBlockText,
-  Sun,
-};
+export { FriendContainer, FriendHeaderIcons, NotificationNumberIcon, Sun };
