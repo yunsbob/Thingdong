@@ -26,7 +26,10 @@ public enum ErrorCode {
 	ALREADY_IN_PROGRESS(400, "C009", "Already In Process"),
 	CARD_NOT_FOUND(400, "C010", "Card not found"),
 	// Thinggu
-	THINGGU_NOT_FOUND(400, "T001", "Thinggu Not Found");
+	THINGGU_NOT_FOUND(400, "T001", "Thinggu Not Found"),
+	// GuestBook
+	GUESTBOOK_NOT_FOUND(400, "G001", "GuestBook Not Found"),
+	GUESTBOOK_UNAUTHORIZED(400, "G002", "GuestBook Unauthorized");
 
 	private final String code;
 	private final String message;
