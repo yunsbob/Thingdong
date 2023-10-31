@@ -8,16 +8,12 @@ import ThingsPage from '@/pages/Things/ThinsPage';
 import InventoryPage from '@/pages/Inventory/InventoryPage';
 import FriendSearchPage from '@/pages/Friend/Search/FriendSearchPage';
 import SignUpPage from '@/pages/SignUp/SignUpPage';
+import LoginPage from '@/pages/Login/LoginPage';
 
 const router = createBrowserRouter([
   {
     path: PATH.ROOT,
     element: <App />,
-    // errorElement: <NotFoundPage />
-    // children: [
-    //     {path: 'example', element: <SomePage /> },
-    //     {path: 'example2', element: <SomePage2 /> },
-    // ],
     children: [
       { index: true, element: <HomePage /> },
       {
@@ -43,6 +39,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: PATH.SIGNUP, element: <SignUpPage /> },
+  { path: PATH.LOGIN, element: <LoginPage /> },
 ]);
 
 const AppRouter = () => {

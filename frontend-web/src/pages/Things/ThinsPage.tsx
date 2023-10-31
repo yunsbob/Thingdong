@@ -1,5 +1,7 @@
+import Input from "@/components/atoms/Input/Input";
+
 const ThingsPage = () => {
-  return <>ThingsPage</>;
+  return (<><Input $inputSize="small" option="grey"></Input>ThingsPage</>);
 };
 
 export default ThingsPage;
