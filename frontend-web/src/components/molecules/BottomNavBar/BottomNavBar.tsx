@@ -9,11 +9,13 @@ const BottomNavBar = () => {
 
   const onClickPath = location.pathname;
 
-  const changePath = (path: keyof typeof CHILDREN_PATH) => {
-    navigate(CHILDREN_PATH[path]);
+  const changePath = (path: keyof typeof CHILDREN_PATH.BOTTOM_NAV_PATH) => {
+    navigate(CHILDREN_PATH.BOTTOM_NAV_PATH[path]);
   };
 
-  const srcs = Object.keys(CHILDREN_PATH) as Array<keyof typeof CHILDREN_PATH>;
+  const srcs = Object.keys(CHILDREN_PATH.BOTTOM_NAV_PATH) as Array<
+    keyof typeof CHILDREN_PATH.BOTTOM_NAV_PATH
+  >;
 
   return (
     <S.BottomNavContainer>

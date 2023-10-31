@@ -9,6 +9,8 @@ import { Text } from '@/components/atoms/Text/Text.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import Button from '@/components/atoms/Button/Button';
 import Unboxing from '@/components/organisms/Unboxing/Unboxing';
+import { useNavigate } from 'react-router-dom';
+import { CHILDREN_PATH } from '@/constants/path';
 
 // 임시 더미 데이터
 type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
@@ -32,10 +34,12 @@ const InventoryPage = () => {
   const [selectedItemImagePath, setSelectedItemImagePath] = useState<
     string | null
   >(null);
+  const navigate = useNavigate();
 
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
     console.log('선택된 카테고리:', category);
+    // console.log(CHILDREN_PATH.THINGSTORY);
   };
   const onModalClose = () => {
     setModalOpen(false);
