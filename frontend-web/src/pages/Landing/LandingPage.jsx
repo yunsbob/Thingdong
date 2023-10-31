@@ -28,14 +28,14 @@ export default function LandingPage() {
       <LandingContainer>
         <LandingButtonWrapper>
           <Button size="large" option="activated" onClick={() => navigatePage(PATH.LOGIN)}>
-            LogIn
+            Log In
           </Button>
           <Button
             size="large"
             option="flat"
             onClick={() => navigatePage(PATH.SIGNUP)}
           >
-            SignUp
+            Sign Up
           </Button>
         </LandingButtonWrapper>
         <SceneContainer>
