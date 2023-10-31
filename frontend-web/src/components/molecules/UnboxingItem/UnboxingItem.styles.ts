@@ -7,7 +7,7 @@ export const UnboxingHistoryContainer = styled.div`
 export const UnboxingItemWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 15px;
+  gap: 18px;
   margin-top: 10px;
   height: calc(63vh - 7rem);
   padding-bottom: 4rem;
