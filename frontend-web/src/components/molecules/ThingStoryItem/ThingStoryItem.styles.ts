@@ -7,7 +7,7 @@ const ThingContainer = styled.div`
   width: 100%;
   height: fit-content;
   overflow-y: auto;
-  padding: 18px;
+  padding: 20px;
   border-radius: 22px;
   margin-top: 20px;
   background-color: ${({ theme }) => theme.color.white};
@@ -41,4 +41,5 @@ const Hr = styled.div`
     display: none;
   }
 `;
+
 export { ThingContainer, ThingWrapper, ThingLeftWrapper, TextWrapper, Hr };
