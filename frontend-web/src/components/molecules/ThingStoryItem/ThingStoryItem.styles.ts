@@ -4,10 +4,10 @@ const ThingContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: fit-content;
-  height: 29px;
-  padding: 10px;
-  border-radius: 50px;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  margin-top: 20px;
   background-color: ${({ theme }) => theme.color.white};
   box-shadow: ${({ theme }) => theme.shadow.shadow};
 `;

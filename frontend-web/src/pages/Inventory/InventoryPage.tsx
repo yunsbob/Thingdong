@@ -10,7 +10,7 @@ import { Image } from '@/components/atoms/Image/Image';
 import Button from '@/components/atoms/Button/Button';
 import Unboxing from '@/components/organisms/Unboxing/Unboxing';
 import { useNavigate } from 'react-router-dom';
-import { CHILDREN_PATH } from '@/constants/path';
+import { Background } from '@/components/atoms/Background/Background.style';
 
 // 임시 더미 데이터
 type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
@@ -49,7 +49,7 @@ const InventoryPage = () => {
     setModalOpen(true);
   };
   return (
-    <>
+    <Background>
       <Modal height={19.6} onClose={onModalClose} isOpen={modalOpen}>
         <Text size="body2" fontWeight="extraBold">
           선택하신 가구는 다음과 같아요!
@@ -129,7 +129,7 @@ const InventoryPage = () => {
           </>
         )}
       </S.InventoryContainer>
-    </>
+    </Background>
   );
 };
 
