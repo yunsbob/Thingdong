@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
 	dl, dt, dd, ol, ul, li,
 	fieldset, form, label, legend,
 	table, caption, tbody, tfoot, thead, tr, th, td,
-	article, aside, canvas, details, embed, 
+	article, aside, details, embed, 
 	figure, figcaption, footer, header, hgroup, 
 	menu, nav, output, ruby, section, summary,
 	time, mark, audio, video {

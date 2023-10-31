@@ -12,6 +12,7 @@ import { PATH } from '@/constants/path';
 import { Background } from '@/components/atoms/Background/Background.style';
 
 const FriendPage = () => {
+  console.log(process.env.REACT_APP_SERVER_URL);
   const { thingguAlarmList, thingguList } = useGetFriends();
 
   const navigate = useNavigate();

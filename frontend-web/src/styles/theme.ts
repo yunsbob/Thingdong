@@ -9,6 +9,7 @@ const color = {
   grey4: '#E8E8E8',
   grey5: '#F5F5F5',
   white: '#FFFFFF',
+  white2: '#FFFFFF50',
 
   // main color
   blue: '#5C76FF',

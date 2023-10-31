@@ -50,6 +50,7 @@ const Input = styled.input<InputProps>`
 
   &:focus {
     border: 0.2rem solid ${({ theme }) => theme.color.blue3};
+    padding-left: 25px;
   }
 
   &:focus::placeholder {

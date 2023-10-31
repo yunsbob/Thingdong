@@ -1,14 +1,14 @@
-import { Spinner } from '@/components/molecules/Spinner/Spinner';
-import MainPage from '@/pages/Main/MainPage';
 import React, { Suspense } from 'react';
+import MainPage from '@/pages/Main/MainPage';
+import { Spinner } from '@/components/molecules/Spinner/Spinner';
+import { useState } from 'react';
+import LandingPage from '@/pages/Landing/LandingPage';
 
 const App = () => {
+  const [isLogin, setIsLogin] = useState(localStorage.getItem('accessToken'));
   return (
     <Suspense fallback={<Spinner></Spinner>}>
-      {/* 로그인 안 되어 있다면 로그인 페이지  */}
-
-      {/* 로그인 되어 있다면 메인 페이지  */}
-      <MainPage />
+      {isLogin ? <MainPage /> : <LandingPage />}
     </Suspense>
   );
 };

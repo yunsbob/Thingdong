@@ -5,10 +5,11 @@ import * as S from '@/pages/Friend/Search/FriendSearchPage.styles';
 import searchBtn from '@/assets/images/friend/search/searchBtn.png';
 import { Image } from '@/components/atoms/Image/Image';
 import Input from '@/components/atoms/Input/Input';
+import theme from '@/styles/theme';
 
 const FriendSearchPage = () => {
   return (
-    <Background $backgroundColor="white">
+    <Background $backgroundColor={theme.color.white}>
       <S.FriendSearchContainer>
         <Header text="띵구 찾기" hasBackButton={true} />
         <S.FriendSearchInputContainer>

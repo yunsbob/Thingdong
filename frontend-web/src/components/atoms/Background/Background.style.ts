@@ -3,13 +3,16 @@ import theme from '@/styles/theme';
 import styled from 'styled-components';
 
 interface BackgroundProps extends TextProps {
-  $backgroundColor?: keyof typeof theme.color;
+  /**
+   * HEX 값
+   */
+  $backgroundColor?: string;
 }
 
 const Background = styled.div<BackgroundProps>`
   background-color: ${props =>
     props.$backgroundColor
-      ? props.theme.color[props.$backgroundColor]
+      ? props.$backgroundColor
       : props.theme.color.coolGrey};
   width: 100vw;
   height: 100vh;

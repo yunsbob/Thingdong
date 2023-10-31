@@ -4,7 +4,7 @@ import * as S from './Input.styles';
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   option?: 'default' | 'grey';
-  $inputSize: 'medium' | 'small';
+  $inputSize?: 'medium' | 'small';
   $borderRadius?: number;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
