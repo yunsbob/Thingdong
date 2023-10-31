@@ -42,3 +42,9 @@ server:
     key-store: classpath:keystore.p12
     key-store-password: ssafy
     key-store-type: PKCS12
+
+translator:
+  papago:
+    url: https://openapi.naver.com/v1/papago/n2mt
+    client-id: Q4sb0BCOsE0xX3M19V8J
+    client-secret: a5h1RIcsLF
