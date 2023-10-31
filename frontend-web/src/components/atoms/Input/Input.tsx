@@ -4,14 +4,22 @@ import * as S from './Input.styles';
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   option?: 'default' | 'grey';
-  $inputSize?: 'medium' | 'small';
+  $inputSize: 'medium' | 'small';
   $borderRadius?: number;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  className?: string;
 }
 
 const Input = (
-  { option, $inputSize, $borderRadius, onChange, placeholder }: InputProps,
+  {
+    option,
+    $inputSize,
+    $borderRadius,
+    onChange,
+    placeholder,
+    className,
+  }: InputProps,
   ref?: React.LegacyRef<HTMLInputElement>
 ) => {
   return (
@@ -22,7 +30,8 @@ const Input = (
       $borderRadius={$borderRadius}
       onChange={onChange}
       placeholder={placeholder}
-    ></S.Input>
+      className={className}
+    />
   );
 };
 

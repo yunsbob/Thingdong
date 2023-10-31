@@ -11,4 +11,13 @@ const HeaderContainer = styled.div`
   margin-bottom: 1.3rem;
 `;
 
-export { HeaderContainer };
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  img:first-child {
+    margin-right: 1rem;
+  }
+`;
+
+export { HeaderContainer, HeaderWrapper };

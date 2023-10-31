@@ -6,6 +6,7 @@ import HomePage from '@/pages/Home/HomePage';
 import FriendPage from '@/pages/Friend/FriendPage';
 import ThingsPage from '@/pages/Things/ThinsPage';
 import InventoryPage from '@/pages/Inventory/InventoryPage';
+import FriendSearchPage from '@/pages/Friend/Search/FriendSearchPage';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: CHILDREN_PATH.INVENTORY,
         element: <InventoryPage />,
+      },
+      {
+        path: PATH.FRIEND_SEARCH,
+        element: <FriendSearchPage />,
       },
     ],
   },
