@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import MainPage from '@/pages/Main/MainPage';
-import LandingPage from '@/pages/Landing/LandingPage';
+import { Spinner } from '@/components/molecules/Spinner/Spinner';
 import { useState } from 'react';
+import LandingPage from '@/pages/Landing/LandingPage';
 
 const App = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(localStorage.getItem('accessToken'));
   return (
-    <>
-      <MainPage />
-      {/* {isLogin ? <MainPage /> : <LandingPage />} */}
-    </>
+    <Suspense fallback={<Spinner></Spinner>}>
+      {isLogin ? <MainPage /> : <LandingPage />}
+    </Suspense>
   );
 };
 

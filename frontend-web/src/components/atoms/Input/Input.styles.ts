@@ -18,6 +18,7 @@ const getInputSizeStyling = (
 ) => {
   const styles = {
     medium: css`
+      height: 64px;
       font-size: ${({ theme }) => theme.fontSize.body1};
     `,
     small: css`
@@ -32,8 +33,8 @@ const getInputSizeStyling = (
 
 const Input = styled.input<InputProps>`
   width: 100%;
-  height: 64px;
   padding-left: 28px;
+  padding-right: 28px;
   border-radius: 50px;
   display: flex;
   outline: none;
@@ -49,6 +50,7 @@ const Input = styled.input<InputProps>`
 
   &:focus {
     border: 0.2rem solid ${({ theme }) => theme.color.blue3};
+    padding-left: 25px;
   }
 
   &:focus::placeholder {

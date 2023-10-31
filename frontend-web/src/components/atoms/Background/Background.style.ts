@@ -3,7 +3,10 @@ import theme from '@/styles/theme';
 import styled from 'styled-components';
 
 interface BackgroundProps extends TextProps {
-  $backgroundColor?: typeof theme.color;
+  /**
+   * HEX 값
+   */
+  $backgroundColor?: string;
 }
 
 const Background = styled.div<BackgroundProps>`
