@@ -1,6 +1,8 @@
 import { Image } from '@/components/atoms/Image/Image';
-import { Text, TextProps } from '@/components/atoms/Text/Text.styles';
+import { Text } from '@/components/atoms/Text/Text.styles';
 import * as S from './ThingStoryItem.styles';
+import React from 'react';
+
 
 const historyList = [
   { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 10 },
@@ -26,8 +28,8 @@ const ThingStoryItem = () => {
   return (
     <S.ThingContainer>
       {historyList.map((item, index) => (
-        <>
-        <S.ThingWrapper key={index}>
+        <React.Fragment key={index}>
+        <S.ThingWrapper >
           <S.ThingLeftWrapper>
             {item.isPlus ? (
               <Image
@@ -64,7 +66,7 @@ const ThingStoryItem = () => {
           )}
         </S.ThingWrapper>
         <S.Hr/>
-        </>
+        </React.Fragment>
       ))}
     </S.ThingContainer>
   );
