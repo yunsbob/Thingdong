@@ -33,21 +33,20 @@ public class UserRoomService {
 	}
 
 	public UserRoomRes getRoom(String email, Long roomId) {
+		User user;
 		UserRoomRes userRoomRes;
-		List<Long> rooms;
 
 		if (email != null) {
-			User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+			user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(user.getId(), null);
 			userRoomRes.setUserId(email);
-			rooms = userRoomRepository.findRoomIdByUserId(user.getId());
 		} else {
 			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(null, roomId);
-			User user = userRepository.findById(Long.parseLong(userRoomRes.getUserId())).orElseThrow(UserNotFoundException::new);
+			user = userRepository.findById(Long.parseLong(userRoomRes.getUserId())).orElseThrow(UserNotFoundException::new);
 			userRoomRes.setUserId(user.getEmail());
-			rooms = userRoomRepository.findRoomIdByUserId(user.getId());
 		}
 
+		List<Long> rooms = userRoomRepository.findRoomIdByUserId(user.getId());
 		for (int i = 0; i < rooms.size(); i++) {
 			if (rooms.get(i) == userRoomRes.getRoomId()) {
 				if (i == 0) {
