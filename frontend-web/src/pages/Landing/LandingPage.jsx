@@ -8,6 +8,8 @@ import {
 } from '@/pages/Landing/LandingPage.style';
 import Button from '@/components/atoms/Button/Button';
 import { Text } from '@/components/atoms/Text/Text.styles';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '@/constants/path';
 
 function LandingScene() {
   return (
@@ -16,14 +18,23 @@ function LandingScene() {
 }
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+  const navigatePage = path => {
+    navigate(path);
+  };
+
   return (
     <>
       <LandingContainer>
         <LandingButtonWrapper>
-          <Button size="large" option="activated">
+          <Button size="large" option="activated" onClick={() => navigatePage(PATH.LOGIN)}>
             LogIn
           </Button>
-          <Button size="large" option="flat">
+          <Button
+            size="large"
+            option="flat"
+            onClick={() => navigatePage(PATH.SIGNUP)}
+          >
             SignUp
           </Button>
         </LandingButtonWrapper>
