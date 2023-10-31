@@ -7,6 +7,7 @@ import FriendPage from '@/pages/Friend/FriendPage';
 import ThingsPage from '@/pages/Things/ThinsPage';
 import InventoryPage from '@/pages/Inventory/InventoryPage';
 import SignUpPage from '@/pages/SignUp/SignUpPage';
+import SplashPage from '@/pages/Splash/SplashPage';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: PATH.SIGNUP, element: <SignUpPage /> },
+  { path: PATH.SPLASH, element: <SplashPage /> },
 ]);
 
 const AppRouter = () => {
