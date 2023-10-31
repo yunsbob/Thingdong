@@ -1,6 +1,8 @@
 const PATH = {
   ROOT: '/',
   SIGNUP: 'signup',
+  SPLASH: 'splash',
+  LOGIN: 'login',
 };
 
 const CHILDREN_PATH = {
