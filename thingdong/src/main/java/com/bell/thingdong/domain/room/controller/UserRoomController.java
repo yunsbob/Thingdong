@@ -37,19 +37,9 @@ public class UserRoomController {
 		return ResponseEntity.ok().build();
 	}
 
-	@Operation(summary = "나의 방 불러오기", description = "나의 첫번째 방을 불러온다.")
-	@GetMapping
-	public ResponseEntity<UserRoomRes> loadMyRoom(Principal principal) {
-		String email = principal.getName();
-
-		UserRoomRes userRoomRes = userRoomService.getRoom(email, null, null);
-
-		return ResponseEntity.ok(userRoomRes);
-	}
-
-	@Operation(summary = "띵구 방 불러오기", description = "userID로 띵구의 첫번째 방을 불러온다.")
+	@Operation(summary = "방 불러오기", description = "userID로 해당 유저의 첫번째 방을 불러온다.")
 	@GetMapping("/thinggus")
-	public ResponseEntity<UserRoomRes> loadThingguRoom(@Parameter(description = "띵구 ID", example = "hello") @RequestParam("userId") String userId) {
+	public ResponseEntity<UserRoomRes> loadThingguRoom(@Parameter(description = "유저 ID", example = "hello") @RequestParam("userId") String userId) {
 		UserRoomRes userRoomRes = userRoomService.getRoom(null, userId, null);
 
 		return ResponseEntity.ok(userRoomRes);
