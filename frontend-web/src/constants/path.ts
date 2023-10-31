@@ -2,8 +2,9 @@ const PATH = {
   ROOT: '/',
   FRIEND_SEARCH: '/searchFriend',
   SIGNUP: 'signup',
-  SPLASH: 'splash',
   LOGIN: 'login',
+  SPLASH: '/splash',
+  THINGSTORY: 'thingstory'
 };
 
 const CHILDREN_PATH = {

@@ -99,17 +99,17 @@ const InventoryPage = () => {
           구매하시겠어요?
         </Text>
         <ButtonWrapper>
-          <Button option={'ghost'} size={'small'} >
+          <Button option={'ghost'} size={'small'}>
             취소
           </Button>
-          <Button option={'activated'} size={'small'} >
+          <Button option={'activated'} size={'small'}>
             확인
           </Button>
         </ButtonWrapper>
       </Modal>
       <S.InventoryContainer>
         <Header text="인벤토리">
-          <Thing price={availableThing} />
+          <Thing price={availableThing} onClick={() => console.log('here')} />
         </Header>
         <InventoryButtons
           activeCategory={activeCategory}

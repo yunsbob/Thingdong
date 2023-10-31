@@ -17,6 +17,7 @@ const SignUpPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
+  const allFieldsFilled = userId !== '' && password !== '' && nickname !== '';
 
   const addUserMutation = useAddUser();
 
@@ -73,7 +74,7 @@ const SignUpPage = () => {
             handlePasswordChange(e);
           }}
         ></Input>
-        <Button option="deactivated" size="large" onClick={handleSignUpClick}>
+        <Button option={allFieldsFilled ? "activated" : "deactivated"} size="large" onClick={handleSignUpClick}>
           계정 만들기
         </Button>
       </SignUpInputWrapper>
