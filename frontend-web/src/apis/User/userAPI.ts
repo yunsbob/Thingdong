@@ -17,4 +17,4 @@ const addLogin = async (data: UserLoginInfo) => {
   }
 };
 
-export { addUser };
+export { addUser, addLogin };
