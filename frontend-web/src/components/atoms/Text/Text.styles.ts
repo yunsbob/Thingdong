@@ -23,6 +23,7 @@ export interface TextProps {
   $margin?: string;
   $marginLeft?: string;
   $marginTop?: string;
+  $marginBottom?: string;
 }
 
 const getSizeStyling = (size: Required<TextProps>['size'] = 'heading1') => {
@@ -78,6 +79,7 @@ const Text = styled.p<TextProps>`
   margin: ${props => props.$margin || '0'};
   margin-left: ${props => props.$marginLeft};
   margin-top: ${props => props.$marginTop};
+  margin-bottom: ${props => props.$marginBottom};
   ${({ size = 'heading1' }) => getSizeStyling(size)};
   color: ${props =>
     props.color ? props.theme.color[props.color] : props.theme.color.black1};
