@@ -8,6 +8,7 @@ export interface InputProps
   $borderRadius?: number;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  type?: string;
   className?: string;
 }
 
@@ -18,6 +19,7 @@ const Input = (
     $borderRadius,
     onChange,
     placeholder,
+    type,
     className,
   }: InputProps,
   ref?: React.LegacyRef<HTMLInputElement>
@@ -30,6 +32,7 @@ const Input = (
       $borderRadius={$borderRadius}
       onChange={onChange}
       placeholder={placeholder}
+      type={type}
       className={className}
     />
   );
