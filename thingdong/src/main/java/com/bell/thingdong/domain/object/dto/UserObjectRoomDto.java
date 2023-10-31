@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserObjectDto {
+public class UserObjectRoomDto {
 	@Schema(description = "유저가 가진 오브젝트 id", example = "2")
 	private Long userObjectId;
 
