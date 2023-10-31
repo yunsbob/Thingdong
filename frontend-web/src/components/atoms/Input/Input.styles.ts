@@ -34,6 +34,7 @@ const getInputSizeStyling = (
 const Input = styled.input<InputProps>`
   width: 100%;
   padding-left: 28px;
+  padding-right: 28px;
   border-radius: 50px;
   display: flex;
   outline: none;

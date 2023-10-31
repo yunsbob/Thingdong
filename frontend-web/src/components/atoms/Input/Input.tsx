@@ -9,6 +9,7 @@ export interface InputProps
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   type?: string;
+  className?: string;
 }
 
 const Input = (
@@ -19,6 +20,7 @@ const Input = (
     onChange,
     placeholder,
     type,
+    className,
   }: InputProps,
   ref?: React.LegacyRef<HTMLInputElement>
 ) => {
@@ -31,7 +33,8 @@ const Input = (
       onChange={onChange}
       placeholder={placeholder}
       type={type}
-    ></S.Input>
+      className={className}
+    />
   );
 };
 
