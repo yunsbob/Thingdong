@@ -38,9 +38,9 @@ public class UserRoomController {
 	}
 
 	@Operation(summary = "방 불러오기", description = "userID로 해당 유저의 첫번째 방을 불러온다.")
-	@GetMapping("/thinggus")
+	@GetMapping
 	public ResponseEntity<UserRoomRes> loadThingguRoom(@Parameter(description = "유저 ID", example = "hello") @RequestParam("userId") String userId) {
-		UserRoomRes userRoomRes = userRoomService.getRoom(null, userId, null);
+		UserRoomRes userRoomRes = userRoomService.getRoom(userId, null);
 
 		return ResponseEntity.ok(userRoomRes);
 	}
@@ -48,7 +48,7 @@ public class UserRoomController {
 	@Operation(summary = "방 불러오기", description = "roomID로 다음이나 이전 방을 불러온다.")
 	@GetMapping("/detail")
 	public ResponseEntity<UserRoomRes> loadNextRoom(@Parameter(description = "방 번호", example = "1") @RequestParam("roomId") Long roomId) {
-		UserRoomRes userRoomRes = userRoomService.getRoom(null, null, roomId);
+		UserRoomRes userRoomRes = userRoomService.getRoom(null, roomId);
 
 		return ResponseEntity.ok(userRoomRes);
 	}
