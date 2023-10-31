@@ -2,7 +2,7 @@ import theme from '@/styles/theme';
 import { Background } from '@/components/atoms/Background/Background.style';
 
 import {
-  SignUpEllipse,
+  Ellipse,
   SignUpTextWrapper,
   SignUpInputWrapper,
 } from '@/pages/SignUp/SignUpPage.styles';
@@ -44,7 +44,6 @@ const SignUpPage = () => {
   };
 
   const handleSignUpClick = () => {
-    console.log(userId, password, nickname);
     addUserMutation.mutate({ userId, password, nickname });
     navigatePage(PATH.SPLASH);
   };
@@ -62,25 +61,29 @@ const SignUpPage = () => {
           onChange={e => {
             handleNicknameChange(e);
           }}
-        ></Input>
+        />
         <Input
           placeholder="ID"
           onChange={e => {
             handleUserIdChange(e);
           }}
-        ></Input>
+        />
         <Input
           placeholder="Password"
           type="password"
           onChange={e => {
             handlePasswordChange(e);
           }}
-        ></Input>
-        <Button option={allFieldsFilled ? "activated" : "deactivated"} size="large" onClick={handleSignUpClick}>
+        />
+        <Button
+          option={allFieldsFilled ? 'activated' : 'deactivated'}
+          size="large"
+          onClick={handleSignUpClick}
+        >
           계정 만들기
         </Button>
       </SignUpInputWrapper>
-      <SignUpEllipse></SignUpEllipse>
+      <Ellipse></Ellipse>
     </Background>
   );
 };
