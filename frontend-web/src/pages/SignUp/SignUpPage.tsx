@@ -11,13 +11,14 @@ import Button from '@/components/atoms/Button/Button';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
+import { useAddUser } from '@/apis/User/Mutations/useAddUser';
 
 const SignUpPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
 
-  // const updateUserMutation = useUpdateUser();
+  const addUserMutation = useAddUser();
 
   const navigate = useNavigate();
   const navigatePage = (path: string) => {
@@ -41,13 +42,7 @@ const SignUpPage = () => {
 
   const handleSignUpClick = () => {
     console.log(userId, password, nickname);
-
-    // updateUserMutation.mutate({
-    //   userId,
-    //   password,
-    //   nickname,
-    // });
-
+    addUserMutation.mutate({ userId, password, nickname });
     navigatePage(PATH.SPLASH);
   };
 
