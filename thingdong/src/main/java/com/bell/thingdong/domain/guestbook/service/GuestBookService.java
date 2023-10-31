@@ -53,7 +53,7 @@ public class GuestBookService {
 		if (email != null) {
 			guestBookRes = guestBookRepository.findGuestBookByUserIdOrGuestBookId(email, null);
 			if (guestBookRes == null)
-				throw new GuestBookNotFoundException();
+				return null;
 			writer = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 			guestBookRes.setWriterName(writer.getNickname());
 		} else {
