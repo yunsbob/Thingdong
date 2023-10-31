@@ -11,7 +11,7 @@ import Button from '@/components/atoms/Button/Button';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
-import { useAddUser } from '@/apis/User/Mutations/UseAddUser';
+import { useAddUser } from '@/apis/User/Mutations/useAddUser';
 
 const SignUpPage = () => {
   const [userId, setUserId] = useState<string>('');
