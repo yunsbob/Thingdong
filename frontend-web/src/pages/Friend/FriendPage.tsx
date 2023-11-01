@@ -38,7 +38,23 @@ const FriendPage = () => {
           </Text>
         </S.NotificationNumberIcon>
         <S.Sun />
-        <FriendList friends={thingguList} />
+        {thingguList.length === 0 ? (
+          <S.NoFriendTextContainer>
+            <Text
+              size="body2"
+              fontWeight="bold"
+              color="grey2"
+              $margin="0 0 0.5rem"
+            >
+              띵구가 없어요...
+            </Text>
+            <Text size="body2" fontWeight="bold" color="grey2">
+              검색창에 띵구를 검색해보세요!
+            </Text>
+          </S.NoFriendTextContainer>
+        ) : (
+          <FriendList friends={thingguList} />
+        )}
       </S.FriendContainer>
     </Background>
   );

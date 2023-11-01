@@ -40,4 +40,18 @@ const Sun = styled.div`
   bottom: 4rem;
 `;
 
-export { FriendContainer, FriendHeaderIcons, NotificationNumberIcon, Sun };
+const NoFriendTextContainer = styled.div`
+  display: flex;
+  margin-top: 10rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export {
+  FriendContainer,
+  FriendHeaderIcons,
+  NotificationNumberIcon,
+  Sun,
+  NoFriendTextContainer,
+};

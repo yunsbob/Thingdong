@@ -9,6 +9,15 @@ const addUser = async (data: UserInfo) => {
   }
 };
 
+const getUsers = async (userId: string) => {
+  try {
+    const { data } = await instance.get(`/users?userId=${userId}`);
+    return data;
+  } catch {
+    new Error('get user error');
+  }
+};
+
 const addLogin = async (data: UserLoginInfo) => {
   try {
     const response = await instance.post('/users/login', data);
@@ -18,4 +27,4 @@ const addLogin = async (data: UserLoginInfo) => {
   }
 };
 
-export { addUser, addLogin };
+export { addUser, getUsers, addLogin };
