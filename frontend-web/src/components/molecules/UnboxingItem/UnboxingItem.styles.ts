@@ -12,14 +12,16 @@ export const UnboxingItemWrapper = styled.div`
   height: calc(63vh - 7rem);
   padding-bottom: 4rem;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const UnboxingItemContainer = styled.div`
   width: 100%;
   min-width: 160px;
   height: 140px;
-  background-color: ${({ theme }) => theme.color.coolGrey};
-  position: relative; // 상대 위치 설정
+  position: relative;
 `;
 export const UnboxingItemBox = styled.div`
   width: 100%;

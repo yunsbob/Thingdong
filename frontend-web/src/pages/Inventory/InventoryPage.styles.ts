@@ -26,6 +26,7 @@ const ThingBox = styled.div``;
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
   gap: 18px;
   margin-top: 20px;
 `;

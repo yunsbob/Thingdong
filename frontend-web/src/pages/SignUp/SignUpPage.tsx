@@ -11,8 +11,6 @@ import { Text } from '@/components/atoms/Text/Text.styles';
 import Input from '@/components/atoms/Input/Input';
 import Button from '@/components/atoms/Button/Button';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PATH } from '@/constants/path';
 import { useAddUser } from '@/apis/User/Mutations/useAddUser';
 
 const SignUpPage = () => {
@@ -22,11 +20,6 @@ const SignUpPage = () => {
   const allFieldsFilled = userId !== '' && password !== '' && nickname !== '';
 
   const addUserMutation = useAddUser();
-
-  const navigate = useNavigate();
-  const navigatePage = (path: string) => {
-    navigate(path);
-  };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
