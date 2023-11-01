@@ -2,12 +2,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as S from '@/components/molecules/BottomNavBar/BottomNavBar.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import { CHILDREN_PATH } from '@/constants/path';
+import theme from '@/styles/theme';
 
 const BottomNavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const onClickPath = location.pathname;
+  console.log('onClick', onClickPath);
 
   const changePath = (path: keyof typeof CHILDREN_PATH.BOTTOM_NAV_PATH) => {
     navigate(CHILDREN_PATH.BOTTOM_NAV_PATH[path]);
@@ -17,8 +19,13 @@ const BottomNavBar = () => {
     keyof typeof CHILDREN_PATH.BOTTOM_NAV_PATH
   >;
 
+  const BottomNavStyle = {
+    backgroundColor:
+      onClickPath === '/' || onClickPath === '/home' ? 'transparent' : theme.color.blue2,
+  };
+
   return (
-    <S.BottomNavContainer>
+    <S.BottomNavContainer style={BottomNavStyle}>
       <S.BottomNavWrpper>
         {srcs.map(src => {
           let imageSrc = src.toLowerCase();
