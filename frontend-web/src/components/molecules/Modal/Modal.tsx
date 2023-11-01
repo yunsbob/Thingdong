@@ -11,6 +11,7 @@ interface ModalProps extends S.ModalStyleProps {
 const Modal = ({
   width = 21,
   height,
+  $padding,
   $borderRadius = 16,
   unit = 'rem',
   onClose,
@@ -22,11 +23,12 @@ const Modal = ({
       {isOpen && (
         <ModalPortal>
           <S.ModalWrapper>
-          <S.ModalBackground onClick={onClose} />
+            <S.ModalBackground onClick={onClose} />
             <S.ModalContainer
               width={width}
               height={height}
               $borderRadius={$borderRadius}
+              $padding={$padding}
               unit={unit}
               onClick={(e: any) => {
                 e.stopPropagation();
