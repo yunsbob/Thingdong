@@ -16,4 +16,7 @@ public class ThingguDto {
 
 	@Schema(description = "해당 유저의 아이디", example = "hello")
 	private String userId;
+
+	@Schema(description = "해당 유저와의 띵구 상태", example = "Y")
+	private String thingguStatus;
 }

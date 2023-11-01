@@ -36,8 +36,10 @@ public class ThingguService {
 			ThingguDto thingguDto = ThingguDto.builder().nickname(thinggu.getThingguId().getNickname()).userId(thinggu.getThingguId().getEmail()).build();
 
 			if (thinggu.getThingguStatus().equals("Y")) {
+				thingguDto.setThingguStatus("Y");
 				thingguList.add(thingguDto);
 			} else {
+				thingguDto.setThingguStatus("A");
 				thingguAlarmList.add(thingguDto);
 			}
 		}
