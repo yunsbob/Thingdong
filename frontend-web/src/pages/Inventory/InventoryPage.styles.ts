@@ -12,7 +12,7 @@ const InventoryItemWrapper = styled.div`
   gap: 4vw;
   margin-top: 20px;
   overflow-y: auto;
-  height: 65%;
+  height: 70%;
   &::-webkit-scrollbar {
     display: none;
   }
