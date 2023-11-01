@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnBoxThingHistoryDto {
-	@Schema(description = "오브젝트 파일 경로", example = "wqexqwax")
-	private String objectPath;
+	@Schema(description = "오브젝트 이미지 파일 경로", example = "wqexqwax")
+	private String objectImagePath;
 
 	@Schema(description = "오브젝트 이름", example = "원숭이먹은 바나나")
 	private String objectName;

@@ -14,6 +14,6 @@ public class UserObjectRoomDto {
 	@Schema(description = "유저가 가진 오브젝트 id", example = "2")
 	private Long userObjectId;
 
-	@Schema(description = "오브젝트 파일 경로", example = "wqexqwax")
-	private String objectPath;
+	@Schema(description = "오브젝트 모델 파일 경로", example = "wqexqwax")
+	private String objectModelPath;
 }

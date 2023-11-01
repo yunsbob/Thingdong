@@ -26,8 +26,11 @@ public class Object {
 	@Column(name = "object_id", nullable = false)
 	private Long objectId;
 
-	@Column(name = "object_path", nullable = false)
-	private String objectPath;
+	@Column(name = "object_image_path", nullable = false)
+	private String objectImagePath;
+
+	@Column(name = "object_model_path", nullable = false)
+	private String objectModelPath;
 
 	@Column(name = "object_thing")
 	private Long objectThing;
