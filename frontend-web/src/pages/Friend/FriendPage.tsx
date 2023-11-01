@@ -36,7 +36,7 @@ const FriendPage = () => {
         $padding={'1.2rem 0rem 0.2rem 0.7rem'}
       >
         <S.FriendModalHeader>
-          <Header text="띵구 요청">
+          <Header text="띵구 요청" $marginHeaderBottom={1}>
             <Image
               src={closeBtn}
               width={1.8}
@@ -50,6 +50,8 @@ const FriendPage = () => {
           $paddidngBottom={0}
           $height={80}
           $backgroundColor="transparent"
+          $nickNameFontSize="body3"
+          $userIdFontSize="small1"
         />
       </Modal>
       <S.FriendContainer>

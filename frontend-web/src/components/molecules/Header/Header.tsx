@@ -6,14 +6,20 @@ import { useNavigate } from 'react-router-dom';
 interface HeaderProps extends TextProps {
   text: string;
   hasBackButton?: boolean;
+  $marginHeaderBottom?: number;
   children?: React.ReactNode;
 }
 
-const Header = ({ text, hasBackButton = false, children }: HeaderProps) => {
+const Header = ({
+  text,
+  hasBackButton = false,
+  children,
+  $marginHeaderBottom = 1.3,
+}: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
-    <S.HeaderContainer>
+    <S.HeaderContainer $marginBottom={$marginHeaderBottom}>
       <S.HeaderWrapper>
         {hasBackButton && <Image src={back} onClick={() => navigate(-1)} />}
         <Text size="body1" fontWeight="bold">
