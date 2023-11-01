@@ -48,10 +48,16 @@ const NoFriendTextContainer = styled.div`
   align-items: center;
 `;
 
+const FriendModalHeader = styled.div`
+  margin-left: 1rem;
+  margin-right: 1.2rem;
+`;
+
 export {
   FriendContainer,
   FriendHeaderIcons,
   NotificationNumberIcon,
   Sun,
   NoFriendTextContainer,
+  FriendModalHeader,
 };
