@@ -24,6 +24,23 @@ const inventoryItems = [
   { price: 20, isOwned: true, imagePath: 'chair.png' },
   { price: 10, isOwned: true, imagePath: 'chair.png' },
   { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
 ];
 
 const availableThing = 1000;
@@ -44,6 +61,9 @@ const InventoryPage = () => {
   const onModalClose = () => {
     setModalOpen(false);
   };
+  const handleCancel = () => {
+    setModalOpen(false);
+  }
   const handleItemClick = (imagePath: string) => {
     setSelectedItemImagePath(imagePath); // 클릭된 아이템의 imagePath를 저장
     setModalOpen(true);
@@ -87,7 +107,7 @@ const InventoryPage = () => {
           구매하시겠어요?
         </Text>
         <S.ButtonWrapper>
-          <Button option={'ghost'} size={'small'}>
+          <Button option={'ghost'} size={'small'} onClick={handleCancel}>
             취소
           </Button>
           <Button option={'activated'} size={'small'}>

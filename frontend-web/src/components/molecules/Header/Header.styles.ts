@@ -4,6 +4,7 @@ const HeaderContainer = styled.div<{ $marginBottom: number }>`
   display: flex;
   width: 100%;
   height: 2.5rem;
+  min-height: 2.5rem;
   position: sticky;
   top: 0;
   align-items: center;

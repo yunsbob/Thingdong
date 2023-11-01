@@ -16,7 +16,7 @@ const UnboxingItem = () => {
   ];
   return (
     <S.UnboxingHistoryContainer>
-      <Text size={'body1'} fontWeight={'bold'}>
+      <Text size={'body1'} fontWeight={'bold'} $marginTop='10px'>
         언박띵 내역
       </Text>
       <S.UnboxingItemWrapper>
