@@ -27,10 +27,10 @@ const FriendBlock = ({
   userId,
   thingguStatus,
   $backgroundColor = theme.color.white,
-  $nickNameFontSize = 'body2',
-  $nickNameFontWeight = 'regular',
-  $userIdFontSize = 'small1',
-  $userIdFontWeight = 'bold',
+  $nickNameFontSize,
+  $nickNameFontWeight,
+  $userIdFontSize,
+  $userIdFontWeight,
 }: FriendBlockProps) => {
   const imageSrcs = [redFace, greenFace, blueFace];
 

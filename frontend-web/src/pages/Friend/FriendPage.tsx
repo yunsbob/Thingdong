@@ -50,6 +50,8 @@ const FriendPage = () => {
           $paddidngBottom={0}
           $height={80}
           $backgroundColor="transparent"
+          $nickNameFontSize="body3"
+          $userIdFontSize="small1"
         />
       </Modal>
       <S.FriendContainer>
