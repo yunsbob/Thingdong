@@ -1,6 +1,7 @@
 package com.bell.thingdong.domain.user.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -73,6 +74,9 @@ public class UserController {
 	@Operation(summary = "유저 검색 API", description = "검색창에서 유저들을 검색한다.")
 	public ResponseEntity<List<UserSearchRes>> userSearch(Principal principal, @Parameter(description = "유저 아이디를 입력한다.", example = "hello") @RequestParam("userId") String userId) {
 		String email = principal.getName();
+
+		if (userId.equals(""))
+			return ResponseEntity.ok(new ArrayList<>());
 
 		List<UserSearchRes> userSearches = userService.getUserSearchInfo(email, userId);
 
