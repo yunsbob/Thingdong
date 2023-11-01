@@ -112,12 +112,9 @@ export const Splash5 = () => {
           띵구에게 선물도 가능하답니다
         </Text>
       </SlideTextWrapper>
-      {/* <SlideImageWrapper> */}
       <Image src={unboxing1} width={22} $margin="0 0 26px auto" />
       <Image src={unboxing2} width={22} />
-      {/* </SlideImageWrapper> */}
     </>
   );
 };
 
-// export default { Splash1, Splash2, Splash3 };
