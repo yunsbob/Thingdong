@@ -5,10 +5,12 @@ import redFace from '@/assets/images/friend/face-red.png';
 import greenFace from '@/assets/images/friend/face-green.png';
 import blueFace from '@/assets/images/friend/face-blue.png';
 import deleteIcon from '@/assets/images/friend/delete.png';
+import addIcon from '@/assets/images/friend/add.png';
+
 import { getRandomInt } from '@/utils/getRandomInt';
 import { User } from '@/interfaces/user';
 
-const FriendBlock = ({ nickname, userId }: User) => {
+const FriendBlock = ({ nickname, userId, thingguStatus }: User) => {
   const imageSrcs = [redFace, greenFace, blueFace];
 
   return (
@@ -22,7 +24,11 @@ const FriendBlock = ({ nickname, userId }: User) => {
           @{userId}
         </S.FriendBlockText>
       </S.FriendBlockProfile>
-      <Image src={deleteIcon} width={1.3} height={1.3} />
+      {thingguStatus === 'N' ? (
+        <Image src={addIcon} width={1.3} height={1.3} />
+      ) : (
+        <Image src={deleteIcon} width={1.3} height={1.3} />
+      )}
     </S.FriendBlockContainer>
   );
 };

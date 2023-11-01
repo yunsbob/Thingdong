@@ -9,4 +9,13 @@ const addUser = async (data: UserInfo) => {
   }
 };
 
-export { addUser };
+const getUsers = async (userId: string) => {
+  try {
+    const { data } = await instance.get(`/users?userId=${userId}`);
+    return data;
+  } catch {
+    new Error('get user error');
+  }
+};
+
+export { addUser, getUsers };
