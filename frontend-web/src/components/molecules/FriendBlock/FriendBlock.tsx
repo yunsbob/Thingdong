@@ -11,12 +11,22 @@ import cancelIcon from '@/assets/images/friend/alarm/cancel.png';
 
 import { getRandomInt } from '@/utils/getRandomInt';
 import { User } from '@/interfaces/user';
+import theme from '@/styles/theme';
 
-const FriendBlock = ({ nickname, userId, thingguStatus }: User) => {
+interface FriendBlockProps extends User {
+  $backgroundColor?: string;
+}
+
+const FriendBlock = ({
+  nickname,
+  userId,
+  thingguStatus,
+  $backgroundColor = theme.color.white,
+}: FriendBlockProps) => {
   const imageSrcs = [redFace, greenFace, blueFace];
 
   return (
-    <S.FriendBlockContainer>
+    <S.FriendBlockContainer $backgroundColor={$backgroundColor}>
       <S.FriendBlockProfile>
         <Image src={imageSrcs[userId.length % 3]} width={3} height={3} />
         <S.FriendBlockText size="body2" fontWeight="regular">

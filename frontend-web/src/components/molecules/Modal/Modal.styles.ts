@@ -4,7 +4,7 @@ export interface ModalStyleProps {
   width?: number;
   height?: number;
   $borderRadius?: number;
-  $padding?: number;
+  $padding?: string;
   unit?: 'px' | 'rem' | 'em' | '%';
 }
 
@@ -35,11 +35,11 @@ const ModalBackground = styled.div`
 const ModalContainer = styled.div<ModalStyleProps>`
   width: ${props => `${props.width}${props.unit}`};
   height: ${props => `${props.height}${props.unit}`};
-  position: relative;
+  position: fixed;
   border-radius: ${props => `${props.$borderRadius}px`};
   text-align: center;
-  padding: ${props =>
-    props.$padding ? `${props.$padding}${props.unit}` : '36px'};
+  padding: ${props => `${props.$padding}`};
+
   margin: 0 28px;
   background-color: ${({ theme }) => theme.color.white};
 `;

@@ -11,7 +11,7 @@ interface ModalProps extends S.ModalStyleProps {
 const Modal = ({
   width = 21,
   height,
-  $padding,
+  $padding = '2.25rem',
   $borderRadius = 16,
   unit = 'rem',
   onClose,
