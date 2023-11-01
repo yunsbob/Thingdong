@@ -1,7 +1,5 @@
 import { Image } from '@/components/atoms/Image/Image';
-import Modal from '@/components/molecules/Modal/Modal';
 import UnboxingItem from '@/components/molecules/UnboxingItem/UnboxingItem';
-import { useState } from 'react';
 import { useAtom } from 'jotai';
 import { modalContentAtom, modalOpenAtom } from '@/states/modalStates';
 import TextTyping from './Modal/TextTyping';
@@ -11,15 +9,13 @@ import SendingList from './Modal/SendingList';
 import Check from './Modal/Check';
 
 const Unboxing = () => {
-  const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
+  const [, setModalOpen] = useAtom(modalOpenAtom);
   const [modalContent] = useAtom(modalContentAtom);
 
-  const onModalClose = () => {
-    setModalOpen(false);
-  };
   const handleItemClick = () => {
     setModalOpen(true);
   };
+
   const renderModalContent = () => {
     switch (modalContent) {
       case 'textTyping':
@@ -29,7 +25,7 @@ const Unboxing = () => {
       case 'complete':
         return <Complete />;
       case 'sendingList':
-        return <SendingList />
+        return <SendingList />;
       case 'check':
         return <Check />;
       default:
@@ -39,9 +35,7 @@ const Unboxing = () => {
 
   return (
     <>
-      <Modal height={31} onClose={onModalClose} isOpen={modalOpen}>
-        {renderModalContent()}
-      </Modal>
+      {renderModalContent()}
       <Image
         src={require('@/assets/images/inventory/unboxing_enter.png').default}
         $unit={'%'}
