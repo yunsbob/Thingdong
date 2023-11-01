@@ -20,6 +20,7 @@ interface FriendBlockProps extends User {
   $nickNameFontWeight?: FontWeightType;
   $userIdFontSize?: TextSize;
   $userIdFontWeight?: FontWeightType;
+  $isPresent? : string;
 }
 
 const FriendBlock = ({
@@ -31,6 +32,7 @@ const FriendBlock = ({
   $nickNameFontWeight,
   $userIdFontSize,
   $userIdFontWeight,
+  $isPresent,
 }: FriendBlockProps) => {
   const imageSrcs = [redFace, greenFace, blueFace];
 
@@ -57,7 +59,10 @@ const FriendBlock = ({
         <Image src={addIcon} width={1.3} height={1.3} />
       ) : thingguStatus === 'Y' ? (
         /* 띵구인 경우*/
-        <Image src={deleteIcon} width={1.3} height={1.3} />
+        !$isPresent && (
+          <Image src={deleteIcon} width={1.3} height={1.3} />
+        )
+        
       ) : (
         thingguStatus === 'A' && (
           /* 띵구 요청인 경우 */

@@ -30,7 +30,7 @@ const SendingList = () => {
   };
 
   return (
-    <Modal height={31} isOpen={modalOpen}>
+    <Modal height={31} isOpen={modalOpen} $padding='28px'>
       <HeaderWrapper>
         <Image
           src={require('@/assets/images/friend/search/back.png').default}
