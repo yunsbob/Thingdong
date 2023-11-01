@@ -24,4 +24,19 @@ const FriendBlockText = styled(Text)`
   margin-left: 0.5rem;
 `;
 
-export { FriendBlockContainer, FriendBlockProfile, FriendBlockText };
+const FriendAlarmBlockWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img:first-child {
+    margin-right: 0.2rem;
+  }
+`;
+
+export {
+  FriendBlockContainer,
+  FriendBlockProfile,
+  FriendBlockText,
+  FriendAlarmBlockWrapper,
+};

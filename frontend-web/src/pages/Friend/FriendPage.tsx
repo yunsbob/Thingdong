@@ -10,15 +10,31 @@ import { useGetFriends } from '@/apis/Friend/Queries/useGetFriends';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 import { Background } from '@/components/atoms/Background/Background.style';
+import Modal from '@/components/molecules/Modal/Modal';
+import { useState } from 'react';
 
 const FriendPage = () => {
   console.log(process.env.REACT_APP_SERVER_URL);
   const { thingguAlarmList, thingguList } = useGetFriends();
-
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+  console.log('thingguAlarmList', thingguAlarmList);
+  console.log('thingguList', thingguList);
+  const changeModalOpen = () => {
+    setModalOpen(!modalOpen);
+  };
 
   return (
     <Background>
+      <Modal
+        isOpen={modalOpen}
+        onClose={changeModalOpen}
+        height={25}
+        $padding={0}
+      >
+        <Header text="띵구 요청" />
+        <FriendList friends={thingguAlarmList} $paddidngBottom={0} />
+      </Modal>
       <S.FriendContainer>
         <Header text="띵구">
           <S.FriendHeaderIcons>
@@ -29,7 +45,13 @@ const FriendPage = () => {
               $unit="%"
               onClick={() => navigate(PATH.FRIEND_SEARCH)}
             />
-            <Image src={notification} width={100} height={100} $unit="%" />
+            <Image
+              src={notification}
+              width={100}
+              height={100}
+              $unit="%"
+              onClick={changeModalOpen}
+            />
           </S.FriendHeaderIcons>
         </Header>
         <S.NotificationNumberIcon>
