@@ -1,6 +1,8 @@
 package com.bell.thingdong.domain.object.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +25,14 @@ public class ObjectController {
 	@PutMapping
 	public ResponseEntity<?> purchaseObject(@RequestParam("userObjectId") Long userObjectId) {
 		objectService.purchaseObject(userObjectId);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@Operation(summary = "unboxthing 오브제 삭제", description = "룸 인벤토리에서 오브제를 삭제한다.")
+	@DeleteMapping("/{userObjectId}")
+	public ResponseEntity<?> removeUnBoxThing(@PathVariable("userObjectId") Long userObjectId) {
+		objectService.deleteObject(userObjectId);
 
 		return ResponseEntity.ok().build();
 	}

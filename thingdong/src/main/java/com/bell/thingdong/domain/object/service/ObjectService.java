@@ -24,4 +24,11 @@ public class ObjectService {
 
 		userObject.setUserObjectStatus(UserObjectStatus.Inventory);
 	}
+
+	@Transactional
+	public void deleteObject(Long userObjectId) {
+		UserObject userObject = userObjectRepository.findById(userObjectId).orElseThrow(UserObjectNotFoundException::new);
+
+		userObjectRepository.delete(userObject);
+	}
 }
