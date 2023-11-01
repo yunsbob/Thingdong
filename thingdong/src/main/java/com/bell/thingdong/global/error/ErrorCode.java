@@ -31,7 +31,8 @@ public enum ErrorCode {
 	GUESTBOOK_NOT_FOUND(400, "G001", "GuestBook Not Found"),
 	GUESTBOOK_UNAUTHORIZED(400, "G002", "GuestBook Unauthorized"),
 	// Object
-	USEROBJECT_NOT_FOUND(400, "O001", "UserObject Not Found");
+	USEROBJECT_NOT_FOUND(400, "O001", "UserObject Not Found"),
+	OBJECTCATEGORY_NOT_FOUND(400, "O002", "ObjectCategory Not Found");
 
 	private final String code;
 	private final String message;
