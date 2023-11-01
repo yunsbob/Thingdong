@@ -13,6 +13,7 @@ import { getRandomInt } from '@/utils/getRandomInt';
 import { User } from '@/interfaces/user';
 import theme from '@/styles/theme';
 import { FontWeightType, TextSize } from '@/components/atoms/Text/Text.styles';
+import { useDeleteFriend } from '@/apis/Friend/Mutations/useDeleteFriend';
 
 interface FriendBlockProps extends User {
   $backgroundColor?: string;
@@ -35,6 +36,11 @@ const FriendBlock = ({
   $isPresent,
 }: FriendBlockProps) => {
   const imageSrcs = [redFace, greenFace, blueFace];
+  const deleteFriendMutation = useDeleteFriend();
+
+  const deleteThinggu = (userId: string) => {
+    deleteFriendMutation.mutate(userId);
+  };
 
   return (
     <S.FriendBlockContainer $backgroundColor={$backgroundColor}>
@@ -43,6 +49,7 @@ const FriendBlock = ({
         <S.FriendBlockText
           size={$nickNameFontSize}
           fontWeight={$nickNameFontWeight}
+          $ellipse={$nickNameFontSize === 'body3' ? 'true' : 'false'}
         >
           {nickname}
         </S.FriendBlockText>
@@ -60,9 +67,13 @@ const FriendBlock = ({
       ) : thingguStatus === 'Y' ? (
         /* 띵구인 경우*/
         !$isPresent && (
-          <Image src={deleteIcon} width={1.3} height={1.3} />
+        <Image
+          src={deleteIcon}
+          width={1.3}
+          height={1.3}
+          onClick={() => deleteThinggu(userId)}
+        />
         )
-        
       ) : (
         thingguStatus === 'A' && (
           /* 띵구 요청인 경우 */
