@@ -5,7 +5,7 @@ import static com.bell.thingdong.domain.room.entity.QUserRoom.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bell.thingdong.domain.object.dto.UserObjectDto;
+import com.bell.thingdong.domain.object.dto.UserObjectRoomDto;
 import com.bell.thingdong.domain.object.entity.UserObject;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
@@ -23,12 +23,12 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 		UserRoom userRoomOne = jpaQueryFactory.selectFrom(userRoom).where(userIdEq(userId), roomIdEq(roomId)).fetchFirst();
 
 		UserRoomRes userRoomRes = new UserRoomRes();
-		List<UserObjectDto> userObjectDtoList = new ArrayList<>();
+		List<UserObjectRoomDto> userObjectRoomDtoList = new ArrayList<>();
 		for (UserObject userObject : userRoomOne.getUserObjectList()) {
-			UserObjectDto userObjectDto = UserObjectDto.builder().userObjectId(userObject.getUserObjectId()).objectPath(userObject.getObject().getObjectPath()).build();
-			userObjectDtoList.add(userObjectDto);
+			UserObjectRoomDto userObjectRoomDto = UserObjectRoomDto.builder().userObjectId(userObject.getUserObjectId()).objectPath(userObject.getObject().getObjectPath()).build();
+			userObjectRoomDtoList.add(userObjectRoomDto);
 		}
-		userRoomRes.setUserObjectList(userObjectDtoList);
+		userRoomRes.setUserObjectList(userObjectRoomDtoList);
 		userRoomRes.setRoomColor(userRoomOne.getRoomColor());
 		userRoomRes.setUserId(String.valueOf(userRoomOne.getUserId()));
 		userRoomRes.setRoomId(userRoomOne.getRoomId());

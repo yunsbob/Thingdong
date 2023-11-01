@@ -17,7 +17,7 @@ public class CustomGuestBookRepositoryImpl implements CustomGuestBookRepository 
 
 	@Override
 	public GuestBookRes findGuestBookByUserIdOrGuestBookId(String userEmail, Long guestBookId) {
-		GuestBook guestBookOne = jpaQueryFactory.selectFrom(guestBook).where(userEmailEq(userEmail), guestBookIdEq(guestBookId)).fetchFirst();
+		GuestBook guestBookOne = jpaQueryFactory.selectFrom(guestBook).where(userEmailEq(userEmail), guestBookIdEq(guestBookId)).orderBy(guestBook.guestBookId.desc()).fetchFirst();
 
 		if (guestBookOne == null)
 			return null;
@@ -32,7 +32,7 @@ public class CustomGuestBookRepositoryImpl implements CustomGuestBookRepository 
 
 	@Override
 	public List<Long> findGuestBookIdByUserEmail(String userEmail) {
-		return jpaQueryFactory.select(guestBook.guestBookId).from(guestBook).where(guestBook.userEmail.eq(userEmail)).orderBy(guestBook.guestBookId.asc()).fetch();
+		return jpaQueryFactory.select(guestBook.guestBookId).from(guestBook).where(guestBook.userEmail.eq(userEmail)).orderBy(guestBook.guestBookId.desc()).fetch();
 	}
 
 	private BooleanExpression userEmailEq(String userEmail) {

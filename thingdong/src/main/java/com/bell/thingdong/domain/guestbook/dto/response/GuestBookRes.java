@@ -28,9 +28,9 @@ public class GuestBookRes {
 	@Schema(description = "방명록 작성자 닉네임", example = "돌아버린 고구마")
 	private String writerName;
 
-	@Schema(description = "다음 방명록 id", example = "3 없으면 0")
+	@Schema(description = "다음 방명록 id, 없으면 0", example = "3")
 	private Long nextGuestBookId;
 
-	@Schema(description = "이전 방명록 id", example = "1 없으면 0")
+	@Schema(description = "이전 방명록 id, 없으면 0", example = "1")
 	private Long prevGuestBookId;
 }
