@@ -20,10 +20,10 @@ const FriendBlockProfile = styled.div`
   align-items: center;
 `;
 
-const FriendBlockText = styled(Text)<{ ellipse: boolean }>`
+const FriendBlockText = styled(Text)<{ $ellipse: string }>`
   margin-left: 0.5rem;
   ${props =>
-    props.ellipse &&
+    props.$ellipse === 'true' &&
     `  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

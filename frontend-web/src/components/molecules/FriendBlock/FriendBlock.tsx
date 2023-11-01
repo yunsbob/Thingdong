@@ -41,7 +41,7 @@ const FriendBlock = ({
         <S.FriendBlockText
           size={$nickNameFontSize}
           fontWeight={$nickNameFontWeight}
-          ellipse={$nickNameFontSize === 'body3' ? true : false}
+          $ellipse={$nickNameFontSize === 'body3' ? 'true' : 'false'}
         >
           {nickname}
         </S.FriendBlockText>
