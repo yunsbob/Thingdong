@@ -7,7 +7,7 @@ import { modalContentAtom, modalOpenAtom } from '@/states/modalStates';
 import TextTyping from './Modal/TextTyping';
 import Opening from './Modal/Opening';
 import Complete from './Modal/Complete';
-import FriendList from './Modal/FriendList';
+import SendingList from './Modal/SendingList';
 import Check from './Modal/Check';
 
 const Unboxing = () => {
@@ -28,8 +28,8 @@ const Unboxing = () => {
         return <Opening />;
       case 'complete':
         return <Complete />;
-      case 'friendList':
-        return <FriendList />;
+      case 'sendingList':
+        return <SendingList />
       case 'check':
         return <Check />;
       default:
