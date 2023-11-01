@@ -16,6 +16,7 @@ interface FriendListProps {
   $nickNameFontWeight?: FontWeightType;
   $userIdFontSize?: TextSize;
   $userIdFontWeight?: FontWeightType;
+  $isPresent?: string;
 }
 
 const FriendList = ({
@@ -27,6 +28,7 @@ const FriendList = ({
   $nickNameFontWeight = 'regular',
   $userIdFontSize = 'small1',
   $userIdFontWeight = 'bold',
+  $isPresent = 'false'
 }: FriendListProps) => {
   return (
     <S.FriendListContainer $paddidngBottom={$paddidngBottom} $height={$height}>
@@ -42,6 +44,7 @@ const FriendList = ({
             $nickNameFontWeight={$nickNameFontWeight}
             $userIdFontSize={$userIdFontSize}
             $userIdFontWeight={$userIdFontWeight}
+            $isPresent={$isPresent}
           />
         );
       })}
