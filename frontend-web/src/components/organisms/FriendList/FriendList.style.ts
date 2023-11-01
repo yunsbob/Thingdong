@@ -11,10 +11,6 @@ const FriendListContainer = styled.div<{
   display: flex;
   flex-direction: column;
   position: relative;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export { FriendListContainer };

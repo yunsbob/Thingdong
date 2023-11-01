@@ -19,9 +19,7 @@ instance.interceptors.request.use(
   // (config: AxiosRequestConfig) => {
   (config: any) => {
     config.headers = {
-      Authorization: !!localStorage.getItem('accessToken')
-        ? `Bearer ${localStorage.getItem('accessToken')}`
-        : '',
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
     };
     return config;
   },
@@ -39,7 +37,7 @@ instance.interceptors.response.use(
     if (error.response?.status === 401) {
       // TODO: 로그아웃 시키고 로그인 페이지로 이동
       localStorage.clear();
-      // window.location.href = PATH.LOGIN;
+      window.location.href = PATH.LOGIN;
     }
     return Promise.reject(error);
   }
