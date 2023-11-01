@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "user_object")
+@Table(name = "user_objects")
 public class UserObject {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

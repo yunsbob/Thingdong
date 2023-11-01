@@ -1,6 +1,6 @@
 package com.bell.thingdong.domain.object.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -46,5 +46,5 @@ public class UnBoxThingHistory {
 
 	@CreatedDate
 	@Column(name = "purchase_day", updatable = false)
-	private LocalDateTime purchaseDay;
+	private LocalDate purchaseDay;
 }

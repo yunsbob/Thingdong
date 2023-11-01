@@ -1,13 +1,18 @@
 package com.bell.thingdong.domain.object.controller;
 
+import java.security.Principal;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bell.thingdong.domain.object.dto.response.ObjectInventoryRes;
+import com.bell.thingdong.domain.object.dto.response.ObjectRoomInventoryRes;
 import com.bell.thingdong.domain.object.service.ObjectService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,5 +40,25 @@ public class ObjectController {
 		objectService.deleteObject(userObjectId);
 
 		return ResponseEntity.ok().build();
+	}
+
+	@Operation(summary = "룸 인벤토리에서 오브제 조회", description = "룸 인벤토리에서 오브제를 조회한다.")
+	@GetMapping("/roomInventory")
+	public ResponseEntity<ObjectRoomInventoryRes> loadRoomInventory(Principal principal) {
+		String email = principal.getName();
+
+		ObjectRoomInventoryRes objectRoomInventoryRes = objectService.getRoomInventoryObject(email);
+
+		return ResponseEntity.ok(objectRoomInventoryRes);
+	}
+
+	@Operation(summary = "인벤토리에서 오브제 조회", description = "룸 인벤토리에서 오브제를 조회한다.")
+	@GetMapping("/inventory")
+	public ResponseEntity<ObjectInventoryRes> loadInventory(Principal principal) {
+		String email = principal.getName();
+
+		ObjectInventoryRes objectInventoryRes = objectService.getInventoryObject(email);
+
+		return ResponseEntity.ok(objectInventoryRes);
 	}
 }
