@@ -24,6 +24,23 @@ const inventoryItems = [
   { price: 20, isOwned: true, imagePath: 'chair.png' },
   { price: 10, isOwned: true, imagePath: 'chair.png' },
   { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
+  { price: 5, isOwned: false, imagePath: 'chair.png' },
 ];
 
 const availableThing = 1000;

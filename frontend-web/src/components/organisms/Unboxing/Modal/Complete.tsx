@@ -15,7 +15,7 @@ import Modal from '@/components/molecules/Modal/Modal';
 const Complete = () => {
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
   const [, setModalContent] = useAtom(modalContentAtom);
-  const [typingContent] = useAtom(typingContentAtom);
+  const [typingContent, setTypingContent] = useAtom(typingContentAtom);
   const [, setSendingFrind] = useAtom(sendingFriendAtom);
 
   const handleConfirm = () => {
@@ -25,7 +25,22 @@ const Complete = () => {
   const handleGet = () => {
     setModalOpen(false);
     setModalContent('textTyping');
+    setTypingContent('')
   };
+  // 조사 맞춤 함수
+  const getPostposition = (word: string) => {
+    if (!word) return '가';
+
+    const lastChar = word[word.length - 1];
+    const uniCode = lastChar.charCodeAt(0);
+
+    if (uniCode < 0xAC00 || uniCode > 0xD7A3) {
+      return '가';
+    }
+
+    return (uniCode - 0xAC00) % 28 !== 0 ? '이' : '가';
+  };
+
   return (
     <Modal height={31} isOpen={modalOpen}>
       <S.ModalWrapper>
@@ -49,7 +64,8 @@ const Complete = () => {
         >
           축하합니다!
           <br />
-          {typingContent}이 도착했어요!
+          {typingContent}
+          {getPostposition(typingContent)} 도착했어요!
         </Text>
         <ButtonWrapper>
           <Button option={'ghost'} size={'medium'} onClick={handleConfirm}>

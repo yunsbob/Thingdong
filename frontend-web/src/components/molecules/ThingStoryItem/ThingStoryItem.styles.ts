@@ -12,6 +12,9 @@ const ThingContainer = styled.div`
   margin-top: 20px;
   background-color: ${({ theme }) => theme.color.white};
   box-shadow: ${({ theme }) => theme.shadow.shadow};
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const ThingWrapper = styled.div`
   display: flex;
