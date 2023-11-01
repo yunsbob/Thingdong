@@ -66,7 +66,7 @@ const FriendBlock = ({
         <Image src={addIcon} width={1.3} height={1.3} />
       ) : thingguStatus === 'Y' ? (
         /* 띵구인 경우*/
-        !$isPresent && (
+        $isPresent === 'false' && (
         <Image
           src={deleteIcon}
           width={1.3}
