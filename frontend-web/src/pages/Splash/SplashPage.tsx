@@ -1,13 +1,14 @@
 import { Background } from '@/components/atoms/Background/Background.style';
-import Button from '@/components/atoms/Button/Button';
-import Slider from "react-slick";
-
-const MainSlider = () => {
-  
-}
+import SlickItem from '@/components/molecules/SlickItem/SlickItem';
+import SplashEllipse from '@/pages/Splash/SplashPage.styles';
 
 const SplashPage = () => {
-  return (<Background><Button>나만의 방 꾸미기</Button>123</Background>);
+  return (
+    <Background>
+      <SlickItem/>
+      <SplashEllipse/>
+    </Background>
+  );
 };
 
 export default SplashPage;

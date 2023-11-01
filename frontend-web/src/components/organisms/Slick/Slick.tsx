@@ -31,7 +31,7 @@ function Slick({
       dots: true,
       infinite: false,
       speed,
-      slidesToShow: 3,
+      slidesToShow: 1,
       autoplay: Boolean(autoplay),
     }),
     [autoplay, loop, speed]

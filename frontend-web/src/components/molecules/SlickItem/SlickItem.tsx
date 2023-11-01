@@ -1,9 +1,22 @@
+// Slick 내부에 아이템 리스트를 작성해주는 곳
+
 import styled from 'styled-components';
 import Slick from '@/components/organisms/Slick/Slick';
+import {
+  Splash1,
+  Splash2,
+  Splash3,
+  Splash4,
+  Splash5,
+} from '@/components/molecules/Splash/Splash1';
 
-interface SlickItemProps {
-  item: string;
-}
+const components = [
+  <Splash1 />,
+  <Splash2 />,
+  <Splash3 />,
+  <Splash4 />,
+  <Splash5 />,
+];
 
 const SliderItem = styled.div`
   width: 100%;
@@ -11,28 +24,19 @@ const SliderItem = styled.div`
     max-width: 100%;
     height: auto;
   }
+  height: 92vh;
 `;
 
-const items: SlickItemProps[] = [
-  {
-    item: 'http://placehold.it/1200x400',
-  },
-  {
-    item: 'http://placehold.it/1200x400/ff0000',
-  },
-  {
-    item: 'http://placehold.it/1200x400/00ffff',
-  },
-];
-
-function Item() {
+const SlickItem = () => {
   return (
-    <Slick>
-      {items.map((item, index) => (
-        <SliderItem key={index}>
-          <img src={item.item} />
-        </SliderItem>
-      ))}
-    </Slick>
+    <>
+      <Slick>
+        {components.map((Component, index) => (
+          <SliderItem key={index}>{Component}</SliderItem>
+        ))}
+      </Slick>
+    </>
   );
-}
+};
+
+export default SlickItem;
