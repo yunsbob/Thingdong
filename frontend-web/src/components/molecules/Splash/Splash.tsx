@@ -10,6 +10,8 @@ import room from '@/assets/images/splash/splash1_room.png';
 import write from '@/assets/images/splash/splash2_write.png';
 import things from '@/assets/images/splash/splash3_things.png';
 import inventory from '@/assets/images/splash/splash4_inventory.png';
+import unboxing1 from '@/assets/images/splash/splash5_unboxing_1.png';
+import unboxing2 from '@/assets/images/splash/splash5_unboxing_2.png';
 
 export const Splash1 = () => {
   return (
@@ -83,7 +85,7 @@ export const Splash4 = () => {
           아이템 확인하기
         </Button>
       </SlideButtonWrapper>
-      <SlideTextWrapper $marginBottom='30px'>
+      <SlideTextWrapper $marginBottom="30px">
         <Text size="body2" $lineHeight="1.5" fontWeight="bold">
           인벤토리를 확인하면 <br />
           내가 가진 아이템들을 확인할 수 있어요
@@ -104,12 +106,16 @@ export const Splash5 = () => {
           나만의 물건 만들기
         </Button>
       </SlideButtonWrapper>
-      <SlideTextWrapper>
+      <SlideTextWrapper $marginBottom="16px">
         <Text size="body2" $lineHeight="1.5" fontWeight="bold">
           추억을 담은 나만의 물건을 언박띵하세요! <br />
           띵구에게 선물도 가능하답니다
         </Text>
       </SlideTextWrapper>
+      {/* <SlideImageWrapper> */}
+      <Image src={unboxing1} width={22} $margin="0 0 26px auto" />
+      <Image src={unboxing2} width={22} />
+      {/* </SlideImageWrapper> */}
     </>
   );
 };
