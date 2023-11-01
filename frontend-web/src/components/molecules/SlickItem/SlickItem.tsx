@@ -8,7 +8,7 @@ import {
   Splash3,
   Splash4,
   Splash5,
-} from '@/components/molecules/Splash/Splash1';
+} from '@/components/molecules/Splash/Splash';
 
 const components = [
   <Splash1 />,
