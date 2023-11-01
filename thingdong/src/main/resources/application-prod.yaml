@@ -48,3 +48,7 @@ translator:
     url: https://openapi.naver.com/v1/papago/n2mt
     client-id: Q4sb0BCOsE0xX3M19V8J
     client-secret: a5h1RIcsLF
+generator:
+  stable-diffusion:
+    url: http://k9b304.p.ssafy.io
+    port : 8888

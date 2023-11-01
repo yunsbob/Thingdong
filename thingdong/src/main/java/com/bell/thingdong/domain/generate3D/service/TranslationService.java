@@ -37,9 +37,6 @@ public class TranslationService {
 	@Value("${translator.papago.client-secret}")
 	private String clientSecret;
 
-
-
-
 	private static String post(String apiUrl, Map<String, String> requestHeaders, String text) {
 		HttpURLConnection con = connect(apiUrl);
 		String postParams = "source=ko&target=en&text=" + text; //원본언어: 한국어 (ko) -> 목적언어: 영어 (en)
@@ -94,14 +91,17 @@ public class TranslationService {
 		}
 	}
 
-	public String translateByPapago2(String sentence){
-		return webClient
+	public String translate(String sentence) {
+		return WebClient.builder()
+			.baseUrl(apiURL)
+			.build()
 			.post()
 			.uri(uriBuilder -> uriBuilder
 				.queryParam("source", "ko")
 				.queryParam("target", "en")
 				.queryParam("text", sentence)
 				.build())
+			.header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
 			.header("X-Naver-Client-Id", clientId)
 			.header("X-Naver-Client-Secret", clientSecret)
 			.retrieve()
@@ -111,7 +111,6 @@ public class TranslationService {
 	}
 
 	public String translateByPapago(String sentence) {
-
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
