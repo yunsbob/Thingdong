@@ -16,7 +16,7 @@ const FriendBlock = ({ nickname, userId, thingguStatus }: User) => {
   return (
     <S.FriendBlockContainer>
       <S.FriendBlockProfile>
-        <Image src={imageSrcs[getRandomInt(0, 3)]} width={3} height={3} />
+        <Image src={imageSrcs[userId.length % 3]} width={3} height={3} />
         <S.FriendBlockText size="body2" fontWeight="regular">
           {nickname}
         </S.FriendBlockText>
