@@ -1,9 +1,9 @@
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { styled } from 'styled-components';
 
-const FriendBlockContainer = styled.div`
+const FriendBlockContainer = styled.div<{ $backgroundColor: string }>`
   display: flex;
-  background-color: ${({ theme }) => theme.color.white};
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
   align-items: center;
   justify-content: space-between;
   border-radius: 4rem;
