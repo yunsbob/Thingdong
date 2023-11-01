@@ -1,51 +1,50 @@
 import Button from '@/components/atoms/Button/Button';
 import { Image } from '@/components/atoms/Image/Image';
-import Input from '@/components/atoms/Input/Input';
 import { Text } from '@/components/atoms/Text/Text.styles';
-import Modal from '@/components/molecules/Modal/Modal';
-import UnboxingItem from '@/components/molecules/UnboxingItem/UnboxingItem';
-import { modalContentAtom } from '@/states/modalStates';
+import { modalContentAtom, modalOpenAtom, sendingFriendAtom, typingContentAtom } from '@/states/modalStates';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
+import { ButtonWrapper } from '@/pages/Inventory/InventoryPage.styles';
+import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';
 
 const Check = () => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
+  const [, setModalOpen] = useAtom(modalOpenAtom);
   const [, setModalContent] = useAtom(modalContentAtom);
+  const [sendingFrind, setSendingFrind] = useAtom(sendingFriendAtom);
 
+  const handleCancel = () => {
+    setModalContent('sendingList');
+  };
   const handleConfirm = () => {
-    setModalContent('opening');
+    setModalOpen(false);
   };
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNickname = e.target.value;
-    setValue(newNickname);
-  };
-
-  const isFilled = value !== '';
   return (
-    <>
+    <S.ModalWrapper>
         <Image
-          src={require(`@/assets/images/inventory/typing.png`).default}
+          src={require(`@/assets/images/inventory/Holding-gift.png`).default}
           $unit={'px'}
-          height={220}
+          height={250}
         />
-        <Text size="body1" fontWeight="bold" $marginBottom='20px'>
-          텍스트를 입력해서
-          <br />
-          나만의 오브제를 만들어 보세요
-        </Text>
-        <Input
-          placeholder="12글자 이내로 작성해주세요"
-          $inputSize='small'
-          option='grey'
-          onChange={e => {
-            handleNicknameChange(e);
-          }}
-        />
-        <Button option={isFilled ? 'activated' : 'deactivated'} size="medium" $margin='20px 0 0 0' onClick={handleConfirm}>
+      <Text
+        size="body1"
+        fontWeight="bold"
+        $marginBottom="20px"
+        $lineHeight="1.4"
+      >
+        {sendingFrind}님에게
+        <br />
+        선물하시겠어요?
+
+      </Text>
+      <ButtonWrapper>
+        <Button option={'ghost'} size={'medium'} onClick={handleCancel}>
+          취소
+        </Button>
+        <Button option={'activated'} size={'medium'} onClick={handleConfirm}>
           확인
         </Button>
-    </>
+      </ButtonWrapper>
+    </S.ModalWrapper>
   );
 };
 

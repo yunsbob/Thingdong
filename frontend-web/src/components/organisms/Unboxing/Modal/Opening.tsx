@@ -16,19 +16,18 @@ const Opening = () => {
         <Image
           src={require(`@/assets/images/inventory/gift.png`).default}
           $unit={'px'}
-          height={235}
+          height={250}
         />
-        <Text size="body1" fontWeight="bold" $marginBottom='20px' $lineHeight='1.4'>
+        <Text size="body1" fontWeight="bold" $marginBottom='25px' $lineHeight='1.4'>
           좋아요! 선물상자를 흔들어서
           <br />
           어떤 오브제가
           <br />
           도착했는지 확인해 볼까요?
         </Text>
-
-        <Button option={'activated'} size="medium" $margin='20px 0 0 0' onClick={handleConfirm}>
-          확인
-        </Button>
+        <Text size="body3" fontWeight="bold" color='grey2' onClick={handleConfirm}>
+          기기를 신나게 흔들어주세요~!
+        </Text>
     </>
   );
 };
