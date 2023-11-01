@@ -2,16 +2,17 @@ import * as S from '@/pages/Friend/FriendPage.style';
 import Header from '@/components/molecules/Header/Header';
 import { Image } from '@/components/atoms/Image/Image';
 import { Text } from '@/components/atoms/Text/Text.styles';
-
-import notification from '@/assets/images/friend/notification.png';
-import search from '@/assets/images/friend/search.png';
-import FriendList from '@/components/organisms/FriendList/FriendList';
 import { useGetFriends } from '@/apis/Friend/Queries/useGetFriends';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 import { Background } from '@/components/atoms/Background/Background.style';
 import Modal from '@/components/molecules/Modal/Modal';
+import FriendList from '@/components/organisms/FriendList/FriendList';
 import { useState } from 'react';
+
+import notification from '@/assets/images/friend/notification.png';
+import search from '@/assets/images/friend/search.png';
+import closeBtn from '@/assets/images/modal/close.png';
 
 const FriendPage = () => {
   console.log(process.env.REACT_APP_SERVER_URL);
@@ -29,11 +30,27 @@ const FriendPage = () => {
       <Modal
         isOpen={modalOpen}
         onClose={changeModalOpen}
-        height={25}
-        $padding={0}
+        width={84}
+        height={50}
+        unit="%"
+        $padding={'1.2rem 0rem 0.2rem 0.7rem'}
       >
-        <Header text="띵구 요청" />
-        <FriendList friends={thingguAlarmList} $paddidngBottom={0} />
+        <S.FriendModalHeader>
+          <Header text="띵구 요청">
+            <Image
+              src={closeBtn}
+              width={1.8}
+              height={1.8}
+              onClick={changeModalOpen}
+            />
+          </Header>
+        </S.FriendModalHeader>
+        <FriendList
+          friends={thingguAlarmList}
+          $paddidngBottom={0}
+          $height={80}
+          $backgroundColor="transparent"
+        />
       </Modal>
       <S.FriendContainer>
         <Header text="띵구">
