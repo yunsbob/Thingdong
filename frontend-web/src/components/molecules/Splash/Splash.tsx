@@ -9,6 +9,7 @@ import { Image } from '@/components/atoms/Image/Image';
 import room from '@/assets/images/splash/splash1_room.png';
 import write from '@/assets/images/splash/splash2_write.png';
 import things from '@/assets/images/splash/splash3_things.png';
+import inventory from '@/assets/images/splash/splash4_inventory.png';
 
 export const Splash1 = () => {
   return (
@@ -82,12 +83,15 @@ export const Splash4 = () => {
           아이템 확인하기
         </Button>
       </SlideButtonWrapper>
-      <SlideTextWrapper>
+      <SlideTextWrapper $marginBottom='30px'>
         <Text size="body2" $lineHeight="1.5" fontWeight="bold">
           인벤토리를 확인하면 <br />
           내가 가진 아이템들을 확인할 수 있어요
         </Text>
       </SlideTextWrapper>
+      <SlideImageWrapper>
+        <Image src={inventory} width={22} />
+      </SlideImageWrapper>
     </>
   );
 };
