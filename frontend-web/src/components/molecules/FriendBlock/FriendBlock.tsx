@@ -12,9 +12,14 @@ import cancelIcon from '@/assets/images/friend/alarm/cancel.png';
 import { getRandomInt } from '@/utils/getRandomInt';
 import { User } from '@/interfaces/user';
 import theme from '@/styles/theme';
+import { FontWeightType, TextSize } from '@/components/atoms/Text/Text.styles';
 
 interface FriendBlockProps extends User {
   $backgroundColor?: string;
+  $nickNameFontSize?: TextSize;
+  $nickNameFontWeight?: FontWeightType;
+  $userIdFontSize?: TextSize;
+  $userIdFontWeight?: FontWeightType;
 }
 
 const FriendBlock = ({
@@ -22,6 +27,10 @@ const FriendBlock = ({
   userId,
   thingguStatus,
   $backgroundColor = theme.color.white,
+  $nickNameFontSize = 'body2',
+  $nickNameFontWeight = 'regular',
+  $userIdFontSize = 'small1',
+  $userIdFontWeight = 'bold',
 }: FriendBlockProps) => {
   const imageSrcs = [redFace, greenFace, blueFace];
 
@@ -29,10 +38,17 @@ const FriendBlock = ({
     <S.FriendBlockContainer $backgroundColor={$backgroundColor}>
       <S.FriendBlockProfile>
         <Image src={imageSrcs[userId.length % 3]} width={3} height={3} />
-        <S.FriendBlockText size="body2" fontWeight="regular">
+        <S.FriendBlockText
+          size={$nickNameFontSize}
+          fontWeight={$nickNameFontWeight}
+        >
           {nickname}
         </S.FriendBlockText>
-        <S.FriendBlockText size="small1" fontWeight="bold" color="grey1">
+        <S.FriendBlockText
+          size={$userIdFontSize}
+          fontWeight={$userIdFontWeight}
+          color="grey1"
+        >
           @{userId}
         </S.FriendBlockText>
       </S.FriendBlockProfile>

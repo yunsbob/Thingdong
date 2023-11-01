@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ $marginBottom: number }>`
   display: flex;
   width: 100%;
   height: 2.5rem;
@@ -8,7 +8,7 @@ const HeaderContainer = styled.div`
   top: 0;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.3rem;
+  margin-bottom: ${({ $marginBottom }) => `${$marginBottom}rem`};
 `;
 
 const HeaderWrapper = styled.div`
