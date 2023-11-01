@@ -5,8 +5,16 @@ const getFriends = async () => {
     const response = await instance.get('/thinggus');
     return response.data;
   } catch {
-    new Error('get friends error');
+    throw new Error('get friends error');
   }
 };
 
-export { getFriends };
+const deleteFriend = async (userId: string) => {
+  try {
+    await instance.delete(`/thinggus/${userId}`);
+  } catch {
+    throw new Error('delete friends error');
+  }
+};
+
+export { getFriends, deleteFriend };
