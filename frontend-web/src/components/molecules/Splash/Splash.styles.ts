@@ -13,3 +13,10 @@ export const SlideTextWrapper = styled.section<SlideTextWrapperProps>`
   margin-bottom: ${props => props.$marginBottom || '64px'};
   text-align: center;
 `;
+
+export const SlideImageWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;

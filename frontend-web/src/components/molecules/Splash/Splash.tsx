@@ -1,9 +1,14 @@
 import Button from '@/components/atoms/Button/Button';
-import { SlideButtonWrapper, SlideTextWrapper } from './Splash.styles';
+import {
+  SlideButtonWrapper,
+  SlideTextWrapper,
+  SlideImageWrapper,
+} from './Splash.styles';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import room from '@/assets/images/splash/splash1_room.png';
 import write from '@/assets/images/splash/splash2_write.png';
+import things from '@/assets/images/splash/splash3_things.png';
 
 export const Splash1 = () => {
   return (
@@ -53,7 +58,7 @@ export const Splash3 = () => {
           스마트싱스 가져오기
         </Button>
       </SlideButtonWrapper>
-      <SlideTextWrapper>
+      <SlideTextWrapper $marginBottom="35px">
         <Text size="body2" $lineHeight="1.5" fontWeight="bold">
           스마트싱스 앱에 등록한 기기를
           <br />
@@ -62,6 +67,9 @@ export const Splash3 = () => {
           나만의 방에 띵즈를 배치해보세요 !
         </Text>
       </SlideTextWrapper>
+      <SlideImageWrapper>
+        <Image src={things} width={22} />
+      </SlideImageWrapper>
     </>
   );
 };
@@ -77,7 +85,7 @@ export const Splash4 = () => {
       <SlideTextWrapper>
         <Text size="body2" $lineHeight="1.5" fontWeight="bold">
           인벤토리를 확인하면 <br />
-          내가 가진 아이템을 목록을 확인할 수 있어요
+          내가 가진 아이템들을 확인할 수 있어요
         </Text>
       </SlideTextWrapper>
     </>
