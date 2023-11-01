@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bell.thingdong.domain.object.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.object.dto.response.ObjectRoomInventoryRes;
 import com.bell.thingdong.domain.object.service.ObjectService;
 
@@ -49,5 +50,15 @@ public class ObjectController {
 		ObjectRoomInventoryRes objectRoomInventoryRes = objectService.getRoomInventoryObject(email);
 
 		return ResponseEntity.ok(objectRoomInventoryRes);
+	}
+
+	@Operation(summary = "인벤토리에서 오브제 조회", description = "룸 인벤토리에서 오브제를 조회한다.")
+	@GetMapping("/inventory")
+	public ResponseEntity<ObjectInventoryRes> loadInventory(Principal principal) {
+		String email = principal.getName();
+
+		ObjectInventoryRes objectInventoryRes = objectService.getInventoryObject(email);
+
+		return ResponseEntity.ok(objectInventoryRes);
 	}
 }

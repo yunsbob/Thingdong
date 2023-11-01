@@ -1,13 +1,16 @@
 package com.bell.thingdong.domain.object.repository;
 
+import static com.bell.thingdong.domain.object.entity.QObject.*;
 import static com.bell.thingdong.domain.object.entity.QUserObject.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.bell.thingdong.domain.object.dto.FindObjectDto;
+import com.bell.thingdong.domain.object.dto.ObjectCategory;
 import com.bell.thingdong.domain.object.dto.UserObjectStatus;
 import com.bell.thingdong.domain.object.entity.UserObject;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -17,8 +20,11 @@ public class CustomUserObjectRepositoryImpl implements CustomUserObjectRepositor
 	private final JPAQueryFactory jpaQueryFactory;
 
 	@Override
-	public List<FindObjectDto> findObjectByUserIdAndObjectStatus(Long userId, UserObjectStatus userObjectStatus) {
-		List<UserObject> userObjects = jpaQueryFactory.selectFrom(userObject).where(userObject.userId.eq(userId), userObject.userObjectStatus.ne(userObjectStatus)).fetch();
+	public List<FindObjectDto> findObjectByUserIdAndObjectStatusAndObjectCategory(Long userId, UserObjectStatus userObjectStatus, ObjectCategory objectCategory) {
+		List<UserObject> userObjects = jpaQueryFactory.selectFrom(userObject)
+		                                              .join(userObject.object, object)
+		                                              .where(userObject.userId.eq(userId), userObjectStatusNe(userObjectStatus), objectCategoryNe(objectCategory))
+		                                              .fetch();
 
 		List<FindObjectDto> findObjectList = new ArrayList<>();
 		for (UserObject userObj : userObjects) {
@@ -31,5 +37,13 @@ public class CustomUserObjectRepositoryImpl implements CustomUserObjectRepositor
 		}
 
 		return findObjectList;
+	}
+
+	private BooleanExpression userObjectStatusNe(UserObjectStatus userObjectStatus) {
+		return userObjectStatus == null ? null : userObject.userObjectStatus.ne(userObjectStatus);
+	}
+
+	private BooleanExpression objectCategoryNe(ObjectCategory objectCategory) {
+		return objectCategory == null ? null : userObject.object.objectCategory.ne(objectCategory);
 	}
 }
