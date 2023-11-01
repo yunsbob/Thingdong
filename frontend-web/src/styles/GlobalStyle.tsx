@@ -21,20 +21,25 @@ const GlobalStyle = createGlobalStyle`
 		font: inherit;
 		vertical-align: baseline;
 	}
+
 	article, aside, details, figcaption, figure, 
 	footer, header, hgroup, menu, nav, section {
 		display: block;
 	}
+
 	ul, ol, li {
 		list-style: none;
 	}
+
 	body {
 		width: 100vw;
 		height: 100vh;
 		overflow: hidden;
 		font-family: 'NanumSquareNeo';
 		font-weight: 700;
+		touch-action: none;
 	}
+	
 	* {
 		box-sizing: border-box;
 		color: ${({ theme }) => theme.color.black1};

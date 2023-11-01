@@ -57,7 +57,7 @@ const Button = styled.button<ButtonProps>`
   width: 100%;
   text-align: center;
   border-radius: 21px;
-  color: white;
+  color: ${props => props.$color || 'white'};
   font-family: 'NanumSquareNeo';
   font-weight: 800;
   ${({ size = 'large' }) => getSizeStyling(size)};

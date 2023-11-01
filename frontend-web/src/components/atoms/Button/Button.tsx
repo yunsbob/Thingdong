@@ -10,10 +10,11 @@ export interface ButtonProps
   $fontWeight?: number;
   onClick?: () => void;
   $margin?: string;
+  $color?: string;
 }
 
 const Button = (
-  { option, size, $backgroundColor, $fontWeight, children, onClick, $margin }: ButtonProps,
+  { option, size, $backgroundColor, $fontWeight, children, onClick, $margin, $color }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
   return (
@@ -25,6 +26,7 @@ const Button = (
       $fontWeight={$fontWeight}
       onClick={onClick}
       $margin={$margin}
+      $color={$color}
     >
       {children}
     </S.Button>

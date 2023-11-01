@@ -81,6 +81,7 @@ const Text = styled.p<TextProps>`
   margin-left: ${props => props.$marginLeft};
   margin-top: ${props => props.$marginTop};
   margin-bottom: ${props => props.$marginBottom};
+  line-height: ${props => props.$lineHeight};
   ${({ size = 'heading1' }) => getSizeStyling(size)};
   color: ${props =>
     props.color ? props.theme.color[props.color] : props.theme.color.black1};
