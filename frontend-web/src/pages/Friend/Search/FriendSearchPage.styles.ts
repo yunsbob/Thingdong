@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const FriendSearchContainer = styled.div`
   height: 100%;
+  padding-bottom: 7rem;
 `;
 
 const FriendSearchInputContainer = styled.div`

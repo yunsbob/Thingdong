@@ -16,7 +16,7 @@ const FriendList = ({ friends, $paddidngBottom }: FriendListProps) => {
             key={user.userId}
             nickname={user.nickname}
             userId={user.userId}
-            thingguStatus={user.thingguStatus ?? 'Y'}
+            thingguStatus={user.thingguStatus}
           />
         );
       })}

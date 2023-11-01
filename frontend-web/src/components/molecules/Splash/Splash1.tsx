@@ -18,7 +18,7 @@ export const Splash1 = () => {
         </Button>
       </SlideButtonWrapper>
       <SlideTextWrapper>
-        <Text size="body3" $lineHeight={1.5} fontWeight="bold">
+        <Text size="body3" $lineHeight="1.5" fontWeight="bold">
           내가 원하는 가구, 소품을 배치해
           <br />
           나만의 방을 꾸밀 수 있어요
@@ -37,7 +37,7 @@ export const Splash2 = () => {
         띵구 맺기
       </Button>
       <SlideTextWrapper>
-        <Text size="body3" $lineHeight={1.5} fontWeight="bold">
+        <Text size="body3" $lineHeight="1.5" fontWeight="bold">
           띵구 맺고 띵구집을 방문해보세요!
           <br />
           방명록도 남길 수 있습니다 🥰
@@ -56,7 +56,7 @@ export const Splash3 = () => {
         </Button>
       </SlideButtonWrapper>
       <SlideTextWrapper>
-        <Text size="body3" $lineHeight={1.5} fontWeight="bold">
+        <Text size="body3" $lineHeight="1.5" fontWeight="bold">
           스마트싱스 앱에 등록한 기기를
           <br />
           띵동으로 가져올 수 있어요.
@@ -77,7 +77,7 @@ export const Splash4 = () => {
         </Button>
       </SlideButtonWrapper>
       <SlideTextWrapper>
-        <Text size="body3" $lineHeight={1.5} fontWeight="bold">
+        <Text size="body3" $lineHeight="1.5" fontWeight="bold">
           인벤토리를 확인하면 <br />
           내가 가진 아이템을 목록을 확인할 수 있어요
         </Text>
@@ -95,7 +95,7 @@ export const Splash5 = () => {
         </Button>
       </SlideButtonWrapper>
       <SlideTextWrapper>
-        <Text size="body3" $lineHeight={1.5} fontWeight="bold">
+        <Text size="body3" $lineHeight="1.5" fontWeight="bold">
           추억을 담은 나만의 물건을 언박띵하세요! <br />
           띵구에게 선물도 가능하답니다
         </Text>

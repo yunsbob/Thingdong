@@ -1,5 +1,5 @@
 export interface User {
   nickname: string;
   userId: string;
-  thingguStatus?: 'N' | 'Y';
+  thingguStatus?: 'N' | 'Y' | 'A';
 }
