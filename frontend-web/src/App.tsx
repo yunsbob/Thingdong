@@ -5,12 +5,11 @@ import { useState } from 'react';
 import LandingPage from '@/pages/Landing/LandingPage';
 
 const App = () => {
-  const [isLogin, setIsLogin] = useState(localStorage.getItem('accessToken'));
-  // const [isLogin, setIsLogin] = useState(!!localStorage.getItem('accessToken'));
+  const [isLogin, setIsLogin] = useState(!!localStorage.getItem('accessToken'));
   
   return (
     <Suspense fallback={<Spinner></Spinner>}>
-      {isLogin ? <MainPage /> : <MainPage />}
+      {isLogin ? <MainPage /> : <LandingPage />}
     </Suspense>
   );
 };
