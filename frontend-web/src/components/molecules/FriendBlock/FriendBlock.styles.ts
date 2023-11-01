@@ -8,10 +8,10 @@ const FriendBlockContainer = styled.div`
   justify-content: space-between;
   border-radius: 4rem;
   padding: 0.4rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 
   img:last-child {
-    margin-right: 0.5rem;
+    margin-right: 0.9rem;
   }
 `;
 
