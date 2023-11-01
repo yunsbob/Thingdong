@@ -27,12 +27,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "unboxthing_history")
+@Table(name = "un_box_thing_history")
 public class UnBoxThingHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "objcet_history_id", nullable = false)
-	private Long objectHistoryId;
+	@Column(name = "unboxthing_history_id", nullable = false)
+	private Long unBoxThingHistoryId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "object_id", nullable = false)
