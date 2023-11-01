@@ -38,8 +38,8 @@ public class UnBoxThingHistory {
 	@JoinColumn(name = "object_id", nullable = false)
 	private Object object;
 
-	@Column(name = "user_email", nullable = false)
-	private String userEmail;
+	@Column(name = "user_id", nullable = false)
+	private Long userId;
 
 	@Column(name = "object_name", nullable = false)
 	private String objectName;
