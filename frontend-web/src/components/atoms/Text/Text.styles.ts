@@ -24,6 +24,7 @@ export interface TextProps {
   $marginLeft?: string;
   $marginTop?: string;
   $marginBottom?: string;
+  $lineHeight?: string;
 }
 
 const getSizeStyling = (size: Required<TextProps>['size'] = 'heading1') => {
@@ -84,6 +85,7 @@ const Text = styled.p<TextProps>`
   color: ${props =>
     props.color ? props.theme.color[props.color] : props.theme.color.black1};
   font-weight: ${props => getFontWeightStyling(props.fontWeight)};
+  line-height: ${props => props.$lineHeight};
 `;
 
 export { Text, getFontWeightStyling };
