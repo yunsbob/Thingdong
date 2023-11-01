@@ -17,6 +17,10 @@ const NoFriendTextContainer = styled.div`
   align-items: center;
   margin-top: 20px;
 `;
+const FriendWrapper = styled.div`
+  height: 90%;
+  overflow-y: auto;
+`;
 const SendingList = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
   const [modalOpen] = useAtom(modalOpenAtom);
@@ -61,7 +65,9 @@ const SendingList = () => {
           </Text>
         </NoFriendTextContainer>
       ) : (
-        <FriendList friends={thingguList} />
+        <FriendWrapper>
+        <FriendList friends={thingguList} $isPresent='true'/>
+        </FriendWrapper>
       )}
     </Modal>
   );
