@@ -1,3 +1,4 @@
+import { FontWeightType, TextSize } from '@/components/atoms/Text/Text.styles';
 import FriendBlock from '@/components/molecules/FriendBlock/FriendBlock';
 import * as S from '@/components/organisms/FriendList/FriendList.style';
 import { User } from '@/interfaces/user';
@@ -11,6 +12,10 @@ interface FriendListProps {
   $height?: number;
   $paddidngBottom?: number;
   $backgroundColor?: string;
+  $nickNameFontSize?: TextSize;
+  $nickNameFontWeight?: FontWeightType;
+  $userIdFontSize?: TextSize;
+  $userIdFontWeight?: FontWeightType;
 }
 
 const FriendList = ({
@@ -18,6 +23,10 @@ const FriendList = ({
   $paddidngBottom,
   $height = 100,
   $backgroundColor = theme.color.white,
+  $nickNameFontSize = 'body2',
+  $nickNameFontWeight = 'regular',
+  $userIdFontSize = 'small1',
+  $userIdFontWeight = 'bold',
 }: FriendListProps) => {
   return (
     <S.FriendListContainer $paddidngBottom={$paddidngBottom} $height={$height}>
@@ -29,6 +38,10 @@ const FriendList = ({
             userId={user.userId}
             $backgroundColor={$backgroundColor}
             thingguStatus={user.thingguStatus}
+            $nickNameFontSize={$nickNameFontSize}
+            $nickNameFontWeight={$nickNameFontWeight}
+            $userIdFontSize={$userIdFontSize}
+            $userIdFontWeight={$userIdFontWeight}
           />
         );
       })}
