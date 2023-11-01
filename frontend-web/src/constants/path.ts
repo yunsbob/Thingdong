@@ -2,15 +2,19 @@ const PATH = {
   ROOT: '/',
   FRIEND_SEARCH: '/searchFriend',
   SIGNUP: 'signup',
-  SPLASH: 'splash',
   LOGIN: 'login',
+  SPLASH: '/splash',
+  THINGSTORY: 'thingstory'
 };
 
 const CHILDREN_PATH = {
-  HOME: 'home',
-  FRIEND: 'friend',
-  THINGS: 'things',
-  INVENTORY: 'inventory',
+  BOTTOM_NAV_PATH: {
+    HOME: 'home',
+    FRIEND: 'friend',
+    THINGS: 'things',
+    INVENTORY: 'inventory',
+  },
+  THINGSTORY: 'thingstory',
 };
 
 export { PATH, CHILDREN_PATH };

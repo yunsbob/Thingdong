@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import * as S from './Modal.styles';
 import ModalPortal from '@/components/molecules/ModalPortal/ModalPortal';
 

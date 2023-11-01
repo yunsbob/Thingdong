@@ -1,5 +1,5 @@
 import { instance } from '@/apis/instance';
-import { UserInfo } from '@/types/user';
+import { UserInfo, UserLoginInfo } from '@/types/user';
 
 const addUser = async (data: UserInfo) => {
   try {
@@ -18,4 +18,13 @@ const getUsers = async (userId: string) => {
   }
 };
 
-export { addUser, getUsers };
+const addLogin = async (data: UserLoginInfo) => {
+  try {
+    const response = await instance.post('/users/login', data);
+    return response.data;
+  } catch {
+    new Error('login error');
+  }
+};
+
+export { addUser, getUsers, addLogin };

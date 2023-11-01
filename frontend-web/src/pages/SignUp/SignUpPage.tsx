@@ -1,22 +1,25 @@
 import theme from '@/styles/theme';
 import { Background } from '@/components/atoms/Background/Background.style';
+
 import {
-  SignUpEllipse,
+  Ellipse,
   SignUpTextWrapper,
   SignUpInputWrapper,
 } from '@/pages/SignUp/SignUpPage.styles';
+
 import { Text } from '@/components/atoms/Text/Text.styles';
 import Input from '@/components/atoms/Input/Input';
 import Button from '@/components/atoms/Button/Button';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
-import { useAddUser } from '@/apis/User/Mutations/UseAddUser';
+import { useAddUser } from '@/apis/User/Mutations/useAddUser';
 
 const SignUpPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
+  const allFieldsFilled = userId !== '' && password !== '' && nickname !== '';
 
   const addUserMutation = useAddUser();
 
@@ -41,9 +44,7 @@ const SignUpPage = () => {
   };
 
   const handleSignUpClick = () => {
-    console.log(userId, password, nickname);
     addUserMutation.mutate({ userId, password, nickname });
-    navigatePage(PATH.SPLASH);
   };
 
   return (
@@ -59,25 +60,29 @@ const SignUpPage = () => {
           onChange={e => {
             handleNicknameChange(e);
           }}
-        ></Input>
+        />
         <Input
           placeholder="ID"
           onChange={e => {
             handleUserIdChange(e);
           }}
-        ></Input>
+        />
         <Input
           placeholder="Password"
           type="password"
           onChange={e => {
             handlePasswordChange(e);
           }}
-        ></Input>
-        <Button option="deactivated" size="large" onClick={handleSignUpClick}>
+        />
+        <Button
+          option={allFieldsFilled ? 'activated' : 'deactivated'}
+          size="large"
+          onClick={handleSignUpClick}
+        >
           계정 만들기
         </Button>
       </SignUpInputWrapper>
-      <SignUpEllipse></SignUpEllipse>
+      <Ellipse></Ellipse>
     </Background>
   );
 };
