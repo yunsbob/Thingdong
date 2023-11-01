@@ -20,8 +20,14 @@ const FriendBlockProfile = styled.div`
   align-items: center;
 `;
 
-const FriendBlockText = styled(Text)`
+const FriendBlockText = styled(Text)<{ ellipse: boolean }>`
   margin-left: 0.5rem;
+  ${props =>
+    props.ellipse &&
+    `  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 4.5rem;`}
 `;
 
 const FriendAlarmBlockWrapper = styled.div`
