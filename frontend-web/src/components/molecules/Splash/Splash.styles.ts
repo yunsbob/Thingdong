@@ -6,9 +6,10 @@ export const SlideButtonWrapper = styled.section`
 
 export const SlideTextWrapper = styled.section`
   margin-top: 22px;
+  margin-bottom: 64px;
   text-align: center;
 `;
 
 export const TempContainer = styled.div`
-  border: 1px solid red;
+  /* border: 1px solid red; */
 `;

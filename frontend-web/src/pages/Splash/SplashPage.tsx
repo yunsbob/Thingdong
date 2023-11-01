@@ -4,10 +4,12 @@ import SplashEllipse from '@/pages/Splash/SplashPage.styles';
 
 const SplashPage = () => {
   return (
-    <Background>
-      <SlickItem/>
-      <SplashEllipse/>
-    </Background>
+    <>
+      <Background>
+        <SlickItem />
+      </Background>
+      <SplashEllipse />
+    </>
   );
 };
 

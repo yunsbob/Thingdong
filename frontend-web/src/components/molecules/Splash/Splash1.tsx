@@ -6,6 +6,8 @@ import {
   TempContainer,
 } from './Splash.styles';
 import { Text } from '@/components/atoms/Text/Text.styles';
+import { Image } from '@/components/atoms/Image/Image';
+import room from '@/assets/images/splash/splash1_room.png';
 
 export const Splash1 = () => {
   return (
@@ -14,14 +16,16 @@ export const Splash1 = () => {
         <Button $backgroundColor="white" $color="black1">
           나만의 방 꾸미기
         </Button>
-        <SlideTextWrapper>
-          <Text size="body3" $lineHeight={1.5} fontWeight="bold">
-            내가 원하는 가구, 소품을 배치해
-            <br />
-            나만의 방을 꾸밀 수 있어요
-          </Text>
-        </SlideTextWrapper>
       </SlideButtonWrapper>
+      <SlideTextWrapper>
+        <Text size="body3" $lineHeight={1.5} fontWeight="bold">
+          내가 원하는 가구, 소품을 배치해
+          <br />
+          나만의 방을 꾸밀 수 있어요
+        </Text>
+      </SlideTextWrapper>
+
+      <Image src={room} width={22} />
     </TempContainer>
   );
 };
