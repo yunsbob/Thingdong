@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import Button from '@/components/atoms/Button/Button';
 import { Image } from '@/components/atoms/Image/Image';
 import Input from '@/components/atoms/Input/Input';
@@ -14,13 +15,18 @@ const TextTyping = () => {
   const [typingContent, setTypingContent] = useAtom(typingContentAtom);
   const [, setModalContent] = useAtom(modalContentAtom);
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const onModalClose = () => {
     setModalOpen(false);
     setModalContent('textTyping');
   };
   const handleConfirm = () => {
-    setModalContent('opening');
+    if (typingContent.length === 0 || typingContent.length > 12) {
+      inputRef.current?.focus();
+    } else {
+      setModalContent('opening');
+    }
   };
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
@@ -46,6 +52,7 @@ const TextTyping = () => {
         나만의 오브제를 만들어 보세요
       </Text>
       <Input
+        ref={inputRef}
         placeholder="12글자 이내로 작성해주세요"
         $inputSize="small"
         option="grey"

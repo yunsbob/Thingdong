@@ -16,6 +16,7 @@ const Check = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
   const [sendingFrind] = useAtom(sendingFriendAtom);
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
+  const [, setTypingContent] = useAtom(typingContentAtom);
 
   const handleCancel = () => {
     setModalContent('sendingList');
@@ -23,6 +24,7 @@ const Check = () => {
   const handleConfirm = () => {
     setModalOpen(false);
     setModalContent('textTyping');
+    setTypingContent('')
   };
   return (
     <Modal height={31} isOpen={modalOpen}>

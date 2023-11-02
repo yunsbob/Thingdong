@@ -10,7 +10,12 @@ const InventoryItemWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 4vw;
-  margin-top: 15px;
+  margin-top: 20px;
+  overflow-y: auto;
+  height: 70%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const ItemWrapper = styled.div`
   display: flex;
