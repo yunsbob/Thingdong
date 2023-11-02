@@ -111,7 +111,7 @@ public class UserService {
 
 		UserRoom userRoom = UserRoom.builder().userId(build.getId()).roomColor("000000").build();
 
-		List<Object> objectList = objectRepository.findAllObjectNotUnBoxThing();
+		List<Object> objectList = objectRepository.findAllObjectNotUnBoxThingAndSmartThings();
 		for (Object object : objectList) {
 			UserObject userObject = UserObject.builder().userObjectStatus(UserObjectStatus.Shop).object(object).userId(build.getId()).build();
 			userObjectRepository.save(userObject);

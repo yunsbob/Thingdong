@@ -19,7 +19,7 @@ public class CustomObjectRepositoryImpl implements CustomObjectRepository {
 	}
 
 	@Override
-	public List<Object> findAllObjectNotUnBoxThing() {
-		return jpaQueryFactory.selectFrom(object).where(object.objectCategory.ne(ObjectCategory.UnBoxThing)).fetch();
+	public List<Object> findAllObjectNotUnBoxThingAndSmartThings() {
+		return jpaQueryFactory.selectFrom(object).where(object.objectCategory.ne(ObjectCategory.UnBoxThing), object.objectCategory.ne(ObjectCategory.SmartThings)).fetch();
 	}
 }
