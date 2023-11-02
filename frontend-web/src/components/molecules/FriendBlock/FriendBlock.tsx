@@ -15,6 +15,7 @@ import theme from '@/styles/theme';
 import { FontWeightType, TextSize } from '@/components/atoms/Text/Text.styles';
 import { useDeleteFriend } from '@/apis/Friend/Mutations/useDeleteFriend';
 import { useRequestFriend } from '@/apis/Friend/Mutations/useRequestFriend';
+import { useAcceptFriend } from '@/apis/Friend/Mutations/useAcceptFriend';
 
 interface FriendBlockProps extends User {
   $backgroundColor?: string;
@@ -45,8 +46,12 @@ const FriendBlock = ({
 
   const requestFriendMutation = useRequestFriend();
   const requestThinggu = (userId: string) => {
-    console.log(userId);
     requestFriendMutation.mutate(userId);
+  };
+
+  const acceptFriendMutation = useAcceptFriend();
+  const acceptThinggu = (userId: string) => {
+    acceptFriendMutation.mutate(userId);
   };
 
   return (
@@ -90,8 +95,18 @@ const FriendBlock = ({
         thingguStatus === 'A' && (
           /* 띵구 요청인 경우 */
           <S.FriendAlarmBlockWrapper>
-            <Image src={confirmIcon} width={1.3} height={1.3} />
-            <Image src={cancelIcon} width={1.3} height={1.3} />
+            <Image
+              src={confirmIcon}
+              width={1.3}
+              height={1.3}
+              onClick={() => acceptThinggu(userId)}
+            />
+            <Image
+              src={cancelIcon}
+              width={1.3}
+              height={1.3}
+              onClick={() => deleteThinggu(userId)}
+            />
           </S.FriendAlarmBlockWrapper>
         )
       )}

@@ -25,4 +25,12 @@ const requestFriend = async (userId: string) => {
   }
 };
 
-export { getFriends, deleteFriend, requestFriend };
+const acceptFriend = async (userId: string) => {
+  try {
+    await instance.put(`/thinggus?userId=${userId}`);
+  } catch {
+    throw new Error('accept friend error');
+  }
+};
+
+export { getFriends, deleteFriend, requestFriend, acceptFriend };
