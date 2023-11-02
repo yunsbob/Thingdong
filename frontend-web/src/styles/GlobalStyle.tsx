@@ -49,6 +49,10 @@ const GlobalStyle = createGlobalStyle`
   		border: 0;
 	}
 
+	.slick-dots {
+		bottom: 40px;
+	}
+
 	.slick-dots li button::before {
     	color: ${({ theme }) => theme.color.blue};
 		font-size: 10px;
@@ -56,7 +60,8 @@ const GlobalStyle = createGlobalStyle`
 
 	.slick-dots li.slick-active button:before{
     	color: ${({ theme }) => theme.color.blue};
-  	}	
+	}
+
 `;
 
 export default GlobalStyle;
