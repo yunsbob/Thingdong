@@ -1,11 +1,11 @@
-import { deleteFriend } from '@/apis/Friend/FriendAPI';
+import { acceptFriend } from '@/apis/Friend/FriendAPI';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useDeleteFriend = () => {
+const useAcceptFriend = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (userId: string) => deleteFriend(userId),
+    mutationFn: (userId: string) => acceptFriend(userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['friends'] });
       queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -13,4 +13,4 @@ const useDeleteFriend = () => {
   });
 };
 
-export { useDeleteFriend };
+export { useAcceptFriend };

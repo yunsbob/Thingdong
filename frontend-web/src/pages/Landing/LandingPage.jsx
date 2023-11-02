@@ -27,7 +27,11 @@ export default function LandingPage() {
     <>
       <LandingContainer>
         <LandingButtonWrapper>
-          <Button size="large" option="activated" onClick={() => navigatePage(PATH.LOGIN)}>
+          <Button
+            size="large"
+            option="activated"
+            onClick={() => navigatePage(PATH.LOGIN)}
+          >
             Log In
           </Button>
           <Button

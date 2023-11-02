@@ -13,8 +13,24 @@ const deleteFriend = async (userId: string) => {
   try {
     await instance.delete(`/thinggus/${userId}`);
   } catch {
-    throw new Error('delete friends error');
+    throw new Error('delete friend error');
   }
 };
 
-export { getFriends, deleteFriend };
+const requestFriend = async (userId: string) => {
+  try {
+    await instance.post('/thinggus', { userId });
+  } catch {
+    throw new Error('request friend error');
+  }
+};
+
+const acceptFriend = async (userId: string) => {
+  try {
+    await instance.put(`/thinggus?userId=${userId}`);
+  } catch {
+    throw new Error('accept friend error');
+  }
+};
+
+export { getFriends, deleteFriend, requestFriend, acceptFriend };

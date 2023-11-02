@@ -6,9 +6,9 @@ import LandingPage from '@/pages/Landing/LandingPage';
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(!!localStorage.getItem('accessToken'));
-  
+
   return (
-    <Suspense fallback={<Spinner></Spinner>}>
+    <Suspense fallback={<Spinner />}>
       {isLogin ? <MainPage /> : <LandingPage />}
     </Suspense>
   );
