@@ -12,6 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bell.thingdong.domain.object.dto.UserObjectStatus;
+import com.bell.thingdong.domain.object.entity.Object;
+import com.bell.thingdong.domain.object.entity.UserObject;
+import com.bell.thingdong.domain.object.repository.ObjectRepository;
+import com.bell.thingdong.domain.object.repository.UserObjectRepository;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.thinggu.entity.Thinggu;
@@ -42,12 +47,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
+	private final UserObjectRepository userObjectRepository;
 	private static final String REFRESH_TOKEN = "refresh_token";
 	private static final String[] nickHead = {"강한", "큰", "작은", "용감한", "명랑한", "빠른", "멋진", "예쁜", "행운의", "똑똑한"};
 	private static final String[] nickBody = {"사자", "호랑이", "기린", "팬더", "원숭이", "코알라", "팽귄", "호랭이", "토끼", "고릴라"};
 	private final RedisRepository redisRepository;
 	private final UserRepository userRepository;
 	private final UserRoomRepository userRoomRepository;
+	private final ObjectRepository objectRepository;
 	private final ThingguRepository thingguRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -104,6 +111,12 @@ public class UserService {
 
 		UserRoom userRoom = UserRoom.builder().userId(build.getId()).roomColor("000000").build();
 
+		List<Object> objectList = objectRepository.findAllObjectNotUnBoxThingAndSmartThings();
+		for (Object object : objectList) {
+			UserObject userObject = UserObject.builder().userObjectStatus(UserObjectStatus.Shop).object(object).userId(build.getId()).build();
+			userObjectRepository.save(userObject);
+		}
+
 		userRoomRepository.save(userRoom);
 	}
 
@@ -139,7 +152,7 @@ public class UserService {
 		for (User u : findUsers) {
 			if (u.getEmail().equals(email))
 				continue;
-			
+
 			UserSearchRes userSearchRes = UserSearchRes.builder().userId(u.getEmail()).nickname(u.getNickname()).build();
 
 			List<Thinggu> thinggu = thingguRepository.findThingguByUserIdOrThingguId(user.getId(), u.getId());
