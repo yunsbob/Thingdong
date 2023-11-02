@@ -12,11 +12,11 @@ import {
 } from '@/components/molecules/Splash/Splash';
 
 const components = [
-//   <Splash1 />,
-//   <Splash2 />,
-//   <Splash3 />,
-//   <Splash4 />,
-//   <Splash5 />,
+  <Splash1 />,
+  <Splash2 />,
+  <Splash3 />,
+  <Splash4 />,
+  <Splash5 />,
   <EnterScene />,
 ];
 
