@@ -8,19 +8,19 @@ import { PATH } from '@/constants/path';
 import { Background } from '@/components/atoms/Background/Background.style';
 import Modal from '@/components/molecules/Modal/Modal';
 import FriendList from '@/components/organisms/FriendList/FriendList';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 
 import notification from '@/assets/images/friend/notification.png';
 import search from '@/assets/images/friend/search.png';
 import closeBtn from '@/assets/images/modal/close.png';
+import { Spinner } from '@/components/molecules/Spinner/Spinner';
 
 const FriendPage = () => {
   console.log(process.env.REACT_APP_SERVER_URL);
   const { thingguAlarmList, thingguList } = useGetFriends();
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-  console.log('thingguAlarmList', thingguAlarmList);
-  console.log('thingguList', thingguList);
+
   const changeModalOpen = () => {
     setModalOpen(!modalOpen);
   };
@@ -79,6 +79,7 @@ const FriendPage = () => {
           </Text>
         </S.NotificationNumberIcon>
         <S.Sun />
+
         {thingguList.length === 0 ? (
           <S.NoFriendTextContainer>
             <Text
