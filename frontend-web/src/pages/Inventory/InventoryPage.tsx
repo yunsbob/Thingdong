@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { Background } from '@/components/atoms/Background/Background.style';
 
 // 임시 더미 데이터
-type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
+type Category = '가구' | '가전' | '소품' | '바닥' | '띵즈' | '언박띵';
 
 const inventoryItems = [
   { price: 10, isOwned: false, imagePath: 'chair.png' },
