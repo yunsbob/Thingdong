@@ -3,6 +3,8 @@ import {
   SlideButtonWrapper,
   SlideTextWrapper,
   SlideImageWrapper,
+  EnterSceneContainer,
+  EnterButtonContainer,
 } from './Splash.styles';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { Image } from '@/components/atoms/Image/Image';
@@ -12,6 +14,10 @@ import things from '@/assets/images/splash/splash3_things.png';
 import inventory from '@/assets/images/splash/splash4_inventory.png';
 import unboxing1 from '@/assets/images/splash/splash5_unboxing_1.png';
 import unboxing2 from '@/assets/images/splash/splash5_unboxing_2.png';
+import LandingScene from '@/pages/Landing/LandingPage';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '@/constants/path';
+import { LandingButtonWrapper } from '@/pages/Landing/LandingPage.style';
 
 export const Splash1 = () => {
   return (
@@ -115,5 +121,24 @@ export const Splash5 = () => {
       <Image src={unboxing1} width={22} $margin="0 0 26px auto" />
       <Image src={unboxing2} width={22} />
     </>
+  );
+};
+
+export const EnterScene = () => {
+  const navigate = useNavigate();
+
+  return (
+    <EnterSceneContainer>
+      <EnterButtonContainer>
+        <Button
+          size="large"
+          option="activated"
+          onClick={() => navigate(PATH.ROOT)}
+        >
+          벨누르고 입장하기
+        </Button>
+      </EnterButtonContainer>
+      <LandingScene />
+    </EnterSceneContainer>
   );
 };
