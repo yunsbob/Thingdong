@@ -11,13 +11,13 @@ import { Text } from '@/components/atoms/Text/Text.styles';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 
-export default function LandingScene() {
+export function LandingScene() {
   return (
     <Spline scene="https://prod.spline.design/nwYEiHrS9YGtJu34/scene.splinecode" />
   );
 }
 
-export function LandingPage() {
+export default function LandingPage() {
   const navigate = useNavigate();
   const navigatePage = path => {
     navigate(path);
@@ -27,7 +27,11 @@ export function LandingPage() {
     <>
       <LandingContainer>
         <LandingButtonWrapper>
-          <Button size="large" option="activated" onClick={() => navigatePage(PATH.LOGIN)}>
+          <Button
+            size="large"
+            option="activated"
+            onClick={() => navigatePage(PATH.LOGIN)}
+          >
             Log In
           </Button>
           <Button

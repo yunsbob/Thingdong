@@ -14,6 +14,7 @@ import { User } from '@/interfaces/user';
 import theme from '@/styles/theme';
 import { FontWeightType, TextSize } from '@/components/atoms/Text/Text.styles';
 import { useDeleteFriend } from '@/apis/Friend/Mutations/useDeleteFriend';
+import { useRequestFriend } from '@/apis/Friend/Mutations/useRequestFriend';
 
 interface FriendBlockProps extends User {
   $backgroundColor?: string;
@@ -21,7 +22,7 @@ interface FriendBlockProps extends User {
   $nickNameFontWeight?: FontWeightType;
   $userIdFontSize?: TextSize;
   $userIdFontWeight?: FontWeightType;
-  $isPresent? : string;
+  $isPresent?: string;
 }
 
 const FriendBlock = ({
@@ -36,10 +37,16 @@ const FriendBlock = ({
   $isPresent,
 }: FriendBlockProps) => {
   const imageSrcs = [redFace, greenFace, blueFace];
-  const deleteFriendMutation = useDeleteFriend();
 
+  const deleteFriendMutation = useDeleteFriend();
   const deleteThinggu = (userId: string) => {
     deleteFriendMutation.mutate(userId);
+  };
+
+  const requestFriendMutation = useRequestFriend();
+  const requestThinggu = (userId: string) => {
+    console.log(userId);
+    requestFriendMutation.mutate(userId);
   };
 
   return (
@@ -63,16 +70,21 @@ const FriendBlock = ({
       </S.FriendBlockProfile>
       {thingguStatus === 'N' ? (
         /* 띵구가 아닌 경우 */
-        <Image src={addIcon} width={1.3} height={1.3} />
+        <Image
+          src={addIcon}
+          width={1.3}
+          height={1.3}
+          onClick={() => requestThinggu(userId)}
+        />
       ) : thingguStatus === 'Y' ? (
         /* 띵구인 경우*/
         $isPresent === 'false' && (
-        <Image
-          src={deleteIcon}
-          width={1.3}
-          height={1.3}
-          onClick={() => deleteThinggu(userId)}
-        />
+          <Image
+            src={deleteIcon}
+            width={1.3}
+            height={1.3}
+            onClick={() => deleteThinggu(userId)}
+          />
         )
       ) : (
         thingguStatus === 'A' && (

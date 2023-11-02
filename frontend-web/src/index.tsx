@@ -13,6 +13,10 @@ const queryClient = new QueryClient({
     queries: {
       retry: 0,
       suspense: true,
+      staleTime: 1 * 60 * 1000,
+    },
+    mutations: {
+      retry: 0,
     },
   },
 });
