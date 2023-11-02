@@ -2,7 +2,7 @@ package com.bell.thingdong.domain.room.dto.response;
 
 import java.util.List;
 
-import com.bell.thingdong.domain.object.dto.UserObjectRoomDto;
+import com.bell.thingdong.domain.objet.dto.UserObjectRoomDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

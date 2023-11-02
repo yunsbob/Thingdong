@@ -5,8 +5,8 @@ import static com.bell.thingdong.domain.room.entity.QUserRoom.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bell.thingdong.domain.object.dto.UserObjectRoomDto;
-import com.bell.thingdong.domain.object.entity.UserObject;
+import com.bell.thingdong.domain.objet.dto.UserObjectRoomDto;
+import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -27,7 +27,7 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 		for (UserObject userObject : userRoomOne.getUserObjectList()) {
 			UserObjectRoomDto userObjectRoomDto = UserObjectRoomDto.builder()
 			                                                       .userObjectId(userObject.getUserObjectId())
-			                                                       .objectModelPath(userObject.getObject().getObjectModelPath())
+			                                                       .objectModelPath(userObject.getObjet().getObjectModelPath())
 			                                                       .build();
 			userObjectRoomDtoList.add(userObjectRoomDto);
 		}

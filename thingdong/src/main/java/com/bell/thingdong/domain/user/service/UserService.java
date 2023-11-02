@@ -12,11 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bell.thingdong.domain.object.dto.UserObjectStatus;
-import com.bell.thingdong.domain.object.entity.Object;
-import com.bell.thingdong.domain.object.entity.UserObject;
-import com.bell.thingdong.domain.object.repository.ObjectRepository;
-import com.bell.thingdong.domain.object.repository.UserObjectRepository;
+import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
+import com.bell.thingdong.domain.objet.entity.Objet;
+import com.bell.thingdong.domain.objet.entity.UserObject;
+import com.bell.thingdong.domain.objet.repository.ObjetRepository;
+import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.thinggu.entity.Thinggu;
@@ -54,7 +54,7 @@ public class UserService {
 	private final RedisRepository redisRepository;
 	private final UserRepository userRepository;
 	private final UserRoomRepository userRoomRepository;
-	private final ObjectRepository objectRepository;
+	private final ObjetRepository objectRepository;
 	private final ThingguRepository thingguRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -111,9 +111,9 @@ public class UserService {
 
 		UserRoom userRoom = UserRoom.builder().userId(build.getId()).roomColor("000000").build();
 
-		List<Object> objectList = objectRepository.findAllObjectNotUnBoxThingAndSmartThings();
-		for (Object object : objectList) {
-			UserObject userObject = UserObject.builder().userObjectStatus(UserObjectStatus.Shop).object(object).userId(build.getId()).build();
+		List<Objet> objetList = objectRepository.findAllObjectNotUnBoxThingAndSmartThings();
+		for (Objet objet : objetList) {
+			UserObject userObject = UserObject.builder().userObjectStatus(UserObjectStatus.Shop).objet(objet).userId(build.getId()).build();
 			userObjectRepository.save(userObject);
 		}
 

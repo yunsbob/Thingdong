@@ -2,7 +2,7 @@ package com.bell.thingdong.domain.room.entity;
 
 import java.util.List;
 
-import com.bell.thingdong.domain.object.entity.UserObject;
+import com.bell.thingdong.domain.objet.entity.UserObject;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
