@@ -12,7 +12,8 @@ import WebView from 'react-native-webview';
 function App(): JSX.Element {
   return (
     // <SafeAreaView>
-    <WebView source={{uri: 'https://thingdong.com'}} />
+    // <WebView source={{uri: 'https://thingdong.com'}} />
+    <WebView source={{uri: 'http://192.168.31.240:3000/'}} />
     // <Text> 123</Text>
     // </SafeAreaView>
   );
