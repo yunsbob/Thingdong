@@ -11,13 +11,13 @@ import { Text } from '@/components/atoms/Text/Text.styles';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 
-function LandingScene() {
+export default function LandingScene() {
   return (
     <Spline scene="https://prod.spline.design/nwYEiHrS9YGtJu34/scene.splinecode" />
   );
 }
 
-export default function LandingPage() {
+export function LandingPage() {
   const navigate = useNavigate();
   const navigatePage = path => {
     navigate(path);
