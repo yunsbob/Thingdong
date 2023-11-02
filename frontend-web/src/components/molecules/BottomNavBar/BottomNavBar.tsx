@@ -3,47 +3,49 @@ import * as S from '@/components/molecules/BottomNavBar/BottomNavBar.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import { CHILDREN_PATH } from '@/constants/path';
 import theme from '@/styles/theme';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+
+type PathType = keyof typeof CHILDREN_PATH.BOTTOM_NAV_PATH;
 
 const BottomNavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const onClickPath = location.pathname;
-  console.log('onClick', onClickPath);
 
-  const changePath = (path: keyof typeof CHILDREN_PATH.BOTTOM_NAV_PATH) => {
+  const changePath = (path: PathType) => {
+    console.log('클릭한 path', onClickPath);
+    setActivePath(path);
     navigate(CHILDREN_PATH.BOTTOM_NAV_PATH[path]);
   };
 
-  const srcs = Object.keys(CHILDREN_PATH.BOTTOM_NAV_PATH) as Array<
-    keyof typeof CHILDREN_PATH.BOTTOM_NAV_PATH
-  >;
+  const paths = Object.keys(CHILDREN_PATH.BOTTOM_NAV_PATH) as Array<PathType>;
 
   const BottomNavStyle = {
     backgroundColor:
-      onClickPath === '/' || onClickPath === '/home' ? 'transparent' : theme.color.blue2,
+      onClickPath === '/' || onClickPath === '/home'
+        ? 'transparent'
+        : theme.color.blue2,
   };
+
+  const [activePath, setActivePath] = useState<PathType>('HOME');
 
   return (
     <S.BottomNavContainer style={BottomNavStyle}>
       <S.BottomNavWrpper>
-        {srcs.map(src => {
-          let imageSrc = src.toLowerCase();
-
-          if (onClickPath === '/' && imageSrc === 'home') {
-            imageSrc = 'home-activate';
-          }
-
-          if (onClickPath === `/${imageSrc}`) {
-            imageSrc = `${imageSrc}-activate`;
-          }
+        {paths.map(path => {
           return (
             <Image
-              key={src}
+              key={path}
               src={
-                require(`@/assets/images/bottomNavBar/${imageSrc}.png`).default
+                require(
+                  `@/assets/images/bottomNavBar/${path.toLowerCase()}${
+                    activePath === path ? '-activate' : ''
+                  }.png`
+                ).default
               }
-              onClick={() => changePath(src)}
+              onClick={() => changePath(path)}
               width={3}
               height={3}
             ></Image>
