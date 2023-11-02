@@ -2,14 +2,14 @@ import { InventoryButtonContainer } from './InventortyButtons.styles';
 import InventoryButton from '@/components/atoms/InventoryButton/InventoryButton';
 import React from 'react';
 
-type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
+type Category = '가구' | '가전' | '소품' | '바닥' | '띵즈' | '언박띵';
 
 type InventoryButtonsProps = {
   activeCategory: Category | null;
   onCategoryClick: (category: Category) => void;
 };
 
-const categories = ['가구', '가전', '소품', '띵구', '띵즈', '언박띵'] as const;
+const categories = ['가구', '가전', '소품', '바닥', '띵즈', '언박띵'] as const;
 
 const InventoryButtons: React.FC<InventoryButtonsProps> = ({ activeCategory, onCategoryClick }) => {
   return (
