@@ -2,7 +2,7 @@ import Button from '@/components/atoms/Button/Button';
 import { Image } from '@/components/atoms/Image/Image';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import Modal from '@/components/molecules/Modal/Modal';
-import { modalContentAtom, modalOpenAtom } from '@/states/modalStates';
+import { modalContentAtom, modalOpenAtom } from '@/states/unboxingModalStates';
 import { useAtom } from 'jotai';
 import { ImageWrapper } from './Opening.styles';
 

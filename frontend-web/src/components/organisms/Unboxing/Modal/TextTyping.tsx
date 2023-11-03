@@ -8,7 +8,7 @@ import {
   modalContentAtom,
   modalOpenAtom,
   typingContentAtom,
-} from '@/states/modalStates';
+} from '@/states/unboxingModalStates';
 import { useAtom } from 'jotai';
 
 const TextTyping = () => {
