@@ -5,6 +5,7 @@ import { Image } from '@/components/atoms/Image/Image';
 import Button from '@/components/atoms/Button/Button';
 import { modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
 import { useAtom } from 'jotai';
+import { useBuyObject } from '@/apis/Inventory/Mutations/useBuyObject';
 
 
 const PurchaseChek = () => {
@@ -16,7 +17,14 @@ const PurchaseChek = () => {
   const handleCancel = () => {
     setModalOpen(false);
   };
-
+  const buyObjectMutation = useBuyObject();
+  const handleBuyObject = (userObjectId?: number) => {
+    if (userObjectId === undefined) {
+      return;
+    }
+    buyObjectMutation.mutate(userObjectId);
+    setModalOpen(false);
+  };
   return (
       <Modal height={19.6} onClose={onModalClose} isOpen={modalOpen}>
         <Text size="body2" fontWeight="extraBold">
@@ -42,7 +50,7 @@ const PurchaseChek = () => {
               color="grey1"
               $marginLeft="5px"
             >
-              20
+              {selectedItem?.objectThing}
             </Text>
           </S.ThingWrapper>
         </S.ItemWrapper>
@@ -53,7 +61,7 @@ const PurchaseChek = () => {
           <Button option={'ghost'} size={'small'} onClick={handleCancel}>
             취소
           </Button>
-          <Button option={'activated'} size={'small'}>
+          <Button option={'activated'} size={'small'} onClick={() =>handleBuyObject(selectedItem?.userObjectId)}>
             확인
           </Button>
         </S.ButtonWrapper>

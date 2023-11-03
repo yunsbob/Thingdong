@@ -17,8 +17,12 @@ const InventoryItemContainer = styled.div<{ $isOwned: boolean }>`
     `}
 `;
 const ContentWrapper = styled.div<{ $isOwned: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
+
   ${({ $isOwned }) =>
     !$isOwned &&
     css`

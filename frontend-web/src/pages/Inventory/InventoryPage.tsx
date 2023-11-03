@@ -11,27 +11,9 @@ import { useGetInventory } from '@/apis/Inventory/Queries/useGetInventory';
 import PurchaseChekModal from './Modal/PurchaseCheckModal';
 import { useAtom } from 'jotai';
 import { modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
+import { Category, InventoryItemProps, InventoryData } from '@/types/inventory';
 
-type Category = '가구' | '가전' | '소품' | '바닥' | '띵즈' | '언박띵';
 
-
-interface InventoryItemProps {
-  userObjectId?: number;
-  objectImagePath: string;
-  objectThing: number;
-  objectStatus: 'Y' | 'N';
-  objectName?: string;
-  purchaseDay?: string;
-}
-
-interface InventoryData {
-  furnitureList: InventoryItemProps[];
-  homeApplianceList: InventoryItemProps[];
-  propList: InventoryItemProps[];
-  floorList: InventoryItemProps[];
-  smartThingsList: InventoryItemProps[];
-  unBoxThingList: InventoryItemProps[];
-}
 
 const availableThing = 1000;
 
@@ -98,7 +80,7 @@ const InventoryPage = () => {
           onCategoryClick={handleCategoryClick}
         />
         {activeCategory === '언박띵' ? (
-          <Unboxing />
+          <Unboxing unBoxThingList={unBoxThingList}/>
         ) : (
           <S.InventoryItemWrapper>
             {activeCategory && renderItems()}

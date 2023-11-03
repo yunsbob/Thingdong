@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import * as S from './Modal.styles';
 import ModalPortal from '@/components/molecules/ModalPortal/ModalPortal';
 
-interface ModalProps extends S.ModalStyleProps {
+export interface ModalProps extends S.ModalStyleProps {
   children: ReactNode;
   onClose?: () => void;
   isOpen: boolean;
