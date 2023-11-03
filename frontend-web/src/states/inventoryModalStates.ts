@@ -1,16 +1,10 @@
+import { InventoryItemProps } from '@/types/inventory';
 import { atom } from 'jotai';
-
-interface InventoryItemProps {
-  userObjectId?: number;
-  objectImagePath: string;
-  objectThing: number;
-  objectStatus: 'Y' | 'N';
-  objectName?: string;
-  purchaseDay?: string;
-}
 
 export const modalOpenAtom = atom(false);
 
 export const selectedItemAtom = atom<InventoryItemProps | null>(null);
 
-export const typingContentAtom = atom('');
+export const deleteModalOpenAtom = atom(false);
+
+export const deleteItemAtom = atom<InventoryItemProps | null>(null);
