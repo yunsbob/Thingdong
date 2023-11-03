@@ -19,9 +19,11 @@ import com.bell.thingdong.domain.objet.exception.ObjectCategoryNotFoundException
 import com.bell.thingdong.domain.objet.exception.UserObjectNotFoundException;
 import com.bell.thingdong.domain.objet.repository.UnBoxThingHistoryRepository;
 import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
+import com.bell.thingdong.domain.thinghistory.service.ThingHistoryService;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
 import com.bell.thingdong.domain.user.repository.UserRepository;
+import com.bell.thingdong.domain.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +36,16 @@ public class ObjetService {
 	private final UnBoxThingHistoryRepository unBoxThingHistoryRepository;
 	private final UserObjectRepository userObjectRepository;
 	private final UserRepository userRepository;
+	private final UserService userService;
+	private final ThingHistoryService thingHistoryService;
 
 	@Transactional
-	public void purchaseObject(Long userObjectId) {
+	public void purchaseObject(Long userObjectId, String email) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		UserObject userObject = userObjectRepository.findById(userObjectId).orElseThrow(UserObjectNotFoundException::new);
+
+		userService.changeThing(email, userObject.getObjet().getObjectThing());
+		thingHistoryService.createThingHistory(email, "띵 구매", userObject.getObjet().getObjectThing() * -1);
 
 		userObject.setUserObjectStatus(UserObjectStatus.Inventory);
 	}
