@@ -11,7 +11,7 @@ const Thing = ({ price, onClick }: ThingProps) => {
   return (
     <ThingContainer onClick={onClick}>
       <Image
-        src={require('@/assets/images/Thing/thing.png').default}
+        src={require('@/assets/images/thingStory/thing.png').default}
         $unit={'px'}
         width={16}
         height={16}
