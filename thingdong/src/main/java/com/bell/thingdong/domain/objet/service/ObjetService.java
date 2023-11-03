@@ -16,6 +16,7 @@ import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.objet.exception.ObjectCategoryNotFoundException;
+import com.bell.thingdong.domain.objet.exception.ObjectIsExpensiveException;
 import com.bell.thingdong.domain.objet.exception.UserObjectNotFoundException;
 import com.bell.thingdong.domain.objet.repository.UnBoxThingHistoryRepository;
 import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
@@ -41,6 +42,9 @@ public class ObjetService {
 	public void purchaseObject(Long userObjectId, String email) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		UserObject userObject = userObjectRepository.findById(userObjectId).orElseThrow(UserObjectNotFoundException::new);
+
+		if (user.getThingAmount() < userObject.getObjet().getObjectThing())
+			throw new ObjectIsExpensiveException();
 
 		user.setThingAmount(userObject.getObjet().getObjectThing() * -1);
 		thingHistoryService.createThingHistory(user.getId(), "띵 구매", userObject.getObjet().getObjectThing() * -1);

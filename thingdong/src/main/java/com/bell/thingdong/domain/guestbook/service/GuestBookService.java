@@ -11,6 +11,7 @@ import com.bell.thingdong.domain.guestbook.entity.GuestBook;
 import com.bell.thingdong.domain.guestbook.exception.GuestBookNotFoundException;
 import com.bell.thingdong.domain.guestbook.exception.GuestBookUnauthorizedException;
 import com.bell.thingdong.domain.guestbook.repository.GuestBookRepository;
+import com.bell.thingdong.domain.thinghistory.service.ThingHistoryService;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
 import com.bell.thingdong.domain.user.repository.UserRepository;
@@ -25,12 +26,16 @@ import lombok.extern.slf4j.Slf4j;
 public class GuestBookService {
 	private final UserRepository userRepository;
 	private final GuestBookRepository guestBookRepository;
+	private final ThingHistoryService thingHistoryService;
 
 	@Transactional
 	public void createGuestBook(String email, GuestBookReq guestBookReq) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
 		GuestBook guestBook = GuestBook.builder().userEmail(guestBookReq.getUserId()).writerEmail(email).content(guestBookReq.getContent()).build();
 
-		System.out.println(guestBookReq.getContent());
+		user.setThingAmount(15L);
+		thingHistoryService.createThingHistory(user.getId(), "방명록 작성", 15L);
 
 		guestBookRepository.save(guestBook);
 	}
