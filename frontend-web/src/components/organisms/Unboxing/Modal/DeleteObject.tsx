@@ -1,51 +1,40 @@
-import * as S from './PurchaseCheckModal.styles';
-import Modal from '@/components/molecules/Modal/Modal';
+import * as S from '@/pages/Inventory/Modal/PurchaseCheckModal.styles';
+import Modal, { ModalProps } from '@/components/molecules/Modal/Modal';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import Button from '@/components/atoms/Button/Button';
-import { modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
+import { deleteItemAtom, deleteModalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
 import { useAtom } from 'jotai';
+import { useDeleteObject } from '@/apis/Inventory/Mutations/useDeleteObject';
+import { InventoryItemProps } from '@/types/inventory';
 
 
-const DeleteCheck = () => {
-  const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
-  const [selectedItem, ] = useAtom(selectedItemAtom);
+const DeleteObject = () => {
+  const [modalOpen, setModalOpen] = useAtom(deleteModalOpenAtom);
+  const [selectedItem, setSelectedItem] = useAtom(deleteItemAtom)
   const onModalClose = () => {
     setModalOpen(false);
   };
   const handleCancel = () => {
     setModalOpen(false);
   };
-
+  console.log(selectedItem, 'gkgk');
+  
   return (
       <Modal height={19.6} onClose={onModalClose} isOpen={modalOpen}>
-        <Text size="body2" fontWeight="extraBold">
+        <Text size="body3" fontWeight="extraBold">
           선택하신 오브제를 삭제하시겠어요?
         </Text>
         <S.ItemWrapper>
           <Image
             src={selectedItem?.objectImagePath}
             $unit={'px'}
-            width={80}
-            height={80}
+            height={100}
           />
-          <S.ThingWrapper>
-            <Image
-              src={require('@/assets/images/Thing/thing.png').default}
-              $unit={'px'}
-              width={31}
-              height={31}
-            />
-            <Text
-              size="subtitle2"
-              fontWeight="extraBold"
-              color="grey1"
-              $marginLeft="5px"
-            >
-              20
-            </Text>
-          </S.ThingWrapper>
         </S.ItemWrapper>
+        <Text size="body3" fontWeight="bold">
+          {selectedItem?.objectName}
+        </Text>
         <S.ButtonWrapper>
           <Button option={'ghost'} size={'small'} onClick={handleCancel}>
             취소
@@ -58,4 +47,4 @@ const DeleteCheck = () => {
   );
 };
 
-export default DeleteCheck;
+export default DeleteObject;
