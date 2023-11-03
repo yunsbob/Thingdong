@@ -17,6 +17,7 @@ const useAddLogin = (redirectPath = PATH.ROOT) => {
     mutationFn: (user: UserLoginInfo) => addLogin(user),
     onSuccess: (data) => {
       localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('nickName',data.nickName);
       setUser(data);
       navigate(redirectPath);
       console.log('-로그인 완료- jotai Atom에 저장되는 user정보: ', data);
