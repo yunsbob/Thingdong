@@ -9,13 +9,6 @@ const getFriends = async () => {
   }
 };
 
-// const getFriendsRoom = async (userId: string) => {
-//   try {
-//     const response = await instance.get('/thinggus');
-//     return response.data;
-//   }
-// }
-
 const deleteFriend = async (userId: string) => {
   try {
     await instance.delete(`/thinggus/${userId}`);

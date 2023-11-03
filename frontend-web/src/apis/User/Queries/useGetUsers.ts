@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
  * @param inputValue 검색 값
  * @returns
  */
+
 const useGetUsers = (inputValue: string) => {
   return useQuery({
     queryKey: ['users', inputValue],
