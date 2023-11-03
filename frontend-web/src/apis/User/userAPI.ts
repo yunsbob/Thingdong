@@ -27,4 +27,12 @@ const addLogin = async (data: UserLoginInfo) => {
   }
 };
 
-export { addUser, getUsers, addLogin };
+const getUserInfo = async () => {
+  try {
+    const { data } = await instance.get('/users/info');
+    return data;
+  } catch {
+    new Error('get userinfo error');
+  }
+};
+export { addUser, getUsers, addLogin, getUserInfo };

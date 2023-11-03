@@ -26,7 +26,7 @@ const ThingStoryPage = () => {
       <S.ThingWrapper>
         <S.ThingContainer>
           <Image
-            src={require('@/assets/images/Thing/thing.png').default}
+            src={require('@/assets/images/thingStory/thing.png').default}
             $unit={'px'}
             width={37}
             height={37}
