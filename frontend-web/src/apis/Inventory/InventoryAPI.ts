@@ -25,4 +25,13 @@ const deleteObject = async (userObjectId: number) => {
   }
 };
 
-export { getInventory, buyObject, deleteObject }
+const getThingStory = async () => {
+  try {
+    const response = await instance.get('/thing-history');
+    return response.data;
+  } catch {
+    throw new Error('get thing-history error');
+  }
+};
+
+export { getInventory, buyObject, deleteObject, getThingStory }

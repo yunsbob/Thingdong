@@ -2,45 +2,34 @@ import { Image } from '@/components/atoms/Image/Image';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import * as S from './ThingStoryItem.styles';
 import React from 'react';
+import { useGetThingStory } from '@/apis/Inventory/Queries/useGetThingStory';
 
-
-const historyList = [
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 10 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 20 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 110 },
-  { isPlus: false, name: '아이템 구매', date: '23.10.31', cost: 10 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 8 },
-  { isPlus: false, name: '아이템 구매', date: '23.10.31', cost: 10 },
-  { isPlus: false, name: '아이템 구매', date: '23.10.31', cost: 50 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 10 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 15 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 15 },
-  { isPlus: false, name: '아이템 구매', date: '23.10.31', cost: 10 },
-  { isPlus: false, name: '아이템 구매', date: '23.10.31', cost: 50 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 15 },
-  { isPlus: false, name: '아이템 구매', date: '23.10.31', cost: 10 },
-  { isPlus: false, name: '아이템 구매', date: '23.10.31', cost: 50 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 15 },
-  { isPlus: true, name: '띵구네 방문', date: '23.10.31', cost: 15 },
-];
+export interface ThingStoryItem {
+  changeThing: number;
+  isPlus: 'Y' | 'N';
+  thingContent: string;
+  thingDay: string;
+}
 
 const ThingStoryItem = () => {
+  const thingStory = useGetThingStory();
+  
   return (
     <S.ThingContainer>
-      {historyList.map((item, index) => (
+      {thingStory.map((item: ThingStoryItem, index: number) => (
         <React.Fragment key={index}>
         <S.ThingWrapper >
           <S.ThingLeftWrapper>
-            {item.isPlus ? (
+            {item.isPlus === "Y" ? (
               <Image
-                src={require('@/assets/images/Thing/thing-plus.png').default}
+                src={require('@/assets/images/thingStory/thing-plus.png').default}
                 $unit={'px'}
                 width={50}
                 height={50}
               />
             ) : (
               <Image
-                src={require('@/assets/images/Thing/thing-minus.png').default}
+                src={require('@/assets/images/thingStory/thing-minus.png').default}
                 $unit={'px'}
                 width={50}
                 height={50}
@@ -48,20 +37,20 @@ const ThingStoryItem = () => {
             )}
             <S.TextWrapper>
               <Text size="body3" fontWeight="bold">
-                {item.name}
+                {item.thingContent}
               </Text>
               <Text size="small2" fontWeight="bold" color="grey2" $marginTop='3px'>
-                {item.date}
+                {item.thingDay}
               </Text>
             </S.TextWrapper>
           </S.ThingLeftWrapper>
-          {item.isPlus ? (
+          {item.isPlus === "Y" ? (
             <Text size="body3" fontWeight="bold">
-              + {item.cost}띵
+              + {item.changeThing}띵
             </Text>
           ) : (
             <Text size="body3" fontWeight="bold">
-              - {item.cost}띵
+              - {item.changeThing}띵
             </Text>
           )}
         </S.ThingWrapper>

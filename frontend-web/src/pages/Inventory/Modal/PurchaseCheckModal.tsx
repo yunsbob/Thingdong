@@ -39,7 +39,7 @@ const PurchaseChek = () => {
           />
           <S.ThingWrapper>
             <Image
-              src={require('@/assets/images/Thing/thing.png').default}
+              src={require('@/assets/images/thingStory/thing.png').default}
               $unit={'px'}
               width={31}
               height={31}
