@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bell.thingdong.domain.thinghistory.dto.FindThingHistoryDto;
 import com.bell.thingdong.domain.thinghistory.dto.response.ThingHistoryRes;
+import com.bell.thingdong.domain.thinghistory.entity.ThingHistory;
 import com.bell.thingdong.domain.thinghistory.repository.ThingHistoryRepository;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
@@ -41,5 +42,13 @@ public class ThingHistoryService {
 		}
 
 		return thingHistoryResList;
+	}
+
+	@Transactional
+	public void createThingHistory(String email, String content, Long changeThing) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		ThingHistory thingHistory = ThingHistory.builder().userId(user.getId()).thingContent(content).changeThing(changeThing).build();
+
+		thingHistoryRepository.save(thingHistory);
 	}
 }
