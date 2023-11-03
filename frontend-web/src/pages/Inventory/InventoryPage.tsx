@@ -4,149 +4,105 @@ import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryB
 import Header from '@/components/molecules/Header/Header';
 import InventoryItem from '@/components/molecules/InventoryItem/InventoryItem';
 import Thing from '@/components/molecules/Thing/Thing';
-import Modal from '@/components/molecules/Modal/Modal';
-import { Text } from '@/components/atoms/Text/Text.styles';
-import { Image } from '@/components/atoms/Image/Image';
-import Button from '@/components/atoms/Button/Button';
 import Unboxing from '@/components/organisms/Unboxing/Unboxing';
 import { useNavigate } from 'react-router-dom';
 import { Background } from '@/components/atoms/Background/Background.style';
+import { useGetInventory } from '@/apis/Inventory/Queries/useGetInventory';
+import PurchaseChekModal from './Modal/PurchaseCheckModal';
+import { useAtom } from 'jotai';
+import { modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
 
-// 임시 더미 데이터
-type Category = '가구' | '가전' | '소품' | '띵구' | '띵즈' | '언박띵';
+type Category = '가구' | '가전' | '소품' | '바닥' | '띵즈' | '언박띵';
 
-const inventoryItems = [
-  { price: 10, isOwned: false, imagePath: 'chair.png' },
-  { price: 100, isOwned: true, imagePath: 'chair.png' },
-  { price: 40, isOwned: true, imagePath: 'chair.png' },
-  { price: 50, isOwned: false, imagePath: 'chair.png' },
-  { price: 70, isOwned: false, imagePath: 'chair.png' },
-  { price: 20, isOwned: true, imagePath: 'chair.png' },
-  { price: 10, isOwned: true, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-  { price: 5, isOwned: false, imagePath: 'chair.png' },
-];
+
+interface InventoryItemProps {
+  userObjectId?: number;
+  objectImagePath: string;
+  objectThing: number;
+  objectStatus: 'Y' | 'N';
+  objectName?: string;
+  purchaseDay?: string;
+}
+
+interface InventoryData {
+  furnitureList: InventoryItemProps[];
+  homeApplianceList: InventoryItemProps[];
+  propList: InventoryItemProps[];
+  floorList: InventoryItemProps[];
+  smartThingsList: InventoryItemProps[];
+  unBoxThingList: InventoryItemProps[];
+}
 
 const availableThing = 1000;
 
 const InventoryPage = () => {
-  const [activeCategory, setActiveCategory] = useState<Category | null>(null);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [selectedItemImagePath, setSelectedItemImagePath] = useState<
-    string | null
-  >(null);
+  const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+  const [, setModalOpen] = useAtom(modalOpenAtom);
+  const [selectedItem, setSelectedItem] = useAtom(selectedItemAtom);
+  const { 
+    furnitureList, 
+    homeApplianceList, 
+    propList, 
+    floorList, 
+    smartThingsList, 
+    unBoxThingList 
+  } = useGetInventory() as InventoryData;
   const navigate = useNavigate();
 
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
-    console.log('선택된 카테고리:', category);
-    // console.log(CHILDREN_PATH.THINGSTORY);
   };
-  const onModalClose = () => {
-    setModalOpen(false);
-  };
-  const handleCancel = () => {
-    setModalOpen(false);
-  }
-  const handleItemClick = (imagePath: string) => {
-    setSelectedItemImagePath(imagePath); // 클릭된 아이템의 imagePath를 저장
+  const handleItemClick = (item: InventoryItemProps) => {
+    setSelectedItem(item);
     setModalOpen(true);
+  };
+  console.log(
+    furnitureList,
+    homeApplianceList,
+    propList,
+    floorList,
+    smartThingsList,
+    unBoxThingList
+  );
+  const renderItems = () => {
+    const categoryDataMap: Record<Category, InventoryItemProps[]> = {
+      '가구': furnitureList,
+      '가전': homeApplianceList,
+      '소품': propList,
+      '바닥': floorList,
+      '띵즈': smartThingsList,
+      '언박띵': unBoxThingList,
+    };
+
+    return categoryDataMap[activeCategory!].map((item, index) => (
+      <InventoryItem
+        key={index}
+        price={item.objectThing}
+        isOwned={item.objectStatus === 'Y'}
+        imagePath={item.objectImagePath}
+        onClick={() => handleItemClick(item)}
+      />
+    ));
   };
   return (
     <Background>
-      <Modal height={19.6} onClose={onModalClose} isOpen={modalOpen}>
-        <Text size="body2" fontWeight="extraBold">
-          선택하신 가구는 다음과 같아요!
-        </Text>
-        <S.ItemWrapper>
-          <Image
-            src={
-              selectedItemImagePath
-                ? require(`@/assets/images/inventory/${selectedItemImagePath}`)
-                    .default
-                : undefined
-            }
-            $unit={'px'}
-            width={80}
-            height={80}
-          />
-          <S.ThingWrapper>
-            <Image
-              src={require('@/assets/images/Thing/thing.png').default}
-              $unit={'px'}
-              width={31}
-              height={31}
-            />
-            <Text
-              size="subtitle2"
-              fontWeight="extraBold"
-              color="grey1"
-              $marginLeft="5px"
-            >
-              20
-            </Text>
-          </S.ThingWrapper>
-        </S.ItemWrapper>
-        <Text size="body2" fontWeight="bold">
-          구매하시겠어요?
-        </Text>
-        <S.ButtonWrapper>
-          <Button option={'ghost'} size={'small'} onClick={handleCancel}>
-            취소
-          </Button>
-          <Button option={'activated'} size={'small'}>
-            확인
-          </Button>
-        </S.ButtonWrapper>
-      </Modal>
+      {selectedItem && selectedItem.objectStatus === 'N' && <PurchaseChekModal />}
       <Header text="인벤토리">
         <S.ThingBox onClick={() => navigate('/thingstory')}>
           <Thing price={availableThing} />
         </S.ThingBox>
       </Header>
       <S.InventoryContainer>
+        <InventoryButtons
+          activeCategory={activeCategory}
+          onCategoryClick={handleCategoryClick}
+        />
         {activeCategory === '언박띵' ? (
-          <>
-            <InventoryButtons
-              activeCategory={activeCategory}
-              onCategoryClick={handleCategoryClick}
-            />
-            <Unboxing />
-          </>
+          <Unboxing />
         ) : (
-          <>
-            <InventoryButtons
-              activeCategory={activeCategory}
-              onCategoryClick={handleCategoryClick}
-            />
-            <S.InventoryItemWrapper>
-              {inventoryItems.map((item, index) => (
-                <InventoryItem
-                  key={index}
-                  price={item.price}
-                  isOwned={item.isOwned}
-                  imagePath={item.imagePath}
-                  onClick={() => handleItemClick(item.imagePath)}
-                />
-              ))}
-            </S.InventoryItemWrapper>
-          </>
+          <S.InventoryItemWrapper>
+            {activeCategory && renderItems()}
+          </S.InventoryItemWrapper>
         )}
       </S.InventoryContainer>
     </Background>

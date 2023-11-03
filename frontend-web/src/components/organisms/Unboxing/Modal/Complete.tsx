@@ -6,7 +6,7 @@ import {
   modalOpenAtom,
   sendingFriendAtom,
   typingContentAtom,
-} from '@/states/modalStates';
+} from '@/states/unboxingModalStates';
 import { useAtom } from 'jotai';
 import { ButtonWrapper } from '@/pages/Inventory/InventoryPage.styles';
 import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';

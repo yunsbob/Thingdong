@@ -35,7 +35,6 @@ const UnboxingItem = () => {
                   require('@/assets/images/inventory/' + item.imagePath).default
                 }
                 $unit={'px'}
-                // width={130}
                 height={90}
               />
             </S.ImageWrapper>

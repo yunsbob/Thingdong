@@ -19,7 +19,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({
     <S.InventoryItemContainer $isOwned={isOwned} onClick={onClick}>
       <S.ContentWrapper $isOwned={isOwned}>
         <Image
-          src={require('@/assets/images/inventory/' + imagePath).default}
+          src={imagePath}
           $unit={'px'}
           width={80}
           height={80}

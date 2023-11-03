@@ -43,7 +43,7 @@ const FriendSearchPage = () => {
             />
             <S.FriendSearchButton src={searchBtn} width={1.2} height={1.2} />
           </S.FriendSearchInputContainer>
-          <FriendList friends={users} $paddidngBottom={6} />
+          <FriendList friends={data} $paddidngBottom={6} />
         </S.FriendSearchContainer>
       </Background>
     </Suspense>

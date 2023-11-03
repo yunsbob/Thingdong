@@ -25,6 +25,12 @@ const router = createBrowserRouter([
       {
         path: CHILDREN_PATH.BOTTOM_NAV_PATH.FRIEND,
         element: <FriendPage />,
+        children: [
+          {
+            path: CHILDREN_PATH.FRIEND_SEARCH,
+            element: <FriendSearchPage />,
+          },
+        ],
       },
       {
         path: CHILDREN_PATH.BOTTOM_NAV_PATH.THINGS,
@@ -33,10 +39,6 @@ const router = createBrowserRouter([
       {
         path: CHILDREN_PATH.BOTTOM_NAV_PATH.INVENTORY,
         element: <InventoryPage />,
-      },
-      {
-        path: PATH.FRIEND_SEARCH,
-        element: <FriendSearchPage />,
       },
     ],
   },
