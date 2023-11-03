@@ -9,4 +9,20 @@ const getInventory = async () => {
   }
 };
 
-export { getInventory }
+const buyObject = async (userObjectId: number) => {
+  try {
+    await instance.put(`/objects?userObjectId=${userObjectId}`);
+  } catch {
+    throw new Error(' buy object error');
+  }
+};
+
+const deleteObject = async (userObjectId: number) => {
+  try {
+    await instance.delete(`/objects?userObjectId=${userObjectId}`);
+  } catch {
+    throw new Error('delete object error');
+  }
+};
+
+export { getInventory, buyObject, deleteObject }

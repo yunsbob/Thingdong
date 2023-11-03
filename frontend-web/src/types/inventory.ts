@@ -1,0 +1,30 @@
+export type Category = '가구' | '가전' | '소품' | '바닥' | '띵즈' | '언박띵';
+
+
+export interface InventoryItemProps {
+  userObjectId?: number;
+  objectImagePath: string;
+  objectThing: number;
+  objectStatus: 'Y' | 'N';
+  objectName?: string;
+  purchaseDay?: string;
+}
+
+export interface InventoryData {
+  furnitureList: InventoryItemProps[];
+  homeApplianceList: InventoryItemProps[];
+  propList: InventoryItemProps[];
+  floorList: InventoryItemProps[];
+  smartThingsList: InventoryItemProps[];
+  unBoxThingList: InventoryItemProps[];
+}
+
+export interface UnboxingItemProps {
+  objectImagePath: string;
+  objectName: string;
+  purchaseDay: string;
+}
+
+export interface UnboxingProps {
+  unBoxThingList: InventoryItemProps[];
+}

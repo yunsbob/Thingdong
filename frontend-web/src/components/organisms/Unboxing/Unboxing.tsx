@@ -7,8 +7,10 @@ import Opening from './Modal/Opening';
 import Complete from './Modal/Complete';
 import SendingList from './Modal/SendingList';
 import Check from './Modal/Check';
+import { UnboxingProps } from '@/types/inventory';
 
-const Unboxing = () => {
+
+const Unboxing = ({unBoxThingList}: UnboxingProps) => {
   const [, setModalOpen] = useAtom(modalOpenAtom);
   const [modalContent] = useAtom(modalContentAtom);
 
@@ -42,7 +44,7 @@ const Unboxing = () => {
         width={100}
         onClick={handleItemClick}
       />
-      <UnboxingItem />
+      <UnboxingItem unBoxThingList={unBoxThingList} />
     </>
   );
 };
