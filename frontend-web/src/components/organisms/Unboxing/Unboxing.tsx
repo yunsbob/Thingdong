@@ -1,7 +1,7 @@
 import { Image } from '@/components/atoms/Image/Image';
 import UnboxingItem from '@/components/molecules/UnboxingItem/UnboxingItem';
 import { useAtom } from 'jotai';
-import { modalContentAtom, modalOpenAtom } from '@/states/modalStates';
+import { modalContentAtom, modalOpenAtom } from '@/states/unboxingModalStates';
 import TextTyping from './Modal/TextTyping';
 import Opening from './Modal/Opening';
 import Complete from './Modal/Complete';
