@@ -45,9 +45,8 @@ public class ThingHistoryService {
 	}
 
 	@Transactional
-	public void createThingHistory(String email, String content, Long changeThing) {
-		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		ThingHistory thingHistory = ThingHistory.builder().userId(user.getId()).thingContent(content).changeThing(changeThing).build();
+	public void createThingHistory(Long userId, String content, Long changeThing) {
+		ThingHistory thingHistory = ThingHistory.builder().userId(userId).thingContent(content).changeThing(changeThing).build();
 
 		thingHistoryRepository.save(thingHistory);
 	}
