@@ -8,29 +8,36 @@
 import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import WebView from 'react-native-webview';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  setUpdateIntervalForType,
+  SensorTypes,
+  accelerometer,
+} from 'react-native-sensors';
 
 function App(): JSX.Element {
-  console.log('찍히니ㅣ?');
-  useEffect(() => {
-    // Component가 마운트될 때 로컬 스토리지를 클리어.
-    // Splash 확인용으로 자동 로그인 방지하기 위함
-    clearLocalStorage();
-  }, []);
+  const myInjectedJs = `(function() {
+    window.localStorage.removeItem('accessToken');
+  })();`;
 
-  const clearLocalStorage = async () => {
-    try {
-      await AsyncStorage.clear();
-      console.log('local storage 비워졌나요');
-    } catch (error) {
-      console.error('Error clearing local storage:', error);
-    }
-  };
+  useEffect(() => {
+    // 1초에 한번 씩 업데이트 (default 100ms)
+    setUpdateIntervalForType(SensorTypes.accelerometer, 1000);
+
+    const subscription = accelerometer.subscribe(({x, y, z, timestamp}) => {
+      console.log('x, y, z, timestamp: ', x, y, z, timestamp);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      {/* <WebView source={{uri: 'https://thingdong.com'}} /> */}
-      <WebView source={{uri: 'http://192.168.31.240:3000/'}} />
+      <WebView
+        javaScriptEnabled={true}
+        injectedJavaScript={myInjectedJs}
+        source={{uri: 'http://192.168.6.136:3000/'}}
+        // source={{uri: 'http://192.168.31.240:3000/'}}
+      />
     </SafeAreaView>
   );
 }

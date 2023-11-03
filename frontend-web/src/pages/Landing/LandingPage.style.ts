@@ -24,11 +24,11 @@ const SceneContainer = styled.div`
 
 const LandingTextContainer = styled.div`
   position: absolute;
-  left: 55%;
+  left: 50%;
   top: 45%;
   opacity: 0;
   overflow-y: visible;
-  transform: scale(120%) translate(-50%, -50%) rotate(-6deg);
+  transform: scale(100%) translate(-50%, -50%) rotate(-6deg);
   animation: fadeIn 0.5s 2s forwards;
   /* scaleUp 3.5s 2.5s forwards; */
 
