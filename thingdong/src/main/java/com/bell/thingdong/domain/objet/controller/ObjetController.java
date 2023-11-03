@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
 import com.bell.thingdong.domain.objet.service.ObjetService;
+import com.bell.thingdong.domain.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,11 +26,14 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "object", description = "오브제 관련 컨트롤러")
 public class ObjetController {
 	private final ObjetService objetService;
+	private final UserService userService;
 
 	@Operation(summary = "오브제 구매", description = "인벤토리에서 오브제를 구매한다.")
 	@PutMapping
-	public ResponseEntity<?> purchaseObject(@RequestParam("userObjectId") Long userObjectId) {
-		objetService.purchaseObject(userObjectId);
+	public ResponseEntity<?> purchaseObject(Principal principal, @RequestParam("userObjectId") Long userObjectId) {
+		String email = principal.getName();
+
+		objetService.purchaseObject(userObjectId, email);
 
 		return ResponseEntity.ok().build();
 	}
