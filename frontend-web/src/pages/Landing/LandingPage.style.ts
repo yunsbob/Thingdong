@@ -1,15 +1,16 @@
 import styled from 'styled-components';
 
 const LandingContainer = styled.div`
-  margin: 0 auto;
+  margin: 0;
 `;
 
 const SceneContainer = styled.div`
   animation: fadeIn 2.5s forwards;
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-45%, -45%) scale(111%);
   left: 50%;
-  top: 50%;
+  top: 45%;
+  width: 100%;
 
   @keyframes fadeIn {
     from {
@@ -23,14 +24,13 @@ const SceneContainer = styled.div`
 
 const LandingTextContainer = styled.div`
   position: absolute;
-  left: 50%;
+  left: 55%;
   top: 45%;
   opacity: 0;
   overflow-y: visible;
-  transform: translate(-50%, -50%) rotate(-6deg);
-  animation:
-    fadeIn 0.5s 2s forwards;
-    /* scaleUp 3.5s 2.5s forwards; */
+  transform: scale(120%) translate(-50%, -50%) rotate(-6deg);
+  animation: fadeIn 0.5s 2s forwards;
+  /* scaleUp 3.5s 2.5s forwards; */
 
   @keyframes fadeIn {
     from {
