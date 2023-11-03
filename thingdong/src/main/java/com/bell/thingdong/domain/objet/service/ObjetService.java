@@ -23,7 +23,6 @@ import com.bell.thingdong.domain.thinghistory.service.ThingHistoryService;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
 import com.bell.thingdong.domain.user.repository.UserRepository;
-import com.bell.thingdong.domain.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +35,6 @@ public class ObjetService {
 	private final UnBoxThingHistoryRepository unBoxThingHistoryRepository;
 	private final UserObjectRepository userObjectRepository;
 	private final UserRepository userRepository;
-	private final UserService userService;
 	private final ThingHistoryService thingHistoryService;
 
 	@Transactional
