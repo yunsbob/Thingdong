@@ -19,6 +19,7 @@ const Background = styled.div<BackgroundProps>`
   display: flex;
   flex-direction: column;
   padding: 1.3rem;
+  position: relative;
 `;
 
 export { Background };
