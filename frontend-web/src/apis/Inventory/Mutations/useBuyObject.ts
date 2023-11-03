@@ -8,6 +8,7 @@ const useBuyObject = () => {
     mutationFn: (userObjectId: number) => buyObject(userObjectId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['inventory'] });
+      queryClient.invalidateQueries({ queryKey: ['userInfo'] });
     },
   });
 };
