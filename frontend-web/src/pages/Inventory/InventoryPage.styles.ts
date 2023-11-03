@@ -5,22 +5,16 @@ const InventoryContainer = styled.div`
   flex-direction: column;
   height: 100%;
 `;
-
 const InventoryItemWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 4vw;
   margin-top: 20px;
   overflow-y: auto;
-  height: 70%;
+  max-height: 70%;
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-const ItemWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
 `;
 const ThingWrapper = styled.div`
   display: flex;
@@ -35,10 +29,14 @@ const ButtonWrapper = styled.div`
   gap: 18px;
   margin-top: 20px;
 `;
+export const ItemWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+`;
 export {
   InventoryContainer,
   InventoryItemWrapper,
-  ItemWrapper,
   ThingWrapper,
   ButtonWrapper,
   ThingBox,
