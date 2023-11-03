@@ -44,8 +44,8 @@ public class ObjetService {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		UserObject userObject = userObjectRepository.findById(userObjectId).orElseThrow(UserObjectNotFoundException::new);
 
-		userService.changeThing(email, userObject.getObjet().getObjectThing());
-		thingHistoryService.createThingHistory(email, "띵 구매", userObject.getObjet().getObjectThing() * -1);
+		user.setThingAmount(userObject.getObjet().getObjectThing() * -1);
+		thingHistoryService.createThingHistory(user.getId(), "띵 구매", userObject.getObjet().getObjectThing() * -1);
 
 		userObject.setUserObjectStatus(UserObjectStatus.Inventory);
 	}

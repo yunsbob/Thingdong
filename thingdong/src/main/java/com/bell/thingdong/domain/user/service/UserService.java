@@ -136,13 +136,6 @@ public class UserService {
 		}
 	}
 
-	@Transactional
-	public void changeThing(String email, Long thing) {
-		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-
-		user.setThingAmount(thing);
-	}
-
 	public List<UserSearchRes> getUserSearchInfo(String email, String searchEmail) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
