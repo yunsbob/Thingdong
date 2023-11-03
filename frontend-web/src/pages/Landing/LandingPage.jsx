@@ -9,6 +9,7 @@ import {
 import Button from '@/components/atoms/Button/Button';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { useNavigate } from 'react-router-dom';
+
 import { PATH } from '@/constants/path';
 
 export function LandingScene() {

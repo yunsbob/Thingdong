@@ -3,14 +3,15 @@ import { SceneContainer } from '@/pages/Landing/LandingPage.style';
 
 export const EnterSceneContainer = styled(SceneContainer)`
   position: static;
-  transform: translate(0%, 0%);
+  transform: translate(6%, 0%) scale(111%);
 `;
 
 export const EnterButtonContainer = styled.div`
   z-index: 1;
   position: absolute;
+  /* transform: scale(100%); */
   bottom: 20%;
-  width: 80%;
+  width: 70%;
   margin-left: 10%;
 `;
 
