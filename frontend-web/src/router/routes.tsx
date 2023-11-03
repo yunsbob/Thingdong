@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <FriendPage />,
         children: [
           {
-            path: 'search',
+            path: CHILDREN_PATH.FRIEND_SEARCH,
             element: <FriendSearchPage />,
           },
         ],

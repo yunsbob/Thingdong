@@ -4,7 +4,7 @@ const PATH = {
   SIGNUP: 'signup',
   LOGIN: 'login',
   SPLASH: '/splash',
-  THINGSTORY: 'thingstory'
+  THINGSTORY: 'thingstory',
 };
 
 const CHILDREN_PATH = {
@@ -14,6 +14,7 @@ const CHILDREN_PATH = {
     THINGS: 'things',
     INVENTORY: 'inventory',
   },
+  FRIEND_SEARCH: 'search',
   THINGSTORY: 'thingstory',
 };
 
