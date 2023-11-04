@@ -1,14 +1,12 @@
 import { instance } from '@/apis/instance';
 
-const getRoomInventory = async () => {
+const getFriendsRoom = async (userId: string) => {
   try {
-    const response = await instance.get('/objects/roomInventory');
-    return response.data;
+    const { data } = await instance.get(`/rooms?userId=${userId}`);
+    return data;
   } catch {
-    throw new Error('get roomInventory error');
+    new Error('get user error');
   }
 };
 
-
-
-export { getRoomInventory }
+export { getFriendsRoom };
