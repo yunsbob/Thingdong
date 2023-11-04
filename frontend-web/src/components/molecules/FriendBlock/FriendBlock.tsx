@@ -9,13 +9,14 @@ import addIcon from '@/assets/images/friend/add.png';
 import confirmIcon from '@/assets/images/friend/alarm/confirm.png';
 import cancelIcon from '@/assets/images/friend/alarm/cancel.png';
 
-import { getRandomInt } from '@/utils/getRandomInt';
 import { User } from '@/interfaces/user';
 import theme from '@/styles/theme';
 import { FontWeightType, TextSize } from '@/components/atoms/Text/Text.styles';
 import { useDeleteFriend } from '@/apis/Friend/Mutations/useDeleteFriend';
 import { useRequestFriend } from '@/apis/Friend/Mutations/useRequestFriend';
 import { useAcceptFriend } from '@/apis/Friend/Mutations/useAcceptFriend';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '@/constants/path';
 
 interface FriendBlockProps extends User {
   $backgroundColor?: string;
@@ -24,6 +25,7 @@ interface FriendBlockProps extends User {
   $userIdFontSize?: TextSize;
   $userIdFontWeight?: FontWeightType;
   $isPresent?: string;
+  onClick?: () => void;
 }
 
 const FriendBlock = ({
@@ -36,6 +38,7 @@ const FriendBlock = ({
   $userIdFontSize,
   $userIdFontWeight,
   $isPresent,
+  onClick
 }: FriendBlockProps) => {
   const imageSrcs = [redFace, greenFace, blueFace];
 
@@ -54,8 +57,15 @@ const FriendBlock = ({
     acceptFriendMutation.mutate(userId);
   };
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    console.log(userId);
+    navigate(PATH.FRIENDROOM)
+  }
+
   return (
-    <S.FriendBlockContainer $backgroundColor={$backgroundColor}>
+    <S.FriendBlockContainer $backgroundColor={$backgroundColor} onClick={handleClick}>
       <S.FriendBlockProfile>
         <Image src={imageSrcs[userId.length % 3]} width={3} height={3} />
         <S.FriendBlockText
