@@ -4,6 +4,7 @@ import * as S from './ThingStoryItem.styles';
 import React from 'react';
 import { useGetThingStory } from '@/apis/Inventory/Queries/useGetThingStory';
 
+
 export interface ThingStoryItem {
   changeThing: number;
   isPlus: 'Y' | 'N';
@@ -16,7 +17,7 @@ const ThingStoryItem = () => {
   
   return (
     <S.ThingContainer>
-      {thingStory.map((item: ThingStoryItem, index: number) => (
+      {thingStory?.map((item: ThingStoryItem, index: number) => (
         <React.Fragment key={index}>
         <S.ThingWrapper >
           <S.ThingLeftWrapper>

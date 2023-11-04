@@ -5,24 +5,15 @@ import { Background } from '@/components/atoms/Background/Background.style';
 import Header from '@/components/molecules/Header/Header';
 import { useNavigate } from 'react-router-dom';
 import ThingStoryItem from '@/components/molecules/ThingStoryItem/ThingStoryItem';
+import { useGetUserInfo } from '@/apis/User/Queries/useGetUserInfo';
 
-const price = 1000;
 
 const ThingStoryPage = () => {
+  const userInfo = useGetUserInfo();
   const navigate = useNavigate();
   return (
     <Background>
-      <S.HeaderWrapper>
-        <S.BackButtonWrapper onClick={() => navigate(-1)}>
-          <Image
-            src={require('@/assets/images/friend/search/back.png').default}
-            $unit={'px'}
-            width={12}
-            height={22}
-          />
-        </S.BackButtonWrapper>
-        <Header text="띵스토리"></Header>
-      </S.HeaderWrapper>
+        <Header text="띵스토리" hasBackButton={true}/>
       <S.ThingWrapper>
         <S.ThingContainer>
           <Image
@@ -32,7 +23,7 @@ const ThingStoryPage = () => {
             height={37}
           />
           <Text size="subtitle2" fontWeight="bold" $marginLeft="2px">
-            {price} 띵
+            {userInfo?.thingAmount} 띵
           </Text>
         </S.ThingContainer>
       </S.ThingWrapper>
