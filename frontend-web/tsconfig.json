@@ -30,6 +30,8 @@
     "strict": true,                                      /* Enable all strict type-checking options. */
    
     /* Completeness */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+    "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+    "resolveJsonModule": true, // JSON파일을 모듈로 가져오는 기능
+  },
+  "include": ["src"] // 지정하지 않으면 프로젝트 디렉토리 내의 모든 TS파일을 컴파일 대상으로 간주
 }
