@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { RoomName, HeaderWrapper } from '@/pages/Home/Home.styles';
+import { RoomName } from '@/pages/Home/Home.styles';
 import { Image } from '@/components/atoms/Image/Image';
 
 export const FriendRoomName = styled(RoomName)`
