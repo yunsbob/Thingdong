@@ -3,25 +3,65 @@ import * as S from './Home.styles';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
+import { useGetRoomInventory } from '@/apis/Room/Queries/useGetRoomInventory';
+import {
+  Category,
+  RoomInventoryData,
+  RoomInventoryItemProps,
+} from '@/types/inventory';
+import * as SS from '@/pages/Inventory/InventoryPage.styles';
+import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryButtons';
+import RoomInventoryItem from '@/components/molecules/RoomInventoryItem/RoomInventoryItem';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-      transition: {
-        type: 'spring',
-        duration: 0.7,
-      },
+    transition: {
+      type: 'spring',
+      duration: 0.7,
+    },
   },
 };
 
 const HomePage = () => {
-  const nickName = '도도한고구마';
-  // const nickName = localStorage.getItem('nickName');
+  const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const handleEdit = () => {
+  const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+  const handleEdit = () => { 
     setIsEditing(!isEditing);
+  };
+  const {
+    furnitureList,
+    homeApplianceList,
+    propList,
+    floorList,
+    smartThingsList,
+    unBoxThingList,
+  } = useGetRoomInventory() as RoomInventoryData;
+
+  const handleCategoryClick = (category: Category) => {
+    setActiveCategory(category);
+  };
+
+  const renderItems = () => {
+    const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
+      '가구': furnitureList,
+      '가전': homeApplianceList,
+      '소품': propList,
+      '바닥': floorList,
+      '띵즈': smartThingsList,
+      '언박띵': unBoxThingList,
+    };
+
+    return categoryDataMap[activeCategory!].map(item => (
+      <RoomInventoryItem
+        key={item.userObjectId}
+        isOwned={item.objectStatus === 'Y'}
+        imagePath={item.objectImagePath}
+      />
+    ));
   };
 
   return (
@@ -60,11 +100,20 @@ const HomePage = () => {
           variants={toastVariants}
           initial="hidden"
           animate="visible"
-        />
+        >
+          <SS.InventoryContainer>
+            <InventoryButtons
+              activeCategory={activeCategory}
+              onCategoryClick={handleCategoryClick}
+            />
+            <SS.InventoryItemWrapper>
+              {activeCategory && renderItems()}
+            </SS.InventoryItemWrapper>
+          </SS.InventoryContainer>
+        </S.TempToast>
       )}
     </>
   );
-  // <Background $backgroundColor={theme.color.black1}>home</Background>;
 };
 
 export default HomePage;

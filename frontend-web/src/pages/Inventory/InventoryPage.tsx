@@ -55,7 +55,7 @@ const InventoryPage = () => {
 
     return categoryDataMap[activeCategory!].map((item, index) => (
       <InventoryItem
-        key={index}
+        key={item.userObjectId}
         price={item.objectThing}
         isOwned={item.objectStatus === 'Y'}
         imagePath={item.objectImagePath}
