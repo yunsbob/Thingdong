@@ -5,7 +5,7 @@ export const TempToast = styled(motion.div)`
   background-color: ${({ theme }) => theme.color.white};
   border-radius: 36px;
   position: absolute;
-  top: 50%;
+  top: 55%;
   height: 60%;
   width: 100%;
   z-index: 3;
@@ -35,7 +35,7 @@ export const RoomName = styled.div`
   align-items: center;
   margin-right: 20px;
 `;
-export const HeaderWrapper = styled.div`
+export const HeaderButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -55,4 +55,30 @@ export const ImageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
+`;
+
+export const ArrowKeyWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  & > :nth-child(1),
+  & > :nth-child(3) {
+    visibility: hidden;
+  }
+  
+`;
+
+export const BottomButtonWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 43vh;
+  left: 50%;
+  transform: translateX(-50%);
+  justify-content: space-between;
+  width: 90%;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
 `;

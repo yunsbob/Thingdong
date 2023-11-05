@@ -7,7 +7,6 @@ import { modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
 import { useAtom } from 'jotai';
 import { useBuyObject } from '@/apis/Inventory/Mutations/useBuyObject';
 
-
 const PurchaseChek = () => {
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
   const [selectedItem, ] = useAtom(selectedItemAtom);
