@@ -11,7 +11,7 @@ import FriendSearchPage from '@/pages/Friend/Search/FriendSearchPage';
 import SignUpPage from '@/pages/SignUp/SignUpPage';
 import SplashPage from '@/pages/Splash/SplashPage';
 import LoginPage from '@/pages/Login/LoginPage';
-
+import FriendRoomPage from '@/pages/FriendRoom/FriendRoomPage';
 const router = createBrowserRouter([
   {
     path: PATH.ROOT,
@@ -46,6 +46,7 @@ const router = createBrowserRouter([
   { path: PATH.SIGNUP, element: <SignUpPage /> },
   { path: PATH.SPLASH, element: <SplashPage /> },
   { path: PATH.LOGIN, element: <LoginPage /> },
+  { path: PATH.FRIENDROOM, element: <FriendRoomPage friendId={''} /> }, //TODO: 여기 friendId값 넘길거임...(외부에서)
 ]);
 
 const AppRouter = () => {

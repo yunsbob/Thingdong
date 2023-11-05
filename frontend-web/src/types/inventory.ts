@@ -28,3 +28,19 @@ export interface UnboxingItemProps {
 export interface UnboxingProps {
   unBoxThingList: InventoryItemProps[];
 }
+
+// roomInventory
+export interface RoomInventoryItemProps {
+  userObjectId: number;
+  objectImagePath: string;
+  objectStatus: 'Y' | 'N';
+}
+
+export interface RoomInventoryData {
+  furnitureList: RoomInventoryItemProps[];
+  homeApplianceList: RoomInventoryItemProps[];
+  propList: RoomInventoryItemProps[];
+  floorList: RoomInventoryItemProps[];
+  smartThingsList: RoomInventoryItemProps[];
+  unBoxThingList: RoomInventoryItemProps[];
+}

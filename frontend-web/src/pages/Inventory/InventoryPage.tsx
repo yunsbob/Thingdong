@@ -13,14 +13,13 @@ import { useAtom } from 'jotai';
 import { modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
 import { Category, InventoryItemProps, InventoryData } from '@/types/inventory';
 import { useGetUserInfo } from '@/apis/User/Queries/useGetUserInfo';
-
+import { startTransition } from 'react';
 
 const InventoryPage = () => {
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [, setModalOpen] = useAtom(modalOpenAtom);
   const [selectedItem, setSelectedItem] = useAtom(selectedItemAtom);
   const { thingAmount } = useGetUserInfo();
-  console.log(thingAmount, '띵얼마?');
   
   const { 
     furnitureList, 
@@ -32,7 +31,11 @@ const InventoryPage = () => {
   } = useGetInventory() as InventoryData;
   
   const navigate = useNavigate();
-
+  const handleThingStory = () => {
+    startTransition(() => {
+      navigate('/thingStory')
+    });
+  }
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
   };
@@ -40,14 +43,6 @@ const InventoryPage = () => {
     setSelectedItem(item);
     setModalOpen(true);
   };
-  console.log(
-    furnitureList,
-    homeApplianceList,
-    propList,
-    floorList,
-    smartThingsList,
-    unBoxThingList
-  );
   const renderItems = () => {
     const categoryDataMap: Record<Category, InventoryItemProps[]> = {
       '가구': furnitureList,
@@ -60,7 +55,7 @@ const InventoryPage = () => {
 
     return categoryDataMap[activeCategory!].map((item, index) => (
       <InventoryItem
-        key={index}
+        key={item.userObjectId}
         price={item.objectThing}
         isOwned={item.objectStatus === 'Y'}
         imagePath={item.objectImagePath}
@@ -72,7 +67,7 @@ const InventoryPage = () => {
     <Background>
       {selectedItem && selectedItem.objectStatus === 'N' && <PurchaseChekModal />}
       <Header text="인벤토리">
-        <S.ThingBox onClick={() => navigate('/thingstory')}>
+        <S.ThingBox onClick={handleThingStory}>
           <Thing price={thingAmount} />
         </S.ThingBox>
       </Header>
