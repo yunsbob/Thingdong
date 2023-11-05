@@ -10,15 +10,13 @@ import { useLocation } from 'react-router-dom';
 
 const FriendRoomPage = () => { 
   const location = useLocation();
-  const { userId } = location.state || {}; // default to an empty object if state is undefined
-
-  // const nickName = friendId;
-  // console.log(nickName);
+  const { userId, nickname } = location.state || {};
 
   return (
     <>
       <Text>{userId}</Text>
-      {/* <FriendRoomScene /> */}
+      <Text>{nickname}</Text>
+      <FriendRoomScene />
     </>
   );
 };

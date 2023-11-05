@@ -60,8 +60,7 @@ const FriendBlock = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    // localStorage.setItem("friendId", userId)
-    navigate(PATH.FRIENDROOM, { state: { userId } })
+    navigate(PATH.FRIENDROOM, { state: { userId, nickname } })
   }
 
   return (
