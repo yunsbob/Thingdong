@@ -3,15 +3,14 @@ import * as S from '@/pages/Things/PAT/PATPage.styles';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { NoThings } from '@/pages/Things/PAT/NoThings/NoThings';
 import { thingStatusToKo } from '@/constants/thingStatusToKo';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '@/components/molecules/Modal/Modal';
 
-import addIcon from '@/assets/images/friend/add.png';
-import onIcon from '@/assets/images/things/on.png';
-import offIcon from '@/assets/images/things/off.png';
-import closeBtn from '@/assets/images/modal/close.png';
-import Button from '@/components/atoms/Button/Button';
 import { changeModalOpen } from '@/utils/changeModalOpen';
+import { PATModal } from '@/pages/Things/PAT/Modal/PATModal/PATModal';
+import { useLongPress } from '@/hooks/useLongPress';
+import { LightModal } from '@/pages/Things/PAT/Modal/LightModal/LightModal';
+import { IMAGES } from '@/constants/images';
 
 interface ThingsList {
   src: string;
@@ -78,58 +77,34 @@ const PATPage = () => {
     },
   ]);
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [patModalOpen, setPatModalOpen] = useState(false);
+
+  const onClickThingsBlock = (things: ThingsList, idx: number) => (e: any) => {
+    if (things.status !== 'OFFLINE') {
+      let newThings = [...thingsList];
+      newThings[idx] = { ...things, status: changeStatus(things.status) };
+
+      setThingsList(newThings);
+    }
+  };
+
+  const changeStatus = (status: 'ON' | 'OFF') => {
+    return status === 'ON' ? 'OFF' : 'ON';
+  };
+
+  const [lightModalOpen, setLightModalOpen] = useState(true);
+  const thingsBlockLongPress = useLongPress(() => {
+    console.log('클릭');
+  }, 1000);
 
   return (
     <S.PATPageContainer>
-      <S.NewThingsModal
-        isOpen={modalOpen}
-        onClose={() => changeModalOpen(modalOpen, setModalOpen)}
-        width="20rem"
-        height="auto"
-        $unit=""
-      >
-        <Image
-          src={closeBtn}
-          width={1.5}
-          height={1.5}
-          onClick={() => changeModalOpen(modalOpen, setModalOpen)}
-        />
-
-        <S.NewThingsModalHeader>
-          <S.NewThingsModalHeaderNew
-            color="danger"
-            size="body4"
-            fontWeight="bold"
-          >
-            New!
-          </S.NewThingsModalHeaderNew>
-          <Text size="body2" fontWeight="extraBold">
-            새로 불러온 스마트싱스 기기
-          </Text>
-        </S.NewThingsModalHeader>
-        <S.NewThings>
-          <Text size="body2" fontWeight="regular" $marginBottom="1.3rem">
-            쿠첸 트리플 전기밥솥
-          </Text>
-          <Text size="body2" fontWeight="regular" $marginBottom="1.3rem">
-            홀리 티메이커 전기티포트
-          </Text>
-          <Text size="body2" fontWeight="regular" $marginBottom="1.3rem">
-            삼성전자 초미세청정기
-          </Text>
-          <Button
-            size="small"
-            onClick={() => changeModalOpen(modalOpen, setModalOpen)}
-          >
-            확인
-          </Button>
-        </S.NewThings>
-      </S.NewThingsModal>
+      <LightModal modalOpen={lightModalOpen} setModalOpen={setLightModalOpen} />
+      <PATModal modalOpen={patModalOpen} setModalOpen={setPatModalOpen} />
       <S.ThingsGetButton
-        onClick={() => changeModalOpen(modalOpen, setModalOpen)}
+        onClick={() => changeModalOpen(patModalOpen, setPatModalOpen)}
       >
-        <Image src={addIcon} width={1} height={1} />
+        <Image src={IMAGES.FRIEND.ADD_ICON} width={1} height={1} />
         <Text size="body3" fontWeight="extraBold" color="blue">
           기기 불러오기
         </Text>
@@ -143,9 +118,15 @@ const PATPage = () => {
               <S.ThingsContainer
                 key={idx}
                 $isOffline={things.status === 'OFFLINE'}
+                onClick={onClickThingsBlock(things, idx)}
+                {...thingsBlockLongPress}
               >
                 <S.ThingStatusWrapper
-                  src={things.status === 'ON' ? onIcon : offIcon}
+                  src={
+                    things.status === 'ON'
+                      ? IMAGES.THIGNS.ON_ICON
+                      : IMAGES.THIGNS.OFF_ICON
+                  }
                   width={2.3}
                 />
                 <Image src={things.src} width={3} />

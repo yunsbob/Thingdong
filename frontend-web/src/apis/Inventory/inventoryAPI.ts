@@ -34,4 +34,4 @@ const getThingStory = async () => {
   }
 };
 
-export { getInventory, buyObject, deleteObject, getThingStory }
+export { getInventory, buyObject, deleteObject, getThingStory };

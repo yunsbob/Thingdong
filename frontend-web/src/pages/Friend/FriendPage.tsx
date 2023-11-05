@@ -4,16 +4,13 @@ import { Image } from '@/components/atoms/Image/Image';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { useGetFriends } from '@/apis/Friend/Queries/useGetFriends';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { PATH } from '@/constants/path';
 import { Background } from '@/components/atoms/Background/Background.style';
 import Modal from '@/components/molecules/Modal/Modal';
 import FriendList from '@/components/organisms/FriendList/FriendList';
 import { useState, Suspense } from 'react';
 
-import notification from '@/assets/images/friend/notification.png';
-import search from '@/assets/images/friend/search.png';
-import closeBtn from '@/assets/images/modal/close.png';
 import { changeModalOpen } from '@/utils/changeModalOpen';
+import { IMAGES } from '@/constants/images';
 
 const FriendListPage = () => {
   const { thingguAlarmList, thingguList } = useGetFriends();
@@ -33,7 +30,7 @@ const FriendListPage = () => {
         <S.FriendModalHeader>
           <Header text="띵구 요청" $marginHeaderBottom={1}>
             <Image
-              src={closeBtn}
+              src={IMAGES.MODAL.CLOSE_ICON}
               width={1.8}
               height={1.8}
               onClick={() => changeModalOpen(modalOpen, setModalOpen)}
@@ -53,14 +50,14 @@ const FriendListPage = () => {
         <Header text="띵구">
           <S.FriendHeaderIcons>
             <Image
-              src={search}
+              src={IMAGES.FRIEND.SEARCH_ICON}
               width={100}
               height={100}
               $unit="%"
               onClick={() => navigate('/friend/search')}
             />
             <Image
-              src={notification}
+              src={IMAGES.FRIEND.NOTIFICATION_ICON}
               width={100}
               height={100}
               $unit="%"

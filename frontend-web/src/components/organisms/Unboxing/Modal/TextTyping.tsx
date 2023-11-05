@@ -10,6 +10,7 @@ import {
   typingContentAtom,
 } from '@/states/unboxingModalStates';
 import { useAtom } from 'jotai';
+import { IMAGES } from '@/constants/images';
 
 const TextTyping = () => {
   const [typingContent, setTypingContent] = useAtom(typingContentAtom);
@@ -36,11 +37,7 @@ const TextTyping = () => {
   const isFilled = typingContent !== '';
   return (
     <Modal height={31} onClose={onModalClose} isOpen={modalOpen}>
-      <Image
-        src={require(`@/assets/images/inventory/typing.png`).default}
-        $unit={'px'}
-        height={220}
-      />
+      <Image src={IMAGES.INVENTORY.TYPING_IMAGE} $unit={'px'} height={220} />
       <Text
         size="body1"
         fontWeight="bold"

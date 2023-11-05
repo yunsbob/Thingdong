@@ -1,6 +1,7 @@
 import { Image } from '@/components/atoms/Image/Image';
 import { Text, TextProps } from '@/components/atoms/Text/Text.styles';
 import { ThingContainer } from '@/components/molecules/Thing/Thing.styles';
+import { IMAGES } from '@/constants/images';
 
 interface ThingProps extends TextProps {
   price: number;
@@ -11,7 +12,7 @@ const Thing = ({ price, onClick }: ThingProps) => {
   return (
     <ThingContainer onClick={onClick}>
       <Image
-        src={require('@/assets/images/thingStory/thing.png').default}
+        src={IMAGES.THING_STORY.THING_ICON}
         $unit={'px'}
         width={16}
         height={16}

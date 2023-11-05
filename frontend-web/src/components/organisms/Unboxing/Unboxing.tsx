@@ -8,9 +8,9 @@ import Complete from './Modal/Complete';
 import SendingList from './Modal/SendingList';
 import Check from './Modal/Check';
 import { UnboxingProps } from '@/types/inventory';
+import { IMAGES } from '@/constants/images';
 
-
-const Unboxing = ({unBoxThingList}: UnboxingProps) => {
+const Unboxing = ({ unBoxThingList }: UnboxingProps) => {
   const [, setModalOpen] = useAtom(modalOpenAtom);
   const [modalContent] = useAtom(modalContentAtom);
 
@@ -39,7 +39,7 @@ const Unboxing = ({unBoxThingList}: UnboxingProps) => {
     <>
       {renderModalContent()}
       <Image
-        src={require('@/assets/images/inventory/unboxing_enter.png').default}
+        src={IMAGES.INVENTORY.UNBOXING_ENTER_IMAGE}
         $unit={'%'}
         width={100}
         onClick={handleItemClick}

@@ -11,6 +11,7 @@ import {
 import * as SS from '@/pages/Inventory/InventoryPage.styles';
 import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryButtons';
 import RoomInventoryItem from '@/components/molecules/RoomInventoryItem/RoomInventoryItem';
+import { IMAGES } from '@/constants/images';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -84,16 +85,14 @@ const HomePage = () => {
         {isEditing ? (
           <>
             <Image
-              src={require('@/assets/images/room/back.png').default}
+              src={IMAGES.ROOM.BACK_ICON}
               $unit={'px'}
               width={40}
               height={40}
               onClick={handleEdit}
             />
               <Image
-                src={
-                  require('@/assets/images/room/edit-background.png').default
-                }
+                src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
                 $unit={'px'}
                 width={40}
                 height={40}

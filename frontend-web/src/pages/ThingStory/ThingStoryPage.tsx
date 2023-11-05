@@ -6,18 +6,18 @@ import Header from '@/components/molecules/Header/Header';
 import { useNavigate } from 'react-router-dom';
 import ThingStoryItem from '@/components/molecules/ThingStoryItem/ThingStoryItem';
 import { useGetUserInfo } from '@/apis/User/Queries/useGetUserInfo';
-
+import { IMAGES } from '@/constants/images';
 
 const ThingStoryPage = () => {
   const userInfo = useGetUserInfo();
   const navigate = useNavigate();
   return (
     <Background>
-        <Header text="띵스토리" hasBackButton={true}/>
+      <Header text="띵스토리" hasBackButton={true} />
       <S.ThingWrapper>
         <S.ThingContainer>
           <Image
-            src={require('@/assets/images/thingStory/thing.png').default}
+            src={IMAGES.THING_STORY.THING_ICON}
             $unit={'px'}
             width={37}
             height={37}

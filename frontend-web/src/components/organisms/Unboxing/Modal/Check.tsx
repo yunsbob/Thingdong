@@ -11,6 +11,7 @@ import { useAtom } from 'jotai';
 import { ButtonWrapper } from '@/pages/Inventory/InventoryPage.styles';
 import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';
 import Modal from '@/components/molecules/Modal/Modal';
+import { IMAGES } from '@/constants/images';
 
 const Check = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
@@ -24,13 +25,13 @@ const Check = () => {
   const handleConfirm = () => {
     setModalOpen(false);
     setModalContent('textTyping');
-    setTypingContent('')
+    setTypingContent('');
   };
   return (
     <Modal height={31} isOpen={modalOpen}>
       <S.ModalWrapper>
         <Image
-          src={require(`@/assets/images/inventory/Holding-gift.png`).default}
+          src={IMAGES.INVENTORY.HOLDING_GIFT_IMAGE}
           $unit={'px'}
           height={250}
         />
