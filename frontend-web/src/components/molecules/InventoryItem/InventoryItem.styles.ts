@@ -1,15 +1,16 @@
 import styled, { css } from 'styled-components';
 
-const InventoryItemContainer = styled.div<{ $isOwned: boolean }>`
+const InventoryItemContainer = styled.div<{ $isOwned: boolean; isRoom: 'Y' | 'N' }>`
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  width: 95%;
+  height: 95%;
   padding: 10px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.color.white};
+  ${({ theme, isRoom }) => isRoom === 'Y' ? `box-shadow: ${theme.shadow.shadowBtn};` : 'box-shadow: none;'}
   ${({ $isOwned }) =>
     !$isOwned &&
     css`
