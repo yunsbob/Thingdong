@@ -1,6 +1,5 @@
 import MyRoomScene from '@/components/molecules/MyRoom/MyRoom';
 import * as S from './Home.styles';
-import { useAtom } from 'jotai';
 import { useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
 import { useGetRoomInventory } from '@/apis/Room/Queries/useGetRoomInventory';
@@ -29,7 +28,7 @@ const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
-  const handleEdit = () => { 
+  const handleEdit = () => {
     setIsEditing(!isEditing);
   };
   const {
@@ -47,12 +46,12 @@ const HomePage = () => {
 
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
-      '가구': furnitureList,
-      '가전': homeApplianceList,
-      '소품': propList,
-      '바닥': floorList,
-      '띵즈': smartThingsList,
-      '언박띵': unBoxThingList,
+      가구: furnitureList,
+      가전: homeApplianceList,
+      소품: propList,
+      바닥: floorList,
+      띵즈: smartThingsList,
+      언박띵: unBoxThingList,
     };
 
     return categoryDataMap[activeCategory!].map(item => (
@@ -60,13 +59,28 @@ const HomePage = () => {
         key={item.userObjectId}
         isOwned={item.objectStatus === 'Y'}
         imagePath={item.objectImagePath}
+        isRoom={'Y'}
       />
     ));
+  };
+  const arrowButtons = [
+    { src: 'empty-button.png', direction: null },
+    { src: 'up-button.png', direction: 'up' },
+    { src: 'empty-button.png', direction: null },
+    { src: 'left-button.png', direction: 'left' },
+    { src: 'down-button.png', direction: 'down' },
+    { src: 'right-button.png', direction: 'right' },
+  ];
+  // 임시 방향 확인
+  const handleArrowClick = (direction: string | null) => {
+    if (direction) {
+      console.log(direction);
+    }
   };
 
   return (
     <>
-      <S.HeaderWrapper>
+      <S.HeaderButtonWrapper>
         {isEditing ? (
           <>
             <Image
@@ -76,16 +90,14 @@ const HomePage = () => {
               height={40}
               onClick={handleEdit}
             />
-            <S.ImageWrapper>
               <Image
                 src={
                   require('@/assets/images/room/edit-background.png').default
                 }
                 $unit={'px'}
-                width={30}
-                height={30}
+                width={40}
+                height={40}
               />
-            </S.ImageWrapper>
           </>
         ) : (
           <>
@@ -93,7 +105,50 @@ const HomePage = () => {
             <S.EditButton onClick={handleEdit}>수정</S.EditButton>
           </>
         )}
-      </S.HeaderWrapper>
+      </S.HeaderButtonWrapper>
+      {isEditing && (
+        <>
+          <S.BottomButtonWrapper>
+            <S.ArrowKeyWrapper>
+              {arrowButtons.map((button, index) => {
+                const imagePath = require(
+                  `@/assets/images/room/${button.src}`
+                ).default;
+                return (
+                  <Image
+                    key={button.src + index}
+                    src={imagePath}
+                    $unit={'px'}
+                    width={40}
+                    height={40}
+                    onClick={() => handleArrowClick(button.direction)}
+                    style={{
+                      visibility: button.direction ? 'visible' : 'hidden',
+                    }}
+                  />
+                );
+              })}
+            </S.ArrowKeyWrapper>
+            <S.ButtonWrapper>
+              <Image
+                src={
+                  require('@/assets/images/room/rotation-button.png').default
+                }
+                $unit={'px'}
+                width={40}
+                height={40}
+                $margin="0 10px 0 0"
+              />
+              <Image
+                src={require('@/assets/images/room/save-button.png').default}
+                $unit={'px'}
+                width={40}
+                height={40}
+              />
+            </S.ButtonWrapper>
+          </S.BottomButtonWrapper>
+        </>
+      )}
       <MyRoomScene isEditing={isEditing} />
       {isEditing && (
         <S.TempToast
@@ -105,6 +160,7 @@ const HomePage = () => {
             <InventoryButtons
               activeCategory={activeCategory}
               onCategoryClick={handleCategoryClick}
+              isRoom={'Y'}
             />
             <SS.InventoryItemWrapper>
               {activeCategory && renderItems()}
