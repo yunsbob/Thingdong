@@ -9,6 +9,7 @@ export const TempToast = styled(motion.div)`
   height: 60%;
   width: 100%;
   z-index: 3;
+  padding: 20px;
 `;
 
 export const EditButton = styled.div`

@@ -53,6 +53,7 @@ const InventoryButton = styled.button<InventoryButtonProps>`
   ${({ size = 'medium' }) => getSizeStyling(size)};
   ${({ option = 'deactivated'}) => getOptionStyling(option)};
   background-color: ${props => props.$backgroundColor};
+  box-shadow: ${({ theme }) => theme.shadow.shadowBtn};
 `;
 
 export { InventoryButton };

@@ -9,4 +9,13 @@ const getFriendsRoom = async (userId: string) => {
   }
 };
 
-export { getFriendsRoom };
+const getRoomInventory = async () => {
+  try {
+    const response = await instance.get('/objects/roomInventory');
+    return response.data;
+  } catch {
+    throw new Error('get roomInventory error');
+  }
+};
+
+export { getFriendsRoom, getRoomInventory };
