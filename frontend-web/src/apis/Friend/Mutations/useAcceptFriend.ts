@@ -1,4 +1,4 @@
-import { acceptFriend } from '@/apis/Friend/FriendAPI';
+import { acceptFriend } from '@/apis/Friend/friendAPI';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useAcceptFriend = () => {
