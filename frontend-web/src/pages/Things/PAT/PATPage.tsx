@@ -1,13 +1,17 @@
 import { Image } from '@/components/atoms/Image/Image';
 import * as S from '@/pages/Things/PAT/PATPage.styles';
-
-import addIcon from '@/assets/images/friend/add.png';
 import { Text } from '@/components/atoms/Text/Text.styles';
-
-import onIcon from '@/assets/images/things/on.png';
-import offIcon from '@/assets/images/things/off.png';
 import { NoThings } from '@/pages/Things/PAT/NoThings/NoThings';
 import { thingStatusToKo } from '@/constants/thingStatusToKo';
+import { useState } from 'react';
+import Modal from '@/components/molecules/Modal/Modal';
+
+import addIcon from '@/assets/images/friend/add.png';
+import onIcon from '@/assets/images/things/on.png';
+import offIcon from '@/assets/images/things/off.png';
+import closeBtn from '@/assets/images/modal/close.png';
+import Button from '@/components/atoms/Button/Button';
+import { changeModalOpen } from '@/utils/changeModalOpen';
 
 interface ThingsList {
   src: string;
@@ -17,7 +21,7 @@ interface ThingsList {
 }
 
 const PATPage = () => {
-  const thingsList: ThingsList[] = [
+  const [thingsList, setThingsList] = useState<ThingsList[]>([
     {
       src: 'https://thingdong.com/images/dummythings1.png',
       status: 'ON',
@@ -72,10 +76,57 @@ const PATPage = () => {
       isSensor: 'Y',
       name: '문열림센서',
     },
-  ];
+  ]);
+
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
-    <div style={{ height: '100%', position: 'relative' }}>
-      <S.ThingsGetButton>
+    <S.PATPageContainer>
+      <S.NewThingsModal
+        isOpen={modalOpen}
+        onClose={() => changeModalOpen(modalOpen, setModalOpen)}
+        width="20rem"
+        height="auto"
+        unit=""
+      >
+        <Image
+          src={closeBtn}
+          width={1.5}
+          height={1.5}
+          onClick={() => changeModalOpen(modalOpen, setModalOpen)}
+        />
+
+        <S.NewThingsModalHeader size="body2" fontWeight="extraBold">
+          <S.NewThingsModalHeaderNew
+            color="danger"
+            size="body4"
+            fontWeight="bold"
+          >
+            New!
+          </S.NewThingsModalHeaderNew>
+          새로 불러온 스마트싱스 기기
+        </S.NewThingsModalHeader>
+        <S.NewThings>
+          <Text size="body2" fontWeight="regular" $marginBottom="1.3rem">
+            쿠첸 트리플 전기밥솥
+          </Text>
+          <Text size="body2" fontWeight="regular" $marginBottom="1.3rem">
+            홀리 티메이커 전기티포트
+          </Text>
+          <Text size="body2" fontWeight="regular" $marginBottom="1.3rem">
+            삼성전자 초미세청정기
+          </Text>
+          <Button
+            size="small"
+            onClick={() => changeModalOpen(modalOpen, setModalOpen)}
+          >
+            확인
+          </Button>
+        </S.NewThings>
+      </S.NewThingsModal>
+      <S.ThingsGetButton
+        onClick={() => changeModalOpen(modalOpen, setModalOpen)}
+      >
         <Image src={addIcon} width={1} height={1} />
         <Text size="body3" fontWeight="extraBold" color="blue">
           기기 불러오기
@@ -114,7 +165,7 @@ const PATPage = () => {
           })}
         </S.ThingsListContainer>
       )}
-    </div>
+    </S.PATPageContainer>
   );
 };
 
