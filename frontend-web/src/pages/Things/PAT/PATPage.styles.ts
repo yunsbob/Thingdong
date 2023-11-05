@@ -73,7 +73,7 @@ const NewThingsModal = styled(Modal)`
   }
 `;
 
-const NewThingsModalHeader = styled(Text)`
+const NewThingsModalHeader = styled.div`
   padding: 1.3rem 1.3rem 0rem;
   position: relative;
 `;
