@@ -59,7 +59,7 @@ const HomePage = () => {
         key={item.userObjectId}
         isOwned={item.objectStatus === 'Y'}
         imagePath={item.objectImagePath}
-        isRoom={'Y'}
+        $isRoom={'Y'}
       />
     ));
   };
@@ -160,7 +160,7 @@ const HomePage = () => {
             <InventoryButtons
               activeCategory={activeCategory}
               onCategoryClick={handleCategoryClick}
-              isRoom={'Y'}
+              $isRoom={'Y'}
             />
             <SS.InventoryItemWrapper>
               {activeCategory && renderItems()}
