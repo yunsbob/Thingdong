@@ -17,6 +17,7 @@ const FriendRoomPage = () => {
         ></S.BackButton>
         <S.FriendRoomName>{nickname}네 방</S.FriendRoomName>
       </S.FriendRoomHeader>
+      {/* TODO: 각 띵구 userId로 방 상태 DB로부터 불러와야함 */}
       <FriendRoomScene />
     </>
   );
