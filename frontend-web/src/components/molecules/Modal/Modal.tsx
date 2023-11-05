@@ -6,6 +6,7 @@ export interface ModalProps extends S.ModalStyleProps {
   children: ReactNode;
   onClose?: () => void;
   isOpen: boolean;
+  className?: string;
 }
 
 const Modal = ({
@@ -16,6 +17,7 @@ const Modal = ({
   unit = 'rem',
   onClose,
   isOpen,
+  className,
   children,
 }: ModalProps) => {
   return (
@@ -25,6 +27,7 @@ const Modal = ({
           <S.ModalWrapper>
             <S.ModalBackground onClick={onClose} />
             <S.ModalContainer
+              className={className}
               width={width}
               height={height}
               $borderRadius={$borderRadius}

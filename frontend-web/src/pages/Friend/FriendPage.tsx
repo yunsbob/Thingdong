@@ -13,21 +13,18 @@ import { useState, Suspense } from 'react';
 import notification from '@/assets/images/friend/notification.png';
 import search from '@/assets/images/friend/search.png';
 import closeBtn from '@/assets/images/modal/close.png';
-import { Spinner } from '@/components/molecules/Spinner/Spinner';
+import { changeModalOpen } from '@/utils/changeModalOpen';
 
 const FriendListPage = () => {
   const { thingguAlarmList, thingguList } = useGetFriends();
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const changeModalOpen = () => {
-    setModalOpen(!modalOpen);
-  };
   return (
     <Background>
       <Modal
         isOpen={modalOpen}
-        onClose={changeModalOpen}
+        onClose={() => changeModalOpen(modalOpen, setModalOpen)}
         width={84}
         height={50}
         unit="%"
@@ -39,7 +36,7 @@ const FriendListPage = () => {
               src={closeBtn}
               width={1.8}
               height={1.8}
-              onClick={changeModalOpen}
+              onClick={() => changeModalOpen(modalOpen, setModalOpen)}
             />
           </Header>
         </S.FriendModalHeader>
@@ -67,7 +64,7 @@ const FriendListPage = () => {
               width={100}
               height={100}
               $unit="%"
-              onClick={changeModalOpen}
+              onClick={() => changeModalOpen(modalOpen, setModalOpen)}
             />
           </S.FriendHeaderIcons>
         </Header>

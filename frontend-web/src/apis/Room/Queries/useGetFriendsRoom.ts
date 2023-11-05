@@ -1,4 +1,4 @@
-import { getFriendsRoom } from '@/apis/Room/RoomAPI';
+import { getFriendsRoom } from '@/apis/Room/roomAPI';
 import { useQuery } from '@tanstack/react-query';
 
 /**

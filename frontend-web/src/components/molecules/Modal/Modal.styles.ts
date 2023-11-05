@@ -1,11 +1,11 @@
 import { styled } from 'styled-components';
 
 export interface ModalStyleProps {
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   $borderRadius?: number;
   $padding?: string;
-  unit?: 'px' | 'rem' | 'em' | '%';
+  unit?: 'px' | 'rem' | 'em' | '%' | '';
 }
 
 const ModalWrapper = styled.div`
