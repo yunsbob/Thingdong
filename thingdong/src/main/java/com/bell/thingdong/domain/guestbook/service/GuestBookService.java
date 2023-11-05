@@ -35,7 +35,7 @@ public class GuestBookService {
 		GuestBook guestBook = GuestBook.builder().userEmail(guestBookReq.getUserId()).writerEmail(email).content(guestBookReq.getContent()).build();
 
 		user.setThingAmount(15L);
-		thingHistoryService.createThingHistory(user.getId(), "방명록 작성", 15L);
+		thingHistoryService.createThingHistory(user, "방명록 작성", 15L);
 
 		guestBookRepository.save(guestBook);
 	}

@@ -27,7 +27,7 @@ public class UserRoomService {
 	public void createRoom(String email) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-		UserRoom userRoom = UserRoom.builder().userId(user.getId()).roomColor("000000").build();
+		UserRoom userRoom = UserRoom.builder().user(user).roomColor("000000").build();
 
 		userRoomRepository.save(userRoom);
 	}
