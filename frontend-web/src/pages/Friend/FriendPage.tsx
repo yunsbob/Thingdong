@@ -27,7 +27,7 @@ const FriendListPage = () => {
         onClose={() => changeModalOpen(modalOpen, setModalOpen)}
         width={84}
         height={50}
-        unit="%"
+        $unit="%"
         $padding={'1.2rem 0rem 0.2rem 0.7rem'}
       >
         <S.FriendModalHeader>

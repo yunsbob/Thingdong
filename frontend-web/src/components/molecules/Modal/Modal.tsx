@@ -14,7 +14,7 @@ const Modal = ({
   height,
   $padding = '2.25rem',
   $borderRadius = 16,
-  unit = 'rem',
+  $unit = 'rem',
   onClose,
   isOpen,
   className,
@@ -32,7 +32,7 @@ const Modal = ({
               height={height}
               $borderRadius={$borderRadius}
               $padding={$padding}
-              unit={unit}
+              $unit={$unit}
               onClick={(e: any) => {
                 e.stopPropagation();
               }}

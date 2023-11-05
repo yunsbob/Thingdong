@@ -87,7 +87,7 @@ const PATPage = () => {
         onClose={() => changeModalOpen(modalOpen, setModalOpen)}
         width="20rem"
         height="auto"
-        unit=""
+        $unit=""
       >
         <Image
           src={closeBtn}
@@ -96,7 +96,7 @@ const PATPage = () => {
           onClick={() => changeModalOpen(modalOpen, setModalOpen)}
         />
 
-        <S.NewThingsModalHeader size="body2" fontWeight="extraBold">
+        <S.NewThingsModalHeader>
           <S.NewThingsModalHeaderNew
             color="danger"
             size="body4"
@@ -104,7 +104,9 @@ const PATPage = () => {
           >
             New!
           </S.NewThingsModalHeaderNew>
-          새로 불러온 스마트싱스 기기
+          <Text size="body2" fontWeight="extraBold">
+            새로 불러온 스마트싱스 기기
+          </Text>
         </S.NewThingsModalHeader>
         <S.NewThings>
           <Text size="body2" fontWeight="regular" $marginBottom="1.3rem">

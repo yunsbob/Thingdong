@@ -5,7 +5,7 @@ export interface ModalStyleProps {
   height?: number | string;
   $borderRadius?: number;
   $padding?: string;
-  unit?: 'px' | 'rem' | 'em' | '%' | '';
+  $unit?: 'px' | 'rem' | 'em' | '%' | '';
 }
 
 const ModalWrapper = styled.div`
@@ -33,8 +33,8 @@ const ModalBackground = styled.div`
 `;
 
 const ModalContainer = styled.div<ModalStyleProps>`
-  width: ${props => `${props.width}${props.unit}`};
-  height: ${props => `${props.height}${props.unit}`};
+  width: ${props => `${props.width}${props.$unit}`};
+  height: ${props => `${props.height}${props.$unit}`};
   position: fixed;
   border-radius: ${props => `${props.$borderRadius}px`};
   text-align: center;
