@@ -1,4 +1,4 @@
-import { getRoomInventory } from '@/apis/Room/RoomAPI';
+import { getRoomInventory } from '@/apis/Room/roomAPI';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetRoomInventory = () => {

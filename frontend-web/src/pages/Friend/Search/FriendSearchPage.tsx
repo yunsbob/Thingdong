@@ -17,15 +17,12 @@ const FriendSearchPage = () => {
   const [searchName, setSearchName] = useState('');
   const { data, refetch } = useGetUsers(searchName);
 
-  const [users, setUsers] = useState([]);
-
   const onChangeName = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchName(e.target.value);
   };
 
   useEffect(() => {
     refetch();
-    setUsers(data);
   }, [searchName]);
 
   const debounceOnChange = useDebounce(onChangeName, 200);
