@@ -60,14 +60,13 @@ const FriendBlock = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log(userId);
-    navigate(PATH.FRIENDROOM)
+    navigate(PATH.FRIENDROOM, { state: { userId, nickname } })
   }
 
   return (
-    <S.FriendBlockContainer $backgroundColor={$backgroundColor} onClick={handleClick}>
+    <S.FriendBlockContainer $backgroundColor={$backgroundColor} >
       <S.FriendBlockProfile>
-        <Image src={imageSrcs[userId.length % 3]} width={3} height={3} />
+        <Image src={imageSrcs[userId.length % 3]} width={3} height={3} onClick={handleClick}/>
         <S.FriendBlockText
           size={$nickNameFontSize}
           fontWeight={$nickNameFontWeight}
