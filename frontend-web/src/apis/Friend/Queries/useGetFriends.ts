@@ -1,4 +1,4 @@
-import { getFriends } from '@/apis/Friend/FriendAPI';
+import { getFriends } from '@/apis/Friend/friendAPI';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetFriends = () => {

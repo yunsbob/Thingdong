@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { buyObject } from '../InventoryAPI';
+import { buyObject } from '../inventoryAPI';
 
 const useBuyObject = () => {
   const queryClient = useQueryClient();
