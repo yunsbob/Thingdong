@@ -46,7 +46,7 @@ const router = createBrowserRouter([
   { path: PATH.SIGNUP, element: <SignUpPage /> },
   { path: PATH.SPLASH, element: <SplashPage /> },
   { path: PATH.LOGIN, element: <LoginPage /> },
-  { path: PATH.FRIENDROOM, element: <FriendRoomPage friendId={''} /> }, //TODO: 여기 friendId값 넘길거임...(외부에서)
+  { path: PATH.FRIENDROOM, element: <FriendRoomPage /> }, //TODO: 여기 friendId값 넘길거임...(외부에서)
 ]);
 
 const AppRouter = () => {

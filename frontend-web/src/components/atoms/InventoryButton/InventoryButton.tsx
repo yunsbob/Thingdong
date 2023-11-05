@@ -7,10 +7,11 @@ export interface InventoryButtonProps extends React.ButtonHTMLAttributes<HTMLBut
   size?: 'large' | 'medium' | 'small' | 'extraSmall';
   $backgroundColor?: string;
   $fontWeight?: number;
+  $isRoom: 'Y' | 'N';
 }
 
 const InventoryButton = forwardRef<HTMLButtonElement, InventoryButtonProps>(
-  ({ option, size, $backgroundColor, $fontWeight, children, ...rest }, ref) => {
+  ({ option, size, $backgroundColor, $fontWeight, children, $isRoom, ...rest }, ref) => {
     return (
       <S.InventoryButton
         ref={ref}
@@ -18,6 +19,7 @@ const InventoryButton = forwardRef<HTMLButtonElement, InventoryButtonProps>(
         size={size}
         $backgroundColor={$backgroundColor}
         $fontWeight={$fontWeight}
+        $isRoom={$isRoom}
         {...rest}
       >
         {children}
