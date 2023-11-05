@@ -1,7 +1,7 @@
 import { Image } from '@/components/atoms/Image/Image';
 import { Text, TextProps } from '@/components/atoms/Text/Text.styles';
 import * as S from '@/components/molecules/Header/Header.styles';
-import back from '@/assets/images/friend/search/back.png';
+import { IMAGES } from '@/constants/images';
 import { useNavigate } from 'react-router-dom';
 interface HeaderProps extends TextProps {
   text: string;
@@ -21,7 +21,12 @@ const Header = ({
   return (
     <S.HeaderContainer $marginBottom={$marginHeaderBottom}>
       <S.HeaderWrapper>
-        {hasBackButton && <Image src={back} onClick={() => navigate(-1)} />}
+        {hasBackButton && (
+          <Image
+            src={IMAGES.FRIEND.SEARCH.BACK_ICON}
+            onClick={() => navigate(-1)}
+          />
+        )}
         <Text size="body1" fontWeight="bold">
           {text}
         </Text>

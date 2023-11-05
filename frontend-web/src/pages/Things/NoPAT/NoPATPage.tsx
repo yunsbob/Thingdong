@@ -1,14 +1,18 @@
 import Header from '@/components/molecules/Header/Header';
 import * as S from '@/pages/Things/NoPAT/NoPATPage.styles';
 
-import handIcon from '@/assets/images/things/hand-token.png';
 import Button from '@/components/atoms/Button/Button';
 import { Text } from '@/components/atoms/Text/Text.styles';
+import { IMAGES } from '@/constants/images';
 
 const NoPATPage = () => {
   return (
     <S.ThingsContents>
-      <S.HandImage src={handIcon} width={12} height={10} />
+      <S.HandImage
+        src={IMAGES.THIGNS.HAND_TOKEN_IMAGE}
+        width={12}
+        height={10}
+      />
       <S.PATMessageContainer>
         <S.BlueDotWrapper>
           <div>
