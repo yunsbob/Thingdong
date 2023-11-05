@@ -33,7 +33,7 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 		}
 		userRoomRes.setUserObjectList(userObjectRoomDtoList);
 		userRoomRes.setRoomColor(userRoomOne.getRoomColor());
-		userRoomRes.setUserId(String.valueOf(userRoomOne.getUserId()));
+		userRoomRes.setUserId(String.valueOf(userRoomOne.getUser()));
 		userRoomRes.setRoomId(userRoomOne.getRoomId());
 
 		return userRoomRes;
@@ -41,11 +41,11 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 
 	@Override
 	public List<Long> findRoomIdByUserId(Long userId) {
-		return jpaQueryFactory.select(userRoom.roomId).from(userRoom).where(userRoom.userId.eq(userId)).orderBy(userRoom.roomId.asc()).fetch();
+		return jpaQueryFactory.select(userRoom.roomId).from(userRoom).where(userRoom.user.id.eq(userId)).orderBy(userRoom.roomId.asc()).fetch();
 	}
 
 	private BooleanExpression userIdEq(Long userId) {
-		return userId == null ? null : userRoom.userId.eq(userId);
+		return userId == null ? null : userRoom.user.id.eq(userId);
 	}
 
 	private BooleanExpression roomIdEq(Long roomId) {

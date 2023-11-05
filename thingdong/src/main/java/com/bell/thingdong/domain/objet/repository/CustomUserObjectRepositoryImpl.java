@@ -23,7 +23,7 @@ public class CustomUserObjectRepositoryImpl implements CustomUserObjectRepositor
 	public List<FindObjectDto> findObjectByUserIdAndObjectStatusAndObjectCategory(Long userId, UserObjectStatus userObjectStatus, ObjectCategory objectCategory) {
 		List<UserObject> userObjects = jpaQueryFactory.selectFrom(userObject)
 		                                              .join(userObject.objet, objet)
-		                                              .where(userObject.userId.eq(userId), userObjectStatusNe(userObjectStatus), objectCategoryNe(objectCategory))
+		                                              .where(userObject.user.id.eq(userId), userObjectStatusNe(userObjectStatus), objectCategoryNe(objectCategory))
 		                                              .fetch();
 
 		List<FindObjectDto> findObjectList = new ArrayList<>();

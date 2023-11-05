@@ -47,7 +47,7 @@ public class ObjetService {
 			throw new ObjectIsExpensiveException();
 
 		user.setThingAmount(userObject.getObjet().getObjectThing() * -1);
-		thingHistoryService.createThingHistory(user.getId(), "띵 구매", userObject.getObjet().getObjectThing() * -1);
+		thingHistoryService.createThingHistory(user, "띵 구매", userObject.getObjet().getObjectThing() * -1);
 
 		userObject.setUserObjectStatus(UserObjectStatus.Inventory);
 	}
