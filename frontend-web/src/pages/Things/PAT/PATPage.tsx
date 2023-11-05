@@ -3,7 +3,7 @@ import * as S from '@/pages/Things/PAT/PATPage.styles';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { NoThings } from '@/pages/Things/PAT/NoThings/NoThings';
 import { thingStatusToKo } from '@/constants/thingStatusToKo';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '@/components/molecules/Modal/Modal';
 
 import addIcon from '@/assets/images/friend/add.png';
@@ -11,6 +11,8 @@ import onIcon from '@/assets/images/things/on.png';
 import offIcon from '@/assets/images/things/off.png';
 import { changeModalOpen } from '@/utils/changeModalOpen';
 import { PATModal } from '@/pages/Things/PAT/PATModal/PATModal';
+import { longClickEventRef } from '@/utils/longClickEvent';
+import { useLongPress } from '@/hooks/useLongPress';
 
 interface ThingsList {
   src: string;
@@ -78,6 +80,19 @@ const PATPage = () => {
   ]);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const onClickThingsBlock = (things: ThingsList, idx: number) => (e: any) => {
+    if (things.status !== 'OFFLINE') {
+      let newThings = [...thingsList];
+      newThings[idx] = { ...things, status: changeStatus(things.status) };
+
+      setThingsList(newThings);
+    }
+  };
+
+  const changeStatus = (status: 'ON' | 'OFF') => {
+    return status === 'ON' ? 'OFF' : 'ON';
+  };
+
   return (
     <S.PATPageContainer>
       <PATModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
@@ -98,6 +113,7 @@ const PATPage = () => {
               <S.ThingsContainer
                 key={idx}
                 $isOffline={things.status === 'OFFLINE'}
+                onClick={onClickThingsBlock(things, idx)}
               >
                 <S.ThingStatusWrapper
                   src={things.status === 'ON' ? onIcon : offIcon}
