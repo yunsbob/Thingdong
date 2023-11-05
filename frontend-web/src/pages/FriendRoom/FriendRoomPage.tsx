@@ -26,18 +26,20 @@ const FriendRoomPage = () => {
         >
           <Image src={guestbook} width={21} />
           <S.WriteArea>
-            <Text size="body2" fontWeight="bold" $lineHeight="1.5">
-              이 편지는 영국에서 최초로 시작되어 일년에 한 바퀴를 돌면서 받는
-              사람에게 행운을 주었습니당
-            </Text>
+            <S.ContentArea>
+              <Text size="body2" fontWeight="bold" $lineHeight="1.5">
+                이 편지는 영국에서 최초로 시작되어 일년에 한 바퀴를 돌면서 받는
+                사람에게 행운을 주었습니당
+              </Text>
+            </S.ContentArea>
+
             <S.WriterArea>
-          <Text size="body2" fontWeight="bold" color="grey1">
-            작성자 
-            </Text>
-          </S.WriterArea>
+              <Text size="body3" fontWeight="bold" color="grey1">
+                2023.11.04 똑똑한고구마
+              </Text>
+            </S.WriterArea>
           </S.WriteArea>
-          
-          <Button>작성하기</Button>
+          <Button $margin="20px 0">작성하기</Button>
         </S.GuestbookModal>
 
         <S.BackButton
@@ -49,11 +51,15 @@ const FriendRoomPage = () => {
       {/* TODO: 각 띵구 userId로 방 상태 DB로부터 불러와야함 */}
       {/* 임시 방명록용 버튼 띄우기 */}
       <S.TempGuestbookBtnWrapper>
-        <Button onClick={() => changeModalOpen(modalOpen, setModalOpen)}>
-          방명록 작성
+        <Button
+          onClick={() => changeModalOpen(modalOpen, setModalOpen)}
+          option="ghost"
+          size="small"
+        >
+          방명록 작성하기
         </Button>
       </S.TempGuestbookBtnWrapper>
-      {/* <FriendRoomScene /> */}
+      <FriendRoomScene />
     </>
   );
 };
