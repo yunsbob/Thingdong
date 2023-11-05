@@ -12,6 +12,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -27,7 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "un_box_thing_history")
+@Table(name = "un_box_thing_history", indexes = {@Index(name = "idx_unboxthinghistory_user_id", columnList = "user_id")})
 public class UnBoxThingHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +43,7 @@ public class UnBoxThingHistory {
 	private Long userId;
 
 	@Column(name = "object_name", nullable = false)
-	private String objectName;
+	private String objetName;
 
 	@CreatedDate
 	@Column(name = "purchase_day", updatable = false)

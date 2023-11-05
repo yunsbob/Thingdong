@@ -11,6 +11,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "thing_history")
+@Table(name = "thing_history", indexes = {@Index(name = "idx_thinghistory_user_id", columnList = "user_id")})
 public class ThingHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+	@Column(name = "thing_history_id", nullable = false)
+	private Long thingHistoryId;
 
 	@Column(name = "user_id", nullable = false)
 	private Long userId;
