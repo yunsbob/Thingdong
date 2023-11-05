@@ -2,7 +2,6 @@ import { Background } from '@/components/atoms/Background/Background.style';
 import Header from '@/components/molecules/Header/Header';
 import { Spinner } from '@/components/molecules/Spinner/Spinner';
 import * as S from '@/pages/Friend/Search/FriendSearchPage.styles';
-import searchBtn from '@/assets/images/friend/search/searchBtn.png';
 import { Image } from '@/components/atoms/Image/Image';
 import Input from '@/components/atoms/Input/Input';
 import theme from '@/styles/theme';
@@ -12,6 +11,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { getUsers } from '@/apis/User/userAPI';
 import FriendList from '@/components/organisms/FriendList/FriendList';
 import { useGetUsers } from '@/apis/User/Queries/useGetUsers';
+import { IMAGES } from '@/constants/images';
 
 const FriendSearchPage = () => {
   const [searchName, setSearchName] = useState('');
@@ -38,7 +38,11 @@ const FriendSearchPage = () => {
               onChange={debounceOnChange}
               value={searchName}
             />
-            <S.FriendSearchButton src={searchBtn} width={1.2} height={1.2} />
+            <S.FriendSearchButton
+              src={IMAGES.FRIEND.SEARCH.SEARCH_ICON}
+              width={1.2}
+              height={1.2}
+            />
           </S.FriendSearchInputContainer>
           <FriendList friends={data} $paddidngBottom={6} />
         </S.FriendSearchContainer>

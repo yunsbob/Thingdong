@@ -6,6 +6,7 @@ import { useAtom } from 'jotai';
 import styled from 'styled-components';
 import FriendList from '../../FriendList/FriendList';
 import { useGetFriends } from '@/apis/Friend/Queries/useGetFriends';
+import { IMAGES } from '@/constants/images';
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -34,10 +35,10 @@ const SendingList = () => {
   };
 
   return (
-    <Modal height={31} isOpen={modalOpen} $padding='28px'>
+    <Modal height={31} isOpen={modalOpen} $padding="28px">
       <HeaderWrapper>
         <Image
-          src={require('@/assets/images/friend/search/back.png').default}
+          src={IMAGES.FRIEND.SEARCH.BACK_ICON}
           $unit={'px'}
           width={12}
           height={22}
@@ -66,7 +67,7 @@ const SendingList = () => {
         </NoFriendTextContainer>
       ) : (
         <FriendWrapper>
-        <FriendList friends={thingguList} $isPresent='true'/>
+          <FriendList friends={thingguList} $isPresent="true" />
         </FriendWrapper>
       )}
     </Modal>

@@ -5,6 +5,7 @@ import Modal from '@/components/molecules/Modal/Modal';
 import { modalContentAtom, modalOpenAtom } from '@/states/unboxingModalStates';
 import { useAtom } from 'jotai';
 import { ImageWrapper } from './Opening.styles';
+import { IMAGES } from '@/constants/images';
 
 const Opening = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
@@ -18,7 +19,7 @@ const Opening = () => {
     <Modal height={31} isOpen={modalOpen}>
       <ImageWrapper>
         <Image
-          src={require(`@/assets/images/inventory/gift.png`).default}
+          src={IMAGES.INVENTORY.GIFT_IMAGE}
           $unit={'px'}
           height={250}
           onClick={handleConfirm}

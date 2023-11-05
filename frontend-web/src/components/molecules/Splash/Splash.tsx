@@ -8,17 +8,11 @@ import {
 } from './Splash.styles';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { Image } from '@/components/atoms/Image/Image';
-import room from '@/assets/images/splash/splash1_room.png';
-import write from '@/assets/images/splash/splash2_write.png';
-import things from '@/assets/images/splash/splash3_things.png';
-import inventory from '@/assets/images/splash/splash4_inventory.png';
-import unboxing1 from '@/assets/images/splash/splash5_unboxing_1.png';
-import unboxing2 from '@/assets/images/splash/splash5_unboxing_2.png';
-// import LandingScene from '@/pages/Landing/LandingPage';
-import { LandingScene } from '@/pages/Landing/LandingPage';
+import LandingScene from '@/pages/Landing/LandingPage';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 import { LandingButtonWrapper } from '@/pages/Landing/LandingPage.style';
+import { IMAGES } from '@/constants/images';
 
 export const Splash1 = () => {
   return (
@@ -35,7 +29,7 @@ export const Splash1 = () => {
           나만의 방을 꾸밀 수 있어요
         </Text>
       </SlideTextWrapper>
-      <Image src={room} width={22} />
+      <Image src={IMAGES.SPLASH.SPLASH1_ROOM_IMAGE} width={22} />
     </>
   );
 };
@@ -55,7 +49,7 @@ export const Splash2 = () => {
           </Text>
         </SlideTextWrapper>
       </SlideButtonWrapper>
-      <Image src={write} />
+      <Image src={IMAGES.SPLASH.SPLASH2_WRITE_IMAGE} />
     </>
   );
 };
@@ -78,7 +72,7 @@ export const Splash3 = () => {
         </Text>
       </SlideTextWrapper>
       <SlideImageWrapper>
-        <Image src={things} width={22} />
+        <Image src={IMAGES.SPLASH.SPLASH3_THINGS_IMAGE} width={22} />
       </SlideImageWrapper>
     </>
   );
@@ -99,7 +93,7 @@ export const Splash4 = () => {
         </Text>
       </SlideTextWrapper>
       <SlideImageWrapper>
-        <Image src={inventory} width={22} />
+        <Image src={IMAGES.SPLASH.SPLASH4_INVENTORY_IMAGE} width={22} />
       </SlideImageWrapper>
     </>
   );
@@ -119,8 +113,12 @@ export const Splash5 = () => {
           띵구에게 선물도 가능하답니다
         </Text>
       </SlideTextWrapper>
-      <Image src={unboxing1} width={22} $margin="0 0 26px auto" />
-      <Image src={unboxing2} width={22} />
+      <Image
+        src={IMAGES.SPLASH.SPLASH5_UNBOXING1_IMAGE}
+        width={22}
+        $margin="0 0 26px auto"
+      />
+      <Image src={IMAGES.SPLASH.SPLASH5_UNBOXING2_IMAGE} width={22} />
     </>
   );
 };

@@ -6,13 +6,11 @@ import { thingStatusToKo } from '@/constants/thingStatusToKo';
 import { useEffect, useRef, useState } from 'react';
 import Modal from '@/components/molecules/Modal/Modal';
 
-import addIcon from '@/assets/images/friend/add.png';
-import onIcon from '@/assets/images/things/on.png';
-import offIcon from '@/assets/images/things/off.png';
 import { changeModalOpen } from '@/utils/changeModalOpen';
-import { PATModal } from '@/pages/Things/PAT/PATModal/PATModal';
-import { longClickEventRef } from '@/utils/longClickEvent';
+import { PATModal } from '@/pages/Things/PAT/Modal/PATModal/PATModal';
 import { useLongPress } from '@/hooks/useLongPress';
+import { LightModal } from '@/pages/Things/PAT/Modal/LightModal/LightModal';
+import { IMAGES } from '@/constants/images';
 
 interface ThingsList {
   src: string;
@@ -78,7 +76,8 @@ const PATPage = () => {
       name: '문열림센서',
     },
   ]);
-  const [modalOpen, setModalOpen] = useState(false);
+
+  const [patModalOpen, setPatModalOpen] = useState(false);
 
   const onClickThingsBlock = (things: ThingsList, idx: number) => (e: any) => {
     if (things.status !== 'OFFLINE') {
@@ -93,13 +92,19 @@ const PATPage = () => {
     return status === 'ON' ? 'OFF' : 'ON';
   };
 
+  const [lightModalOpen, setLightModalOpen] = useState(true);
+  const thingsBlockLongPress = useLongPress(() => {
+    console.log('클릭');
+  }, 1000);
+
   return (
     <S.PATPageContainer>
-      <PATModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <LightModal modalOpen={lightModalOpen} setModalOpen={setLightModalOpen} />
+      <PATModal modalOpen={patModalOpen} setModalOpen={setPatModalOpen} />
       <S.ThingsGetButton
-        onClick={() => changeModalOpen(modalOpen, setModalOpen)}
+        onClick={() => changeModalOpen(patModalOpen, setPatModalOpen)}
       >
-        <Image src={addIcon} width={1} height={1} />
+        <Image src={IMAGES.FRIEND.ADD_ICON} width={1} height={1} />
         <Text size="body3" fontWeight="extraBold" color="blue">
           기기 불러오기
         </Text>
@@ -114,9 +119,14 @@ const PATPage = () => {
                 key={idx}
                 $isOffline={things.status === 'OFFLINE'}
                 onClick={onClickThingsBlock(things, idx)}
+                {...thingsBlockLongPress}
               >
                 <S.ThingStatusWrapper
-                  src={things.status === 'ON' ? onIcon : offIcon}
+                  src={
+                    things.status === 'ON'
+                      ? IMAGES.THIGNS.ON_ICON
+                      : IMAGES.THIGNS.OFF_ICON
+                  }
                   width={2.3}
                 />
                 <Image src={things.src} width={3} />

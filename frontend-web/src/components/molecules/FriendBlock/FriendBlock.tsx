@@ -1,14 +1,6 @@
 import { Image } from '@/components/atoms/Image/Image';
 import * as S from '@/components/molecules/FriendBlock/FriendBlock.styles';
 
-import redFace from '@/assets/images/friend/face-red.png';
-import greenFace from '@/assets/images/friend/face-green.png';
-import blueFace from '@/assets/images/friend/face-blue.png';
-import deleteIcon from '@/assets/images/friend/delete.png';
-import addIcon from '@/assets/images/friend/add.png';
-import confirmIcon from '@/assets/images/friend/alarm/confirm.png';
-import cancelIcon from '@/assets/images/friend/alarm/cancel.png';
-
 import { User } from '@/interfaces/user';
 import theme from '@/styles/theme';
 import { FontWeightType, TextSize } from '@/components/atoms/Text/Text.styles';
@@ -17,6 +9,7 @@ import { useRequestFriend } from '@/apis/Friend/Mutations/useRequestFriend';
 import { useAcceptFriend } from '@/apis/Friend/Mutations/useAcceptFriend';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
+import { IMAGES } from '@/constants/images';
 
 interface FriendBlockProps extends User {
   $backgroundColor?: string;
@@ -38,9 +31,13 @@ const FriendBlock = ({
   $userIdFontSize,
   $userIdFontWeight,
   $isPresent,
-  onClick
+  onClick,
 }: FriendBlockProps) => {
-  const imageSrcs = [redFace, greenFace, blueFace];
+  const imageSrcs = [
+    IMAGES.FRIEND.FACE.RED_ICON,
+    IMAGES.FRIEND.FACE.GREEN_ICON,
+    IMAGES.FRIEND.FACE.BLUE_ICON,
+  ];
 
   const deleteFriendMutation = useDeleteFriend();
   const deleteThinggu = (userId: string) => {
@@ -61,11 +58,14 @@ const FriendBlock = ({
 
   const handleClick = () => {
     console.log(userId);
-    navigate(PATH.FRIENDROOM)
-  }
+    navigate(PATH.FRIENDROOM);
+  };
 
   return (
-    <S.FriendBlockContainer $backgroundColor={$backgroundColor} onClick={handleClick}>
+    <S.FriendBlockContainer
+      $backgroundColor={$backgroundColor}
+      onClick={handleClick}
+    >
       <S.FriendBlockProfile>
         <Image src={imageSrcs[userId.length % 3]} width={3} height={3} />
         <S.FriendBlockText
@@ -86,7 +86,7 @@ const FriendBlock = ({
       {thingguStatus === 'N' ? (
         /* 띵구가 아닌 경우 */
         <Image
-          src={addIcon}
+          src={IMAGES.FRIEND.ADD_ICON}
           width={1.3}
           height={1.3}
           onClick={() => requestThinggu(userId)}
@@ -95,7 +95,7 @@ const FriendBlock = ({
         /* 띵구인 경우*/
         $isPresent === 'false' && (
           <Image
-            src={deleteIcon}
+            src={IMAGES.FRIEND.DELETE_ICON}
             width={1.3}
             height={1.3}
             onClick={() => deleteThinggu(userId)}
@@ -106,13 +106,13 @@ const FriendBlock = ({
           /* 띵구 요청인 경우 */
           <S.FriendAlarmBlockWrapper>
             <Image
-              src={confirmIcon}
+              src={IMAGES.FRIEND.ALARM.CONFIRM_ICON}
               width={1.3}
               height={1.3}
               onClick={() => acceptThinggu(userId)}
             />
             <Image
-              src={cancelIcon}
+              src={IMAGES.FRIEND.ALARM.CANCEL_ICON}
               width={1.3}
               height={1.3}
               onClick={() => deleteThinggu(userId)}

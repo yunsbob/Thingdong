@@ -1,18 +1,13 @@
 import Button from '@/components/atoms/Button/Button';
 import { Image } from '@/components/atoms/Image/Image';
 import { Text } from '@/components/atoms/Text/Text.styles';
-import * as S from '@/pages/Things/PAT/PATModal/PATModal.styles';
+import * as S from '@/pages/Things/PAT/Modal/PATModal/PATModal.styles';
 import { changeModalOpen } from '@/utils/changeModalOpen';
 import { useState } from 'react';
+import { ThingsModalProps } from '@/types/things';
+import { IMAGES } from '@/constants/images';
 
-import closeBtn from '@/assets/images/modal/close.png';
-
-interface PATModalProps {
-  modalOpen: boolean;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const PATModal = ({ modalOpen, setModalOpen }: PATModalProps) => {
+const PATModal = ({ modalOpen, setModalOpen }: ThingsModalProps) => {
   return (
     <S.NewThingsModal
       isOpen={modalOpen}
@@ -21,7 +16,7 @@ const PATModal = ({ modalOpen, setModalOpen }: PATModalProps) => {
       height="auto"
     >
       <Image
-        src={closeBtn}
+        src={IMAGES.MODAL.CLOSE_ICON}
         width={1.5}
         height={1.5}
         onClick={() => changeModalOpen(modalOpen, setModalOpen)}

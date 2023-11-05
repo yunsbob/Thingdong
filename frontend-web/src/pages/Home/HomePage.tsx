@@ -12,6 +12,7 @@ import {
 import * as SS from '@/pages/Inventory/InventoryPage.styles';
 import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryButtons';
 import RoomInventoryItem from '@/components/molecules/RoomInventoryItem/RoomInventoryItem';
+import { IMAGES } from '@/constants/images';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -29,7 +30,7 @@ const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
-  const handleEdit = () => { 
+  const handleEdit = () => {
     setIsEditing(!isEditing);
   };
   const {
@@ -47,12 +48,12 @@ const HomePage = () => {
 
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
-      '가구': furnitureList,
-      '가전': homeApplianceList,
-      '소품': propList,
-      '바닥': floorList,
-      '띵즈': smartThingsList,
-      '언박띵': unBoxThingList,
+      가구: furnitureList,
+      가전: homeApplianceList,
+      소품: propList,
+      바닥: floorList,
+      띵즈: smartThingsList,
+      언박띵: unBoxThingList,
     };
 
     return categoryDataMap[activeCategory!].map(item => (
@@ -70,7 +71,7 @@ const HomePage = () => {
         {isEditing ? (
           <>
             <Image
-              src={require('@/assets/images/room/back.png').default}
+              src={IMAGES.ROOM.BACK_ICON}
               $unit={'px'}
               width={40}
               height={40}
@@ -78,9 +79,7 @@ const HomePage = () => {
             />
             <S.ImageWrapper>
               <Image
-                src={
-                  require('@/assets/images/room/edit-background.png').default
-                }
+                src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
                 $unit={'px'}
                 width={30}
                 height={30}
