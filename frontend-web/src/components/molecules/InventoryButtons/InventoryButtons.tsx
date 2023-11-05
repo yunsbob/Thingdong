@@ -7,12 +7,12 @@ type Category = '가구' | '가전' | '소품' | '바닥' | '띵즈' | '언박�
 type InventoryButtonsProps = {
   activeCategory: Category | null;
   onCategoryClick: (category: Category) => void;
-  isRoom: 'Y' | 'N';
+  $isRoom: 'Y' | 'N';
 };
 
 const categories = ['가구', '가전', '소품', '바닥', '띵즈', '언박띵'] as const;
 
-const InventoryButtons: React.FC<InventoryButtonsProps> = ({ activeCategory, onCategoryClick, isRoom }) => {
+const InventoryButtons: React.FC<InventoryButtonsProps> = ({ activeCategory, onCategoryClick, $isRoom }) => {
   return (
     <InventoryButtonContainer>
       {categories.map((category) => (
@@ -20,7 +20,7 @@ const InventoryButtons: React.FC<InventoryButtonsProps> = ({ activeCategory, onC
           key={category}
           onClick={() => onCategoryClick(category as Category)}
           option={activeCategory === category ? 'activated' : 'deactivated'}
-          isRoom={isRoom}
+          $isRoom={$isRoom}
         >
           {category}
         </InventoryButton>

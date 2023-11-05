@@ -60,7 +60,7 @@ const InventoryPage = () => {
         price={item.objectThing}
         isOwned={item.objectStatus === 'Y'}
         imagePath={item.objectImagePath}
-        isRoom={'N'}
+        $isRoom={'N'}
         onClick={() => handleItemClick(item)}
       />
     ));
@@ -77,7 +77,7 @@ const InventoryPage = () => {
         <InventoryButtons
           activeCategory={activeCategory}
           onCategoryClick={handleCategoryClick}
-          isRoom={'N'}
+          $isRoom={'N'}
         />
         {activeCategory === '언박띵' ? (
           <Unboxing unBoxThingList={unBoxThingList}/>
