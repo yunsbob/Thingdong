@@ -109,11 +109,11 @@ public class UserService {
 
 		userRepository.save(build);
 
-		UserRoom userRoom = UserRoom.builder().userId(build.getId()).roomColor("000000").build();
+		UserRoom userRoom = UserRoom.builder().user(build).roomColor("000000").build();
 
 		List<Objet> objetList = objectRepository.findAllObjectNotUnBoxThingAndSmartThings();
 		for (Objet objet : objetList) {
-			UserObject userObject = UserObject.builder().userObjectStatus(UserObjectStatus.Shop).objet(objet).userId(build.getId()).build();
+			UserObject userObject = UserObject.builder().userObjectStatus(UserObjectStatus.Shop).objet(objet).user(build).build();
 			userObjectRepository.save(userObject);
 		}
 

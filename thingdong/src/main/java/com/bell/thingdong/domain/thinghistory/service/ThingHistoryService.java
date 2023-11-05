@@ -45,8 +45,8 @@ public class ThingHistoryService {
 	}
 
 	@Transactional
-	public void createThingHistory(Long userId, String content, Long changeThing) {
-		ThingHistory thingHistory = ThingHistory.builder().userId(userId).thingContent(content).changeThing(changeThing).build();
+	public void createThingHistory(User user, String content, Long changeThing) {
+		ThingHistory thingHistory = ThingHistory.builder().user(user).thingContent(content).changeThing(changeThing).build();
 
 		thingHistoryRepository.save(thingHistory);
 	}

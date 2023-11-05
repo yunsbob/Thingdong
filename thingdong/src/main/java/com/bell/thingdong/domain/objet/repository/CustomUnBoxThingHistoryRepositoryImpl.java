@@ -17,9 +17,9 @@ public class CustomUnBoxThingHistoryRepositoryImpl implements CustomUnBoxThingHi
 	@Override
 	public List<UnBoxThingHistoryDto> findByUserId(Long userId) {
 		return jpaQueryFactory.select(
-			                      Projections.bean(UnBoxThingHistoryDto.class, unBoxThingHistory.objet.objectImagePath, unBoxThingHistory.objetName, unBoxThingHistory.purchaseDay))
+			                      Projections.bean(UnBoxThingHistoryDto.class, unBoxThingHistory.objet.objectImagePath, unBoxThingHistory.objetName.as("objectName"), unBoxThingHistory.purchaseDay))
 		                      .from(unBoxThingHistory)
-		                      .where(unBoxThingHistory.userId.eq(userId))
+		                      .where(unBoxThingHistory.user.id.eq(userId))
 		                      .orderBy(unBoxThingHistory.purchaseDay.desc())
 		                      .fetch();
 	}
