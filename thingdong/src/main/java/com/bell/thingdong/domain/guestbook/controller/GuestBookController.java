@@ -1,7 +1,7 @@
 package com.bell.thingdong.domain.guestbook.controller;
 
 import java.security.Principal;
-import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,21 +48,10 @@ public class GuestBookController {
 		return ResponseEntity.ok().build();
 	}
 
-	@Operation(summary = "방명록 조회", description = "userID로 해당 유저의 첫번째 방명록을 조회한다.")
+	@Operation(summary = "방명록 조회", description = "userID로 해당 유저의 방명록을 조회한다.")
 	@GetMapping
-	public ResponseEntity<?> loadGuestBook(@RequestParam("userId") String userId) {
-		GuestBookRes guestBookRes = guestBookService.getGuestBook(userId, null);
-
-		if (guestBookRes == null)
-			return ResponseEntity.ok(new HashMap<>());
-		else
-			return ResponseEntity.ok(guestBookRes);
-	}
-
-	@Operation(summary = "방명록 조회", description = "guestBookID로 다음이나 이전의 방명록을 조회한다.")
-	@GetMapping("/detail")
-	public ResponseEntity<GuestBookRes> loadNextGuestBook(@RequestParam("guestBookId") Long guestBookId) {
-		GuestBookRes guestBookRes = guestBookService.getGuestBook(null, guestBookId);
+	public ResponseEntity<List<GuestBookRes>> loadGuestBook(@RequestParam("userId") String userId) {
+		List<GuestBookRes> guestBookRes = guestBookService.getGuestBookList(userId);
 
 		return ResponseEntity.ok(guestBookRes);
 	}

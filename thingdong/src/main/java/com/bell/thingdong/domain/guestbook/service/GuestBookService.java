@@ -31,8 +31,9 @@ public class GuestBookService {
 	@Transactional
 	public void createGuestBook(String email, GuestBookReq guestBookReq) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		User owner = userRepository.findByEmail(guestBookReq.getUserId()).orElseThrow(UserNotFoundException::new);
 
-		GuestBook guestBook = GuestBook.builder().userEmail(guestBookReq.getUserId()).writerEmail(email).content(guestBookReq.getContent()).build();
+		GuestBook guestBook = GuestBook.builder().owner(owner).writer(user).content(guestBookReq.getContent()).build();
 
 		user.setThingAmount(15L);
 		thingHistoryService.createThingHistory(user, "방명록 작성", 15L);
@@ -42,47 +43,18 @@ public class GuestBookService {
 
 	@Transactional
 	public void deleteGuestBook(String email, Long guestBookId) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		GuestBook guestBook = guestBookRepository.findById(guestBookId).orElseThrow(GuestBookNotFoundException::new);
 
-		if (guestBook.getUserEmail().equals(email) || guestBook.getWriterEmail().equals(email)) {
+		if (guestBook.getOwner().equals(user) || guestBook.getWriter().equals(user)) {
 			guestBookRepository.delete(guestBook);
 		} else {
 			throw new GuestBookUnauthorizedException();
 		}
 	}
 
-	public GuestBookRes getGuestBook(String email, Long guestBookId) {
-		GuestBookRes guestBookRes;
-		User writer;
-
-		if (email != null) {
-			guestBookRes = guestBookRepository.findGuestBookByUserIdOrGuestBookId(email, null);
-			if (guestBookRes == null)
-				return null;
-			writer = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-			guestBookRes.setWriterName(writer.getNickname());
-		} else {
-			guestBookRes = guestBookRepository.findGuestBookByUserIdOrGuestBookId(null, guestBookId);
-			writer = userRepository.findByEmail(guestBookRes.getWriterId()).orElseThrow(UserNotFoundException::new);
-			guestBookRes.setWriterName(writer.getNickname());
-		}
-
-		List<Long> guestBooks = guestBookRepository.findGuestBookIdByUserEmail(writer.getEmail());
-		for (int i = 0; i < guestBooks.size(); i++) {
-			if (guestBooks.get(i) == guestBookRes.getGuestBookId()) {
-				if (i == 0) {
-					guestBookRes.setPrevGuestBookId(0L);
-				} else {
-					guestBookRes.setPrevGuestBookId(guestBooks.get(i - 1));
-				}
-				if (i == guestBooks.size() - 1) {
-					guestBookRes.setNextGuestBookId(0L);
-				} else {
-					guestBookRes.setNextGuestBookId(guestBooks.get(i + 1));
-				}
-				break;
-			}
-		}
+	public List<GuestBookRes> getGuestBookList(String email) {
+		List<GuestBookRes> guestBookRes = guestBookRepository.findGuestBookByUserEmail(email);
 
 		return guestBookRes;
 	}
