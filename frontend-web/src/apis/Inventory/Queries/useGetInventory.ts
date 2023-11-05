@@ -1,4 +1,4 @@
-import { getInventory } from "../InventoryAPI";
+import { getInventory } from '@/apis/Inventory/inventoryAPI';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetInventory = () => {
