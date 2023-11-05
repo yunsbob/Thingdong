@@ -24,10 +24,10 @@ export const FriendRoomHeader = styled.div`
 
 export const TempGuestbookBtnWrapper = styled.div`
   position: absolute;
-  bottom: 60px;
+  bottom: 320px;
   transform: translateX(-50%);
   left: 50%;
-  width: 65%;
+  width: 45%;
 `;
 
 export const BackButton = styled(Image)`
@@ -41,7 +41,6 @@ export const GuestbookModal = styled(Modal)`
   display: flex;
   flex-direction: column;
   background-color: #00000000;
-  transform: translateY(-10%);
   img {
     align-self: center;
   }
@@ -49,23 +48,18 @@ export const GuestbookModal = styled(Modal)`
 
 export const WriteArea = styled.div`
   position: absolute;
-  top: 31%;
-  background-color: blue;
-  height: 100%;
-  max-height: 12.5rem;
+  top: 29%;
+  height: 12.5rem;
   width: 100%;
   max-width: 79%;
   text-align: start;
   padding: 3px;
 `;
 
+export const ContentArea = styled.div`
+  height: 11rem;
+`;
+
 export const WriterArea = styled.div`
-  /* position: absolute; */
-  /* top: 31%; */
-  background-color: red;
-  height: 100%;
-  max-height: 2.5rem;
-  width: 100%;
-  text-align: start;
-  /* padding: 3px; */
+  text-align: end;
 `;
