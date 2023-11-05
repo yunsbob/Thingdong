@@ -1,21 +1,22 @@
 import FriendRoomScene from '@/components/molecules/FriendRoom/FriendRoom';
-import { Text } from '@/components/atoms/Text/Text.styles';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import * as S from './FriendRoomPage.styles';
+import backButtonWhite from '@/assets/images/friend/search/back-white.png';
 
-// interface FriendRoomPageProp {
-//   friendId: string;
-// }
-
-// { friendId }: FriendRoomPageProp
-
-const FriendRoomPage = () => { 
+const FriendRoomPage = () => {
   const location = useLocation();
   const { userId, nickname } = location.state || {};
+  const navigate = useNavigate();
 
   return (
     <>
-      <Text>{userId}</Text>
-      <Text>{nickname}</Text>
+      <S.FriendRoomHeader>
+        <S.BackButton
+          src={backButtonWhite}
+          onClick={() => navigate(-1)}
+        ></S.BackButton>
+        <S.FriendRoomName>{nickname}네 방</S.FriendRoomName>
+      </S.FriendRoomHeader>
       <FriendRoomScene />
     </>
   );
