@@ -19,22 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "테스트 용 controller", description = "테스트용")
 public class TestController {
 	private final TranslationService translationService;
-	private final Generate3dService generate3dService;
-
-	// @GetMapping("/translate")
-	// public String test(@RequestParam("message") String message) {
-	// 	return translationService.translateByPapago(message);
-	// }
 
 	// 번역에 대한 내용 테스트
 	@GetMapping("/translate2")
 	public String test2(@RequestParam("message") String message) {
 		return translationService.translate(message);
-	}
-
-	// 외부 fastAPI 요청에 대한 응답 테스트
-	@GetMapping("/fastTest")
-	public String test3() {
-		return generate3dService.generate3d();
 	}
 }
