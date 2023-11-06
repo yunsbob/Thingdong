@@ -1,13 +1,12 @@
 import Button from '@/components/atoms/Button/Button';
 import { Image } from '@/components/atoms/Image/Image';
 import { Text } from '@/components/atoms/Text/Text.styles';
-import * as S from '@/pages/Things/PAT/Modal/PATModal/PATModal.styles';
+import * as S from '@/pages/Things/PAT/Modal/NewThingsModal/NewThingsModal.styles';
 import { changeModalOpen } from '@/utils/changeModalOpen';
-import { useState } from 'react';
 import { ThingsModalProps } from '@/types/things';
 import { IMAGES } from '@/constants/images';
 
-const PATModal = ({ modalOpen, setModalOpen }: ThingsModalProps) => {
+const NewThingsModal = ({ modalOpen, setModalOpen }: ThingsModalProps) => {
   return (
     <S.NewThingsModal
       isOpen={modalOpen}
@@ -55,4 +54,4 @@ const PATModal = ({ modalOpen, setModalOpen }: ThingsModalProps) => {
   );
 };
 
-export { PATModal };
+export { NewThingsModal };

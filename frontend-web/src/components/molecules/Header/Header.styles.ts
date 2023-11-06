@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
-const HeaderContainer = styled.div<{ $marginBottom: number }>`
+const HeaderContainer = styled.div<{
+  $marginBottom: number;
+  $justifyContent: string;
+}>`
   display: flex;
   width: 100%;
   height: 2.5rem;
@@ -8,7 +11,7 @@ const HeaderContainer = styled.div<{ $marginBottom: number }>`
   position: sticky;
   top: 0;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${({ $justifyContent }) => $justifyContent};
   margin-bottom: ${({ $marginBottom }) => `${$marginBottom}rem`};
 `;
 

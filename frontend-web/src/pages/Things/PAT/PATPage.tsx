@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import Modal from '@/components/molecules/Modal/Modal';
 
 import { changeModalOpen } from '@/utils/changeModalOpen';
-import { PATModal } from '@/pages/Things/PAT/Modal/PATModal/PATModal';
+import { NewThingsModal } from '@/pages/Things/PAT/Modal/NewThingsModal/NewThingsModal';
 import { useLongPress } from '@/hooks/useLongPress';
 import { LightModal } from '@/pages/Things/PAT/Modal/LightModal/LightModal';
 import { IMAGES } from '@/constants/images';
@@ -77,7 +77,7 @@ const PATPage = () => {
     },
   ]);
 
-  const [patModalOpen, setPatModalOpen] = useState(false);
+  const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
 
   const onClickThingsBlock = (things: ThingsList, idx: number) => (e: any) => {
     if (things.status !== 'OFFLINE') {
@@ -92,17 +92,22 @@ const PATPage = () => {
     return status === 'ON' ? 'OFF' : 'ON';
   };
 
-  const [lightModalOpen, setLightModalOpen] = useState(true);
+  const [lightModalOpen, setLightModalOpen] = useState(false);
   const thingsBlockLongPress = useLongPress(() => {
-    console.log('클릭');
-  }, 1000);
+    changeModalOpen(lightModalOpen, setLightModalOpen);
+  }, 800);
 
   return (
     <S.PATPageContainer>
       <LightModal modalOpen={lightModalOpen} setModalOpen={setLightModalOpen} />
-      <PATModal modalOpen={patModalOpen} setModalOpen={setPatModalOpen} />
+      <NewThingsModal
+        modalOpen={newThingsModalOpen}
+        setModalOpen={setNewThingsModalOpen}
+      />
       <S.ThingsGetButton
-        onClick={() => changeModalOpen(patModalOpen, setPatModalOpen)}
+        onClick={() =>
+          changeModalOpen(newThingsModalOpen, setNewThingsModalOpen)
+        }
       >
         <Image src={IMAGES.FRIEND.ADD_ICON} width={1} height={1} />
         <Text size="body3" fontWeight="extraBold" color="blue">
