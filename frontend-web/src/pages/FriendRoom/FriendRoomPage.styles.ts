@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { RoomName } from '@/pages/Home/Home.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import Modal from '@/components/molecules/Modal/Modal';
-import { redFace } from '@/assets/images/friend/face-red.png';
+import Input from '@/components/atoms/Input/Input';
 
 export const FriendRoomName = styled(RoomName)`
   margin: 0;
@@ -33,9 +33,7 @@ export const TempGuestbookBtnWrapper = styled.div`
 `;
 
 export const BackButton = styled(Image)`
-  /* position: absolute; */
   top: 4%;
-  /* left: -20%; */
   transform: scale(60%);
   margin-right: 20px;
 `;
@@ -43,6 +41,7 @@ export const BackButton = styled(Image)`
 export const GuestbookModal = styled(Modal)`
   display: flex;
   flex-direction: column;
+  height: 78vh;
   background-color: #00000000;
   img {
     align-self: center;
@@ -63,4 +62,47 @@ export const ContentArea = styled.div`
 
 export const WriterArea = styled.div`
   text-align: end;
+`;
+
+interface OpacityProps {
+  opacity?: number;
+}
+
+export const ButtonWrapper = styled.div<OpacityProps>`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: ${props => props.opacity};
+  pointer-events: ${props => (props.opacity === 0 ? 'none' : 'auto')};
+`;
+
+export const GuestbookButtonWrapper = styled.div<OpacityProps>`
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 96%;
+  top: 66%;
+  transform: translateX(-50%);
+  left: 50%;
+  opacity: ${props => props.opacity};
+`;
+
+export const Textarea = styled.textarea`
+  width: 100%;
+  height: 100%;
+  font-family: 'NanumSquareNeo';
+  font-size: ${({ theme }) => theme.fontSize.body2};
+  resize: none;
+  border: none;
+  outline: none;
+  line-height: 1.5;
+
+  &:focus {
+    outline: none;
+    border: none;
+  }
+`;
+
+export const WriteButtonWrapper = styled.div`
+  margin-top: 35%;
 `;

@@ -18,7 +18,6 @@ const DeleteObject = () => {
   const handleCancel = () => {
     setModalOpen(false);
   };
-  console.log(selectedItem, 'gkgk');
   
   return (
       <Modal height={19.6} onClose={onModalClose} isOpen={modalOpen}>
