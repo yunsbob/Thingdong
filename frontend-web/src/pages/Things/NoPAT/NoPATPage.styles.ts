@@ -1,14 +1,6 @@
 import { Image } from '@/components/atoms/Image/Image';
 import styled from 'styled-components';
 
-const ThingsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding-bottom: 7rem;
-  position: relative;
-`;
-
 const ThingsContents = styled.div`
   height: 100%;
   display: flex;
@@ -48,10 +40,4 @@ const BlueDotWrapper = styled.div`
   }
 `;
 
-export {
-  ThingsContainer,
-  ThingsContents,
-  HandImage,
-  PATMessageContainer,
-  BlueDotWrapper,
-};
+export { ThingsContents, HandImage, PATMessageContainer, BlueDotWrapper };

@@ -7,19 +7,24 @@ interface HeaderProps extends TextProps {
   text: string;
   hasBackButton?: boolean;
   $marginHeaderBottom?: number;
+  $justifyContent?: string;
   children?: React.ReactNode;
 }
 
 const Header = ({
   text,
   hasBackButton = false,
-  children,
   $marginHeaderBottom = 1.3,
+  $justifyContent = 'space-between',
+  children,
 }: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
-    <S.HeaderContainer $marginBottom={$marginHeaderBottom}>
+    <S.HeaderContainer
+      $marginBottom={$marginHeaderBottom}
+      $justifyContent={$justifyContent}
+    >
       <S.HeaderWrapper>
         {hasBackButton && (
           <Image
