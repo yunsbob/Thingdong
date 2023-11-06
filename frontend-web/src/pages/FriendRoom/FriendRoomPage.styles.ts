@@ -17,55 +17,50 @@ export const FriendRoomHeader = styled.div`
   align-items: center;
   position: absolute;
   top: 20px;
-  width: 65%;
+  width: 90%;
+  height: 56px;
   transform: translateX(-50%);
   left: 50%;
+  z-index: 1;
 `;
 
 export const TempGuestbookBtnWrapper = styled.div`
   position: absolute;
-  bottom: 60px;
+  bottom: 320px;
   transform: translateX(-50%);
   left: 50%;
-  width: 65%;
+  width: 45%;
 `;
 
 export const BackButton = styled(Image)`
-  position: absolute;
+  /* position: absolute; */
   top: 4%;
-  left: -20%;
+  /* left: -20%; */
   transform: scale(60%);
+  margin-right: 20px;
 `;
 
 export const GuestbookModal = styled(Modal)`
   display: flex;
   flex-direction: column;
   background-color: #00000000;
-  transform: translateY(-10%);
   img {
     align-self: center;
   }
 `;
 
 export const WriteArea = styled.div`
-  position: absolute;
-  top: 31%;
-  background-color: blue;
-  height: 100%;
-  max-height: 12.5rem;
+  position: relative;
+  top: -250px;
   width: 100%;
-  max-width: 79%;
   text-align: start;
   padding: 3px;
 `;
 
+export const ContentArea = styled.div`
+  height: 11rem;
+`;
+
 export const WriterArea = styled.div`
-  /* position: absolute; */
-  /* top: 31%; */
-  background-color: red;
-  height: 100%;
-  max-height: 2.5rem;
-  width: 100%;
-  text-align: start;
-  /* padding: 3px; */
+  text-align: end;
 `;
