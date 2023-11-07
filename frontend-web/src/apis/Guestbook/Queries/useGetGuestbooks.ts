@@ -1,5 +1,5 @@
 import { getGuestbooks } from '@/apis/Guestbook/guestbookAPI';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 /**
  * 검색 결과 유저 정보 GET
@@ -13,7 +13,7 @@ import { useQuery } from '@tanstack/react-query';
  */
 
 const useGetGuestbooks = (inputValue: string) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['guestbooks', inputValue],
     queryFn: () => getGuestbooks(inputValue),
   });
