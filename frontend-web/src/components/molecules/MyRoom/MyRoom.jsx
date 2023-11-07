@@ -27,7 +27,7 @@ const Scene = ({ ...props }) => {
       {/* <color attach="background" args={['#4a229f']} /> */}
       <group {...props} dispose={null}>
         <scene name="Scene">
-          <group name="Group 2" position={[1, -19.87, 12.48]}>
+          <group name="Group 2" position={[-70, 0, 0]}>
             <pointLight
               name="Point Light 2"
               intensity={1.88}
