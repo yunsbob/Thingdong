@@ -17,6 +17,7 @@ import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
+import TempScene from '@/components/organisms/TempScene/TempScene';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -30,14 +31,22 @@ const toastVariants = {
   },
 };
 
+type Position = {
+  x: number;
+  y: number;
+  z: number;
+};
+
 const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+  const [position, setPosition] = useState<Position>({ x: 0, y: -25, z: 0 });
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
+
   const {
     furnitureList,
     homeApplianceList,
@@ -78,10 +87,16 @@ const HomePage = () => {
     { src: 'down-button.png', direction: 'down' },
     { src: 'right-button.png', direction: 'right' },
   ];
-  // 임시 방향 확인
+
   const handleArrowClick = (direction: string | null) => {
-    if (direction) {
-      console.log(direction);
+    if (direction === 'right') {
+      setPosition(prev => ({ ...prev, x: prev.x + 10 }));
+    } else if (direction === 'left') {
+      setPosition(prev => ({ ...prev, x: prev.x - 10 }));
+    } else if (direction === 'up') {
+      setPosition(prev => ({ ...prev, z: prev.z - 10 }));
+    } else if (direction === 'down') {
+      setPosition(prev => ({ ...prev, z: prev.z + 10 }));
     }
   };
 
@@ -172,7 +187,9 @@ const HomePage = () => {
                       guestbooks.data[currentIndex].guestBookId
                     );
                   }}
-                >삭제</GS.GuestbookDelBtn>
+                >
+                  삭제
+                </GS.GuestbookDelBtn>
               </>
             ) : (
               <></>
@@ -180,7 +197,8 @@ const HomePage = () => {
           </GS.WriterArea>
         </GS.WriteArea>
       </GS.GuestbookModal>
-      <S.HeaderButtonWrapper>
+      {/* zIndex 임시로 1 */}
+      <S.HeaderButtonWrapper style={{ zIndex: 1 }}>
         {isEditing ? (
           <>
             <Image
@@ -217,7 +235,7 @@ const HomePage = () => {
       </S.HeaderButtonWrapper>
       {isEditing && (
         <>
-          <S.BottomButtonWrapper>
+          <S.BottomButtonWrapper style={{ zIndex: 1 }}>
             <S.ArrowKeyWrapper>
               {arrowButtons.map((button, index) => {
                 const imagePath = require(
@@ -259,6 +277,7 @@ const HomePage = () => {
         </>
       )}
       <MyRoom />
+      {/* <TempScene isEditing={isEditing} position={position} /> */}
       {isEditing && (
         <S.TempToast
           variants={toastVariants}
