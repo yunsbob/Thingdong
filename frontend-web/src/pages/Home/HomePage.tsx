@@ -17,6 +17,7 @@ import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
+import TempScene from '@/components/organisms/TempScene/TempScene';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -172,7 +173,9 @@ const HomePage = () => {
                       guestbooks.data[currentIndex].guestBookId
                     );
                   }}
-                >삭제</GS.GuestbookDelBtn>
+                >
+                  삭제
+                </GS.GuestbookDelBtn>
               </>
             ) : (
               <></>
@@ -180,7 +183,8 @@ const HomePage = () => {
           </GS.WriterArea>
         </GS.WriteArea>
       </GS.GuestbookModal>
-      <S.HeaderButtonWrapper>
+      {/* zIndex 임시로 1 */}
+      <S.HeaderButtonWrapper style={{ zIndex: 1 }}>
         {isEditing ? (
           <>
             <Image
@@ -217,7 +221,7 @@ const HomePage = () => {
       </S.HeaderButtonWrapper>
       {isEditing && (
         <>
-          <S.BottomButtonWrapper>
+          <S.BottomButtonWrapper style={{ zIndex: 1 }}>
             <S.ArrowKeyWrapper>
               {arrowButtons.map((button, index) => {
                 const imagePath = require(
@@ -258,7 +262,8 @@ const HomePage = () => {
           </S.BottomButtonWrapper>
         </>
       )}
-      <MyRoomScene isEditing={isEditing} />
+      <TempScene isEditing={isEditing} />
+      {/* <MyRoomScene isEditing={isEditing} /> */}
       {isEditing && (
         <S.TempToast
           variants={toastVariants}
