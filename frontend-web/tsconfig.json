@@ -34,5 +34,6 @@
     "resolveJsonModule": true, // JSON파일을 모듈로 가져오는 기능
   },
   "include": ["src"], // 지정하지 않으면 프로젝트 디렉토리 내의 모든 TS파일을 컴파일 대상으로 간주
-  "typeRoots": ["src/types"]
+  "typeRoots": ["src/types", "node_modules/@types"],
+  "types": ["three"]
 }
