@@ -76,7 +76,7 @@ const FriendRoomPage = () => {
             onClick={handlePrev}
             opacity={currentIndex > 0 ? 1 : 0}
           >
-            <Image src={backButtonWhite} width={1} />
+            <Image src={IMAGES.FRIEND.SEARCH.BACK_WHITE_ICON} width={1} />
             <Text size="body3" color="white" fontWeight="regular">
               이전
             </Text>{' '}
@@ -95,7 +95,7 @@ const FriendRoomPage = () => {
             ></Image>
           </S.ButtonWrapper>
         </S.GuestbookButtonWrapper>
-        <Image src={guestbook} width={21} />
+        <Image src={IMAGES.ROOM.GUESTBOOK} width={21} />
         {writeMode ? (
           <>
             <S.WriteArea>
@@ -183,7 +183,7 @@ const FriendRoomPage = () => {
         <Image
           src={
             modalOpen
-              ? IMAGES.ROOM.GEUSTBOOK_WRITE_ICON
+              ? IMAGES.ROOM.GUESTBOOK_WRITE_ICON
               : IMAGES.ROOM.GUESTBOOK_ICON
           }
           width={3.5}
