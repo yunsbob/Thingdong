@@ -4,7 +4,6 @@ import { Image } from '@/components/atoms/Image/Image';
 import { CHILDREN_PATH } from '@/constants/path';
 import theme from '@/styles/theme';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
 
 type PathType = keyof typeof CHILDREN_PATH.BOTTOM_NAV_PATH;
 
@@ -15,7 +14,6 @@ const BottomNavBar = () => {
   const onClickPath = location.pathname;
 
   const changePath = (path: PathType) => {
-    console.log('클릭한 path', onClickPath);
     setActivePath(path);
     navigate(CHILDREN_PATH.BOTTOM_NAV_PATH[path]);
   };
