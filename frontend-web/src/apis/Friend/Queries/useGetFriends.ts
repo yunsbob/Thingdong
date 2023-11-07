@@ -1,8 +1,8 @@
 import { getFriends } from '@/apis/Friend/friendAPI';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 const useGetFriends = () => {
-  const { data } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['friends'],
     queryFn: () => getFriends(),
   });

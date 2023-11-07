@@ -1,8 +1,8 @@
 import { getRoomInventory } from '@/apis/Room/roomAPI';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 const useGetRoomInventory = () => {
-  const { data } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['roomInventory'],
     queryFn: () => getRoomInventory(),
   });
