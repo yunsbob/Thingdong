@@ -1,18 +1,18 @@
 {
-  "appName": "minjae9",
+  "appName": "thingdongtttest",
   "appType": "API_ONLY",
   "classifications": [
     "AUTOMATION"
   ],
-  "displayName": "API Access Example 5",
-  "description": "Example of an OAuth-In app",
+  "displayName": "thingdong",
+  "description": "thingdongsub",
   "singleInstance": false,
   "installMetadata": {},
   "apiOnly": {
-    "targetUrl": "https://d04f-14-50-47-189.ngrok-free.app"
+    "targetUrl": "https://5e73-121-152-137-242.ngrok-free.app"
   },
   "oauth": {
-    "clientName": "minjae",
+    "clientName": "thingdong",
     "scope": [
       "i:deviceprofiles",
       "r:locations:*",
@@ -21,6 +21,6 @@
       "r:devices:*",
       "x:devices:*"
     ],
-    "redirectUris": ["https://d04f-14-50-47-189.ngrok-free.app/oauth/callback"]
+    "redirectUris": ["https://5e73-121-152-137-242.ngrok-free.app/oauth/callback"]
   }
 }
