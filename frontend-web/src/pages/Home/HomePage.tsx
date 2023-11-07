@@ -1,4 +1,4 @@
-import MyRoomScene from '@/components/molecules/MyRoom/MyRoom';
+import MyRoom from '@/components/molecules/MyRoom/MyRoom';
 import * as S from './Home.styles';
 import * as GS from '@/pages/FriendRoom/FriendRoomPage.styles';
 import { useState } from 'react';
@@ -276,8 +276,8 @@ const HomePage = () => {
           </S.BottomButtonWrapper>
         </>
       )}
-      <TempScene isEditing={isEditing} position={position} />
-      {/* <MyRoomScene isEditing={isEditing} /> */}
+      <MyRoom />
+      {/* <TempScene isEditing={isEditing} position={position} /> */}
       {isEditing && (
         <S.TempToast
           variants={toastVariants}

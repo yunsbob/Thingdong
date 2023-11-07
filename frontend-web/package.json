@@ -28,7 +28,7 @@
     "@types/ol": "^7.0.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-slick": "^0.23.11",
-    "@types/three": "^0.158.0",
+    "@types/three": "^0.158.1",
     "axios": "^1.6.0",
     "dotenv": "^16.3.1",
     "framer-motion": "^10.16.4",
