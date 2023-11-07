@@ -84,6 +84,4 @@ def run(prompt, guidance_scale, num_inference_steps):
     )
 
 
-glb_path = run(
-    "An airplane that looks like a banana", random.randint(0, 2100000000), 7.5, 40
-)
+glb_path = run("An airplane that looks like a banana", 7.5, 40)
