@@ -1,8 +1,8 @@
 import { getInventory } from '@/apis/Inventory/inventoryAPI';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 const useGetInventory = () => {
-  const { data } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['inventory'],
     queryFn: () => getInventory(),
   });

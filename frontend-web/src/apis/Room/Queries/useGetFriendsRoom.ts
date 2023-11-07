@@ -1,5 +1,5 @@
 import { getFriendsRoom } from '@/apis/Room/roomAPI';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 /**
  *
@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
  */
 
 const useGetFriendsRoom = (inputValue: string) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['friendsRoom', inputValue],
     queryFn: () => getFriendsRoom(inputValue),
   });
