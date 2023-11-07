@@ -1,3 +1,4 @@
+# pip install -r Shap-E/requirements.txt
 import trimesh
 import tempfile
 import numpy as np
