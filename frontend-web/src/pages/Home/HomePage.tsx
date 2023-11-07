@@ -101,7 +101,16 @@ const HomePage = () => {
         ) : (
           <>
             <S.RoomName>{nickName}네 방</S.RoomName>
-            <S.EditButton onClick={handleEdit}>수정</S.EditButton>
+            <Image
+              src={IMAGES.ROOM.EDIT_ICON}
+              width={3.4}
+              onClick={handleEdit}
+            ></Image>
+           <Image
+              src={IMAGES.ROOM.GUESTBOOK_ICON}
+              width={3.4}
+              onClick={handleEdit}
+            ></Image>
           </>
         )}
       </S.HeaderButtonWrapper>
