@@ -11,6 +11,7 @@ import { IMAGES } from '@/constants/images';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import Button from '@/components/atoms/Button/Button';
 import { useAddGuestbook } from '@/apis/Guestbook/Mutations/useAddGuestbook';
+import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
 
 type Guestbook = {
   guestBookId: number;
@@ -34,6 +35,8 @@ const FriendRoomPage = () => {
   const [content, setContent] = useState<string>('');
   const guestbookContentFilled = content !== '';
 
+  const myNickName = localStorage.getItem('nickName');
+
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = e.target.value;
     setContent(newContent);
@@ -53,6 +56,12 @@ const FriendRoomPage = () => {
   const handleWriteButtonClick = () => {
     addGuestbookMutation.mutate({ userId, content });
     setWriteMode(false);
+  };
+
+  const deleteGuestbookMutation = useDeleteGuestbook();
+  const handleDeleteGuestbook = (guestBookId: number) => {
+    deleteGuestbookMutation.mutate(guestBookId);
+    setCurrentIndex(0);
   };
 
   return (
@@ -110,28 +119,49 @@ const FriendRoomPage = () => {
               </S.WriteButtonWrapper>
             </S.WriteArea>
           </>
-        ) : (
-          guestbooks.data &&
-          guestbooks.data.length > 0 && (
-            <S.WriteArea>
-              <S.ContentArea>
-                <Text size="body2" fontWeight="bold" $lineHeight="1.5">
-                  {guestbooks.data[currentIndex].content}
-                </Text>
-              </S.ContentArea>
-              <S.WriterArea>
-                <Text size="body3" fontWeight="regular" color="grey1">
-                  {guestbooks.data[currentIndex].writeDay}
-                  {'  '}
-                  {guestbooks.data[currentIndex].writerName}
-                </Text>
-                <S.GuestbookDelBtn size="extraSmall" option="danger">
+        ) : guestbooks.data && guestbooks.data.length > 0 ? (
+          <S.WriteArea>
+            <S.ContentArea>
+              <Text size="body2" fontWeight="bold" $lineHeight="1.5">
+                {guestbooks.data[currentIndex].content}
+              </Text>
+            </S.ContentArea>
+            <S.WriterArea>
+              <Text size="body3" fontWeight="regular" color="grey1">
+                {guestbooks.data[currentIndex].writeDay}
+                {'  '}
+                {guestbooks.data[currentIndex].writerName}
+              </Text>
+              {myNickName === guestbooks.data[currentIndex].writerName ? (
+                <S.GuestbookDelBtn
+                  size="extraSmall"
+                  option="danger"
+                  onClick={() => {
+                    handleDeleteGuestbook(
+                      guestbooks.data[currentIndex].guestBookId
+                    );
+                  }}
+                >
                   삭제
                 </S.GuestbookDelBtn>
-                
-              </S.WriterArea>
-            </S.WriteArea>
-          )
+              ) : (
+                <div style={{ height: '38px' }}></div>
+              )}
+            </S.WriterArea>
+          </S.WriteArea>
+        ) : (
+          <S.WriteArea>
+            <S.ContentArea>
+              <Text
+                size="body2"
+                fontWeight="bold"
+                $lineHeight="1.5"
+                color="grey1"
+              >
+                작성된 방명록이 없어요. {nickname}에게 하고 싶은 말을 남겨주세요!
+              </Text>
+            </S.ContentArea>
+          </S.WriteArea>
         )}
       </S.GuestbookModal>
 

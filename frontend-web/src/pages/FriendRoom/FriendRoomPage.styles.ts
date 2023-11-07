@@ -111,7 +111,12 @@ export const WriteButtonWrapper = styled.div`
   margin-top: 35%;
 `;
 
-export const GuestbookDelBtn = styled(Button)`
+interface GuestbookBtnProps {
+  onClick?: () => void;
+}
+
+export const GuestbookDelBtn = styled(Button)<GuestbookBtnProps>`
   height: 38px;
   width: 25px;
 `;
+
