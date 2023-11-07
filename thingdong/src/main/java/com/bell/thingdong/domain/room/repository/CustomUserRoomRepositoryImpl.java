@@ -33,7 +33,7 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 		}
 		userRoomRes.setUserObjectList(userObjectRoomDtoList);
 		userRoomRes.setRoomColor(userRoomOne.getRoomColor());
-		userRoomRes.setUserId(String.valueOf(userRoomOne.getUser()));
+		userRoomRes.setUserId(userRoomOne.getUser().getEmail());
 		userRoomRes.setRoomId(userRoomOne.getRoomId());
 
 		return userRoomRes;

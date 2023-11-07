@@ -1,6 +1,7 @@
 package com.bell.thingdong.domain.room.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,16 +40,14 @@ public class UserRoomService {
 		if (email != null) {
 			user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(user.getId(), null);
-			userRoomRes.setUserId(email);
 		} else {
 			userRoomRes = userRoomRepository.findRoomByUserIdOrRoomId(null, roomId);
-			user = userRepository.findById(Long.parseLong(userRoomRes.getUserId())).orElseThrow(UserNotFoundException::new);
-			userRoomRes.setUserId(user.getEmail());
+			user = userRepository.findByEmail(userRoomRes.getUserId()).orElseThrow(UserNotFoundException::new);
 		}
 
 		List<Long> rooms = userRoomRepository.findRoomIdByUserId(user.getId());
 		for (int i = 0; i < rooms.size(); i++) {
-			if (rooms.get(i) == userRoomRes.getRoomId()) {
+			if (Objects.equals(rooms.get(i), userRoomRes.getRoomId())) {
 				if (i == 0) {
 					userRoomRes.setPrevRoom(0L);
 				} else {
