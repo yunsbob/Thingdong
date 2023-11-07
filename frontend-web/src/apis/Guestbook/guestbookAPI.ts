@@ -18,7 +18,7 @@ const addGuestbook = async (data: Guestbook) => {
   }
 };
 
-const deleteGuestbook = async (guestBookId: string) => {
+const deleteGuestbook = async (guestBookId: number) => {
   try {
     await instance.delete(`guest-books/${guestBookId}`);
   } catch {

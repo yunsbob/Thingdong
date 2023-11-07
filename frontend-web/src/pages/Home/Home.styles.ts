@@ -33,7 +33,6 @@ export const RoomName = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 20px;
 `;
 export const HeaderButtonWrapper = styled.div`
   display: flex;
@@ -45,6 +44,7 @@ export const HeaderButtonWrapper = styled.div`
   transform: translateX(-50%);
   width: 90%;
   height: 3rem;
+  gap: 10px;
 `;
 export const ImageWrapper = styled.div`
   width: 40px;
@@ -65,7 +65,6 @@ export const ArrowKeyWrapper = styled.div`
   & > :nth-child(3) {
     visibility: hidden;
   }
-  
 `;
 
 export const BottomButtonWrapper = styled.div`

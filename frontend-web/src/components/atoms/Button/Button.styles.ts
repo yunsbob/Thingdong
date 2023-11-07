@@ -44,9 +44,10 @@ const getSizeStyling = (size: Required<ButtonProps>['size']) => {
       font-size: ${({ theme }) => theme.fontSize.body3};
     `,
     extraSmall: css`
-      height: 42px;
+      height: 38px;
       font-size: ${({ theme }) => theme.fontSize.body3};
       border-radius: 15px;
+      width: 25%;
     `,
   };
 

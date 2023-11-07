@@ -1,5 +1,6 @@
 import MyRoomScene from '@/components/molecules/MyRoom/MyRoom';
 import * as S from './Home.styles';
+import * as GS from '@/pages/FriendRoom/FriendRoomPage.styles';
 import { useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
 import { useGetRoomInventory } from '@/apis/Room/Queries/useGetRoomInventory';
@@ -12,6 +13,10 @@ import * as SS from '@/pages/Inventory/InventoryPage.styles';
 import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryButtons';
 import RoomInventoryItem from '@/components/molecules/RoomInventoryItem/RoomInventoryItem';
 import { IMAGES } from '@/constants/images';
+import { changeModalOpen } from '../../utils/changeModalOpen';
+import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
+import { Text } from '@/components/atoms/Text/Text.styles';
+import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -29,6 +34,7 @@ const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
@@ -79,8 +85,101 @@ const HomePage = () => {
     }
   };
 
+  // 방명록 모달
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const userId = localStorage.getItem('userId');
+  const guestbooks = useGetGuestbooks(userId!);
+
+  const handlePrev = () => {
+    setCurrentIndex(prevIndex => (prevIndex > 0 ? prevIndex - 1 : 0));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex(prevIndex =>
+      prevIndex < (guestbooks.data?.length ?? 1) - 1 ? prevIndex + 1 : prevIndex
+    );
+  };
+
+  const deleteGuestbookMutation = useDeleteGuestbook();
+  const handleDeleteGuestbook = (guestBookId: number) => {
+    deleteGuestbookMutation.mutate(guestBookId);
+    setCurrentIndex(0);
+  };
+
   return (
     <>
+      <GS.GuestbookModal
+        isOpen={modalOpen}
+        onClose={() => changeModalOpen(modalOpen, setModalOpen)}
+        height="auto"
+      >
+        <GS.GuestbookButtonWrapper>
+          <GS.ButtonWrapper
+            onClick={handlePrev}
+            opacity={currentIndex > 0 ? 1 : 0}
+          >
+            <Image src={IMAGES.FRIEND.SEARCH.BACK_WHITE_ICON} width={1} />
+            <Text size="body3" color="white" fontWeight="regular">
+              이전
+            </Text>{' '}
+          </GS.ButtonWrapper>
+          <GS.ButtonWrapper
+            onClick={handleNext}
+            opacity={currentIndex < guestbooks.data.length - 1 ? 1 : 0}
+          >
+            <Text size="body3" color="white" fontWeight="regular">
+              다음
+            </Text>{' '}
+            <Image
+              src={IMAGES.FRIEND.SEARCH.BACK_WHITE_ICON}
+              width={1}
+              style={{ transform: 'rotate(180deg)' }}
+            ></Image>
+          </GS.ButtonWrapper>
+        </GS.GuestbookButtonWrapper>
+        <Image src={IMAGES.ROOM.GUESTBOOK} width={21} />
+        <GS.WriteArea>
+          <GS.ContentArea>
+            {guestbooks.data?.length ? (
+              <Text size="body2" fontWeight="bold" $lineHeight="1.5">
+                {guestbooks.data[currentIndex].content}
+              </Text>
+            ) : (
+              <Text
+                size="body2"
+                fontWeight="bold"
+                $lineHeight="1.5"
+                color="grey2"
+              >
+                작성된 방명록이 없습니다.
+              </Text>
+            )}
+          </GS.ContentArea>
+          <GS.WriterArea>
+            {guestbooks.data?.length ? (
+              <>
+                <Text size="body4" fontWeight="regular" color="grey1">
+                  {guestbooks.data[currentIndex].writeDay}
+                  {'  '}
+                  {guestbooks.data[currentIndex].writerName}
+                </Text>
+                <GS.GuestbookDelBtn
+                  size="extraSmall"
+                  option="danger"
+                  onClick={() => {
+                    handleDeleteGuestbook(
+                      guestbooks.data[currentIndex].guestBookId
+                    );
+                  }}
+                >삭제</GS.GuestbookDelBtn>
+              </>
+            ) : (
+              <></>
+            )}
+          </GS.WriterArea>
+        </GS.WriteArea>
+      </GS.GuestbookModal>
       <S.HeaderButtonWrapper>
         {isEditing ? (
           <>
@@ -91,17 +190,28 @@ const HomePage = () => {
               height={40}
               onClick={handleEdit}
             />
-              <Image
-                src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
-                $unit={'px'}
-                width={40}
-                height={40}
-              />
+            <Image
+              src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
+              $unit={'px'}
+              width={40}
+              height={40}
+            />
           </>
         ) : (
           <>
             <S.RoomName>{nickName}네 방</S.RoomName>
-            <S.EditButton onClick={handleEdit}>수정</S.EditButton>
+            <Image
+              src={IMAGES.ROOM.EDIT_ICON}
+              width={3.4}
+              onClick={handleEdit}
+            ></Image>
+            <Image
+              src={IMAGES.ROOM.GUESTBOOK_ICON}
+              width={3.4}
+              onClick={() => {
+                setModalOpen(true);
+              }}
+            ></Image>
           </>
         )}
       </S.HeaderButtonWrapper>

@@ -8,13 +8,14 @@ import { PATH } from '@/constants/path';
 
 const useAddLogin = (redirectPath = PATH.ROOT) => {
   const [user, setUser] = useAtom(userState);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return useMutation<CurrentUser, unknown, UserLoginInfo>({
     mutationFn: (user: UserLoginInfo) => addLogin(user),
-    onSuccess: (data) => {
+    onSuccess: data => {
       localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('nickName',data.nickName);
+      localStorage.setItem('nickName', data.nickName);
+      localStorage.setItem('userId', data.userId);
       setUser(data);
       navigate(redirectPath);
     },
