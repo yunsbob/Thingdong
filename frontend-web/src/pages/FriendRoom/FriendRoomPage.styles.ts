@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { RoomName } from '@/pages/Home/Home.styles';
 import { Image } from '@/components/atoms/Image/Image';
 import Modal from '@/components/molecules/Modal/Modal';
-import Input from '@/components/atoms/Input/Input';
+import Button from '@/components/atoms/Button/Button';
 
 export const FriendRoomName = styled(RoomName)`
   margin: 0;
@@ -53,15 +53,19 @@ export const WriteArea = styled.div`
   top: -250px;
   width: 100%;
   text-align: start;
-  padding: 3px;
+  padding: 3px 0px 3px 3px;
 `;
 
 export const ContentArea = styled.div`
-  height: 11rem;
+  height: 10.5rem;
 `;
 
 export const WriterArea = styled.div`
-  text-align: end;
+  /* text-align: end; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 `;
 
 interface OpacityProps {
@@ -106,3 +110,13 @@ export const Textarea = styled.textarea`
 export const WriteButtonWrapper = styled.div`
   margin-top: 35%;
 `;
+
+interface GuestbookBtnProps {
+  onClick?: () => void;
+}
+
+export const GuestbookDelBtn = styled(Button)<GuestbookBtnProps>`
+  height: 38px;
+  width: 25px;
+`;
+

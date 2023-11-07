@@ -5,7 +5,7 @@ const useDeleteGuestbook = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (guestBookId: string) => deleteGuestbook(guestBookId),
+    mutationFn: (guestBookId: number) => deleteGuestbook(guestBookId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['guestbooks'] });
     },

@@ -11,6 +11,7 @@ const IMAGES = {
     },
     SEARCH: {
       BACK_ICON: require('@/assets/images/friend/search/back.png').default,
+      BACK_WHITE_ICON: require('@/assets/images/friend/search/back-white.png').default,
       SEARCH_ICON: require('@/assets/images/friend/search/search.png').default,
     },
     FACE: {
@@ -34,8 +35,11 @@ const IMAGES = {
     BACK_ICON: require('@/assets/images/room/back.png').default,
     EDIT_BACKGROUND_ICON: require('@/assets/images/room/edit-background.png')
       .default,
+    EDIT_ICON: require('@/assets/images/room/edit-icon.png').default,
     GUESTBOOK_ICON: require('@/assets/images/room/guestbook-icon.png').default,
-    GEUSTBOOK_WRITE_ICON: require('@/assets/images/room/guestbook-write-icon.png').default,
+    GUESTBOOK_WRITE_ICON:
+      require('@/assets/images/room/guestbook-write-icon.png').default,
+    GUESTBOOK: require('@/assets/images/room/guestbook.png').default,
   },
   SPLASH: {
     SPLASH1_ROOM_IMAGE: require('@/assets/images/splash/splash1_room.png')
