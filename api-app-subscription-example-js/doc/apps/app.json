@@ -1,0 +1,26 @@
+{
+  "appName": "minjae9",
+  "appType": "API_ONLY",
+  "classifications": [
+    "AUTOMATION"
+  ],
+  "displayName": "API Access Example 5",
+  "description": "Example of an OAuth-In app",
+  "singleInstance": false,
+  "installMetadata": {},
+  "apiOnly": {
+    "targetUrl": "https://d04f-14-50-47-189.ngrok-free.app"
+  },
+  "oauth": {
+    "clientName": "minjae",
+    "scope": [
+      "i:deviceprofiles",
+      "r:locations:*",
+      "r:scenes:*",
+      "x:scenes:*",
+      "r:devices:*",
+      "x:devices:*"
+    ],
+    "redirectUris": ["https://d04f-14-50-47-189.ngrok-free.app/oauth/callback"]
+  }
+}
