@@ -34,9 +34,7 @@ const FriendRoomPage = () => {
   const [content, setContent] = useState<string>('');
   const guestbookContentFilled = content !== '';
 
-  const handleContentChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = e.target.value;
     setContent(newContent);
   };
@@ -54,6 +52,7 @@ const FriendRoomPage = () => {
   const addGuestbookMutation = useAddGuestbook();
   const handleWriteButtonClick = () => {
     addGuestbookMutation.mutate({ userId, content });
+    setWriteMode(false);
   };
 
   return (
@@ -102,7 +101,9 @@ const FriendRoomPage = () => {
               <S.WriteButtonWrapper>
                 <Button
                   option={guestbookContentFilled ? 'activated' : 'deactivated'}
-                  onClick={guestbookContentFilled ? handleWriteButtonClick : ()=>{}}
+                  onClick={
+                    guestbookContentFilled ? handleWriteButtonClick : () => {}
+                  }
                 >
                   작성하기
                 </Button>
@@ -122,8 +123,12 @@ const FriendRoomPage = () => {
                 <Text size="body3" fontWeight="regular" color="grey1">
                   {guestbooks.data[currentIndex].writeDay}
                   {'  '}
-                  {guestbooks.data[currentIndex].writerName} 씀
+                  {guestbooks.data[currentIndex].writerName}
                 </Text>
+                <S.GuestbookDelBtn size="extraSmall" option="danger">
+                  삭제
+                </S.GuestbookDelBtn>
+                
               </S.WriterArea>
             </S.WriteArea>
           )
