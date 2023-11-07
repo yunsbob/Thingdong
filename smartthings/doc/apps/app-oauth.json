@@ -1,5 +1,5 @@
 {
-  "clientName": "API Access Example",
+  "clientName": "minseo",
   "scope": [
     "i:deviceprofiles",
     "r:devices:*",
@@ -10,6 +10,6 @@
   ],
   "redirectUris": [
     "http://localhost:3000/oauth/callback",
-    "https://smartthings-oauth.ngrok.io/oauth/callback"
+    "https://5e73-121-152-137-242.ngrok-free.app/oauth/callback"
   ]
 }
