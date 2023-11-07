@@ -6,9 +6,16 @@ import useSpline from '@splinetool/r3f-spline';
 import { OrthographicCamera } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import armchair from '@/assets/models/armchair.gltf';
-import Chair from '@/components/organisms/TempScene/Chiar';
+import Chair from '@/components/organisms/TempScene/Chair';
 
-export default function Scene({ ...props }) {
+interface SceneProps {
+  x: number;
+  y: number;
+  z: number;
+  [key: string]: any;
+}
+
+export default function Scene({ x, y, z, ...props }: SceneProps) {
   const { nodes, materials } = useSpline(
     'https://prod.spline.design/XNOJwEXXivjk6AJd/scene.splinecode'
   );
@@ -42,7 +49,7 @@ export default function Scene({ ...props }) {
               <meshStandardMaterial color={"black"} />
             </mesh>
           </group> */}
-          <Chair x={1} y={-25} z={1} />
+          <Chair x={x} y={y} z={z} />
           <group name="Group 2" position={[1, -19.87, 12.48]}>
             <pointLight
               name="Point Light 2"

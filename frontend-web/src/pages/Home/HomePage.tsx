@@ -31,14 +31,22 @@ const toastVariants = {
   },
 };
 
+type Position = {
+  x: number;
+  y: number;
+  z: number;
+};
+
 const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+  const [position, setPosition] = useState<Position>({ x: 0, y: -25, z: 0 });
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
+
   const {
     furnitureList,
     homeApplianceList,
@@ -79,10 +87,16 @@ const HomePage = () => {
     { src: 'down-button.png', direction: 'down' },
     { src: 'right-button.png', direction: 'right' },
   ];
-  // 임시 방향 확인
+
   const handleArrowClick = (direction: string | null) => {
-    if (direction) {
-      console.log(direction);
+    if (direction === 'right') {
+      setPosition(prev => ({ ...prev, x: prev.x + 10 }));
+    } else if (direction === 'left') {
+      setPosition(prev => ({ ...prev, x: prev.x - 10 }));
+    } else if (direction === 'up') {
+      setPosition(prev => ({ ...prev, z: prev.z - 10 }));
+    } else if (direction === 'down') {
+      setPosition(prev => ({ ...prev, z: prev.z + 10 }));
     }
   };
 
@@ -262,7 +276,7 @@ const HomePage = () => {
           </S.BottomButtonWrapper>
         </>
       )}
-      <TempScene isEditing={isEditing} />
+      <TempScene isEditing={isEditing} position={position} />
       {/* <MyRoomScene isEditing={isEditing} /> */}
       {isEditing && (
         <S.TempToast

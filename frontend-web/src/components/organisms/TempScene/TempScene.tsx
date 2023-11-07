@@ -5,9 +5,10 @@ import Scene from './Scene';
 
 interface TempSceneProps {
   isEditing: boolean;
+  position: { x: number; y: number; z: number };
 }
 
-export default function TempScene({ isEditing }: TempSceneProps) {
+export default function TempScene({ isEditing, position }: TempSceneProps) {
   return (
     <Suspense fallback={null}>
       <Canvas
@@ -17,7 +18,7 @@ export default function TempScene({ isEditing }: TempSceneProps) {
         style={{ height: isEditing ? '60vh' : '100vh' }}
       >
         {/* <Canvas> */}
-        <Scene />
+        <Scene x={position.x} y={position.y} z={position.z} />
         <OrbitControls />
       </Canvas>
     </Suspense>
