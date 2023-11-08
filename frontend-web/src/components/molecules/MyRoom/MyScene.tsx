@@ -19,6 +19,7 @@ const MyScene = ({ ...props }) => {
     const gltf = useLoader(GLTFLoader, chair);
     const treeGlb = useLoader(GLTFLoader, tree);
     const armChairGlb = useLoader(GLTFLoader, armChair);
+
     // console.log('gltf', gltf);
     // console.log('treeGlb', treeGlb);
   

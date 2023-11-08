@@ -17,8 +17,11 @@ import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
-import TempScene from '@/components/organisms/TempScene/TempScene';
+// import TempScene from '@/components/organisms/TempScene/TempScene';
 import { MyObject, Position } from '../../types/room';
+import { myObjectsAtom } from '@/states/roomState';
+import { useAtom } from 'jotai';
+
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -37,6 +40,7 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [position, setPosition] = useState<Position>({ x: 0, y: -25, z: 0 });
+  const [myObjects, setMyObjects] = useAtom(myObjectsAtom);
 
   // TODO: User가 보유한 Objects와 상태 이곳에 데이터바인딩
   // isClicked가 필요할까?
@@ -74,6 +78,7 @@ const HomePage = () => {
       position: {x: 73.39, y: 6, z: -1.01},
     },
   ];
+  
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
