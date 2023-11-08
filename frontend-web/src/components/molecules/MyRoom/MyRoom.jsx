@@ -4,6 +4,7 @@ import { OrbitControls } from '@react-three/drei';
 import { Spinner } from '../Spinner/Spinner';
 import MyScene from '@/components/molecules/MyRoom/MyScene';
 import MySecondScene from '@/components/molecules/MyRoom/MySecondScene';
+import MyGlbScene from '@/components/molecules/MyRoom/MyGlbScene';
 
 const MyRoom = ({ isEditing, position }) => {
   return (
@@ -19,7 +20,8 @@ const MyRoom = ({ isEditing, position }) => {
           }}
         >
           {/* <MyScene position={position} /> */}
-          <MySecondScene />
+          {/* <MySecondScene /> */}
+          <MyGlbScene />
           <OrbitControls />
         </Canvas>
       </Suspense>
