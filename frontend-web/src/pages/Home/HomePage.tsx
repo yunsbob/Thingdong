@@ -44,7 +44,7 @@ const HomePage = () => {
 
   // TODO: User가 보유한 Objects와 상태 이곳에 데이터바인딩
   // isClicked가 필요할까?
-  const tempMyObjects: MyObject[] = [
+  const tempMyObject: MyObject[] = [
     {
       name: 'Clock',
       modelId: 1,
@@ -78,7 +78,7 @@ const HomePage = () => {
       position: {x: 73.39, y: 6, z: -1.01},
     },
   ];
-  setMyObjects(tempMyObjects)
+  
 
   const handleEdit = () => {
     setIsEditing(!isEditing);

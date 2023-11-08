@@ -307,7 +307,11 @@ export default function MySecondScene({ ...props }) {
             />
           </group>
           {/* Lamp */}
-          <group name="Lamp" position={[74.31, 0.99, 0.72]}>
+          <group name="Lamp" position={[74.31, 0.99, 0.72]} onClick={event => {
+              event.stopPropagation();
+              console.log(event.eventObject.name);
+              setSelectedObject(event.eventObject.name);
+            }}>
             <mesh
               name="Cylinder 22"
               geometry={nodes['Cylinder 22'].geometry}
