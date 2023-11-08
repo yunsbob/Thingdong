@@ -26,49 +26,99 @@ const apiApp = new SmartApp()
   .clientSecret(clientSecret)
   .contextStore(contextStore)
   .redirectUri(redirectUri)
-  .enableEventLogging(2)
+//   .enableEventLogging(2)
   .subscribedEventHandler("switchLevelHandler", async (ctx, event) => {
     // 밝기 조절
-    console.log("switchLevelHandler change");
-    console.log(
-      `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
-    );
-    sse.send({
-      event: event,
-      deviceId: event.deviceId,
-      switchState: event.value,
-    });
+    console.log("switchLevel change");
+    if (event.componentId === "main") {
+      const locationId = ctx.locationId;
+      const sse = userSSEStreams.get(locationId);
+      if (sse && event.locationId == ctx.locationId) {
+        try {
+          sse.send({
+            event: event,
+            deviceId: event.deviceId,
+            switchState: event.value,
+          });
+        } catch (e) {
+          console.log(e.message);
+        }
+        console.log(
+          `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
+        );
+      }
+    }
   })
   .subscribedEventHandler("temperatureHandler", async (ctx, event) => {
     // 온도 조절
-    console.log("temperatureHandler change");
-    if (event.value >= 30) {
-      console.log(
-        `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
-      );
-      sse.send({
-        event: event,
-        deviceId: event.deviceId,
-        switchState: event.value,
-      });
+    console.log("temperature change");
+    if (event.componentId === "main") {
+      if (event.value >= 30) {
+        const locationId = ctx.locationId;
+        const sse = userSSEStreams.get(locationId);
+        if (sse && event.locationId == ctx.locationId) {
+          try {
+            sse.send({
+              event: event,
+              deviceId: event.deviceId,
+              switchState: event.value,
+            });
+          } catch (e) {
+            console.log(e.message);
+          }
+          console.log(
+            `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
+          );
+        }
+      }
     }
   })
   .subscribedEventHandler("humidityHandler", async (ctx, event) => {
     // 습도 조절
-    console.log("humidityHandler change");
-    if (event.value >= 60) {
-      console.log(
-        `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
-      );
-      sse.send({
-        event: event,
-        deviceId: event.deviceId,
-        switchState: event.value,
-      });
+    console.log("humidity change");
+
+    if (event.componentId === "main") {
+      if (event.value >= 65) {
+        const locationId = ctx.locationId;
+        const sse = userSSEStreams.get(locationId);
+        if (sse && event.locationId == ctx.locationId) {
+          try {
+            sse.send({
+              event: event,
+              deviceId: event.deviceId,
+              switchState: event.value,
+            });
+          } catch (e) {
+            console.log(e.message);
+          }
+          console.log(
+            `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
+          );
+        }
+      }
     }
   })
   .subscribedEventHandler("colorHandler", async (ctx, event) => {
     // 색상 조절
+    console.log("color change");
+    if (event.componentId === "main") {
+      const locationId = ctx.locationId;
+      const sse = userSSEStreams.get(locationId);
+      if (sse && event.locationId == ctx.locationId) {
+        try {
+          sse.send({
+            event: event,
+            deviceId: event.deviceId,
+            switchState: event.value,
+          });
+        } catch (e) {
+          console.log(e.message);
+        }
+        console.log(
+          `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
+        );
+      }
+    }
     console.log("color change");
     console.log(
       `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
@@ -76,16 +126,12 @@ const apiApp = new SmartApp()
   })
   .subscribedEventHandler("switchHandler", async (ctx, event) => {
     // 스위치 온오프
+    console.log("switch change");
     if (event.componentId === "main") {
-      const ctx2 = await apiApp.withContext(ctx.installedAppId);
-      //   console.log(333, ctx2.api.config.locationId);
-      //   console.log(555, ctx.locationId);
-      //   console.log(666, event.locationId);
-      const locationId = ctx2.api.config.locationId;
-      console.log(11, locationId);
+      //   const ctx2 = await apiApp.withContext(ctx.installedAppId);
+      const locationId = ctx.locationId;
       const sse = userSSEStreams.get(locationId);
-      console.log(22, sse);
-      if (sse && event.locationId == ctx2.api.config.locationId) {
+      if (sse && event.locationId == ctx.locationId) {
         try {
           sse.send({
             event: event,
@@ -164,9 +210,6 @@ server.get("/viewData", async (req, res) => {
     // const deviceList = await ctx.api.devices.list({ capability: "switch" });
     // 전체 기기
     const deviceList = await ctx.api.devices.list();
-    // console.log(9999, deviceList)
-    // Query for the state of each one
-    // console
     const ops = deviceList.map((it) => {
       return (
         ctx.api.devices
@@ -280,17 +323,16 @@ server.get("/oauth/callback", async (req, res, next) => {
   }
 });
 server.get("/events", (req, res) => {
-	const ctx = req.session.smartThings;
-	const userSSE = userSSEStreams.get(ctx.locationId);
-  
-	// If the user has a specific SSE stream, use it; otherwise, use the default SSE stream
-	if (userSSE) {
-	  userSSE.init(req, res);
-	} else {
-	  sse.init(req, res);
-	}
-  });
+  const ctx = req.session.smartThings;
+  const userSSE = userSSEStreams.get(ctx.locationId);
 
+  // If the user has a specific SSE stream, use it; otherwise, use the default SSE stream
+  if (userSSE) {
+    userSSE.init(req, res);
+  } else {
+    sse.init(req, res);
+  }
+});
 
 server.use(bodyParser.json());
 
