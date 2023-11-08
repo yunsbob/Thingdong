@@ -276,7 +276,7 @@ const HomePage = () => {
           </S.BottomButtonWrapper>
         </>
       )}
-      <MyRoom />
+      <MyRoom isEditing={isEditing} position={position}/>
       {/* <TempScene isEditing={isEditing} position={position} /> */}
       {isEditing && (
         <S.TempToast
