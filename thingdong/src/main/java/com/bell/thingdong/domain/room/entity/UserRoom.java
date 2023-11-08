@@ -41,7 +41,7 @@ public class UserRoom {
 	@Column(name = "room_color", nullable = false)
 	private String roomColor;
 
-	@OneToMany(mappedBy = "roomId")
+	@OneToMany(mappedBy = "room")
 	private List<UserObject> userObjectList;
 
 	public void setRoomColor(String roomColor) {

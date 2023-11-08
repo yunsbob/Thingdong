@@ -1,6 +1,7 @@
 package com.bell.thingdong.domain.objet.entity;
 
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
+import com.bell.thingdong.domain.objet.dto.request.UserObjectPosReq;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.user.entity.User;
 
@@ -44,15 +45,33 @@ public class UserObject {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "room_id")
-	private UserRoom roomId;
+	private UserRoom room;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "user_object_status", nullable = false)
 	private UserObjectStatus userObjectStatus;
 
-	// 설계에 따라 방 내부 위치별 컬럼 추가 예정
+	@Column(name = "x")
+	private Double x;
+
+	@Column(name = "y")
+	private Double y;
+
+	@Column(name = "z")
+	private Double z;
+
+	@Column(name = "rotation")
+	private Double rotation;
 
 	public void setUserObjectStatus(UserObjectStatus userObjectStatus) {
 		this.userObjectStatus = userObjectStatus;
+	}
+
+	public void setUserObjectPosition(UserObjectPosReq userObjectPosReq, UserRoom room) {
+		this.room = room;
+		this.x = userObjectPosReq.getX();
+		this.y = userObjectPosReq.getY();
+		this.z = userObjectPosReq.getZ();
+		this.rotation = userObjectPosReq.getRotation();
 	}
 }

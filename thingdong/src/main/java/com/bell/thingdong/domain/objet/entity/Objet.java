@@ -37,6 +37,9 @@ public class Objet {
 	@Column(name = "object_thing")
 	private Long objectThing;
 
+	@Column(name = "object_scale")
+	private Double objectScale;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "object_category", nullable = false)
 	private ObjectCategory objectCategory;
