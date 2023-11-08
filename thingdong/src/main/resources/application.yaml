@@ -46,5 +46,5 @@ translator:
     client-secret: a5h1RIcsLF
 generator:
   stable-diffusion:
-    url: http://k9b304.p.ssafy.io
+    url: http://222.107.238.44
     port : 8888
