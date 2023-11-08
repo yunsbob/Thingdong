@@ -1,4 +1,4 @@
-import MyRoom from '@/components/molecules/MyRoom/MyRoom';
+import MyRoom from '@/components/organisms/MyRoom/MyRoom';
 import * as S from './Home.styles';
 import * as GS from '@/pages/FriendRoom/FriendRoomPage.styles';
 import { useState } from 'react';
@@ -39,10 +39,11 @@ type Position = {
 
 const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
-  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [position, setPosition] = useState<Position>({ x: 0, y: -25, z: 0 });
 
+  console.log(isEditing);
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
@@ -276,7 +277,7 @@ const HomePage = () => {
           </S.BottomButtonWrapper>
         </>
       )}
-      <MyRoom />
+      <MyRoom isEditing={isEditing} position={position} />
       {/* <TempScene isEditing={isEditing} position={position} /> */}
       {isEditing && (
         <S.TempToast
