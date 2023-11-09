@@ -13,6 +13,7 @@ export default function MyGlbScene({ ...props }) {
   const newWall = useLoader(GLTFLoader, new_wall);
   const wall1 = useLoader(GLTFLoader, new_wall);
   const clock1 = useLoader(GLTFLoader, clock_1);
+  // const clock1 = useLoader(GLTFLoader, require('@/assets/models/Clock1.glb').default);
 
   // 여기서 get 하자 !
   // useMemo
