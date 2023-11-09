@@ -5,7 +5,9 @@ export interface Position {
 }
 
 export interface Rotation {
-  xRotation: number;
+  rx: number;
+  ry: number;
+  rz: number;
 }
 
 export interface MyObject {
@@ -17,6 +19,7 @@ export interface MyObject {
   isRightWall?: boolean;
   isClicked?: boolean;
   isThings?: boolean;
+  source: string;
 }
 
 export interface MyRoom {
