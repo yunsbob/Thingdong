@@ -2,8 +2,6 @@ import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Spinner } from '../Spinner/Spinner';
-import MyScene from '@/components/molecules/MyRoom/MyScene';
-import MySecondScene from '@/components/molecules/MyRoom/MySecondScene';
 import MyGlbScene from '@/components/molecules/MyRoom/MyGlbScene';
 
 const MyRoom = ({ isEditing, position }) => {
@@ -19,8 +17,6 @@ const MyRoom = ({ isEditing, position }) => {
             height: isEditing ? '60vh' : '100vh',
           }}
         >
-          {/* <MyScene position={position} /> */}
-          {/* <MySecondScene /> */}
           <MyGlbScene />
           <OrbitControls />
         </Canvas>

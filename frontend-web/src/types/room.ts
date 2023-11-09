@@ -14,6 +14,14 @@ export interface MyObject {
   category: string;
   position: Position;
   rotation?: Rotation;
-  isLightWall?: boolean;
+  isRightWall?: boolean;
   isClicked?: boolean;
+  isThings?: boolean;
 }
+
+export interface MyRoom {
+  // roomId
+  // roomColor
+}
+
+
