@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { Spinner } from '../Spinner/Spinner';
-import MyGlbScene from '@/components/molecules/MyRoom/MyGlbScene';
+import { Spinner } from '../../molecules/Spinner/Spinner';
+import MyGlbScene from '@/components/organisms/MyRoom/MyGlbScene';
 import { Position } from '@/types/room';
 
 interface MyRoomProps {
@@ -23,7 +23,7 @@ const MyRoom = ({ isEditing, position }: MyRoomProps) => {
             height: isEditing ? '60vh' : '100vh',
           }}
         >
-          <MyGlbScene />
+          <MyGlbScene />
           <OrbitControls />
         </Canvas>
       </Suspense>

@@ -1,4 +1,4 @@
-import MyRoom from '@/components/molecules/MyRoom/MyRoom';
+import MyRoom from '@/components/organisms/MyRoom/MyRoom';
 import * as S from './Home.styles';
 import * as GS from '@/pages/FriendRoom/FriendRoomPage.styles';
 import { useState } from 'react';
@@ -22,7 +22,6 @@ import { MyObject, Position } from '../../types/room';
 import { myObjectsAtom } from '@/states/roomState';
 import { useAtom } from 'jotai';
 
-
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
   visible: {
@@ -44,7 +43,6 @@ const HomePage = () => {
 
   // TODO: User가 보유한 Objects와 상태 이곳에 데이터바인딩
   // isClicked가 필요할까?
-
 
   const handleEdit = () => {
     setIsEditing(!isEditing);

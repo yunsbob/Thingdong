@@ -1,11 +1,10 @@
 import { OrthographicCamera } from '@react-three/drei';
 import { useState } from 'react';
-import test_Wall from './test-room2.glb';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useLoader } from '@react-three/fiber';
-import carpet from './carpet-test.glb';
-import new_wall from './new-wall.glb';
-import clock_1 from './clock1.glb';
+import carpet from '@/assets/models/carpet-test.glb';
+import new_wall from '@/assets/models/new-wall.glb';
+import clock_1 from '@/assets/models/clock1.glb';
 import { MyObject } from '@/types/room';
 
 export default function MyGlbScene({ ...props }) {
@@ -77,7 +76,7 @@ export default function MyGlbScene({ ...props }) {
           /> */}
           <directionalLight
             name="Directional Light 2"
-            intensity={0}
+            intensity={0.7}
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
             shadow-camera-near={-10000}
@@ -91,7 +90,7 @@ export default function MyGlbScene({ ...props }) {
           />
           <directionalLight
             name="Directional Light"
-            intensity={0.7}
+            intensity={0.1}
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
             shadow-camera-near={-10000}
@@ -100,7 +99,8 @@ export default function MyGlbScene({ ...props }) {
             shadow-camera-right={1000}
             shadow-camera-top={1000}
             shadow-camera-bottom={-1000}
-            position={[269.18, 1416.8, 875.22]}
+            color="#ffffff"
+            position={[10, 10, 10]}
           />
           <primitive
             name="newWall"
@@ -112,8 +112,8 @@ export default function MyGlbScene({ ...props }) {
           <primitive
             name="testCarpet"
             object={(testCarpet as any).scene}
-            position={[3 * 0.75, 0, 0]}
-            rotation={[0, (Math.PI * 1) / 2, 0]}
+            position={[3 * 0.75, 1, 0]}
+            rotation={[0, 0, 0]}
             scale={1}
           />
           <primitive
@@ -141,7 +141,7 @@ export default function MyGlbScene({ ...props }) {
           <OrthographicCamera
             name="Default Camera"
             makeDefault={true}
-            zoom={23}
+            zoom={32}
             far={10000}
             near={-5000}
             position={[265, 350, 423]}
