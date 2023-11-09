@@ -12,6 +12,7 @@ import com.bell.thingdong.domain.objet.dto.ObjectInventoryDto;
 import com.bell.thingdong.domain.objet.dto.ObjectRoomInventoryDto;
 import com.bell.thingdong.domain.objet.dto.UnBoxThingHistoryDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
+import com.bell.thingdong.domain.objet.dto.request.UserObjectPosReq;
 import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
 import com.bell.thingdong.domain.objet.entity.UserObject;
@@ -20,6 +21,9 @@ import com.bell.thingdong.domain.objet.exception.ObjectIsExpensiveException;
 import com.bell.thingdong.domain.objet.exception.UserObjectNotFoundException;
 import com.bell.thingdong.domain.objet.repository.UnBoxThingHistoryRepository;
 import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
+import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.room.exception.RoomNotFoundException;
+import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.thinghistory.service.ThingHistoryService;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
@@ -35,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ObjetService {
 	private final UnBoxThingHistoryRepository unBoxThingHistoryRepository;
 	private final UserObjectRepository userObjectRepository;
+	private final UserRoomRepository userRoomRepository;
 	private final UserRepository userRepository;
 	private final ThingHistoryService thingHistoryService;
 
@@ -157,5 +162,14 @@ public class ObjetService {
 		                         .smartThingsList(smartThingsList)
 		                         .unBoxThingList(unBoxThingHistoryList)
 		                         .build();
+	}
+
+	@Transactional
+	public void setUserObjectPosition(UserObjectPosReq userObjectPosReq) {
+		UserRoom userRoom = userRoomRepository.findById(userObjectPosReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
+
+		UserObject userObject = userObjectRepository.findById(userObjectPosReq.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
+
+		userObject.setUserObjectPosition(userObjectPosReq, userRoom);
 	}
 }

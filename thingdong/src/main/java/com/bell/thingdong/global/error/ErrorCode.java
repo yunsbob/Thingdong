@@ -33,7 +33,9 @@ public enum ErrorCode {
 	// Object
 	USEROBJECT_NOT_FOUND(400, "O001", "UserObject Not Found"),
 	OBJECTCATEGORY_NOT_FOUND(400, "O002", "ObjectCategory Not Found"),
-	OBJECT_IS_EXPENSIVE(400, "O003", "Object Is Expensive");
+	OBJECT_IS_EXPENSIVE(400, "O003", "Object Is Expensive"),
+	// Room
+	ROOM_NOT_FOUND(400, "R001", "Room Not Found");
 
 	private final String code;
 	private final String message;
