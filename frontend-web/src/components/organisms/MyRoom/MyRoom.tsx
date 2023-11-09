@@ -1,19 +1,28 @@
 import React, { Suspense, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
-import { OrbitControls, OrthographicCamera } from '@react-three/drei';
+import {
+  Environment,
+  OrbitControls,
+  OrthographicCamera,
+  useGLTF,
+} from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
-import { Position, MyObject } from '@/types/room';
+import { Position, MyObject, Rotation } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import carpet from './carpet-test.glb';
-import new_wall from './new-wall.glb';
-import clock_1 from './clock1.glb';
+import bed_1 from './bed1.glb';
+import cabinet_1 from './cabinet1.glb';
+import chair_1 from './chair1.glb';
+import wall_basic from './wall.glb';
 
 interface MyRoomProps {
   isEditing: boolean;
   position: Position;
+  rotation: Rotation;
 }
 
-const MyRoom = ({ isEditing, position }: MyRoomProps) => {
+const ROTATION = (Math.PI * 1) / 2;
+
+const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
   // TODO: get으로 user objectLists 불러오기
   // TODO: useMemo사용하기
   // TODO: online sims만든사람 예외처리 방법 참고하기
@@ -24,46 +33,44 @@ const MyRoom = ({ isEditing, position }: MyRoomProps) => {
   // TODO: directionalLight 모듈로 빼기
   // <meshStandardMaterial attach="material" color="red" /> 이걸로 바꿔보기
 
+  const tempRotation = rotation;
   const tempMyObject: MyObject[] = [
     {
-      name: 'Clock',
+      name: 'bed1',
       modelId: 1,
-      category: 'Wall',
-      position: { x: 108.56, y: 89.16, z: -19.97 },
-      //rotation
-      isClicked: false,
+      category: 'Furniture',
+      position: { x: 0, y: 0, z: 0 },
+      source: bed_1,
     },
     {
-      name: 'Chair',
+      name: 'cabinet1',
       modelId: 2,
       category: 'Furniture',
-      position: { x: 18.48, y: -25.45, z: 76.47 },
-      isClicked: false,
+      position: { x: 0, y: 0, z: 1 },
+      rotation: { rx: 0, ry: 90, rz: 0 },
+      source: cabinet_1,
     },
     {
-      name: 'Bed Table',
+      name: 'chair1',
       modelId: 3,
       category: 'Furniture',
-      position: { x: 72.66, y: -41.86, z: -0.21 },
-    },
-    {
-      name: 'Lamp',
-      modelId: 4,
-      category: 'Things',
-      position: { x: 74.31, y: 0.99, z: 0.72 },
-    },
-    {
-      name: 'Point Light',
-      modelId: 5,
-      category: 'Lights',
-      position: { x: 73.39, y: 6, z: -1.01 },
+      position: { x: 1, y: 0, z: 0 },
+      rotation: { rx: 0, ry: 180, rz: 0 },
+      source: chair_1,
     },
   ];
 
   // TODO: 모델 불러오는건 DB 통해서
-  const testCarpet = useLoader(GLTFLoader, carpet);
-  const newWall = useLoader(GLTFLoader, new_wall);
-  const clock1 = useLoader(GLTFLoader, clock_1);
+  const bed1 = useLoader(GLTFLoader, bed_1);
+
+  function Bed1(props: JSX.IntrinsicElements['group']) {
+    const { scene } = useGLTF(tempMyObject[0].source);
+    return <primitive object={scene} {...props} />;
+  }
+
+  const cabinet1 = useLoader(GLTFLoader, cabinet_1);
+  const chair1 = useLoader(GLTFLoader, chair_1);
+  const wall = useLoader(GLTFLoader, wall_basic);
   const [selectedObject, setSelectedObject] = useState('');
 
   return (
@@ -71,40 +78,58 @@ const MyRoom = ({ isEditing, position }: MyRoomProps) => {
       <Suspense fallback={<Spinner />}>
         <Canvas
           shadows
-          flat
-          linear
+          // linear
+          // flat
           style={{
             width: '100%',
             height: isEditing ? '60vh' : '100vh',
           }}
         >
           <scene name="Scene" position={[0, -2, 0]}>
+            {/* <ambientLight intensity={0.5} /> */}
             {/* 객체들 - 사용자의 ObjectLists에서 map으로 뿌릴 예정 */}
-            <primitive
-              name="newWall"
-              object={(newWall as any).scene}
-              position={[0, -0, 0]}
+            <primitive name="wall" object={(wall as any).scene} scale={1} />
+            {/* <primitive
+              name="bed1"
+              object={(bed1 as any).scene}
+              position={[-2, 0, 0]}
               rotation={[0, 0, 0]} //TODO: RotationY(?)로도 회전 가능한지 (가능해보임)
               scale={1}
+            /> */}
+            <directionalLight
+              name="Directional Light"
+              castShadow
+              intensity={0.6}
+              shadow-mapSize-width={102}
+              shadow-mapSize-height={102}
+              shadow-camera-near={-1000}
+              shadow-camera-far={10000}
+              shadow-camera-left={-35}
+              shadow-camera-right={35}
+              shadow-camera-top={35}
+              shadow-camera-bottom={-35}
+              color="#cde5fe"
+              position={[-2.4, 3.28, 5.66]}
             />
+            <Bed1 position={[-1, 0, 1]} rotation={[0, Math.PI / 2, 0]} />
             <primitive
-              name="testCarpet"
-              object={(testCarpet as any).scene}
-              position={[3 * 0.75, 1, 0]}
+              name="cabinet_1"
+              object={(cabinet1 as any).scene}
+              position={[0, 0, -3]}
               rotation={[0, 0, 0]}
               scale={1}
             />
             <primitive
-              name="clock1"
-              object={(clock1 as any).scene}
-              position={[0, 0, 0]}
+              name="chair_1"
+              object={(chair1 as any).scene}
+              position={[2, 0, -3]}
               rotation={[0, 0, 0]}
               scale={1}
             />
             {/* 2개의 Light를 사용 */}
             <directionalLight
               name="DirectionalLight1"
-              intensity={0.7}
+              intensity={0.5}
               shadow-mapSize-width={1024}
               shadow-mapSize-height={1024}
               shadow-camera-near={-10000}
@@ -114,11 +139,13 @@ const MyRoom = ({ isEditing, position }: MyRoomProps) => {
               shadow-camera-top={1250}
               shadow-camera-bottom={-1250}
               color="#ffffff"
-              position={[20, 75, 20]}
+              castShadow
+              position={[-10, 175, 20]}
             />
             <directionalLight
               name="DirectionalLight2"
-              intensity={0.1}
+              intensity={0.2}
+              castShadow
               shadow-mapSize-width={1024}
               shadow-mapSize-height={1024}
               shadow-camera-near={-10000}
@@ -127,8 +154,8 @@ const MyRoom = ({ isEditing, position }: MyRoomProps) => {
               shadow-camera-right={1000}
               shadow-camera-top={1000}
               shadow-camera-bottom={-1000}
-              color="#ffffff"
-              position={[10, 10, 10]}
+              color="#e1c7c7"
+              position={[0, 20, 0]}
             />
 
             {/* LampLight1 : 잠시 꺼둠 */}
@@ -157,10 +184,13 @@ const MyRoom = ({ isEditing, position }: MyRoomProps) => {
               scale={1}
             />
             {/* Light */}
+
+            {/* <Environment preset="lobby"/> */}
             <hemisphereLight
               name="Default Ambient Light"
-              intensity={0.8}
+              intensity={0.1}
               color="#e8e8e8"
+              castShadow
             />
           </scene>
           <OrbitControls />
