@@ -4,9 +4,9 @@ import { OrbitControls, OrthographicCamera } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
 import { Position, MyObject } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import carpet from '@/assets/models/carpet-test.glb';
-import new_wall from '@/assets/models/new-wall.glb';
-import clock_1 from '@/assets/models/clock1.glb';
+import carpet from './carpet-test.glb';
+import new_wall from './new-wall.glb';
+import clock_1 from './clock1.glb';
 
 interface MyRoomProps {
   isEditing: boolean;
@@ -78,7 +78,6 @@ const MyRoom = ({ isEditing, position }: MyRoomProps) => {
             height: isEditing ? '60vh' : '100vh',
           }}
         >
-          {/* <group {...props} dispose={null}> */}
           <scene name="Scene" position={[0, -2, 0]}>
             {/* 객체들 - 사용자의 ObjectLists에서 map으로 뿌릴 예정 */}
             <primitive
@@ -164,8 +163,6 @@ const MyRoom = ({ isEditing, position }: MyRoomProps) => {
               color="#e8e8e8"
             />
           </scene>
-          {/* </group> */}
-          {/* <MyGlbScene /> */}
           <OrbitControls />
         </Canvas>
       </Suspense>
