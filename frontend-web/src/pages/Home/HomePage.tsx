@@ -123,6 +123,12 @@ const HomePage = () => {
     setCurrentIndex(0);
   };
 
+  const rotation = {
+    rx: 0,
+    ry: 0,
+    rz: 0,
+  };
+
   return (
     <>
       <GS.GuestbookModal
@@ -278,7 +284,7 @@ const HomePage = () => {
         </>
       )}
 
-      <MyRoom isEditing={isEditing} position={position} />
+      <MyRoom isEditing={isEditing} position={position} rotation={rotation} />
 
       {isEditing && (
         <S.TempToast
