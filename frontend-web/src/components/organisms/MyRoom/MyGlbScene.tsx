@@ -1,10 +1,11 @@
 import { OrthographicCamera } from '@react-three/drei';
+import { PerspectiveCamera } from '@react-three/drei';
 import { useState } from 'react';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useLoader } from '@react-three/fiber';
-import carpet from '@/assets/models/carpet-test.glb';
-import new_wall from '@/assets/models/new-wall.glb';
-import clock_1 from '@/assets/models/clock1.glb';
+import carpet from './carpet-test.glb';
+import new_wall from './new-wall.glb';
+import clock_1 from './clock1.glb';
 import { MyObject } from '@/types/room';
 
 export default function MyGlbScene({ ...props }) {
@@ -26,7 +27,8 @@ export default function MyGlbScene({ ...props }) {
       category: 'Wall',
       position: { x: 108.56, y: 89.16, z: -19.97 },
       //rotation
-      isClicked: false,
+      isActivated: false,
+      //modelLink
     },
     {
       name: 'Chair',
@@ -70,7 +72,7 @@ export default function MyGlbScene({ ...props }) {
             rotation={[0, 0, Math.PI / 2]}
             scale={0.75}
           />
-          <gridHelper
+          <gridHelper+
             position={[0.2, 3.76, -3.5]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={0.75}

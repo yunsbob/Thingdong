@@ -17,6 +17,7 @@ export interface MyObject {
   isRightWall?: boolean;
   isClicked?: boolean;
   isThings?: boolean;
+  isActivated?: boolean;
 }
 
 export interface MyRoom {
