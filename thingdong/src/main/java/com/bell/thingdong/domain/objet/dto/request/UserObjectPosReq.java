@@ -14,6 +14,9 @@ public class UserObjectPosReq {
 	@Schema(description = "방 번호", example = "1")
 	private Long roomId;
 
+	@Schema(description = "오브제 번호", example = "1")
+	private Long userObjectId;
+
 	@Schema(description = "오브젝트 x 좌표 값", example = "1")
 	private Double x;
 
