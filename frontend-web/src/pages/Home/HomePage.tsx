@@ -44,41 +44,7 @@ const HomePage = () => {
 
   // TODO: User가 보유한 Objects와 상태 이곳에 데이터바인딩
   // isClicked가 필요할까?
-  const tempMyObject: MyObject[] = [
-    {
-      name: 'Clock',
-      modelId: 1,
-      category: 'Wall',
-      position: { x: 108.56, y: 89.16, z: -19.97 },
-      isClicked: false,
-    },
-    {
-      name: 'Chair',
-      modelId: 2,
-      category: 'Furniture',
-      position: { x: 18.48, y: -25.45, z: 76.47 },
-      isClicked: false,
-    },
-    {
-      name: 'Bed Table',
-      modelId: 3,
-      category: 'Furniture',
-      position: {x: 72.66, y: -41.86, z: -0.21},
-    },
-    {
-      name: 'Lamp',
-      modelId: 4,
-      category: 'Things',
-      position: {x: 74.31, y: 0.99, z: 0.72},
-    },
-    {
-      name: 'Point Light',
-      modelId: 5,
-      category: 'Lights',
-      position: {x: 73.39, y: 6, z: -1.01},
-    },
-  ];
-  
+
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -313,8 +279,9 @@ const HomePage = () => {
           </S.BottomButtonWrapper>
         </>
       )}
+
       <MyRoom isEditing={isEditing} position={position} />
-      {/* <TempScene isEditing={isEditing} position={position} /> */}
+
       {isEditing && (
         <S.TempToast
           variants={toastVariants}
