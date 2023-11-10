@@ -20,6 +20,11 @@ import { userObjectsAtom } from '@/states/roomState';
 import { useAtom } from 'jotai';
 import GuestbookModal from '@/components/organisms/GuestbookModal/GuestbookModal';
 
+import bed_1 from './bed1.glb';
+import cabinet_1 from './cabinet1.glb';
+import chair_1 from './chair1.glb';
+import { UserObject } from '../../types/room';
+
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
   visible: {
@@ -90,7 +95,7 @@ const HomePage = () => {
       let [x, y, z] = prev;
 
       switch (direction) {
-        case 'right':
+        case 'right': 
           x += 10;
           break;
         case 'left':
@@ -130,6 +135,35 @@ const HomePage = () => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
   };
+
+  // UserObjectList
+  const tempMyObject: UserObject[] = [
+    {
+      name: 'bed1',
+      userObjectId: 1,
+      objectId: 1,
+      objectModelPath: bed_1,
+      isWall: false,
+      position: [-2, 0, 0],
+      rotation: [0, 0, 0],
+    },
+    {
+      name: 'cabinet1',
+      userObjectId: 2,
+      objectId: 2,
+      position: [0, 0, -3],
+      rotation: [0, 0, 0],
+      objectModelPath: cabinet_1,
+    },
+    {
+      name: 'chair1',
+      userObjectId: 3,
+      objectId: 3,
+      position: [2, 0, 0],
+      rotation: [0, 0, 0],
+      objectModelPath: chair_1,
+    },
+  ];
 
   const rx = 0;
   const ry = 0;
@@ -227,7 +261,7 @@ const HomePage = () => {
         </>
       )}
 
-      <MyRoom isEditing={isEditing} position={position} rotation={rotation} />
+      <MyRoom isEditing={isEditing} position={position} rotation={rotation} userObject={tempMyObject}/>
       {isEditing && (
         <S.TempToast
           variants={toastVariants}

@@ -6,41 +6,12 @@ import {
   OrthographicCamera,
 } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
-import { Position, UserObject, Rotation, MyRoomProps } from '@/types/room';
+import { Position, Rotation, MyRoomProps } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import bed_1 from './bed1.glb';
-import cabinet_1 from './cabinet1.glb';
-import chair_1 from './chair1.glb';
+
 import room_pink_light from './room-pink-light.glb';
 
-const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
-  const tempMyObject: UserObject[] = [
-    {
-      name: 'bed1',
-      userObjectId: 1,
-      objectId: 1,
-      objectModelPath: bed_1,
-      isWall: false,
-      position: [-2, 0, 0],
-      rotation: [0, 0, 0],
-    },
-    {
-      name: 'cabinet1',
-      userObjectId: 2,
-      objectId: 2,
-      position: [0, 0, -3],
-      rotation: [0, 0, 0],
-      objectModelPath: cabinet_1,
-    },
-    {
-      name: 'chair1',
-      userObjectId: 3,
-      objectId: 3,
-      position: [2, 0, 0],
-      rotation: [0, 0, 0],
-      objectModelPath: chair_1,
-    },
-  ];
+const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
 
   const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
 
@@ -72,8 +43,6 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
     );
   };
 
-  const [selectedObject, setSelectedObject] = useState('');
-
   return (
     <div style={{ backgroundColor: '#efddad', width: '100%', height: '100vh' }}>
       <Suspense fallback={<Spinner />}>
@@ -87,7 +56,7 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
           }}
         >
           <scene name="Scene" position={[0, -2, 0]}>
-            {tempMyObject.map(obj => (
+            {userObject.map(obj => (
               <MyObject
                 name={obj.name}
                 key={obj.userObjectId}
@@ -97,6 +66,7 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
                 onClick={event => {
                   event.stopPropagation();
                   console.log(event.eventObject.name);
+                  localStorage.setItem('selectedItem', event.eventObject.name)
                   // setSelectedObject(event.eventObject.name);
                 }}
               />

@@ -19,6 +19,7 @@ export interface MyRoomProps {
   isEditing: boolean;
   position: Position;
   rotation: Rotation;
+  userObject: UserObject[];
 }
 
 export interface UserObject {
