@@ -6,7 +6,7 @@ import {
   OrthographicCamera,
 } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
-import { MyRoomProps } from '@/types/room';
+import { Position, Rotation, MyRoomProps } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import room_pink_light from './room-pink-light.glb';
@@ -21,7 +21,7 @@ const MyRoom = ({
   const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
 
   (roomPinkLight as any).scene.traverse((node: any) => {
-    console.log(node.type);
+    // console.log(node.type);
     if (node.type === 'Mesh') {
       node.castShadow = true;
       node.receiveShadow = true;
@@ -56,7 +56,7 @@ const MyRoom = ({
               const glb = useLoader(GLTFLoader, obj.objectModelPath);
 
               glb.scene.traverse(node => {
-                console.log(node.type);
+                // console.log(node.type);
                 if (node.type === 'Mesh') {
                   node.castShadow = true;
                   node.receiveShadow = true;
@@ -73,7 +73,6 @@ const MyRoom = ({
                   scale={1}
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    console.log(obj.name);
                     onObjectClick(obj.name);
                   }}
                 />

@@ -23,8 +23,8 @@ import cabinet_1 from './cabinet1.glb';
 import chair_1 from './chair1.glb';
 import couch_1 from './couch1.glb';
 import table_1 from './table1.glb';
-import clock_1 from './clock1.glb';
-import painting_1 from './painting1.glb';
+import clock_2 from './clock2.glb';
+import painting_2 from './painting2.glb';
 import { UserObject } from '../../types/room';
 
 const toastVariants = {
@@ -44,6 +44,11 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
 
+  // 이동 & 회전 단위
+  const MOVE = 0.75;
+  const ROTATE = Math.PI * 0.5;
+
+  // 임시 myObjectList
   const [myObjectList, setMyObjectList] = useState<UserObject[]>([
     {
       name: 'bed1',
@@ -51,15 +56,15 @@ const HomePage = () => {
       objectId: 1,
       objectModelPath: bed_1,
       isWall: false,
-      position: [-2, 0, 0],
-      rotation: [0, 0, 0],
+      position: [-2, 0, 2],
+      rotation: [0, ROTATE * 2, 0],
     },
     {
       name: 'cabinet1',
       userObjectId: 2,
       objectId: 2,
-      position: [0, 0, -3],
-      rotation: [0, 0, 0],
+      position: [2, 0, 4],
+      rotation: [0, ROTATE * 2, 0],
       objectModelPath: cabinet_1,
     },
     {
@@ -74,34 +79,34 @@ const HomePage = () => {
       name: 'table1',
       userObjectId: 4,
       objectId: 4,
-      position: [-2, 0, 0],
-      rotation: [0, 0, 0],
+      position: [-3, 0, -2],
+      rotation: [0, ROTATE, 0],
       objectModelPath: table_1,
     },
     {
       name: 'couch1',
       userObjectId: 5,
       objectId: 5,
-      position: [4, 0, 2],
+      position: [1, 0, -2],
       rotation: [0, 0, 0],
       objectModelPath: couch_1,
     },
     {
-      name: 'clock1',
+      name: 'clock2',
       userObjectId: 6,
       objectId: 6,
-      position: [0, 0, 2],
-      rotation: [0, 0, 0],
-      objectModelPath: clock_1,
+      position: [0, 0, 0],
+      rotation: [0, ROTATE, 0],
+      objectModelPath: clock_2,
       isWall: true,
     },
     {
-      name: 'painting1',
+      name: 'painting2',
       userObjectId: 7,
       objectId: 7,
-      position: [2, 0, 0],
+      position: [1, 0, 0],
       rotation: [0, 0, 0],
-      objectModelPath: painting_1,
+      objectModelPath: painting_2,
       isWall: true,
     },
   ]);
@@ -165,21 +170,57 @@ const HomePage = () => {
       return currentObjects.map(obj => {
         if (obj.name === selectedObjectName) {
           let [x, y, z] = obj.position;
-          switch (direction) {
-            case 'right':
-              x += 0.75;
-              break;
-            case 'left':
-              x -= 0.75;
-              break;
-            case 'up':
-              z -= 0.75;
-              break;
-            case 'down':
-              z += 0.75;
-              break;
-            default:
-              break;
+          if (!obj.isWall) {
+            switch (direction) {
+              case 'right':
+                x += MOVE;
+                break;
+              case 'left':
+                x -= MOVE;
+                break;
+              case 'up':
+                z -= MOVE;
+                break;
+              case 'down':
+                z += MOVE;
+                break;
+              default:
+                break;
+            }
+          } else if (obj.isWall && obj.rotation[1] === 0) {
+            switch (direction) {
+              case 'right':
+                x += MOVE;
+                break;
+              case 'left':
+                x -= MOVE;
+                break;
+              case 'up':
+                y += MOVE;
+                break;
+              case 'down':
+                y -= MOVE;
+                break;
+              default:
+                break;
+            }
+          } else if (obj.isWall && obj.rotation[1] !== 0) {
+            switch (direction) {
+              case 'right':
+                z -= MOVE;
+                break;
+              case 'left':
+                z += MOVE;
+                break;
+              case 'up':
+                y += MOVE;
+                break;
+              case 'down':
+                y -= MOVE;
+                break;
+              default:
+                break;
+            }
           }
           return { ...obj, position: [x, y, z] };
         }
@@ -188,14 +229,20 @@ const HomePage = () => {
     });
   };
 
-  // 객체 회전
+  // 객체 회전 TODO: 0,0,0이 아니면 벽에서 뜨는 경우가 있다
   const [rotation, setRotation] = useState<Rotation>([0, 0, 0]);
   const handleRotationClick = () => {
     setMyObjectList(currentObjects => {
       return currentObjects.map(obj => {
         if (obj.name === selectedObjectName) {
           let [x, y, z] = obj.rotation;
-          y += Math.PI * 0.5;
+          if (!obj.isWall) {
+            y += ROTATE;
+          } else if (obj.isWall && obj.rotation[1] === 0) {
+            y += ROTATE;
+          } else if (obj.isWall && obj.rotation[1] !== 0) {
+            y = 0;
+          }
           return { ...obj, rotation: [x, y, z] };
         }
         return obj;
