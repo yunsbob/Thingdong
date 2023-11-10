@@ -37,11 +37,14 @@ public class Objet {
 	@Column(name = "object_thing")
 	private Long objectThing;
 
-	@Column(name = "object_width")
-	private Double objectWidth;
+	@Column(name = "object_name", nullable = false)
+	private String objectName;
 
-	@Column(name = "object_height")
-	private Double objectHeight;
+	@Column(name = "object_width", nullable = false)
+	private Long objectWidth;
+
+	@Column(name = "object_height", nullable = false)
+	private Long objectHeight;
 
 	@Column(name = "is_wall", nullable = false)
 	private String isWall;
