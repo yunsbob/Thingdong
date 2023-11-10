@@ -86,6 +86,18 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
           }}
         >
           <scene name="Scene" position={[0, -2, 0]}>
+            {/* <gridHelper scale={0.75} position={[0.2, 0, 0.2]} />
+            <gridHelper
+              position={[-3.59, 3.76, 0.2]}
+              rotation={[0, 0, Math.PI / 2]}
+              scale={0.75}
+            />
+            <gridHelper
+              position={[0.2, 3.76, -3.5]}
+              rotation={[Math.PI / 2, 0, 0]}
+              scale={0.75}
+            /> */}
+
             {/* <ambientLight intensity={0.5} /> */}
             {/* 객체들 - 사용자의 ObjectLists에서 map으로 뿌릴 예정 */}
             <primitive name="wall" object={(wall as any).scene} scale={1} />
@@ -190,7 +202,6 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
               name="Default Ambient Light"
               intensity={0.1}
               color="#e8e8e8"
-              castShadow
             />
           </scene>
           <OrbitControls />
