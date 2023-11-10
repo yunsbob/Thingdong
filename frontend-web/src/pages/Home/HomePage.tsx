@@ -42,7 +42,34 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [position, setPosition] = useState<Position>([0, 25, 0]);
-  const [userObjects, setUserObjects] = useAtom(userObjectsAtom);
+  // const [userObjects, setUserObjects] = useAtom(userObjectsAtom);
+  const [tempMyObject, setTempMyObject] = useState<UserObject[]>([
+    {
+      name: 'bed1',
+      userObjectId: 1,
+      objectId: 1,
+      objectModelPath: bed_1,
+      isWall: false,
+      position: [-2, 0, 0],
+      rotation: [0, 0, 0],
+    },
+    {
+      name: 'cabinet1',
+      userObjectId: 2,
+      objectId: 2,
+      position: [0, 0, -3],
+      rotation: [0, 0, 0],
+      objectModelPath: cabinet_1,
+    },
+    {
+      name: 'chair1',
+      userObjectId: 3,
+      objectId: 3,
+      position: [2, 0, 0],
+      rotation: [0, 0, 0],
+      objectModelPath: chair_1,
+    },
+  ]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -90,28 +117,39 @@ const HomePage = () => {
     { src: 'right-button.png', direction: 'right' },
   ];
 
+  const [selectedObjectName, setSelectedObjectName] = useState('');
+  const handleObjectSelect = (objectName: string) => {
+    setSelectedObjectName(objectName);
+  };
+
   const handleArrowClick = (direction: string | null) => {
-    setPosition(prev => {
-      let [x, y, z] = prev;
+    console.log('here, direction');
+    setTempMyObject(currentObjects => {
+      return currentObjects.map(obj => {
+        if (obj.name === selectedObjectName) {
+          let [x, y, z] = obj.position;
 
-      switch (direction) {
-        case 'right': 
-          x += 10;
-          break;
-        case 'left':
-          x -= 10;
-          break;
-        case 'up':
-          z -= 10;
-          break;
-        case 'down':
-          z += 10;
-          break;
-        default:
-          break;
-      }
+          switch (direction) {
+            case 'right':
+              x += 1;
+              break;
+            case 'left':
+              x -= 1;
+              break;
+            case 'up':
+              z -= 1;
+              break;
+            case 'down':
+              z += 1;
+              break;
+            default:
+              break;
+          }
 
-      return [x, y, z];
+          return { ...obj, position: [x, y, z] };
+        }
+        return obj;
+      });
     });
   };
 
@@ -135,35 +173,6 @@ const HomePage = () => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
   };
-
-  // UserObjectList
-  const tempMyObject: UserObject[] = [
-    {
-      name: 'bed1',
-      userObjectId: 1,
-      objectId: 1,
-      objectModelPath: bed_1,
-      isWall: false,
-      position: [-2, 0, 0],
-      rotation: [0, 0, 0],
-    },
-    {
-      name: 'cabinet1',
-      userObjectId: 2,
-      objectId: 2,
-      position: [0, 0, -3],
-      rotation: [0, 0, 0],
-      objectModelPath: cabinet_1,
-    },
-    {
-      name: 'chair1',
-      userObjectId: 3,
-      objectId: 3,
-      position: [2, 0, 0],
-      rotation: [0, 0, 0],
-      objectModelPath: chair_1,
-    },
-  ];
 
   const rx = 0;
   const ry = 0;
@@ -261,7 +270,12 @@ const HomePage = () => {
         </>
       )}
 
-      <MyRoom isEditing={isEditing} position={position} rotation={rotation} userObject={tempMyObject}/>
+      <MyRoom
+        isEditing={isEditing}
+        position={position}
+        rotation={rotation}
+        userObject={tempMyObject}
+      />
       {isEditing && (
         <S.TempToast
           variants={toastVariants}
