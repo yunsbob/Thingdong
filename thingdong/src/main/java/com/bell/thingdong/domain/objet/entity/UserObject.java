@@ -75,9 +75,9 @@ public class UserObject {
 
 	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq, UserRoom room) {
 		this.room = room;
-		this.x = userObjectPositionReq.getX();
-		this.y = userObjectPositionReq.getY();
-		this.z = userObjectPositionReq.getZ();
-		this.rotationY = userObjectPositionReq.getRotationY();
+		this.x = userObjectPositionReq.getPosition().getX();
+		this.y = userObjectPositionReq.getPosition().getY();
+		this.z = userObjectPositionReq.getPosition().getZ();
+		this.rotationY = userObjectPositionReq.getRotation().getY();
 	}
 }
