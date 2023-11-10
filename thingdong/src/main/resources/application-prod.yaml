@@ -48,7 +48,7 @@ translator:
     url: https://openapi.naver.com/v1/papago/n2mt
     client-id: Q4sb0BCOsE0xX3M19V8J
     client-secret: a5h1RIcsLF
+
 generator:
   stable-diffusion:
-    url: http://222.107.238.44
-    port : 8888
+    url: https://masoori.site

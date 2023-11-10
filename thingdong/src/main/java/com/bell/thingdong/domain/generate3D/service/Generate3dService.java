@@ -17,17 +17,11 @@ public class Generate3dService {
 	@Value("${generator.stable-diffusion.url}")
 	private String url;
 
-	@Value("${generator.stable-diffusion.port}")
-	private String port;
-
 	public ResourceRes generate3d(String sentence) {
 		return WebClient.builder()
 			.baseUrl(url)
 			.build()
 			.post()
-			.uri(uriBuilder -> uriBuilder
-				.port(port)
-				.build())
 			.bodyValue(new ResourceReq(sentence))
 			.header("Content-Type", "application/json; charset=UTF-8")
 			.retrieve()

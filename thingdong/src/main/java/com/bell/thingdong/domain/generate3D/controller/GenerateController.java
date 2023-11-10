@@ -31,6 +31,7 @@ public class GenerateController {
 	public ResponseEntity<ResourceRes> getResource(
 		@Parameter(description = "3d 오브제를 생성할 문구를 입력한다.", required = true, example = "바나나 모양을 한 비행기")
 		@RequestParam("sentence") String sentence) {
+		log.info("unBoxThing");
 		String enSentence = translationService.translate(sentence);
 		ResourceRes resourceRes = generate3dService.generate3d(enSentence);
 		return ResponseEntity.ok(resourceRes);
