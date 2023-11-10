@@ -16,8 +16,6 @@ import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
 import { Position, Rotation } from '../../types/room';
-import { userObjectsAtom } from '@/states/roomState';
-import { useAtom } from 'jotai';
 import GuestbookModal from '@/components/organisms/GuestbookModal/GuestbookModal';
 
 import bed_1 from './bed1.glb';
@@ -42,7 +40,6 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [position, setPosition] = useState<Position>([0, 25, 0]);
-  // const [userObjects, setUserObjects] = useAtom(userObjectsAtom);
   const [tempMyObject, setTempMyObject] = useState<UserObject[]>([
     {
       name: 'bed1',
@@ -118,7 +115,7 @@ const HomePage = () => {
   ];
 
   const [selectedObjectName, setSelectedObjectName] = useState('');
-  const handleObjectSelect = (objectName: string) => {
+  const handleObjectClick = (objectName: string) => {
     setSelectedObjectName(objectName);
   };
 
@@ -128,24 +125,22 @@ const HomePage = () => {
       return currentObjects.map(obj => {
         if (obj.name === selectedObjectName) {
           let [x, y, z] = obj.position;
-
           switch (direction) {
             case 'right':
-              x += 1;
+              x += 0.75;
               break;
             case 'left':
-              x -= 1;
+              x -= 0.75;
               break;
             case 'up':
-              z -= 1;
+              z -= 0.75;
               break;
             case 'down':
-              z += 1;
+              z += 0.75;
               break;
             default:
               break;
           }
-
           return { ...obj, position: [x, y, z] };
         }
         return obj;
@@ -190,7 +185,6 @@ const HomePage = () => {
         handleNext={handleNext}
         handleDeleteGuestbook={handleDeleteGuestbook}
       />
-      {/* zIndex 임시로 1 */}
       <S.HeaderButtonWrapper style={{ zIndex: 1 }}>
         {isEditing ? (
           <>
@@ -275,6 +269,7 @@ const HomePage = () => {
         position={position}
         rotation={rotation}
         userObject={tempMyObject}
+        onObjectClick={handleObjectClick}
       />
       {isEditing && (
         <S.TempToast
