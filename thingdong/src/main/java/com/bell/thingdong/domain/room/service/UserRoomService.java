@@ -65,6 +65,7 @@ public class UserRoomService {
 		return userRoomRes;
 	}
 
+	@Transactional
 	public void updateRoomColor(String email, String roomColor) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
