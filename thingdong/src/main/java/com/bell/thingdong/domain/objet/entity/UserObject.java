@@ -60,8 +60,14 @@ public class UserObject {
 	@Column(name = "z")
 	private Double z;
 
-	@Column(name = "rotation")
-	private Double rotation;
+	@Column(name = "rotation_x")
+	private Double rotationX;
+
+	@Column(name = "rotation_y")
+	private Double rotationY;
+
+	@Column(name = "rotation_z")
+	private Double rotationZ;
 
 	public void setUserObjectStatus(UserObjectStatus userObjectStatus) {
 		this.userObjectStatus = userObjectStatus;
@@ -72,6 +78,6 @@ public class UserObject {
 		this.x = userObjectPosReq.getX();
 		this.y = userObjectPosReq.getY();
 		this.z = userObjectPosReq.getZ();
-		this.rotation = userObjectPosReq.getRotation();
+		this.rotationY = userObjectPosReq.getRotationY();
 	}
 }
