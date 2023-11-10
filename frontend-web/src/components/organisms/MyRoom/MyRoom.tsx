@@ -14,7 +14,6 @@ import chair_1 from './chair1.glb';
 import room_pink_light from './room-pink-light.glb';
 
 const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
-
   const tempMyObject: UserObject[] = [
     {
       name: 'bed1',
@@ -50,6 +49,7 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
     position: Position;
     rotation: Rotation;
     name: string;
+    onClick: (event: any) => void;
   };
 
   const MyObject = ({
@@ -57,6 +57,7 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
     position,
     rotation,
     name,
+    onClick,
   }: MyObjectProps) => {
     const glb = useLoader(GLTFLoader, objectModelPath);
     return (
@@ -66,6 +67,7 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
         position={position}
         rotation={rotation}
         scale={1}
+        onClick={onClick}
       />
     );
   };
@@ -85,7 +87,6 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
           }}
         >
           <scene name="Scene" position={[0, -2, 0]}>
-
             {tempMyObject.map(obj => (
               <MyObject
                 name={obj.name}
@@ -93,6 +94,11 @@ const MyRoom = ({ isEditing, position, rotation }: MyRoomProps) => {
                 objectModelPath={obj.objectModelPath}
                 position={obj.position}
                 rotation={obj.rotation}
+                onClick={event => {
+                  event.stopPropagation();
+                  console.log(event.eventObject.name);
+                  // setSelectedObject(event.eventObject.name);
+                }}
               />
             ))}
 
