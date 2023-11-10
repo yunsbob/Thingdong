@@ -1,7 +1,7 @@
 package com.bell.thingdong.domain.objet.entity;
 
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
-import com.bell.thingdong.domain.objet.dto.request.UserObjectPosReq;
+import com.bell.thingdong.domain.objet.dto.request.UserObjectPositionReq;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.user.entity.User;
 
@@ -73,11 +73,11 @@ public class UserObject {
 		this.userObjectStatus = userObjectStatus;
 	}
 
-	public void setUserObjectPosition(UserObjectPosReq userObjectPosReq, UserRoom room) {
+	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq, UserRoom room) {
 		this.room = room;
-		this.x = userObjectPosReq.getX();
-		this.y = userObjectPosReq.getY();
-		this.z = userObjectPosReq.getZ();
-		this.rotationY = userObjectPosReq.getRotationY();
+		this.x = userObjectPositionReq.getX();
+		this.y = userObjectPositionReq.getY();
+		this.z = userObjectPositionReq.getZ();
+		this.rotationY = userObjectPositionReq.getRotationY();
 	}
 }
