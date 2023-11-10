@@ -18,8 +18,8 @@ import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
 // import TempScene from '@/components/organisms/TempScene/TempScene';
-import { MyObject, Position } from '../../types/room';
-import { myObjectsAtom } from '@/states/roomState';
+import { UserObject, Position, Rotation } from '../../types/room';
+import { userObjectsAtom } from '@/states/roomState';
 import { useAtom } from 'jotai';
 
 const toastVariants = {
@@ -38,8 +38,8 @@ const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
-  const [position, setPosition] = useState<Position>({ x: 0, y: -25, z: 0 });
-  const [myObjects, setMyObjects] = useAtom(myObjectsAtom);
+  const [position, setPosition] = useState<Position>([0, 25, 0]);
+  const [userObjects, setUserObjects] = useAtom(userObjectsAtom);
 
   // TODO: User가 보유한 Objects와 상태 이곳에 데이터바인딩
   // isClicked가 필요할까?
@@ -89,17 +89,17 @@ const HomePage = () => {
     { src: 'right-button.png', direction: 'right' },
   ];
 
-  const handleArrowClick = (direction: string | null) => {
-    if (direction === 'right') {
-      setPosition(prev => ({ ...prev, x: prev.x + 10 }));
-    } else if (direction === 'left') {
-      setPosition(prev => ({ ...prev, x: prev.x - 10 }));
-    } else if (direction === 'up') {
-      setPosition(prev => ({ ...prev, z: prev.z - 10 }));
-    } else if (direction === 'down') {
-      setPosition(prev => ({ ...prev, z: prev.z + 10 }));
-    }
-  };
+  // const handleArrowClick = (direction: string | null) => {
+  //   if (direction === 'right') {
+  //     setPosition(prev => ({ ...prev, x: prev.x + 10 }));
+  //   } else if (direction === 'left') {
+  //     setPosition(prev => ({ ...prev, x: prev.x - 10 }));
+  //   } else if (direction === 'up') {
+  //     setPosition(prev => ({ ...prev, z: prev.z - 10 }));
+  //   } else if (direction === 'down') {
+  //     setPosition(prev => ({ ...prev, z: prev.z + 10 }));
+  //   }
+  // };
 
   // 방명록 모달
   const [modalOpen, setModalOpen] = useState(false);
@@ -122,12 +122,10 @@ const HomePage = () => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
   };
-
-  const rotation = {
-    rx: 0,
-    ry: 0,
-    rz: 0,
-  };
+  const x = 0;
+  const y = 0;
+  const z = 0;
+  const rotation: Rotation = [x, y, z];
 
   return (
     <>
@@ -255,7 +253,8 @@ const HomePage = () => {
                     $unit={'px'}
                     width={40}
                     height={40}
-                    onClick={() => handleArrowClick(button.direction)}
+                    // onClick={() => handleArrowClick(button.direction)}
+                    onClick={() => {}}
                     style={{
                       visibility: button.direction ? 'visible' : 'hidden',
                     }}
@@ -284,6 +283,7 @@ const HomePage = () => {
         </>
       )}
 
+      {/* <MyRoom isEditing={isEditing} position={position} rotation={rotation} /> */}
       <MyRoom isEditing={isEditing} position={position} rotation={rotation} />
 
       {isEditing && (
