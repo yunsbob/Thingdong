@@ -1,6 +1,5 @@
 import MyRoom from '@/components/organisms/MyRoom/MyRoom';
 import * as S from './Home.styles';
-import * as GS from '@/pages/FriendRoom/FriendRoomPage.styles';
 import { useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
 import { useGetRoomInventory } from '@/apis/Room/Queries/useGetRoomInventory';
@@ -15,12 +14,16 @@ import RoomInventoryItem from '@/components/molecules/RoomInventoryItem/RoomInve
 import { IMAGES } from '@/constants/images';
 import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
-import { Text } from '@/components/atoms/Text/Text.styles';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
-// import TempScene from '@/components/organisms/TempScene/TempScene';
-import { MyObject, Position } from '../../types/room';
-import { myObjectsAtom } from '@/states/roomState';
+import { Position, Rotation } from '../../types/room';
+import { userObjectsAtom } from '@/states/roomState';
 import { useAtom } from 'jotai';
+import GuestbookModal from '@/components/organisms/GuestbookModal/GuestbookModal';
+
+import bed_1 from './bed1.glb';
+import cabinet_1 from './cabinet1.glb';
+import chair_1 from './chair1.glb';
+import { UserObject } from '../../types/room';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -38,11 +41,8 @@ const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
-  const [position, setPosition] = useState<Position>({ x: 0, y: -25, z: 0 });
-  const [myObjects, setMyObjects] = useAtom(myObjectsAtom);
-
-  // TODO: User가 보유한 Objects와 상태 이곳에 데이터바인딩
-  // isClicked가 필요할까?
+  const [position, setPosition] = useState<Position>([0, 25, 0]);
+  const [userObjects, setUserObjects] = useAtom(userObjectsAtom);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -80,6 +80,7 @@ const HomePage = () => {
       />
     ));
   };
+
   const arrowButtons = [
     { src: 'empty-button.png', direction: null },
     { src: 'up-button.png', direction: 'up' },
@@ -90,18 +91,30 @@ const HomePage = () => {
   ];
 
   const handleArrowClick = (direction: string | null) => {
-    if (direction === 'right') {
-      setPosition(prev => ({ ...prev, x: prev.x + 10 }));
-    } else if (direction === 'left') {
-      setPosition(prev => ({ ...prev, x: prev.x - 10 }));
-    } else if (direction === 'up') {
-      setPosition(prev => ({ ...prev, z: prev.z - 10 }));
-    } else if (direction === 'down') {
-      setPosition(prev => ({ ...prev, z: prev.z + 10 }));
-    }
+    setPosition(prev => {
+      let [x, y, z] = prev;
+
+      switch (direction) {
+        case 'right': 
+          x += 10;
+          break;
+        case 'left':
+          x -= 10;
+          break;
+        case 'up':
+          z -= 10;
+          break;
+        case 'down':
+          z += 10;
+          break;
+        default:
+          break;
+      }
+
+      return [x, y, z];
+    });
   };
 
-  // 방명록 모달
   const [modalOpen, setModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const userId = localStorage.getItem('userId');
@@ -123,87 +136,51 @@ const HomePage = () => {
     setCurrentIndex(0);
   };
 
-  const rotation = {
-    rx: 0,
-    ry: 0,
-    rz: 0,
-  };
+  // UserObjectList
+  const tempMyObject: UserObject[] = [
+    {
+      name: 'bed1',
+      userObjectId: 1,
+      objectId: 1,
+      objectModelPath: bed_1,
+      isWall: false,
+      position: [-2, 0, 0],
+      rotation: [0, 0, 0],
+    },
+    {
+      name: 'cabinet1',
+      userObjectId: 2,
+      objectId: 2,
+      position: [0, 0, -3],
+      rotation: [0, 0, 0],
+      objectModelPath: cabinet_1,
+    },
+    {
+      name: 'chair1',
+      userObjectId: 3,
+      objectId: 3,
+      position: [2, 0, 0],
+      rotation: [0, 0, 0],
+      objectModelPath: chair_1,
+    },
+  ];
+
+  const rx = 0;
+  const ry = 0;
+  const rz = 0;
+  const rotation: Rotation = [rx, ry, rz];
 
   return (
     <>
-      <GS.GuestbookModal
+      <GuestbookModal
         isOpen={modalOpen}
         onClose={() => changeModalOpen(modalOpen, setModalOpen)}
-        height="auto"
-      >
-        <GS.GuestbookButtonWrapper>
-          <GS.ButtonWrapper
-            onClick={handlePrev}
-            opacity={currentIndex > 0 ? 1 : 0}
-          >
-            <Image src={IMAGES.FRIEND.SEARCH.BACK_WHITE_ICON} width={1} />
-            <Text size="body3" color="white" fontWeight="regular">
-              이전
-            </Text>{' '}
-          </GS.ButtonWrapper>
-          <GS.ButtonWrapper
-            onClick={handleNext}
-            opacity={currentIndex < guestbooks.data.length - 1 ? 1 : 0}
-          >
-            <Text size="body3" color="white" fontWeight="regular">
-              다음
-            </Text>{' '}
-            <Image
-              src={IMAGES.FRIEND.SEARCH.BACK_WHITE_ICON}
-              width={1}
-              style={{ transform: 'rotate(180deg)' }}
-            ></Image>
-          </GS.ButtonWrapper>
-        </GS.GuestbookButtonWrapper>
-        <Image src={IMAGES.ROOM.GUESTBOOK} width={21} />
-        <GS.WriteArea>
-          <GS.ContentArea>
-            {guestbooks.data?.length ? (
-              <Text size="body2" fontWeight="bold" $lineHeight="1.5">
-                {guestbooks.data[currentIndex].content}
-              </Text>
-            ) : (
-              <Text
-                size="body2"
-                fontWeight="bold"
-                $lineHeight="1.5"
-                color="grey2"
-              >
-                작성된 방명록이 없습니다.
-              </Text>
-            )}
-          </GS.ContentArea>
-          <GS.WriterArea>
-            {guestbooks.data?.length ? (
-              <>
-                <Text size="body4" fontWeight="regular" color="grey1">
-                  {guestbooks.data[currentIndex].writeDay}
-                  {'  '}
-                  {guestbooks.data[currentIndex].writerName}
-                </Text>
-                <GS.GuestbookDelBtn
-                  size="extraSmall"
-                  option="danger"
-                  onClick={() => {
-                    handleDeleteGuestbook(
-                      guestbooks.data[currentIndex].guestBookId
-                    );
-                  }}
-                >
-                  삭제
-                </GS.GuestbookDelBtn>
-              </>
-            ) : (
-              <></>
-            )}
-          </GS.WriterArea>
-        </GS.WriteArea>
-      </GS.GuestbookModal>
+        guestbooks={guestbooks}
+        currentIndex={currentIndex}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
+        handleDeleteGuestbook={handleDeleteGuestbook}
+      />
       {/* zIndex 임시로 1 */}
       <S.HeaderButtonWrapper style={{ zIndex: 1 }}>
         {isEditing ? (
@@ -284,8 +261,7 @@ const HomePage = () => {
         </>
       )}
 
-      <MyRoom isEditing={isEditing} position={position} rotation={rotation} />
-
+      <MyRoom isEditing={isEditing} position={position} rotation={rotation} userObject={tempMyObject}/>
       {isEditing && (
         <S.TempToast
           variants={toastVariants}
