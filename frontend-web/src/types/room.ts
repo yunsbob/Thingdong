@@ -20,6 +20,7 @@ export interface MyRoomProps {
   position: Position;
   rotation: Rotation;
   userObject: UserObject[];
+  onObjectClick: (objectName: string) => void;
 }
 
 export interface UserObject {
