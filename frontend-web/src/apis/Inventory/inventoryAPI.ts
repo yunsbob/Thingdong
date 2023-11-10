@@ -35,14 +35,10 @@ const getThingStory = async () => {
 };
 
 const getUnBoxing = async (sentence: string) => {
-  try {
-    const response = await instance.get(
-      `/generate3d/unBoxThing?sentence=${sentence}`
-    );
-    return response.data;
-  } catch {
-    throw new Error('get unboxing error');
-  }
+  const response = await instance.get(
+    `/generate3d/unBoxThing?sentence=${sentence}`
+  );
+  return response.data;
 };
 
 export { getInventory, buyObject, deleteObject, getThingStory, getUnBoxing };

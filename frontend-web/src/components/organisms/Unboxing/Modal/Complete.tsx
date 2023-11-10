@@ -6,8 +6,9 @@ import {
   modalOpenAtom,
   sendingFriendAtom,
   typingContentAtom,
+  unboxingObjectAtom,
 } from '@/states/unboxingModalStates';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { ButtonWrapper } from '@/pages/Inventory/InventoryPage.styles';
 import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';
 import Modal from '@/components/molecules/Modal/Modal';
@@ -18,6 +19,7 @@ const Complete = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
   const [typingContent, setTypingContent] = useAtom(typingContentAtom);
   const [, setSendingFrind] = useAtom(sendingFriendAtom);
+  const unboxingObject = useAtomValue(unboxingObjectAtom);
 
   const handleConfirm = () => {
     setModalContent('sendingList');
@@ -51,11 +53,7 @@ const Complete = () => {
               {getToday()}
             </Text>
           </S.DateBox>
-          <Image
-            src={require(`@/assets/images/inventory/car.png`).default}
-            $unit={'px'}
-            height={180}
-          />
+          <Image src={unboxingObject.pngPath} $unit={'px'} height={180} />
         </S.ObjectBox>
         <Text
           size="body1"

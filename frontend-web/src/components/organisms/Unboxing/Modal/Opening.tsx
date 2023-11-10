@@ -13,48 +13,43 @@ import { ImageWrapper } from './Opening.styles';
 import { IMAGES } from '@/constants/images';
 import { useEffect, useState } from 'react';
 import { useGetUnboxing } from '@/apis/Inventory/Queries/useGetUnboxing';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Opening = () => {
-  const [, setModalContent] = useAtom(modalContentAtom);
-  const [modalOpen] = useAtom(modalOpenAtom);
-  const typingContent = useAtomValue(typingContentAtom);
+  const setModalContent = useSetAtom(modalContentAtom);
+  const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
+  const [typingContent, setTypingContent] = useAtom(typingContentAtom);
   const setUnboxingObject = useSetAtom(unboxingObjectAtom);
 
   const handleConfirm = () => {
     setModalContent('complete');
   };
 
-  const { data: tt3Data, isPending, isLoading } = useGetUnboxing(typingContent);
+  const { data: tt3Data, isLoading, isError } = useGetUnboxing(typingContent);
 
-  if (!isLoading) {
+  const resetModal = () => {
+    setModalOpen(false);
+    setModalContent('textTyping');
+    setTypingContent('');
+  };
+
+  if (!isLoading && tt3Data) {
     setUnboxingObject(tt3Data);
-    console.log(tt3Data);
+    toast.success('3D 객체 생성 완료');
+  }
+
+  if (isError) {
+    toast.error('3D 객체를 만들지 못했습니다');
+
+    setTimeout(() => {
+      resetModal();
+    }, 1000);
   }
 
   return (
     <Modal height={31} isOpen={modalOpen}>
-      {isLoading ? (
-        <>
-          <ImageWrapper>
-            <Image
-              src={IMAGES.INVENTORY.GIFT_IMAGE}
-              $unit={'px'}
-              height={250}
-              onClick={handleConfirm}
-            />
-          </ImageWrapper>
-          <Text
-            size="body1"
-            fontWeight="bold"
-            $marginBottom="25px"
-            $lineHeight="1.4"
-          >
-            두근두근
-            <br />
-            선물을 만들고 있어요!!
-          </Text>
-        </>
-      ) : (
+      <Toaster />
+      {!isLoading && tt3Data ? (
         <>
           <ImageWrapper>
             <Image
@@ -80,6 +75,27 @@ const Opening = () => {
           </Text>
           <Text size="body3" fontWeight="bold" color="grey2">
             기기를 신나게 흔들어주세요~!
+          </Text>
+        </>
+      ) : (
+        <>
+          <ImageWrapper>
+            <Image
+              src={IMAGES.INVENTORY.GIFT_IMAGE}
+              $unit={'px'}
+              height={250}
+              onClick={handleConfirm}
+            />
+          </ImageWrapper>
+          <Text
+            size="body1"
+            fontWeight="bold"
+            $marginBottom="25px"
+            $lineHeight="1.4"
+          >
+            두근두근
+            <br />
+            선물을 만들고 있어요!!
           </Text>
         </>
       )}
