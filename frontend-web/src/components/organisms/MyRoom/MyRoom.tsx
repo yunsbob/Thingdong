@@ -1,6 +1,5 @@
-import React, { EventHandler, Suspense, useRef, useState } from 'react';
+import React, { Suspense } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
-import { PrimitiveProps } from '@react-three/fiber';
 import {
   Environment,
   OrbitControls,
@@ -12,35 +11,68 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import room_pink_light from './room-pink-light.glb';
 
-const MyRoom = ({ isEditing, position, rotation, userObject,onObjectClick }: MyRoomProps) => {
+const MyRoom = ({
+  isEditing,
+  position,
+  rotation,
+  userObject,
+  onObjectClick,
+}: MyRoomProps) => {
   const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
+
+  (roomPinkLight as any).scene.traverse((node: any) => {
+    // console.log(node.type);
+    if (node.type === 'Mesh') {
+      node.castShadow = true;
+      node.receiveShadow = true;
+    }
+  });
 
   return (
     <div style={{ backgroundColor: '#efddad', width: '100%', height: '100vh' }}>
       <Suspense fallback={<Spinner />}>
         <Canvas
           shadows
-          linear
-          flat
+          // linear
+          // flat
           style={{
             width: '100%',
             height: isEditing ? '60vh' : '100vh',
           }}
         >
           <scene name="Scene" position={[0, -2, 0]}>
+            <ambientLight intensity={0.4} />
+            <directionalLight
+              position={[5, 5, 5]}
+              intensity={1}
+              castShadow
+              shadow-mapSize-width={2048} // Higher values give better shadow resolution
+              shadow-mapSize-height={2048}
+              shadow-camera-near={0.5}
+              shadow-camera-far={500}
+            />
+
             {userObject.map(obj => {
               const glb = useLoader(GLTFLoader, obj.objectModelPath);
+
+              glb.scene.traverse(node => {
+                // console.log(node.type);
+                if (node.type === 'Mesh') {
+                  node.castShadow = true;
+                  node.receiveShadow = true;
+                }
+              });
+
               return (
                 <primitive
                   key={obj.name}
-                  object={(glb as any).scene}
+                  object={glb.scene}
                   name={obj.name}
                   position={obj.position}
                   rotation={obj.rotation}
                   scale={1}
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    console.log(obj.name);
                     onObjectClick(obj.name);
                   }}
                 />
@@ -51,66 +83,6 @@ const MyRoom = ({ isEditing, position, rotation, userObject,onObjectClick }: MyR
               name="roomPinkLight"
               object={(roomPinkLight as any).scene}
               scale={1}
-            />
-
-            {/* 3개의 Light를 사용 */}
-            <directionalLight
-              name="DirectionalLight1"
-              intensity={0.5}
-              shadow-mapSize-width={1024}
-              shadow-mapSize-height={1024}
-              shadow-camera-near={-10000}
-              shadow-camera-far={100000}
-              shadow-camera-left={-1250}
-              shadow-camera-right={1250}
-              shadow-camera-top={1250}
-              shadow-camera-bottom={-1250}
-              color="#ffffff"
-              castShadow
-              position={[-10, 175, 20]}
-            />
-            <directionalLight
-              name="DirectionalLight2"
-              intensity={0.1}
-              castShadow
-              shadow-mapSize-width={1024}
-              shadow-mapSize-height={1024}
-              shadow-camera-near={-10000}
-              shadow-camera-far={100000}
-              shadow-camera-left={-1000}
-              shadow-camera-right={1000}
-              shadow-camera-top={1000}
-              shadow-camera-bottom={-1000}
-              color="#e1c7c7"
-              position={[0, 20, 0]}
-            />
-            <directionalLight
-              name="DirectionalLight3"
-              castShadow
-              intensity={0.6}
-              shadow-mapSize-width={102}
-              shadow-mapSize-height={102}
-              shadow-camera-near={-1000}
-              shadow-camera-far={10000}
-              shadow-camera-left={-35}
-              shadow-camera-right={35}
-              shadow-camera-top={35}
-              shadow-camera-bottom={-35}
-              color="#cde5fe"
-              position={[-2.4, 3.28, 5.66]}
-            />
-            {/* LampLight1 : 잠시 꺼둠 */}
-            {/* TODO: 램프 인식해서 동일한 위치에 따라다니게 */}
-            <pointLight
-              name="LampLight1"
-              intensity={1}
-              distance={205}
-              shadow-mapSize-width={1024}
-              shadow-mapSize-height={1024}
-              shadow-camera-near={100}
-              shadow-camera-far={2000}
-              color="#ffd000"
-              position={[5, 16, -1]}
             />
 
             <OrthographicCamera
@@ -124,14 +96,29 @@ const MyRoom = ({ isEditing, position, rotation, userObject,onObjectClick }: MyR
               scale={1}
             />
 
+            <pointLight position={[-5, 5, -10]} castShadow intensity={0.6} />
+            {/* <spotLight intensity={1} position={[0, 1000, 0]} /> */}
+
             {/* Light */}
             {/* <ambientLight intensity={0.05} /> */}
             {/* <Environment preset="sunset" /> */}
-            <hemisphereLight
+            <pointLight
+              name="LampLight1"
+              castShadow
+              intensity={0.2}
+              distance={205}
+              shadow-mapSize-width={1024}
+              shadow-mapSize-height={1024}
+              shadow-camera-near={100}
+              shadow-camera-far={2000}
+              color="#ffd000"
+              position={[5, 16, -1]}
+            />
+            {/* <hemisphereLight
               name="Default Ambient Light"
               intensity={0.1}
               color="#e8e8e8"
-            />
+            /> */}
           </scene>
           <OrbitControls />
         </Canvas>

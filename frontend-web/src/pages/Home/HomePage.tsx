@@ -21,6 +21,10 @@ import GuestbookModal from '@/components/organisms/GuestbookModal/GuestbookModal
 import bed_1 from './bed1.glb';
 import cabinet_1 from './cabinet1.glb';
 import chair_1 from './chair1.glb';
+import couch_1 from './couch1.glb';
+import table_1 from './table1.glb';
+import clock_2 from './clock2.glb';
+import painting_2 from './painting2.glb';
 import { UserObject } from '../../types/room';
 
 const toastVariants = {
@@ -39,23 +43,28 @@ const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
-  const [position, setPosition] = useState<Position>([0, 25, 0]);
-  const [tempMyObject, setTempMyObject] = useState<UserObject[]>([
+
+  // 이동 & 회전 단위
+  const MOVE = 0.75;
+  const ROTATE = Math.PI * 0.5;
+
+  // 임시 myObjectList
+  const [myObjectList, setMyObjectList] = useState<UserObject[]>([
     {
       name: 'bed1',
       userObjectId: 1,
       objectId: 1,
       objectModelPath: bed_1,
       isWall: false,
-      position: [-2, 0, 0],
-      rotation: [0, 0, 0],
+      position: [-2, 0, 2],
+      rotation: [0, ROTATE * 2, 0],
     },
     {
       name: 'cabinet1',
       userObjectId: 2,
       objectId: 2,
-      position: [0, 0, -3],
-      rotation: [0, 0, 0],
+      position: [2, 0, 4],
+      rotation: [0, ROTATE * 2, 0],
       objectModelPath: cabinet_1,
     },
     {
@@ -65,6 +74,40 @@ const HomePage = () => {
       position: [2, 0, 0],
       rotation: [0, 0, 0],
       objectModelPath: chair_1,
+    },
+    {
+      name: 'table1',
+      userObjectId: 4,
+      objectId: 4,
+      position: [-3, 0, -2],
+      rotation: [0, ROTATE, 0],
+      objectModelPath: table_1,
+    },
+    {
+      name: 'couch1',
+      userObjectId: 5,
+      objectId: 5,
+      position: [1, 0, -2],
+      rotation: [0, 0, 0],
+      objectModelPath: couch_1,
+    },
+    {
+      name: 'clock2',
+      userObjectId: 6,
+      objectId: 6,
+      position: [0, 0, 0],
+      rotation: [0, ROTATE, 0],
+      objectModelPath: clock_2,
+      isWall: true,
+    },
+    {
+      name: 'painting2',
+      userObjectId: 7,
+      objectId: 7,
+      position: [1, 0, 0],
+      rotation: [0, 0, 0],
+      objectModelPath: painting_2,
+      isWall: true,
     },
   ]);
 
@@ -114,37 +157,103 @@ const HomePage = () => {
     { src: 'right-button.png', direction: 'right' },
   ];
 
+  // 선택된 객체 인식
   const [selectedObjectName, setSelectedObjectName] = useState('');
   const handleObjectClick = (objectName: string) => {
     setSelectedObjectName(objectName);
   };
 
+  // 객체 위치 변경
+  const [position, setPosition] = useState<Position>([0, 0, 0]);
   const handleArrowClick = (direction: string | null) => {
-    console.log('here, direction');
-    setTempMyObject(currentObjects => {
+    setMyObjectList(currentObjects => {
       return currentObjects.map(obj => {
         if (obj.name === selectedObjectName) {
           let [x, y, z] = obj.position;
-          switch (direction) {
-            case 'right':
-              x += 0.75;
-              break;
-            case 'left':
-              x -= 0.75;
-              break;
-            case 'up':
-              z -= 0.75;
-              break;
-            case 'down':
-              z += 0.75;
-              break;
-            default:
-              break;
+          if (!obj.isWall) {
+            switch (direction) {
+              case 'right':
+                x += MOVE;
+                break;
+              case 'left':
+                x -= MOVE;
+                break;
+              case 'up':
+                z -= MOVE;
+                break;
+              case 'down':
+                z += MOVE;
+                break;
+              default:
+                break;
+            }
+          } else if (obj.isWall && obj.rotation[1] === 0) {
+            switch (direction) {
+              case 'right':
+                x += MOVE;
+                break;
+              case 'left':
+                x -= MOVE;
+                break;
+              case 'up':
+                y += MOVE;
+                break;
+              case 'down':
+                y -= MOVE;
+                break;
+              default:
+                break;
+            }
+          } else if (obj.isWall && obj.rotation[1] !== 0) {
+            switch (direction) {
+              case 'right':
+                z -= MOVE;
+                break;
+              case 'left':
+                z += MOVE;
+                break;
+              case 'up':
+                y += MOVE;
+                break;
+              case 'down':
+                y -= MOVE;
+                break;
+              default:
+                break;
+            }
           }
           return { ...obj, position: [x, y, z] };
         }
         return obj;
       });
+    });
+  };
+
+  // 객체 회전 TODO: 0,0,0이 아니면 벽에서 뜨는 경우가 있다
+  const [rotation, setRotation] = useState<Rotation>([0, 0, 0]);
+  const handleRotationClick = () => {
+    setMyObjectList(currentObjects => {
+      return currentObjects.map(obj => {
+        if (obj.name === selectedObjectName) {
+          let [x, y, z] = obj.rotation;
+          if (!obj.isWall) {
+            y += ROTATE;
+          } else if (obj.isWall && obj.rotation[1] === 0) {
+            y += ROTATE;
+          } else if (obj.isWall && obj.rotation[1] !== 0) {
+            y = 0;
+          }
+          return { ...obj, rotation: [x, y, z] };
+        }
+        return obj;
+      });
+    });
+  };
+
+  // 객체 인벤토리에 저장 (방에서 삭제)
+  const handleRemoveClick = () => {
+    setMyObjectList(currentObjects => {
+      return currentObjects.filter(obj => obj.name !== selectedObjectName);
     });
   };
 
@@ -168,12 +277,6 @@ const HomePage = () => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
   };
-
-  const rx = 0;
-  const ry = 0;
-  const rz = 0;
-  const rotation: Rotation = [rx, ry, rz];
-
   return (
     <>
       <GuestbookModal
@@ -252,12 +355,14 @@ const HomePage = () => {
                 width={40}
                 height={40}
                 $margin="0 10px 0 0"
+                onClick={handleRotationClick}
               />
               <Image
                 src={require('@/assets/images/room/save-button.png').default}
                 $unit={'px'}
                 width={40}
                 height={40}
+                onClick={handleRemoveClick}
               />
             </S.ButtonWrapper>
           </S.BottomButtonWrapper>
@@ -268,7 +373,7 @@ const HomePage = () => {
         isEditing={isEditing}
         position={position}
         rotation={rotation}
-        userObject={tempMyObject}
+        userObject={myObjectList}
         onObjectClick={handleObjectClick}
       />
       {isEditing && (
