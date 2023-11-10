@@ -5,6 +5,9 @@ import static com.bell.thingdong.domain.room.entity.QUserRoom.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bell.thingdong.domain.objet.dto.ObjectPositionDto;
+import com.bell.thingdong.domain.objet.dto.ObjectRotationDto;
+import com.bell.thingdong.domain.objet.dto.ObjectSizeDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectRoomDto;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
@@ -25,10 +28,20 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 		UserRoomRes userRoomRes = new UserRoomRes();
 		List<UserObjectRoomDto> userObjectRoomDtoList = new ArrayList<>();
 		for (UserObject userObject : userRoomOne.getUserObjectList()) {
+			ObjectPositionDto objectPositionDto = ObjectPositionDto.builder().x(userObject.getX()).y(userObject.getY()).z(userObject.getZ()).build();
+			ObjectRotationDto objectRotationDto = ObjectRotationDto.builder().x(userObject.getRotationX()).y(userObject.getRotationY()).z(userObject.getRotationZ()).build();
+			ObjectSizeDto objectSizeDto = ObjectSizeDto.builder().width(userObject.getObjet().getObjectWidth()).height(userObject.getObjet().getObjectHeight()).build();
+
 			UserObjectRoomDto userObjectRoomDto = UserObjectRoomDto.builder()
 			                                                       .userObjectId(userObject.getUserObjectId())
 			                                                       .objectModelPath(userObject.getObjet().getObjectModelPath())
+			                                                       .name(userObject.getObjet().getObjectName())
+			                                                       .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+			                                                       .position(objectPositionDto)
+			                                                       .rotation(objectRotationDto)
+			                                                       .size(objectSizeDto)
 			                                                       .build();
+
 			userObjectRoomDtoList.add(userObjectRoomDto);
 		}
 		userRoomRes.setUserObjectList(userObjectRoomDtoList);

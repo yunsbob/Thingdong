@@ -26,10 +26,4 @@ public class UserRoomRes {
 
 	@Schema(description = "해당 방 주인의 id", example = "hello")
 	private String userId;
-
-	@Schema(description = "다음 방 번호, 없다면 0", example = "3")
-	private Long nextRoom;
-
-	@Schema(description = "이전 방 번호, 없다면 0", example = "1")
-	private Long prevRoom;
 }
