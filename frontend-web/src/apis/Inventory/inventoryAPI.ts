@@ -34,4 +34,11 @@ const getThingStory = async () => {
   }
 };
 
-export { getInventory, buyObject, deleteObject, getThingStory };
+const getUnBoxing = async (sentence: string) => {
+  const response = await instance.get(
+    `/generate3d/unBoxThing?sentence=${sentence}`
+  );
+  return response.data;
+};
+
+export { getInventory, buyObject, deleteObject, getThingStory, getUnBoxing };

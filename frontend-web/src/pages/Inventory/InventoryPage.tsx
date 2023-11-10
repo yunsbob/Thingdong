@@ -21,22 +21,22 @@ const InventoryPage = () => {
   const [, setModalOpen] = useAtom(modalOpenAtom);
   const [selectedItem, setSelectedItem] = useAtom(selectedItemAtom);
   const { thingAmount } = useGetUserInfo();
-  
-  const { 
-    furnitureList, 
-    homeApplianceList, 
-    propList, 
-    floorList, 
-    smartThingsList, 
-    unBoxThingList 
+
+  const {
+    furnitureList,
+    homeApplianceList,
+    propList,
+    floorList,
+    smartThingsList,
+    unBoxThingList,
   } = useGetInventory() as InventoryData;
-  
+
   const navigate = useNavigate();
   const handleThingStory = () => {
     startTransition(() => {
-      navigate('/thingStory')
+      navigate('/thingStory');
     });
-  }
+  };
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
   };
@@ -46,12 +46,12 @@ const InventoryPage = () => {
   };
   const renderItems = () => {
     const categoryDataMap: Record<Category, InventoryItemProps[]> = {
-      '가구': furnitureList,
-      '가전': homeApplianceList,
-      '소품': propList,
-      '바닥': floorList,
-      '띵즈': smartThingsList,
-      '언박띵': unBoxThingList,
+      가구: furnitureList,
+      가전: homeApplianceList,
+      소품: propList,
+      바닥: floorList,
+      띵즈: smartThingsList,
+      언박띵: unBoxThingList,
     };
 
     return categoryDataMap[activeCategory!].map((item, index) => (
@@ -67,7 +67,9 @@ const InventoryPage = () => {
   };
   return (
     <Background>
-      {selectedItem && selectedItem.objectStatus === 'N' && <PurchaseChekModal />}
+      {selectedItem && selectedItem.objectStatus === 'N' && (
+        <PurchaseChekModal />
+      )}
       <Header text="인벤토리">
         <S.ThingBox onClick={handleThingStory}>
           <Thing price={thingAmount} />
@@ -80,7 +82,7 @@ const InventoryPage = () => {
           $isRoom={'N'}
         />
         {activeCategory === '언박띵' ? (
-          <Unboxing unBoxThingList={unBoxThingList}/>
+          <Unboxing unBoxThingList={unBoxThingList} />
         ) : (
           <S.InventoryItemWrapper>
             {activeCategory && renderItems()}

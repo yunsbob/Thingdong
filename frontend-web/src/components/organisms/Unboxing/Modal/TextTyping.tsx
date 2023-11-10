@@ -23,7 +23,7 @@ const TextTyping = () => {
     setModalContent('textTyping');
   };
   const handleConfirm = () => {
-    if (typingContent.length === 0 || typingContent.length > 12) {
+    if (typingContent.length === 0) {
       inputRef.current?.focus();
     } else {
       setModalContent('opening');
@@ -50,7 +50,7 @@ const TextTyping = () => {
       </Text>
       <Input
         ref={inputRef}
-        placeholder="12글자 이내로 작성해주세요"
+        placeholder="ex) 빨간색 장미꽃"
         $inputSize="small"
         option="grey"
         onChange={e => {
