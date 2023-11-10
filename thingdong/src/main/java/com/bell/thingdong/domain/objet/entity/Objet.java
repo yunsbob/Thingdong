@@ -37,8 +37,11 @@ public class Objet {
 	@Column(name = "object_thing")
 	private Long objectThing;
 
-	@Column(name = "object_scale")
-	private Double objectScale;
+	@Column(name = "object_width")
+	private Double objectWidth;
+
+	@Column(name = "object_height")
+	private Double objectHeight;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "object_category", nullable = false)
