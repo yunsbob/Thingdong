@@ -26,7 +26,7 @@ const apiApp = new SmartApp()
   .clientSecret(clientSecret)
   .contextStore(contextStore)
   .redirectUri(redirectUri)
-//   .enableEventLogging(2)
+  //   .enableEventLogging(2)
   .subscribedEventHandler("switchLevelHandler", async (ctx, event) => {
     // 밝기 조절
     console.log("switchLevel change");
@@ -203,28 +203,61 @@ server.get("/", async (req, res) => {
 server.get("/viewData", async (req, res) => {
   const data = req.session.smartThings;
 
-  // Read the context from DynamoDB so that API calls can be made
   const ctx = await apiApp.withContext(data.installedAppId);
   try {
-    // 스위치만
-    // const deviceList = await ctx.api.devices.list({ capability: "switch" });
-    // 전체 기기
     const deviceList = await ctx.api.devices.list();
     const ops = deviceList.map((it) => {
-      return (
-        ctx.api.devices
-          .getStatus(it.deviceId)
-          // .getCapabilityStatus(it.deviceId, "main", "switch")
-          .then((state) => {
-            return {
-              // event: it,
-              deviceId: it.deviceId,
-              ownerId: it.ownerId,
-              label: it.label,
-              // switchState: state.switch.value,
-            };
-          })
-      );
+      return ctx.api.devices.getStatus(it.deviceId).then((state) => {
+        // console.log(88, state);
+        let switchStatus = "";
+        let humidityStatus = "";
+        let temperatureStatus = "";
+        let blindStatus = "";
+        let levelStatus = "";
+        let hueStatus = "";
+        let saturationStatus = "";
+        if (state.components.main) {
+          if (Object.keys(state.components.main).includes("switch")) {
+            switchStatus = state.components.main.switch.switch.value;
+          }
+          if (
+            Object.keys(state.components.main).includes(
+              "relativeHumidityMeasurement"
+            )
+          ) {
+            humidityStatus =
+              state.components.main.relativeHumidityMeasurement.humidity.value;
+            temperatureStatus =
+              state.components.main.temperatureMeasurement.temperature.value;
+          }
+          if (Object.keys(state.components.main).includes("windowShade")) {
+            blindStatus = state.components.main.windowShade.windowShade.value;
+          }
+
+          if (Object.keys(state.components.main).includes("switchLevel")) {
+            levelStatus = state.components.main.switchLevel.level.value;
+          }
+          if (Object.keys(state.components.main).includes("colorControl")) {
+            hueStatus = state.components.main.colorControl.hue.value;
+            saturationStatus =
+              state.components.main.colorControl.saturation.value;
+          }
+        }
+        return {
+          // state: state.components.main,
+          deviceId: it.deviceId,
+          ownerId: it.ownerId,
+          category: it.components[0].categories[0].name,
+          label: it.label,
+          switchStatus: switchStatus,
+          humidityStatus: humidityStatus,
+          temperatureStatus: temperatureStatus,
+          blindStatus: blindStatus,
+          levelStatus: levelStatus,
+          hueStatus: hueStatus,
+          saturationStatus: saturationStatus,
+        };
+      });
     });
 
     // Wait for all those queries to complete
@@ -318,6 +351,25 @@ server.get("/oauth/callback", async (req, res, next) => {
     );
     // Redirect back to the main page
     res.redirect("/");
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * Executes a device command from the web page
+ */
+server.post("/command/:deviceId", async (req, res, next) => {
+  try {
+    const ctx = await apiApp.withContext(
+      req.session.smartThings.installedAppId
+    );
+
+    await ctx.api.devices.executeCommands(
+      req.params.deviceId,
+      req.body.commands
+    );
+    res.send({});
   } catch (error) {
     next(error);
   }
