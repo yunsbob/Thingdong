@@ -39,8 +39,9 @@ const HomePage = () => {
   const nickName = localStorage.getItem('nickName');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
-  const [position, setPosition] = useState<Position>([0, 25, 0]);
-  const [tempMyObject, setTempMyObject] = useState<UserObject[]>([
+  const [position, setPosition] = useState<Position>([0, 0, 0]);
+  const [rotation, setRotation] = useState<Rotation>([0, 0, 0]);
+  const [myObjectList, setMyObjectList] = useState<UserObject[]>([
     {
       name: 'bed1',
       userObjectId: 1,
@@ -119,9 +120,21 @@ const HomePage = () => {
     setSelectedObjectName(objectName);
   };
 
+  const handleRotationClick = () => {
+    setMyObjectList(currentObjects => {
+      return currentObjects.map(obj => {
+        if (obj.name === selectedObjectName) {
+          let [x, y, z] = obj.rotation;
+          y += Math.PI * 0.5;
+          return { ...obj, rotation: [x, y, z] };
+        }
+        return obj;
+      });
+    });
+  };
+
   const handleArrowClick = (direction: string | null) => {
-    console.log('here, direction');
-    setTempMyObject(currentObjects => {
+    setMyObjectList(currentObjects => {
       return currentObjects.map(obj => {
         if (obj.name === selectedObjectName) {
           let [x, y, z] = obj.position;
@@ -168,12 +181,6 @@ const HomePage = () => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
   };
-
-  const rx = 0;
-  const ry = 0;
-  const rz = 0;
-  const rotation: Rotation = [rx, ry, rz];
-
   return (
     <>
       <GuestbookModal
@@ -252,6 +259,7 @@ const HomePage = () => {
                 width={40}
                 height={40}
                 $margin="0 10px 0 0"
+                onClick={() => handleRotationClick()}
               />
               <Image
                 src={require('@/assets/images/room/save-button.png').default}
@@ -268,7 +276,7 @@ const HomePage = () => {
         isEditing={isEditing}
         position={position}
         rotation={rotation}
-        userObject={tempMyObject}
+        userObject={myObjectList}
         onObjectClick={handleObjectClick}
       />
       {isEditing && (
