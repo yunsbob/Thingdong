@@ -1,5 +1,6 @@
-import React, { Suspense, useState } from 'react';
+import React, { EventHandler, Suspense, useRef, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
+import { PrimitiveProps } from '@react-three/fiber';
 import {
   Environment,
   OrbitControls,
@@ -11,37 +12,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import room_pink_light from './room-pink-light.glb';
 
-const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
-
+const MyRoom = ({ isEditing, position, rotation, userObject,onObjectClick }: MyRoomProps) => {
   const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
-
-  type MyObjectProps = {
-    objectModelPath: string;
-    position: Position;
-    rotation: Rotation;
-    name: string;
-    onClick: (event: any) => void;
-  };
-
-  const MyObject = ({
-    objectModelPath,
-    position,
-    rotation,
-    name,
-    onClick,
-  }: MyObjectProps) => {
-    const glb = useLoader(GLTFLoader, objectModelPath);
-    return (
-      <primitive
-        name={name}
-        object={(glb as any).scene}
-        position={position}
-        rotation={rotation}
-        scale={1}
-        onClick={onClick}
-      />
-    );
-  };
 
   return (
     <div style={{ backgroundColor: '#efddad', width: '100%', height: '100vh' }}>
@@ -49,28 +21,31 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
         <Canvas
           shadows
           linear
-          // flat
+          flat
           style={{
             width: '100%',
             height: isEditing ? '60vh' : '100vh',
           }}
         >
           <scene name="Scene" position={[0, -2, 0]}>
-            {userObject.map(obj => (
-              <MyObject
-                name={obj.name}
-                key={obj.userObjectId}
-                objectModelPath={obj.objectModelPath}
-                position={obj.position}
-                rotation={obj.rotation}
-                onClick={event => {
-                  event.stopPropagation();
-                  console.log(event.eventObject.name);
-                  localStorage.setItem('selectedItem', event.eventObject.name)
-                  // setSelectedObject(event.eventObject.name);
-                }}
-              />
-            ))}
+            {userObject.map(obj => {
+              const glb = useLoader(GLTFLoader, obj.objectModelPath);
+              return (
+                <primitive
+                  key={obj.name}
+                  object={(glb as any).scene}
+                  name={obj.name}
+                  position={obj.position}
+                  rotation={obj.rotation}
+                  scale={1}
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    console.log(obj.name);
+                    onObjectClick(obj.name);
+                  }}
+                />
+              );
+            })}
 
             <primitive
               name="roomPinkLight"
@@ -96,7 +71,7 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
             />
             <directionalLight
               name="DirectionalLight2"
-              intensity={0.3}
+              intensity={0.1}
               castShadow
               shadow-mapSize-width={1024}
               shadow-mapSize-height={1024}
@@ -135,7 +110,7 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
               shadow-camera-near={100}
               shadow-camera-far={2000}
               color="#ffd000"
-              position={[5, 6, -1]}
+              position={[5, 16, -1]}
             />
 
             <OrthographicCamera
@@ -150,13 +125,13 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
             />
 
             {/* Light */}
-            <ambientLight intensity={0.25} />
-            <Environment preset="sunset" />
-            {/* <hemisphereLight
+            {/* <ambientLight intensity={0.05} /> */}
+            {/* <Environment preset="sunset" /> */}
+            <hemisphereLight
               name="Default Ambient Light"
               intensity={0.1}
               color="#e8e8e8"
-            /> */}
+            />
           </scene>
           <OrbitControls />
         </Canvas>
