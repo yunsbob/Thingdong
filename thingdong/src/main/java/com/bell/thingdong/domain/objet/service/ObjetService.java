@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bell.thingdong.domain.objet.dto.ArrangeObjectPositionDto;
 import com.bell.thingdong.domain.objet.dto.FindObjectDto;
 import com.bell.thingdong.domain.objet.dto.ObjectCategory;
 import com.bell.thingdong.domain.objet.dto.ObjectInventoryDto;
@@ -168,8 +169,9 @@ public class ObjetService {
 	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq) {
 		UserRoom userRoom = userRoomRepository.findById(userObjectPositionReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
 
-		UserObject userObject = userObjectRepository.findById(userObjectPositionReq.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
-
-		userObject.setUserObjectPosition(userObjectPositionReq, userRoom);
+		for (ArrangeObjectPositionDto arrangeObjectPositionDto : userObjectPositionReq.getObjectPositionList()) {
+			UserObject userObject = userObjectRepository.findById(arrangeObjectPositionDto.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
+			userObject.setUserObjectPosition(arrangeObjectPositionDto, userRoom);
+		}
 	}
 }
