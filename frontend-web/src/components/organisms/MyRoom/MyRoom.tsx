@@ -12,7 +12,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import room_pink_light from './room-pink-light.glb';
 
-const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
+const MyRoom = ({ isEditing, position, rotation, userObject,onObjectClick }: MyRoomProps) => {
   const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
 
   return (
@@ -41,6 +41,7 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
                   onClick={(e: any) => {
                     e.stopPropagation();
                     console.log(obj.name);
+                    onObjectClick(obj.name);
                   }}
                 />
               );
@@ -50,9 +51,6 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
               name="roomPinkLight"
               object={(roomPinkLight as any).scene}
               scale={1}
-              onClick={(e: any) => {
-                console.log(e.eventObject.name);
-              }}
             />
 
             {/* 3개의 Light를 사용 */}
@@ -73,7 +71,7 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
             />
             <directionalLight
               name="DirectionalLight2"
-              intensity={0.3}
+              intensity={0.1}
               castShadow
               shadow-mapSize-width={1024}
               shadow-mapSize-height={1024}
@@ -112,7 +110,7 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
               shadow-camera-near={100}
               shadow-camera-far={2000}
               color="#ffd000"
-              position={[5, 6, -1]}
+              position={[5, 16, -1]}
             />
 
             <OrthographicCamera
@@ -127,8 +125,8 @@ const MyRoom = ({ isEditing, position, rotation, userObject }: MyRoomProps) => {
             />
 
             {/* Light */}
-            <ambientLight intensity={0.25} />
-            <Environment preset="sunset" />
+            {/* <ambientLight intensity={0.05} /> */}
+            {/* <Environment preset="sunset" /> */}
             <hemisphereLight
               name="Default Ambient Light"
               intensity={0.1}
