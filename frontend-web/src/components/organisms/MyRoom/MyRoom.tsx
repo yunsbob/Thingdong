@@ -1,20 +1,13 @@
-import React, {
-  EventHandler,
-  Suspense,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { Canvas, ObjectMap, useLoader } from '@react-three/fiber';
-import { PrimitiveProps } from '@react-three/fiber';
+import React, { Suspense } from 'react';
+import { Canvas, useLoader } from '@react-three/fiber';
 import {
   Environment,
   OrbitControls,
   OrthographicCamera,
 } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
-import { Position, Rotation, MyRoomProps } from '@/types/room';
-import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { MyRoomProps } from '@/types/room';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import room_pink_light from './room-pink-light.glb';
 
