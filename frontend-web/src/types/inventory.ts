@@ -1,6 +1,5 @@
 export type Category = '가구' | '가전' | '소품' | '바닥' | '띵즈' | '언박띵';
 
-
 export interface InventoryItemProps {
   userObjectId?: number;
   objectImagePath: string;

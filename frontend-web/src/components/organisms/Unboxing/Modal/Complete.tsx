@@ -11,6 +11,7 @@ import { useAtom } from 'jotai';
 import { ButtonWrapper } from '@/pages/Inventory/InventoryPage.styles';
 import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';
 import Modal from '@/components/molecules/Modal/Modal';
+import { getToday } from '@/utils/getToday';
 
 const Complete = () => {
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
@@ -25,7 +26,7 @@ const Complete = () => {
   const handleGet = () => {
     setModalOpen(false);
     setModalContent('textTyping');
-    setTypingContent('')
+    setTypingContent('');
   };
   // 조사 맞춤 함수
   const getPostposition = (word: string) => {
@@ -34,11 +35,11 @@ const Complete = () => {
     const lastChar = word[word.length - 1];
     const uniCode = lastChar.charCodeAt(0);
 
-    if (uniCode < 0xAC00 || uniCode > 0xD7A3) {
+    if (uniCode < 0xac00 || uniCode > 0xd7a3) {
       return '가';
     }
 
-    return (uniCode - 0xAC00) % 28 !== 0 ? '이' : '가';
+    return (uniCode - 0xac00) % 28 !== 0 ? '이' : '가';
   };
 
   return (
@@ -47,7 +48,7 @@ const Complete = () => {
         <S.ObjectBox>
           <S.DateBox>
             <Text size={'small1'} fontWeight={'bold'} color={'grey1'}>
-              23.10.14
+              {getToday()}
             </Text>
           </S.DateBox>
           <Image
