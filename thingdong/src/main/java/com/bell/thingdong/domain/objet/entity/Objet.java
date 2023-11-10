@@ -43,6 +43,9 @@ public class Objet {
 	@Column(name = "object_height")
 	private Double objectHeight;
 
+	@Column(name = "is_wall", nullable = false)
+	private String isWall;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "object_category", nullable = false)
 	private ObjectCategory objectCategory;

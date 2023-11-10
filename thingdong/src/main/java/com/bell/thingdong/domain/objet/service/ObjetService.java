@@ -12,7 +12,7 @@ import com.bell.thingdong.domain.objet.dto.ObjectInventoryDto;
 import com.bell.thingdong.domain.objet.dto.ObjectRoomInventoryDto;
 import com.bell.thingdong.domain.objet.dto.UnBoxThingHistoryDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
-import com.bell.thingdong.domain.objet.dto.request.UserObjectPosReq;
+import com.bell.thingdong.domain.objet.dto.request.UserObjectPositionReq;
 import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
 import com.bell.thingdong.domain.objet.entity.UserObject;
@@ -165,11 +165,11 @@ public class ObjetService {
 	}
 
 	@Transactional
-	public void setUserObjectPosition(UserObjectPosReq userObjectPosReq) {
-		UserRoom userRoom = userRoomRepository.findById(userObjectPosReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
+	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq) {
+		UserRoom userRoom = userRoomRepository.findById(userObjectPositionReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
 
-		UserObject userObject = userObjectRepository.findById(userObjectPosReq.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
+		UserObject userObject = userObjectRepository.findById(userObjectPositionReq.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
 
-		userObject.setUserObjectPosition(userObjectPosReq, userRoom);
+		userObject.setUserObjectPosition(userObjectPositionReq, userRoom);
 	}
 }

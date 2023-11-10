@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bell.thingdong.domain.objet.dto.request.UserObjectPosReq;
+import com.bell.thingdong.domain.objet.dto.request.UserObjectPositionReq;
 import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
 import com.bell.thingdong.domain.objet.service.ObjetService;
@@ -69,8 +69,8 @@ public class ObjetController {
 
 	@Operation(summary = "오브제 배치", description = "오브제를 사용자가 원하는 위치에 배치한다.")
 	@PostMapping("/position")
-	public ResponseEntity<?> arrangeObject(@RequestBody UserObjectPosReq userObjectPosReq) {
-		objetService.setUserObjectPosition(userObjectPosReq);
+	public ResponseEntity<?> arrangeObject(@RequestBody UserObjectPositionReq userObjectPositionReq) {
+		objetService.setUserObjectPosition(userObjectPositionReq);
 
 		return ResponseEntity.ok().build();
 	}
