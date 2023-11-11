@@ -32,6 +32,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
 import { AnimatePresence, motion } from 'framer-motion';
+import { IMAGES } from '@/constants/images';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -50,7 +51,9 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [selectedRoomColor, setSelectedRoomColor] = useState<string | null>('white');
+  const [selectedRoomColor, setSelectedRoomColor] = useState<string | null>(
+    'white'
+  );
 
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
@@ -61,12 +64,12 @@ const HomePage = () => {
     setSelectedRoomColor(colorName);
   };
   const colors = [
-    ['white', '#FFFFFF'], 
-    ['yellow', '#FFDCB6'], 
-    ['green', '#C2E1B9'], 
-    ['pink', '#E698A8'], 
-    ['puple', '#9F98E0'], 
-    ['black', '#545454']
+    ['white', '#FFFFFF'],
+    ['yellow', '#FFDCB6'],
+    ['green', '#C2E1B9'],
+    ['pink', '#E698A8'],
+    ['puple', '#9F98E0'],
+    ['black', '#545454'],
   ];
   // const colorCircles = colors.map((color, index) => (
   //   <S.ColorCircle
@@ -363,9 +366,10 @@ const HomePage = () => {
         handleNext={handleNext}
         handleDeleteGuestbook={handleDeleteGuestbook}
       />
-      <S.HeaderButtonWrapper style={{ zIndex: 1 }}>
-        {isEditing ? (
-          <>
+
+      {isEditing ? (
+        <>
+          <S.BackButtonWrapper>
             <Image
               src={IMAGES.ROOM.BACK_ICON}
               $unit={'px'}
@@ -373,86 +377,87 @@ const HomePage = () => {
               height={40}
               onClick={handleEdit}
             />
+          </S.BackButtonWrapper>
+          <S.ChangeRoomWrapper>
             <Image
               src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
               $unit={'px'}
               width={40}
               height={40}
+              onClick={toggleColorPicker}
             />
-          </>
-        ) : (
-          <>
-            <S.RoomName>{nickName}네 방</S.RoomName>
-            <Image
-              src={IMAGES.ROOM.EDIT_ICON}
-              width={3.4}
-              onClick={handleEdit}
-            ></Image>
-            <Image
-              src={IMAGES.ROOM.GUESTBOOK_ICON}
-              width={3.4}
-              onClick={() => {
-                setModalOpen(true);
-              }}
-            ></Image>
-          </>
-        )}
-      </S.HeaderButtonWrapper>
-      <HeaderButtons
-        isEditing={isEditing}
-        handleEdit={handleEdit}
-        setModalOpen={setModalOpen}
-        nickName={nickName}
-      />
+            <AnimatePresence>
+              {isColorPickerOpen && (
+                <S.ColorCircleWrapper>
+                  {colors.map(([colorName, colorValue], index) => (
+                    <S.ColorCircle
+                      key={colorName}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      color={colorValue}
+                      onClick={() => handleColorClick(colorName, colorValue)}
+                    />
+                  ))}
+                </S.ColorCircleWrapper>
+              )}
+            </AnimatePresence>
+          </S.ChangeRoomWrapper>
+        </>
+      ) : (
+        <HeaderButtons
+          isEditing={isEditing}
+          handleEdit={handleEdit}
+          setModalOpen={setModalOpen}
+          nickName={nickName}
+        />
+      )}
       {isEditing && (
         <>
-            <S.ArrowKeyWrapper>
-              {arrowButtons.map((button, index) => {
-                const imagePath = require(
-                  `@/assets/images/room/${button.src}`
-                ).default;
-                return (
-                  <Image
-                    key={button.src + index}
-                    src={imagePath}
-                    $unit={'px'}
-                    width={40}
-                    height={40}
-                    onClick={() => handleArrowClick(button.direction)}
-                    style={{
-                      visibility: button.direction ? 'visible' : 'hidden',
-                    }}
-                  />
-                );
-              })}
-            </S.ArrowKeyWrapper>
-            <S.ButtonWrapper>
-              <Image
-                src={
-                  require('@/assets/images/room/rotation-button.png').default
-                }
-                $unit={'px'}
-                width={40}
-                height={40}
-                onClick={handleRotationClick}
-              />
-              <Image
-                src={require('@/assets/images/room/save-button.png').default}
-                $unit={'px'}
-                width={40}
-                height={40}
-                onClick={handleRemoveClick}
-              />
-              <Image
-                src={
-                  require('@/assets/images/room/save-room-button.png').default
-                }
-                $unit={'px'}
-                width={40}
-                height={40}
-                onClick={handleUpdateRoomClick}
-              />
-            </S.ButtonWrapper>
+          <S.ArrowKeyWrapper>
+            {arrowButtons.map((button, index) => {
+              const imagePath = require(
+                `@/assets/images/room/${button.src}`
+              ).default;
+              return (
+                <Image
+                  key={button.src + index}
+                  src={imagePath}
+                  $unit={'px'}
+                  width={40}
+                  height={40}
+                  onClick={() => handleArrowClick(button.direction)}
+                  style={{
+                    visibility: button.direction ? 'visible' : 'hidden',
+                  }}
+                />
+              );
+            })}
+          </S.ArrowKeyWrapper>
+          <S.ButtonWrapper>
+            <Image
+              src={require('@/assets/images/room/rotation-button.png').default}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={handleRotationClick}
+            />
+            <Image
+              src={require('@/assets/images/room/save-button.png').default}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={handleRemoveClick}
+            />
+            <Image
+              src={require('@/assets/images/room/save-room-button.png').default}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={handleUpdateRoomClick}
+            />
+          </S.ButtonWrapper>
         </>
       )}
 
