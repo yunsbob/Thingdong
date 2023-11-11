@@ -1,12 +1,12 @@
 import { instance } from '@/apis/instance';
 import { RoomPosition } from '@/interfaces/room';
 
-const getFriendsRoom = async (userId: string) => {
+const getRoom = async (userId: string) => {
   try {
     const { data } = await instance.get(`/rooms?userId=${userId}`);
     return data;
   } catch {
-    new Error('get user error');
+    new Error('get room error');
   }
 };
 
@@ -27,4 +27,4 @@ const updateRoomPosition = async (roomPosition: RoomPosition) => {
   }
 }
 
-export { getFriendsRoom, getRoomInventory, updateRoomPosition };
+export { getRoom, getRoomInventory, updateRoomPosition };

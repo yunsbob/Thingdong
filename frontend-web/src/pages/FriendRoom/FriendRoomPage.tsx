@@ -5,7 +5,6 @@ import backButtonWhite from '@/assets/images/friend/search/back-white.png';
 import { changeModalOpen } from '@/utils/changeModalOpen';
 import { useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
-import guestbook from '@/assets/images/room/guestbook.png';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { IMAGES } from '@/constants/images';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
