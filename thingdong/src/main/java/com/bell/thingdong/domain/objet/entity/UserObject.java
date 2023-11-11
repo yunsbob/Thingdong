@@ -73,8 +73,8 @@ public class UserObject {
 		this.userObjectStatus = userObjectStatus;
 	}
 
-	public void setUserObjectPosition(ArrangeObjectPositionDto arrangeObjectPositionDto, UserRoom room) {
-		this.userObjectStatus = UserObjectStatus.Room;
+	public void setUserObjectPosition(ArrangeObjectPositionDto arrangeObjectPositionDto, UserRoom room, UserObjectStatus userObjectStatus) {
+		this.userObjectStatus = userObjectStatus;
 		this.room = room;
 		this.x = arrangeObjectPositionDto.getPosition().getX();
 		this.y = arrangeObjectPositionDto.getPosition().getY();

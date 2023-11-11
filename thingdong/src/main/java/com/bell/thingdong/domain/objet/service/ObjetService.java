@@ -174,7 +174,7 @@ public class ObjetService {
 
 		for (ArrangeObjectPositionDto arrangeObjectPositionDto : userObjectPositionReq.getObjectPositionList()) {
 			UserObject userObject = userObjectRepository.findById(arrangeObjectPositionDto.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
-			userObject.setUserObjectPosition(arrangeObjectPositionDto, userRoom);
+			userObject.setUserObjectPosition(arrangeObjectPositionDto, userRoom, UserObjectStatus.Room);
 		}
 	}
 }
