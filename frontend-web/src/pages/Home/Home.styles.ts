@@ -27,6 +27,7 @@ export const EditButton = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 export const RoomName = styled.div`
   background-color: ${({ theme }) => theme.color.white};
   box-shadow: ${({ theme }) => theme.shadow.shadowBtn};
@@ -38,6 +39,7 @@ export const RoomName = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 export const HeaderButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -57,8 +59,6 @@ export const BackButtonWrapper = styled.div`
   top: 20px;
   left: 15px;
   z-index: 1;
-`;
-
 
 export const ArrowKeyWrapper = styled.div`
   position: absolute;
@@ -82,6 +82,7 @@ export const ButtonWrapper = styled.div`
   bottom: 46vh;
   right: 15px;
   z-index: 1;
+  gap: 10px;
 `;
 
 export const ColorCircleWrapper = styled.div`

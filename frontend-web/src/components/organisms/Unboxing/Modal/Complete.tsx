@@ -13,6 +13,7 @@ import { ButtonWrapper } from '@/pages/Inventory/InventoryPage.styles';
 import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';
 import Modal from '@/components/molecules/Modal/Modal';
 import { getToday } from '@/utils/getToday';
+import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 
 const Complete = () => {
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
@@ -25,11 +26,13 @@ const Complete = () => {
     setModalContent('sendingList');
     setSendingFrind('멋쟁이 토마토');
   };
+
   const handleGet = () => {
     setModalOpen(false);
-    setModalContent('textTyping');
+    setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
     setTypingContent('');
   };
+
   // 조사 맞춤 함수
   const getPostposition = (word: string) => {
     if (!word) return '가';
