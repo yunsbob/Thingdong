@@ -81,6 +81,7 @@ public class ObjetService {
 			ObjectRoomInventoryDto objectRoomInventoryDto = ObjectRoomInventoryDto.builder()
 			                                                                      .userObjectId(findObjectDto.getUserObjectId())
 			                                                                      .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
+			                                                                      .objectModelPath(findObjectDto.getObjet().getObjectModelPath())
 			                                                                      .build();
 
 			if (findObjectDto.getObjectStatus().equals(UserObjectStatus.Room))
