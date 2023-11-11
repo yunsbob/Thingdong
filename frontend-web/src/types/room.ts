@@ -8,9 +8,9 @@ export interface Size {
 }
 
 export interface MyRoomProps {
-  isEditing: boolean;
-  position: Position;
-  rotation: Rotation;
+  isEditing?: boolean;
+  position?: Position;
+  rotation?: Rotation;
   userObject: UserObject[];
   thingsObject: ThingsObject[];
   onObjectClick: (objectName: string) => void;

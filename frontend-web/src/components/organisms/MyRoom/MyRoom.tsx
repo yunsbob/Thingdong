@@ -7,7 +7,7 @@ import {
   useGLTF,
 } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
-import { Position, Rotation, MyRoomProps } from '@/types/room';
+import { MyRoomProps } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { SkeletonUtils } from 'three-stdlib';
 import room_pink_light from './room-pink-light.glb';
@@ -16,8 +16,6 @@ import GridHelpers from '@/components/molecules/GridHelpers/GridHelpers';
 
 const MyRoom = ({
   isEditing,
-  position,
-  rotation,
   userObject,
   thingsObject,
   onObjectClick,
