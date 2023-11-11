@@ -80,4 +80,5 @@ export const BottomButtonWrapper = styled.div`
 export const ButtonWrapper = styled.div`
   display: flex;
   align-items: flex-end;
+  gap: 10px;
 `;

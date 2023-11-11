@@ -18,3 +18,7 @@ const getRoomInventory = async () => {
   }
 };
 export { getFriendsRoom, getRoomInventory };
+
+const updateRoom = async () => {
+  
+}

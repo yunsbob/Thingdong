@@ -24,7 +24,7 @@ import chair_1 from './chair1.glb';
 import couch_1 from './couch1.glb';
 import table_1 from './table1.glb';
 import clock_2 from './clock2.glb';
-import painting_2 from './painting2.glb';
+import painting_2 from './painting1.glb';
 import { UserObject } from '../../types/room';
 
 const toastVariants = {
@@ -243,7 +243,11 @@ const HomePage = () => {
           } else if (obj.isWall && obj.rotation[1] !== 0) {
             y = 0;
           }
-          return { ...obj, rotation: [x, y, z], position:[-obj.position[2], obj.position[1], -obj.position[0]] };
+          return {
+            ...obj,
+            rotation: [x, y, z],
+            position: [-obj.position[2], obj.position[1], -obj.position[0]],
+          };
         }
         return obj;
       });
@@ -277,6 +281,12 @@ const HomePage = () => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
   };
+
+  const handleSaveRoomClick = () => {
+    //post hook
+  }
+
+
   return (
     <>
       <GuestbookModal
@@ -354,7 +364,6 @@ const HomePage = () => {
                 $unit={'px'}
                 width={40}
                 height={40}
-                $margin="0 10px 0 0"
                 onClick={handleRotationClick}
               />
               <Image
@@ -363,6 +372,15 @@ const HomePage = () => {
                 width={40}
                 height={40}
                 onClick={handleRemoveClick}
+              />
+              <Image
+                src={
+                  require('@/assets/images/room/save-room-button.png').default
+                }
+                $unit={'px'}
+                width={40}
+                height={40}
+                onClick={handleSaveRoomClick}
               />
             </S.ButtonWrapper>
           </S.BottomButtonWrapper>
