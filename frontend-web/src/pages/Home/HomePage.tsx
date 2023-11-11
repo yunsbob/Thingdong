@@ -33,6 +33,8 @@ import { PATH } from '@/constants/path';
 import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IMAGES } from '@/constants/images';
+import { roomInventoryAtom } from '@/states/roomInventoryStates';
+import { useAtom } from 'jotai';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -45,6 +47,13 @@ const toastVariants = {
     },
   },
 };
+interface DeployedObjectsProps {
+  userObjectId: number;
+  name: string;
+  objectModelPath: string;
+  isWall: boolean;
+  objectStatus: 'Y' | 'N';
+}
 
 const HomePage = () => {
   const nickName = localStorage.getItem('nickName') || '';
@@ -54,7 +63,8 @@ const HomePage = () => {
   const [selectedRoomColor, setSelectedRoomColor] = useState<string | null>(
     'white'
   );
-
+  const [deployedObjects, setDeployedObjects] = useState<DeployedObjectsProps[]>([])
+  const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
@@ -71,17 +81,7 @@ const HomePage = () => {
     ['puple', '#9F98E0'],
     ['black', '#545454'],
   ];
-  // const colorCircles = colors.map((color, index) => (
-  //   <S.ColorCircle
-  //     key={color}
-  //     initial={{ scale: 0 }}
-  //     animate={{ scale: 1 }}
-  //     exit={{ scale: 0 }}
-  //     transition={{ delay: index * 0.1 }}
-  //     color={color}
-  //     onClick={() => handleColorClick(color)}
-  //   />
-  // ));
+
   // 이동 & 회전 단위
   const MOVE = 0.75;
   const ROTATE = Math.PI * 0.5;
@@ -171,27 +171,99 @@ const HomePage = () => {
     smartThingsList,
     unBoxThingList,
   } = useGetRoomInventory() as RoomInventoryData;
+console.log(roomInventory);
+
+  useEffect(() => {
+    // 모든 목록을 하나의 배열로 결합
+    setRoomInventory({
+      furnitureList: furnitureList,
+      homeApplianceList: homeApplianceList,
+      propList: propList,
+      floorList: floorList,
+      smartThingsList: smartThingsList,
+      unBoxThingList: unBoxThingList,
+    })
+    const allObjects = [
+      ...furnitureList,
+      ...homeApplianceList,
+      ...propList,
+      ...floorList,
+      ...smartThingsList,
+      ...unBoxThingList,
+    ];
+
+    // objectStatus가 'N'인 객체만 필터링
+    const deployed = allObjects.filter(item => item.objectStatus === 'Y');
+
+    // 필터링된 객체들을 상태에 저장
+    setDeployedObjects(deployed);
+  }, [furnitureList, homeApplianceList, propList, floorList, smartThingsList, unBoxThingList]);
 
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
   };
+  const handleItemClick = (selectedItemId: number) => {
+    let updatedInventory = {...roomInventory};
+  
+    const updateObjectStatus = (list: RoomInventoryItemProps[]): RoomInventoryItemProps[] => list.map(item => {
+      if (item.userObjectId === selectedItemId) {
+        return {...item, objectStatus: 'Y'};
+      }
+      return item;
+    });
+  
+    updatedInventory.furnitureList = updateObjectStatus(updatedInventory.furnitureList);
+    updatedInventory.homeApplianceList = updateObjectStatus(updatedInventory.homeApplianceList);
+    updatedInventory.propList = updateObjectStatus(updatedInventory.propList);
+    updatedInventory.floorList = updateObjectStatus(updatedInventory.floorList);
+    updatedInventory.smartThingsList = updateObjectStatus(updatedInventory.smartThingsList);
+    updatedInventory.unBoxThingList = updateObjectStatus(updatedInventory.unBoxThingList);
+  
+    setRoomInventory(updatedInventory);
+  
+    const allUpdatedObjects = [
+      ...updatedInventory.furnitureList,
+      ...updatedInventory.homeApplianceList,
+      ...updatedInventory.propList,
+      ...updatedInventory.floorList,
+      ...updatedInventory.smartThingsList,
+      ...updatedInventory.unBoxThingList,
+    ];
+    // myobjet에 추가하는 로직
+    // const clickedItem = allUpdatedObjects.find(item => item.userObjectId === selectedItemId);
 
+    // if (clickedItem) {
+    //   // Prepare the new object to add to myObjectList
+    //   const newUserObject: UserObject = {
+    //     name: clickedItem.name,
+    //     userObjectId: clickedItem.userObjectId,
+    //     objectModelPath: clickedItem.objectModelPath,
+    //     isWall: clickedItem.isWall,
+    //     position: [0, 0, 0],
+    //     rotation: [0, 0, 0],
+    //   };
+  
+    //   // Add the new object to myObjectList
+    //   setMyObjectList(prevList => [...prevList, newUserObject]);
+    // }
+  }
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
-      가구: furnitureList,
-      가전: homeApplianceList,
-      소품: propList,
-      바닥: floorList,
-      띵즈: smartThingsList,
-      언박띵: unBoxThingList,
+      가구: roomInventory.furnitureList,
+      가전: roomInventory.homeApplianceList,
+      소품: roomInventory.propList,
+      바닥: roomInventory.floorList,
+      띵즈: roomInventory.smartThingsList,
+      언박띵: roomInventory.unBoxThingList,
     };
 
     return categoryDataMap[activeCategory!].map(item => (
       <RoomInventoryItem
         key={item.userObjectId}
-        isOwned={item.objectStatus === 'Y'}
+        isOwned={item.objectStatus === 'N'}
         imagePath={item.objectImagePath}
         $isRoom={'Y'}
+        onClick={() => handleItemClick(item.userObjectId)}
       />
     ));
   };
@@ -210,6 +282,7 @@ const HomePage = () => {
   const handleObjectClick = (objectName: string) => {
     setSelectedObjectName(objectName);
   };
+// console.log(deployedObjects, "<<<<<<<<<<<<<<<<<<");
 
   // 객체 위치 변경
   const [position, setPosition] = useState<Position>([0, 0, 0]);
