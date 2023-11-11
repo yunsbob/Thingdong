@@ -25,6 +25,7 @@ import table_1 from './table1.glb';
 import clock_2 from './clock2.glb';
 import painting_2 from './painting2.glb';
 import { UserObject } from '../../types/room';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { useUpdateRoomPosition } from '@/apis/Room/Mutations/useUpdateRoomPosition';
 import { RoomPosition, RoomState } from '@/interfaces/room';
@@ -48,7 +49,36 @@ const HomePage = () => {
   const nickName = localStorage.getItem('nickName') || '';
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [selectedRoomColor, setSelectedRoomColor] = useState<string | null>('white');
 
+  const toggleColorPicker = () => {
+    setIsColorPickerOpen(!isColorPickerOpen);
+  };
+
+  const handleColorClick = (colorName: string, colorValue: string) => {
+    console.log(colorName); // Or any other action
+    setSelectedRoomColor(colorName);
+  };
+  const colors = [
+    ['white', '#FFFFFF'], 
+    ['yellow', '#FFDCB6'], 
+    ['green', '#C2E1B9'], 
+    ['pink', '#E698A8'], 
+    ['puple', '#9F98E0'], 
+    ['black', '#545454']
+  ];
+  // const colorCircles = colors.map((color, index) => (
+  //   <S.ColorCircle
+  //     key={color}
+  //     initial={{ scale: 0 }}
+  //     animate={{ scale: 1 }}
+  //     exit={{ scale: 0 }}
+  //     transition={{ delay: index * 0.1 }}
+  //     color={color}
+  //     onClick={() => handleColorClick(color)}
+  //   />
+  // ));
   // 이동 & 회전 단위
   const MOVE = 0.75;
   const ROTATE = Math.PI * 0.5;
@@ -127,6 +157,7 @@ const HomePage = () => {
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
+    setIsColorPickerOpen(false);
   };
 
   const {
@@ -315,7 +346,6 @@ const HomePage = () => {
       prevIndex < (guestbooks.data?.length ?? 1) - 1 ? prevIndex + 1 : prevIndex
     );
   };
-
   const deleteGuestbookMutation = useDeleteGuestbook();
   const handleDeleteGuestbook = (guestBookId: number) => {
     deleteGuestbookMutation.mutate(guestBookId);
@@ -333,6 +363,64 @@ const HomePage = () => {
         handleNext={handleNext}
         handleDeleteGuestbook={handleDeleteGuestbook}
       />
+
+        {isEditing ? (
+          <>
+          <S.BackButtonWrapper>
+            <Image
+              src={IMAGES.ROOM.BACK_ICON}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={handleEdit}
+            />
+            </S.BackButtonWrapper>
+            <S.ChangeRoomWrapper>
+            <Image
+          src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
+          $unit={'px'}
+          width={40}
+          height={40}
+          onClick={toggleColorPicker}
+        />
+        <AnimatePresence>
+          {isColorPickerOpen && (
+            <S.ColorCircleWrapper>
+              {colors.map(([colorName, colorValue], index) => (
+              <S.ColorCircle
+                key={colorName}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                transition={{ delay: index * 0.1 }}
+                color={colorValue}
+                onClick={() => handleColorClick(colorName, colorValue)}
+              />
+            ))}
+            </S.ColorCircleWrapper>
+          )}
+        </AnimatePresence>
+        </S.ChangeRoomWrapper>
+          </>
+        ) : (
+          <S.HeaderButtonWrapper>
+          <>
+            <S.RoomName>{nickName}네 방</S.RoomName>
+            <Image
+              src={IMAGES.ROOM.EDIT_ICON}
+              width={3.4}
+              onClick={handleEdit}
+            ></Image>
+            <Image
+              src={IMAGES.ROOM.GUESTBOOK_ICON}
+              width={3.4}
+              onClick={() => {
+                setModalOpen(true);
+              }}
+            ></Image>
+          </>
+      </S.HeaderButtonWrapper>
+        )}
       <HeaderButtons
         isEditing={isEditing}
         handleEdit={handleEdit}
@@ -341,7 +429,6 @@ const HomePage = () => {
       />
       {isEditing && (
         <>
-          <S.BottomButtonWrapper style={{ zIndex: 1 }}>
             <S.ArrowKeyWrapper>
               {arrowButtons.map((button, index) => {
                 const imagePath = require(
@@ -389,7 +476,6 @@ const HomePage = () => {
                 onClick={handleUpdateRoomClick}
               />
             </S.ButtonWrapper>
-          </S.BottomButtonWrapper>
         </>
       )}
 
@@ -399,9 +485,10 @@ const HomePage = () => {
         rotation={rotation}
         userObject={myObjectList}
         onObjectClick={handleObjectClick}
+        selectedRoomColor={selectedRoomColor}
       />
       {isEditing && (
-        <S.TempToast
+        <S.ItemToast
           variants={toastVariants}
           initial="hidden"
           animate="visible"
@@ -416,7 +503,7 @@ const HomePage = () => {
               {activeCategory && renderItems()}
             </SS.InventoryItemWrapper>
           </SS.InventoryContainer>
-        </S.TempToast>
+        </S.ItemToast>
       )}
     </>
   );
