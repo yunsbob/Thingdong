@@ -104,7 +104,7 @@ const HomePage = () => {
       name: 'painting2',
       userObjectId: 7,
       objectId: 7,
-      position: [1, 0, 0],
+      position: [0, 0, 0],
       rotation: [0, 0, 0],
       objectModelPath: painting_2,
       isWall: true,
@@ -243,7 +243,7 @@ const HomePage = () => {
           } else if (obj.isWall && obj.rotation[1] !== 0) {
             y = 0;
           }
-          return { ...obj, rotation: [x, y, z] };
+          return { ...obj, rotation: [x, y, z], position:[-obj.position[2], obj.position[1], -obj.position[0]] };
         }
         return obj;
       });
