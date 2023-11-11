@@ -82,7 +82,7 @@ public class ObjetService {
 			                                                                      .userObjectId(findObjectDto.getUserObjectId())
 			                                                                      .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
 			                                                                      .objectModelPath(findObjectDto.getObjet().getObjectModelPath())
-			                                                                      .objectName(findObjectDto.getObjet().getObjectName())
+			                                                                      .name(findObjectDto.getObjet().getObjectName())
 			                                                                      .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
 			                                                                      .build();
 

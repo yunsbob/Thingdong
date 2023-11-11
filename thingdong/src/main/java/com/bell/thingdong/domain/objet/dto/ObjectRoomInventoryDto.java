@@ -21,7 +21,7 @@ public class ObjectRoomInventoryDto {
 	private String objectModelPath;
 
 	@Schema(description = "오브젝트 이름", example = "wqexqwax")
-	private String objectName;
+	private String name;
 
 	@Schema(description = "벽에 설치하는지 여부", example = "false")
 	private Boolean isWall;
