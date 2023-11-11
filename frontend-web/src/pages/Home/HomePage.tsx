@@ -1,6 +1,6 @@
 import MyRoom from '@/components/organisms/MyRoom/MyRoom';
 import * as S from './Home.styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
 import { useGetRoomInventory } from '@/apis/Room/Queries/useGetRoomInventory';
 import {
@@ -11,7 +11,6 @@ import {
 import * as SS from '@/pages/Inventory/InventoryPage.styles';
 import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryButtons';
 import RoomInventoryItem from '@/components/molecules/RoomInventoryItem/RoomInventoryItem';
-import { IMAGES } from '@/constants/images';
 import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
@@ -27,6 +26,12 @@ import clock_2 from './clock2.glb';
 import painting_2 from './painting2.glb';
 import { UserObject } from '../../types/room';
 
+import { useUpdateRoomPosition } from '@/apis/Room/Mutations/useUpdateRoomPosition';
+import { RoomPosition, RoomState } from '@/interfaces/room';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '@/constants/path';
+import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
+
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
   visible: {
@@ -40,7 +45,7 @@ const toastVariants = {
 };
 
 const HomePage = () => {
-  const nickName = localStorage.getItem('nickName');
+  const nickName = localStorage.getItem('nickName') || '';
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
 
@@ -53,7 +58,6 @@ const HomePage = () => {
     {
       name: 'bed1',
       userObjectId: 1,
-      objectId: 1,
       objectModelPath: bed_1,
       isWall: false,
       position: [-2, 0, 2],
@@ -62,7 +66,6 @@ const HomePage = () => {
     {
       name: 'cabinet1',
       userObjectId: 2,
-      objectId: 2,
       position: [2, 0, 4],
       rotation: [0, ROTATE * 2, 0],
       objectModelPath: cabinet_1,
@@ -70,7 +73,6 @@ const HomePage = () => {
     {
       name: 'chair1',
       userObjectId: 3,
-      objectId: 3,
       position: [2, 0, 0],
       rotation: [0, 0, 0],
       objectModelPath: chair_1,
@@ -78,7 +80,6 @@ const HomePage = () => {
     {
       name: 'table1',
       userObjectId: 4,
-      objectId: 4,
       position: [-3, 0, -2],
       rotation: [0, ROTATE, 0],
       objectModelPath: table_1,
@@ -86,7 +87,6 @@ const HomePage = () => {
     {
       name: 'couch1',
       userObjectId: 5,
-      objectId: 5,
       position: [1, 0, -2],
       rotation: [0, 0, 0],
       objectModelPath: couch_1,
@@ -94,7 +94,6 @@ const HomePage = () => {
     {
       name: 'clock2',
       userObjectId: 6,
-      objectId: 6,
       position: [0, 0, 0],
       rotation: [0, ROTATE, 0],
       objectModelPath: clock_2,
@@ -103,13 +102,28 @@ const HomePage = () => {
     {
       name: 'painting2',
       userObjectId: 7,
-      objectId: 7,
-      position: [1, 0, 0],
+      position: [0, 0, 0],
       rotation: [0, 0, 0],
       objectModelPath: painting_2,
       isWall: true,
     },
   ]);
+
+  // 임시 RoomState
+  const [roomState, setRoomState] = useState<RoomState>({
+    userObjectList: myObjectList,
+    roomColor: 'pink',
+    roomId: 1,
+    userId: localStorage.getItem('userId') || '',
+  });
+
+  // 임시 RoomState 업데이트
+  useEffect(() => {
+    setRoomState(prevState => ({
+      ...prevState,
+      userObjectList: myObjectList,
+    }));
+  }, [myObjectList]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -229,7 +243,7 @@ const HomePage = () => {
     });
   };
 
-  // 객체 회전 TODO: 0,0,0이 아니면 벽에서 뜨는 경우가 있다
+  // 객체 회전
   const [rotation, setRotation] = useState<Rotation>([0, 0, 0]);
   const handleRotationClick = () => {
     setMyObjectList(currentObjects => {
@@ -243,7 +257,11 @@ const HomePage = () => {
           } else if (obj.isWall && obj.rotation[1] !== 0) {
             y = 0;
           }
-          return { ...obj, rotation: [x, y, z] };
+          return {
+            ...obj,
+            rotation: [x, y, z],
+            position: [-obj.position[2], obj.position[1], -obj.position[0]],
+          };
         }
         return obj;
       });
@@ -257,6 +275,32 @@ const HomePage = () => {
     });
   };
 
+  const updateRoomPositionMutation = useUpdateRoomPosition();
+  const updateRoomPosition = (roomPosition: RoomPosition) => {
+    updateRoomPositionMutation.mutate(roomPosition);
+    //TODO: 메인으로 navigate 시켜주기
+  };
+
+  // 방 상태 업데이트
+  const handleUpdateRoomClick = () => {
+    const objectPositionList = roomState.userObjectList.map(obj => ({
+      userObjectId: obj.userObjectId,
+      position: obj.position,
+      rotation: obj.rotation,
+    }));
+
+    const roomPosition = {
+      roomId: roomState.roomId,
+      objectPositionList: objectPositionList,
+    };
+
+    console.log('here', roomPosition);
+    setIsEditing(!isEditing);
+    // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
+    //updateRoomPosition(roomPosition);
+  };
+
+  // 방명록 모달
   const [modalOpen, setModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const userId = localStorage.getItem('userId');
@@ -277,6 +321,7 @@ const HomePage = () => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
   };
+
   return (
     <>
       <GuestbookModal
@@ -288,41 +333,12 @@ const HomePage = () => {
         handleNext={handleNext}
         handleDeleteGuestbook={handleDeleteGuestbook}
       />
-      <S.HeaderButtonWrapper style={{ zIndex: 1 }}>
-        {isEditing ? (
-          <>
-            <Image
-              src={IMAGES.ROOM.BACK_ICON}
-              $unit={'px'}
-              width={40}
-              height={40}
-              onClick={handleEdit}
-            />
-            <Image
-              src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
-              $unit={'px'}
-              width={40}
-              height={40}
-            />
-          </>
-        ) : (
-          <>
-            <S.RoomName>{nickName}네 방</S.RoomName>
-            <Image
-              src={IMAGES.ROOM.EDIT_ICON}
-              width={3.4}
-              onClick={handleEdit}
-            ></Image>
-            <Image
-              src={IMAGES.ROOM.GUESTBOOK_ICON}
-              width={3.4}
-              onClick={() => {
-                setModalOpen(true);
-              }}
-            ></Image>
-          </>
-        )}
-      </S.HeaderButtonWrapper>
+      <HeaderButtons
+        isEditing={isEditing}
+        handleEdit={handleEdit}
+        setModalOpen={setModalOpen}
+        nickName={nickName}
+      />
       {isEditing && (
         <>
           <S.BottomButtonWrapper style={{ zIndex: 1 }}>
@@ -354,7 +370,6 @@ const HomePage = () => {
                 $unit={'px'}
                 width={40}
                 height={40}
-                $margin="0 10px 0 0"
                 onClick={handleRotationClick}
               />
               <Image
@@ -363,6 +378,15 @@ const HomePage = () => {
                 width={40}
                 height={40}
                 onClick={handleRemoveClick}
+              />
+              <Image
+                src={
+                  require('@/assets/images/room/save-room-button.png').default
+                }
+                $unit={'px'}
+                width={40}
+                height={40}
+                onClick={handleUpdateRoomClick}
               />
             </S.ButtonWrapper>
           </S.BottomButtonWrapper>
