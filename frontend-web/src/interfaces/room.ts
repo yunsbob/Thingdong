@@ -1,4 +1,4 @@
-import { Position, Rotation } from '@/types/room';
+import { Position, Rotation, UserObject } from '@/types/room';
 
 export interface ObjectPosition {
   userObjectId: number;
@@ -9,4 +9,11 @@ export interface ObjectPosition {
 export interface RoomPosition {
   roomId: number;
   objectPositionList: ObjectPosition[];
+}
+
+export interface RoomState {
+    userObjectList: UserObject[];
+    roomColor: string;
+    roomId: number;
+    userId: string;
 }

@@ -10,8 +10,9 @@ const useUpdateRoomPosition = () => {
       updateRoomPosition(roomPosition),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['room'] });
+      //TODO: Room get 해오는 커스텀훅 작성시 쿼리키 'room'
     },
   });
 };
 
-export {useUpdateRoomPosition}
+export { useUpdateRoomPosition };

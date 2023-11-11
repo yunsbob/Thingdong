@@ -26,7 +26,6 @@ export interface MyRoomProps {
 export interface UserObject {
   name: string;
   userObjectId: number;
-  objectId: number;
   objectModelPath: string;
   isWall?: boolean;
   position: Position;
