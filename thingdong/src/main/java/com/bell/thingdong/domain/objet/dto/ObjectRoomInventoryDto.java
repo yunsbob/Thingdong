@@ -20,6 +20,12 @@ public class ObjectRoomInventoryDto {
 	@Schema(description = "오브젝트 3d 모델 경로", example = "wqexqwax")
 	private String objectModelPath;
 
+	@Schema(description = "오브젝트 이름", example = "wqexqwax")
+	private String name;
+
+	@Schema(description = "벽에 설치하는지 여부", example = "false")
+	private Boolean isWall;
+
 	@Schema(description = "오브젝트 설치여부", example = "Y")
 	private String objectStatus;
 }
