@@ -3,6 +3,7 @@ package com.bell.thingdong.domain.objet.entity;
 import com.bell.thingdong.domain.objet.dto.ArrangeObjectPositionDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
 import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.smartthings.entity.SmartThings;
 import com.bell.thingdong.domain.user.entity.User;
 
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -68,6 +70,9 @@ public class UserObject {
 
 	@Column(name = "rotation_z")
 	private Double rotationZ;
+
+	@OneToOne(mappedBy = "userObject")
+	private SmartThings smartThings;
 
 	public void setUserObjectStatus(UserObjectStatus userObjectStatus) {
 		this.userObjectStatus = userObjectStatus;
