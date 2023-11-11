@@ -11,7 +11,6 @@ import {
 import * as SS from '@/pages/Inventory/InventoryPage.styles';
 import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryButtons';
 import RoomInventoryItem from '@/components/molecules/RoomInventoryItem/RoomInventoryItem';
-import { IMAGES } from '@/constants/images';
 import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
@@ -24,12 +23,14 @@ import chair_1 from './chair1.glb';
 import couch_1 from './couch1.glb';
 import table_1 from './table1.glb';
 import clock_2 from './clock2.glb';
-import painting_2 from './painting1.glb';
+import painting_2 from './painting2.glb';
 import { UserObject } from '../../types/room';
 
 import { useUpdateRoomPosition } from '@/apis/Room/Mutations/useUpdateRoomPosition';
 import { RoomPosition, RoomState } from '@/interfaces/room';
 import { useNavigate } from 'react-router-dom';
+import { PATH } from '@/constants/path';
+import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -44,7 +45,7 @@ const toastVariants = {
 };
 
 const HomePage = () => {
-  const nickName = localStorage.getItem('nickName');
+  const nickName = localStorage.getItem('nickName') || '';
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
 
@@ -113,7 +114,7 @@ const HomePage = () => {
     userObjectList: myObjectList,
     roomColor: 'pink',
     roomId: 1,
-    userId: 'wjh1224',
+    userId: localStorage.getItem('userId') || '',
   });
 
   // 임시 RoomState 업데이트
@@ -274,8 +275,6 @@ const HomePage = () => {
     });
   };
 
-  const navigate = useNavigate();
-
   const updateRoomPositionMutation = useUpdateRoomPosition();
   const updateRoomPosition = (roomPosition: RoomPosition) => {
     updateRoomPositionMutation.mutate(roomPosition);
@@ -296,6 +295,8 @@ const HomePage = () => {
     };
 
     console.log('here', roomPosition);
+    setIsEditing(!isEditing);
+    // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
     //updateRoomPosition(roomPosition);
   };
 
@@ -332,41 +333,12 @@ const HomePage = () => {
         handleNext={handleNext}
         handleDeleteGuestbook={handleDeleteGuestbook}
       />
-      <S.HeaderButtonWrapper style={{ zIndex: 1 }}>
-        {isEditing ? (
-          <>
-            <Image
-              src={IMAGES.ROOM.BACK_ICON}
-              $unit={'px'}
-              width={40}
-              height={40}
-              onClick={handleEdit}
-            />
-            <Image
-              src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
-              $unit={'px'}
-              width={40}
-              height={40}
-            />
-          </>
-        ) : (
-          <>
-            <S.RoomName>{nickName}네 방</S.RoomName>
-            <Image
-              src={IMAGES.ROOM.EDIT_ICON}
-              width={3.4}
-              onClick={handleEdit}
-            ></Image>
-            <Image
-              src={IMAGES.ROOM.GUESTBOOK_ICON}
-              width={3.4}
-              onClick={() => {
-                setModalOpen(true);
-              }}
-            ></Image>
-          </>
-        )}
-      </S.HeaderButtonWrapper>
+      <HeaderButtons
+        isEditing={isEditing}
+        handleEdit={handleEdit}
+        setModalOpen={setModalOpen}
+        nickName={nickName}
+      />
       {isEditing && (
         <>
           <S.BottomButtonWrapper style={{ zIndex: 1 }}>
