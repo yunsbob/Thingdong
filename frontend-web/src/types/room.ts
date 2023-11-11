@@ -1,14 +1,6 @@
-export type Position = [
-  x: number,
-  y: number,
-  z: number,
-]
+export type Position = [x: number, y: number, z: number];
 
-export type Rotation = [
-  x: number,
-  y: number,
-  z: number,
-]
+export type Rotation = [x: number, y: number, z: number];
 
 export interface Size {
   width: number;
@@ -20,6 +12,7 @@ export interface MyRoomProps {
   position: Position;
   rotation: Rotation;
   userObject: UserObject[];
+  thingsObject: ThingsObject[];
   onObjectClick: (objectName: string) => void;
   selectedRoomColor?: string | null;
 }
@@ -32,6 +25,10 @@ export interface UserObject {
   position: Position;
   rotation: Rotation;
   size?: Size;
+}
+
+export interface ThingsObject extends UserObject {
+  deviceId: number;
 }
 
 // 스마트용따로

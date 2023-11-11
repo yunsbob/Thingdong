@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import {
   Environment,
@@ -9,7 +9,7 @@ import {
 import { Spinner } from '../../molecules/Spinner/Spinner';
 import { Position, Rotation, MyRoomProps } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { SkeletonUtils } from "three-stdlib";
+import { SkeletonUtils } from 'three-stdlib';
 import room_pink_light from './room-pink-light.glb';
 import { GridHelper, Mesh } from 'three';
 import GridHelpers from '@/components/molecules/GridHelpers/GridHelpers';
@@ -19,12 +19,12 @@ const MyRoom = ({
   position,
   rotation,
   userObject,
+  thingsObject,
   onObjectClick,
-  selectedRoomColor
+  selectedRoomColor,
 }: MyRoomProps) => {
-
   // console.log(selectedRoomColor);
-  
+
   // const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
 
   // (roomPinkLight as any).scene.traverse((node: any) => {
@@ -41,7 +41,7 @@ const MyRoom = ({
   }
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   useEffect(() => {
-    clone.traverse((child) => {
+    clone.traverse(child => {
       if ((child as Mesh).isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
@@ -100,11 +100,70 @@ const MyRoom = ({
               );
             })}
 
-            <primitive
-              name="roomPinkLight"
-              object={clone}
-              scale={1}
-            />
+            {thingsObject.map(obj => {
+              const glb = useLoader(GLTFLoader, obj.objectModelPath);
+
+              glb.scene.traverse(node => {
+                if (node.type === 'Mesh') {
+                  node.castShadow = true;
+                  node.receiveShadow = true;
+                }
+              });
+
+              const [isShining, setIsShining] = useState(false);
+
+              return (
+                <React.Fragment key={obj.name}>
+                  <primitive
+                    object={glb.scene}
+                    name={obj.name}
+                    position={obj.position}
+                    rotation={obj.rotation}
+                    scale={1}
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      if (obj.name.includes('lamp') && !isEditing) {
+                        setIsShining(!isShining);
+                      }
+                      onObjectClick(obj.name);
+                    }}
+                  />
+                  {obj.name.includes('lamp') && isShining && (
+                    <>
+                      <pointLight
+                        position={[
+                          obj.position[0],
+                          obj.position[1] + 3,
+                          obj.position[2],
+                        ]}
+                        color="#ffd000"
+                        castShadow
+                        distance={5}
+                        intensity={100}
+                        power={100}
+                      />
+                      {/* <pointLight
+                        name="Point Light 3"
+                        intensity={1.5}
+                        distance={20}
+                        shadow-mapSize-width={1024}
+                        shadow-mapSize-height={1024}
+                        shadow-camera-near={100}
+                        shadow-camera-far={2000}
+                        color="#fed500"
+                        position={[
+                          obj.position[0],
+                          obj.position[1] + 3,
+                          obj.position[2],
+                        ]}
+                      /> */}
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })}
+
+            <primitive name="roomPinkLight" object={clone} scale={1} />
 
             <OrthographicCamera
               name="Default Camera"
