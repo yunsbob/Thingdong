@@ -5,6 +5,7 @@ import static com.bell.thingdong.domain.room.entity.QUserRoom.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bell.thingdong.domain.objet.dto.ObjectCategory;
 import com.bell.thingdong.domain.objet.dto.ObjectPositionDto;
 import com.bell.thingdong.domain.objet.dto.ObjectRotationDto;
 import com.bell.thingdong.domain.objet.dto.ObjectSizeDto;
@@ -12,6 +13,7 @@ import com.bell.thingdong.domain.objet.dto.UserObjectRoomDto;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.smartthings.dto.SmartThingsRoomDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -27,24 +29,43 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 
 		UserRoomRes userRoomRes = new UserRoomRes();
 		List<UserObjectRoomDto> userObjectRoomDtoList = new ArrayList<>();
+		List<SmartThingsRoomDto> smartThingsRoomDtoList = new ArrayList<>();
 		for (UserObject userObject : userRoomOne.getUserObjectList()) {
 			ObjectPositionDto objectPositionDto = ObjectPositionDto.builder().x(userObject.getX()).y(userObject.getY()).z(userObject.getZ()).build();
 			ObjectRotationDto objectRotationDto = ObjectRotationDto.builder().x(userObject.getRotationX()).y(userObject.getRotationY()).z(userObject.getRotationZ()).build();
 			ObjectSizeDto objectSizeDto = ObjectSizeDto.builder().width(userObject.getObjet().getObjectWidth()).height(userObject.getObjet().getObjectHeight()).build();
 
-			UserObjectRoomDto userObjectRoomDto = UserObjectRoomDto.builder()
-			                                                       .userObjectId(userObject.getUserObjectId())
-			                                                       .objectModelPath(userObject.getObjet().getObjectModelPath())
-			                                                       .name(userObject.getObjet().getObjectName())
-			                                                       .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
-			                                                       .position(objectPositionDto)
-			                                                       .rotation(objectRotationDto)
-			                                                       .size(objectSizeDto)
-			                                                       .build();
+			if (userObject.getObjet().getObjectCategory().equals(ObjectCategory.SmartThings)) {
+				SmartThingsRoomDto smartThingsRoomDto = SmartThingsRoomDto.builder()
+				                                                          .userObjectId(userObject.getUserObjectId())
+				                                                          .objectModelPath(userObject.getSmartThings().getStatus().equals("Y") ?
+					                                                          userObject.getSmartThings().getActivationPath() : userObject.getObjet().getObjectModelPath())
+				                                                          .name(userObject.getObjet().getObjectName())
+				                                                          .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                          .position(objectPositionDto)
+				                                                          .rotation(objectRotationDto)
+				                                                          .size(objectSizeDto)
+				                                                          .deviceId(userObject.getSmartThings().getDeviceId())
+				                                                          .status(userObject.getSmartThings().getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                          .build();
 
-			userObjectRoomDtoList.add(userObjectRoomDto);
+				smartThingsRoomDtoList.add(smartThingsRoomDto);
+			} else {
+				UserObjectRoomDto userObjectRoomDto = UserObjectRoomDto.builder()
+				                                                       .userObjectId(userObject.getUserObjectId())
+				                                                       .objectModelPath(userObject.getObjet().getObjectModelPath())
+				                                                       .name(userObject.getObjet().getObjectName())
+				                                                       .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                       .position(objectPositionDto)
+				                                                       .rotation(objectRotationDto)
+				                                                       .size(objectSizeDto)
+				                                                       .build();
+
+				userObjectRoomDtoList.add(userObjectRoomDto);
+			}
 		}
 		userRoomRes.setUserObjectList(userObjectRoomDtoList);
+		userRoomRes.setSmartThingsList(smartThingsRoomDtoList);
 		userRoomRes.setRoomColor(userRoomOne.getRoomColor());
 		userRoomRes.setUserId(userRoomOne.getUser().getEmail());
 		userRoomRes.setRoomId(userRoomOne.getRoomId());
