@@ -8,19 +8,16 @@ import { PATH } from '@/constants/path';
 
 const useAddLogin = (redirectPath = PATH.ROOT) => {
   const [user, setUser] = useAtom(userState);
-  const navigate = useNavigate()
-  // const navigatePage = (path: string) => {
-  //   navigate(path);
-  // }
+  const navigate = useNavigate();
 
   return useMutation<CurrentUser, unknown, UserLoginInfo>({
     mutationFn: (user: UserLoginInfo) => addLogin(user),
-    onSuccess: (data) => {
+    onSuccess: data => {
       localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('nickName',data.nickName);
+      localStorage.setItem('nickName', data.nickName);
+      localStorage.setItem('userId', data.userId);
       setUser(data);
       navigate(redirectPath);
-      console.log('-로그인 완료- jotai Atom에 저장되는 user정보: ', data);
     },
   });
 };

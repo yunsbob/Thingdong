@@ -1,8 +1,8 @@
 import { getThingStory } from '@/apis/Inventory/inventoryAPI';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 const useGetThingStory = () => {
-  const { data } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['thingStory'],
     queryFn: () => getThingStory(),
   });

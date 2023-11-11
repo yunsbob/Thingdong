@@ -1,5 +1,5 @@
 import { getUsers } from '@/apis/User/userAPI';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 /**
  * 검색 결과 유저 정보 GET
@@ -13,7 +13,7 @@ import { useQuery } from '@tanstack/react-query';
  */
 
 const useGetUsers = (inputValue: string) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['users', inputValue],
     queryFn: () => getUsers(inputValue),
   });
