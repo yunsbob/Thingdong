@@ -66,6 +66,7 @@ const HomePage = () => {
     {
       name: 'cabinet1',
       userObjectId: 2,
+      isWall: false,
       position: [2, 0, 4],
       rotation: [0, ROTATE * 2, 0],
       objectModelPath: cabinet_1,
@@ -73,6 +74,7 @@ const HomePage = () => {
     {
       name: 'chair1',
       userObjectId: 3,
+      isWall: false,
       position: [2, 0, 0],
       rotation: [0, 0, 0],
       objectModelPath: chair_1,
@@ -83,10 +85,12 @@ const HomePage = () => {
       position: [-3, 0, -2],
       rotation: [0, ROTATE, 0],
       objectModelPath: table_1,
+      isWall: false,
     },
     {
       name: 'couch1',
       userObjectId: 5,
+      isWall: false,
       position: [1, 0, -2],
       rotation: [0, 0, 0],
       objectModelPath: couch_1,
@@ -94,10 +98,10 @@ const HomePage = () => {
     {
       name: 'clock2',
       userObjectId: 6,
+      isWall: true,
       position: [0, 0, 0],
       rotation: [0, ROTATE, 0],
       objectModelPath: clock_2,
-      isWall: true,
     },
     {
       name: 'painting2',
@@ -129,6 +133,7 @@ const HomePage = () => {
     setIsEditing(!isEditing);
   };
 
+  // TODO: useState로 상태 저장
   const {
     furnitureList,
     homeApplianceList,
@@ -249,19 +254,31 @@ const HomePage = () => {
     setMyObjectList(currentObjects => {
       return currentObjects.map(obj => {
         if (obj.name === selectedObjectName) {
+          console.log(selectedObjectName);
+          console.log(obj.isWall);
+          console.log('position', obj.position);
           let [x, y, z] = obj.rotation;
-          if (!obj.isWall) {
+          if (obj.isWall === false) {
             y += ROTATE;
+            return {
+              ...obj,
+              rotation: [x, y, z],
+            };
           } else if (obj.isWall && obj.rotation[1] === 0) {
             y += ROTATE;
+            return {
+              ...obj,
+              rotation: [x, y, z],
+              position: [-obj.position[2], obj.position[1], -obj.position[0]],
+            };
           } else if (obj.isWall && obj.rotation[1] !== 0) {
             y = 0;
+            return {
+              ...obj,
+              rotation: [x, y, z],
+              position: [-obj.position[2], obj.position[1], -obj.position[0]],
+            };
           }
-          return {
-            ...obj,
-            rotation: [x, y, z],
-            position: [-obj.position[2], obj.position[1], -obj.position[0]],
-          };
         }
         return obj;
       });
@@ -297,7 +314,7 @@ const HomePage = () => {
     console.log('here', roomPosition);
     setIsEditing(!isEditing);
     // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
-    //updateRoomPosition(roomPosition);
+    // updateRoomPosition(roomPosition);
   };
 
   // 방명록 모달

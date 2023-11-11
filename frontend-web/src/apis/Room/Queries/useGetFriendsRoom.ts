@@ -1,17 +1,17 @@
-import { getFriendsRoom } from '@/apis/Room/roomAPI';
+import { getRoom } from '@/apis/Room/roomAPI';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 /**
  *
- * @param inputValue 방문할 띵구의 userId
- * @returns 방문할 띵구의 roomId
+ * @param inputValue Room 주인의 userId
+ * @returns Room 주인의 roomId
  */
 
-const useGetFriendsRoom = (inputValue: string) => {
+const useGetRoom = (inputValue: string) => {
   return useSuspenseQuery({
-    queryKey: ['friendsRoom', inputValue],
-    queryFn: () => getFriendsRoom(inputValue),
+    queryKey: ['room', inputValue],
+    queryFn: () => getRoom(inputValue),
   });
 };
 
-export { useGetFriendsRoom };
+export { useGetRoom };
