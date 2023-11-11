@@ -21,6 +21,7 @@ export interface MyRoomProps {
   rotation: Rotation;
   userObject: UserObject[];
   onObjectClick: (objectName: string) => void;
+  selectedRoomColor?: string | null;
 }
 
 export interface UserObject {
