@@ -1,3 +1,4 @@
+import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 import { atom } from 'jotai';
 
 export type Unboxing = {
@@ -7,7 +8,7 @@ export type Unboxing = {
 
 export const modalOpenAtom = atom(false);
 
-export const modalContentAtom = atom('textTyping');
+export const modalContentAtom = atom<string>(UNBOXING_MODAL_NAME.TEXT_TYPING);
 
 export const typingContentAtom = atom('');
 

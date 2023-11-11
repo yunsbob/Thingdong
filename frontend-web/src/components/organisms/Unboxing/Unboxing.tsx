@@ -9,6 +9,7 @@ import SendingList from './Modal/SendingList';
 import Check from './Modal/Check';
 import { UnboxingProps } from '@/types/inventory';
 import { IMAGES } from '@/constants/images';
+import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 
 const Unboxing = ({ unBoxThingList }: UnboxingProps) => {
   const [, setModalOpen] = useAtom(modalOpenAtom);
@@ -20,15 +21,15 @@ const Unboxing = ({ unBoxThingList }: UnboxingProps) => {
 
   const renderModalContent = () => {
     switch (modalContent) {
-      case 'textTyping':
+      case UNBOXING_MODAL_NAME.TEXT_TYPING:
         return <TextTyping />;
-      case 'opening':
+      case UNBOXING_MODAL_NAME.OPENING:
         return <Opening />;
-      case 'complete':
+      case UNBOXING_MODAL_NAME.COMPLETE:
         return <Complete />;
-      case 'sendingList':
+      case UNBOXING_MODAL_NAME.SENDING_LIST:
         return <SendingList />;
-      case 'check':
+      case UNBOXING_MODAL_NAME.CHECK:
         return <Check />;
       default:
         return null;
