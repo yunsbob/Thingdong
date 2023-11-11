@@ -1,15 +1,18 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useMemo } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import {
   Environment,
   OrbitControls,
   OrthographicCamera,
+  useGLTF,
 } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
 import { Position, Rotation, MyRoomProps } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-
+import { SkeletonUtils } from "three-stdlib";
 import room_pink_light from './room-pink-light.glb';
+import { GridHelper, Mesh } from 'three';
+import GridHelpers from '@/components/molecules/GridHelpers/GridHelpers';
 
 const MyRoom = ({
   isEditing,
@@ -17,17 +20,34 @@ const MyRoom = ({
   rotation,
   userObject,
   onObjectClick,
+  selectedRoomColor
 }: MyRoomProps) => {
-  const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
 
-  (roomPinkLight as any).scene.traverse((node: any) => {
-    // console.log(node.type);
-    if (node.type === 'Mesh') {
-      node.castShadow = true;
-      node.receiveShadow = true;
-    }
-  });
+  // console.log(selectedRoomColor);
+  
+  // const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
 
+  // (roomPinkLight as any).scene.traverse((node: any) => {
+  //   // console.log(node.type);
+  //   if (node.type === 'Mesh') {
+  //     node.castShadow = true;
+  //     node.receiveShadow = true;
+  //   }
+  // });
+  const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
+  if (!scene) {
+    // scene이 로드되지 않았거나 유효하지 않은 경우 처리
+    return <div>Loading...</div>;
+  }
+  const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  useEffect(() => {
+    clone.traverse((child) => {
+      if ((child as Mesh).isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+  }, [clone]);
   return (
     <div style={{ backgroundColor: '#efddad', width: '100%', height: '100vh' }}>
       <Suspense fallback={<Spinner />}>
@@ -42,6 +62,7 @@ const MyRoom = ({
         >
           <scene name="Scene" position={[0, -2, 0]}>
             <ambientLight intensity={0.4} />
+            {/* <GridHelpers/> */}
             <directionalLight
               position={[5, 5, 5]}
               intensity={1}
@@ -81,7 +102,7 @@ const MyRoom = ({
 
             <primitive
               name="roomPinkLight"
-              object={(roomPinkLight as any).scene}
+              object={clone}
               scale={1}
             />
 
