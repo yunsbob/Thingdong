@@ -11,6 +11,7 @@ import {
 } from '@/states/unboxingModalStates';
 import { useAtom } from 'jotai';
 import { IMAGES } from '@/constants/images';
+import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 
 const TextTyping = () => {
   const [typingContent, setTypingContent] = useAtom(typingContentAtom);
@@ -20,21 +21,24 @@ const TextTyping = () => {
 
   const onModalClose = () => {
     setModalOpen(false);
-    setModalContent('textTyping');
+    setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
   };
+
   const handleConfirm = () => {
-    if (typingContent.length === 0 || typingContent.length > 12) {
+    if (typingContent.length === 0) {
       inputRef.current?.focus();
     } else {
-      setModalContent('opening');
+      setModalContent(UNBOXING_MODAL_NAME.OPENING);
     }
   };
+
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
     setTypingContent(newNickname);
   };
 
   const isFilled = typingContent !== '';
+
   return (
     <Modal height={31} onClose={onModalClose} isOpen={modalOpen}>
       <Image src={IMAGES.INVENTORY.TYPING_IMAGE} $unit={'px'} height={220} />
@@ -50,7 +54,7 @@ const TextTyping = () => {
       </Text>
       <Input
         ref={inputRef}
-        placeholder="12글자 이내로 작성해주세요"
+        placeholder="ex) 빨간색 장미꽃"
         $inputSize="small"
         option="grey"
         onChange={e => {

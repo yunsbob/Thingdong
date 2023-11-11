@@ -1,30 +1,60 @@
-export interface Position {
-  x: number;
-  y: number;
-  z: number;
+export type Position = [
+  x: number,
+  y: number,
+  z: number,
+]
+
+export type Rotation = [
+  x: number,
+  y: number,
+  z: number,
+]
+
+export interface Size {
+  width: number;
+  height: number;
 }
 
-export interface Rotation {
-  rx: number;
-  ry: number;
-  rz: number;
-}
-
-export interface MyObject {
-  name: string;
-  modelId: number;
-  category: string;
+export interface MyRoomProps {
+  isEditing: boolean;
   position: Position;
-  rotation?: Rotation;
-  isRightWall?: boolean;
-  isClicked?: boolean;
-  isThings?: boolean;
-  source: string;
+  rotation: Rotation;
+  userObject: UserObject[];
+  onObjectClick: (objectName: string) => void;
+  selectedRoomColor?: string | null;
 }
+
+export interface UserObject {
+  name: string;
+  userObjectId: number;
+  objectModelPath: string;
+  isWall?: boolean;
+  position: Position;
+  rotation: Rotation;
+  size?: Size;
+}
+
+// 스마트용따로
+// export interface UserObjectList {
+//   name: string;
+//   userObjectId: number;
+//   objectId: number;
+//   category: string;
+//   x: number;
+//   y: number;
+//   z: number;
+//   source: string;
+//   isRightWall?: boolean;
+//   rotationY?: number;
+//   size?: ObjectSize; // 나중엔 필수값으로
+// }
 
 export interface MyRoom {
-  // roomId
-  // roomColor
+  userObjectList: UserObject;
+  userId: string;
+  roomColor: string;
+  roomModelPath: string;
+  roomId?: number;
+  nextRoom?: number;
+  prevRoom?: number;
 }
-
-
