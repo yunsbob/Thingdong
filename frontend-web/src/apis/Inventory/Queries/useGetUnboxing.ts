@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai';
 
 const useGetUnboxing = (setence: string) => {
   const modalContent = useAtomValue(modalContentAtom);
+
   return useQuery({
     queryKey: ['unboxing'],
     queryFn: () => getUnBoxing(setence),

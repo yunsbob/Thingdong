@@ -3,40 +3,29 @@ import { Text } from '@/components/atoms/Text/Text.styles';
 import Modal from '@/components/molecules/Modal/Modal';
 import { modalContentAtom, modalOpenAtom } from '@/states/unboxingModalStates';
 import { useAtom } from 'jotai';
-import styled from 'styled-components';
 import FriendList from '../../FriendList/FriendList';
 import { useGetFriends } from '@/apis/Friend/Queries/useGetFriends';
 import { IMAGES } from '@/constants/images';
+import * as S from '@/components/organisms/Unboxing/Modal/SendingList.styles';
+import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 
-const HeaderWrapper = styled.div`
-  display: flex;
-`;
-const NoFriendTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-`;
-const FriendWrapper = styled.div`
-  height: 90%;
-  overflow-y: auto;
-`;
 const SendingList = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
   const [modalOpen] = useAtom(modalOpenAtom);
 
   const { thingguList } = useGetFriends();
+
   const handleConfirm = () => {
-    setModalContent('complete');
+    setModalContent(UNBOXING_MODAL_NAME.COMPLETE);
   };
+
   const handleCheck = () => {
-    setModalContent('check');
+    setModalContent(UNBOXING_MODAL_NAME.CHECK);
   };
 
   return (
     <Modal height={31} isOpen={modalOpen} $padding="28px">
-      <HeaderWrapper>
+      <S.HeaderWrapper>
         <Image
           src={IMAGES.FRIEND.SEARCH.BACK_ICON}
           $unit={'px'}
@@ -53,9 +42,9 @@ const SendingList = () => {
         >
           띵구에게 선물하기
         </Text>
-      </HeaderWrapper>
+      </S.HeaderWrapper>
       {thingguList.length === 0 ? (
-        <NoFriendTextContainer>
+        <S.NoFriendTextContainer>
           <Text
             size="body2"
             fontWeight="bold"
@@ -64,11 +53,11 @@ const SendingList = () => {
           >
             띵구가 없어요...
           </Text>
-        </NoFriendTextContainer>
+        </S.NoFriendTextContainer>
       ) : (
-        <FriendWrapper>
+        <S.FriendWrapper>
           <FriendList friends={thingguList} $isPresent="true" />
-        </FriendWrapper>
+        </S.FriendWrapper>
       )}
     </Modal>
   );
