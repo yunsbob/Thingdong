@@ -15,7 +15,7 @@ import { IMAGES } from '@/constants/images';
 import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
-import { Position, Rotation } from '../../types/room';
+import { Position, Rotation, ThingsObject } from '../../types/room';
 import GuestbookModal from '@/components/organisms/GuestbookModal/GuestbookModal';
 
 import bed_1 from './bed1.glb';
@@ -25,6 +25,8 @@ import couch_1 from './couch1.glb';
 import table_1 from './table1.glb';
 import clock_2 from './clock2.glb';
 import painting_2 from './painting2.glb';
+import lamp_1 from './lamp1.glb';
+
 import { UserObject } from '../../types/room';
 
 const toastVariants = {
@@ -108,6 +110,19 @@ const HomePage = () => {
       rotation: [0, 0, 0],
       objectModelPath: painting_2,
       isWall: true,
+    },
+  ]);
+
+  const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
+    {
+      name: 'lamp1',
+      deviceId: 0,
+      userObjectId: 8,
+      objectId: 8,
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+      objectModelPath: lamp_1,
+      isWall: false,
     },
   ]);
 
@@ -374,6 +389,7 @@ const HomePage = () => {
         position={position}
         rotation={rotation}
         userObject={myObjectList}
+        thingsObject={myThingsList}
         onObjectClick={handleObjectClick}
       />
       {isEditing && (
