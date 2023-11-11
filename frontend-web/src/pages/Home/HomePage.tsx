@@ -398,6 +398,12 @@ const HomePage = () => {
           </>
         )}
       </S.HeaderButtonWrapper>
+      <HeaderButtons
+        isEditing={isEditing}
+        handleEdit={handleEdit}
+        setModalOpen={setModalOpen}
+        nickName={nickName}
+      />
       {isEditing && (
         <>
             <S.ArrowKeyWrapper>
