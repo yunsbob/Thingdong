@@ -59,6 +59,7 @@ export const BackButtonWrapper = styled.div`
   top: 20px;
   left: 15px;
   z-index: 1;
+`;
 
 export const ArrowKeyWrapper = styled.div`
   position: absolute;
