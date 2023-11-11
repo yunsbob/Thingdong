@@ -251,23 +251,31 @@ const HomePage = () => {
   // 객체 회전
   const [rotation, setRotation] = useState<Rotation>([0, 0, 0]);
   const handleRotationClick = () => {
-    setMyObjectList((currentObjects: any) => {
-      return currentObjects.map((obj: UserObject) => {
-        if (obj.name !== selectedObjectName) {
-          return obj;
-        } else if (obj.name === selectedObjectName) {
-          const newYRotation =
-            obj.isWall && obj.rotation[1] !== 0 ? 0 : obj.rotation[1] + ROTATE;
-          const newPosition =
-            obj.isWall && newYRotation !== 0
-              ? [-obj.position[2], obj.position[1], -obj.position[0]]
-              : obj.position;
-
-          return {
-            ...obj,
-            rotation: [obj.rotation[0], newYRotation, obj.rotation[2]],
-            position: newPosition,
-          };
+    setMyObjectList(currentObjects => {
+      return currentObjects.map(obj => {
+        if (obj.name === selectedObjectName) {
+          let [x, y, z] = obj.rotation;
+          if (obj.isWall === false) {
+            y += ROTATE;
+            return {
+              ...obj,
+              rotation: [x, y, z],
+            };
+          } else if (obj.isWall && obj.rotation[1] === 0) {
+            y += ROTATE;
+            return {
+              ...obj,
+              rotation: [x, y, z],
+              position: [-obj.position[2], obj.position[1], -obj.position[0]],
+            };
+          } else if (obj.isWall && obj.rotation[1] !== 0) {
+            y = 0;
+            return {
+              ...obj,
+              rotation: [x, y, z],
+              position: [-obj.position[2], obj.position[1], -obj.position[0]],
+            };
+          }
         }
         return obj;
       });
