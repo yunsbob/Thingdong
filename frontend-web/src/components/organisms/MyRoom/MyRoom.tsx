@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import {
   Environment,
@@ -19,6 +19,7 @@ const MyRoom = ({
   position,
   rotation,
   userObject,
+  thingsObject,
   onObjectClick,
   selectedRoomColor,
 }: MyRoomProps) => {
@@ -96,6 +97,69 @@ const MyRoom = ({
                     onObjectClick(obj.name);
                   }}
                 />
+              );
+            })}
+
+            {thingsObject.map(obj => {
+              const glb = useLoader(GLTFLoader, obj.objectModelPath);
+
+              glb.scene.traverse(node => {
+                if (node.type === 'Mesh') {
+                  node.castShadow = true;
+                  node.receiveShadow = true;
+                }
+              });
+
+              const [isShining, setIsShining] = useState(false);
+
+              return (
+                <React.Fragment key={obj.name}>
+                  <primitive
+                    object={glb.scene}
+                    name={obj.name}
+                    position={obj.position}
+                    rotation={obj.rotation}
+                    scale={1}
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      if (obj.name.includes('lamp') && !isEditing) {
+                        setIsShining(!isShining);
+                      }
+                      onObjectClick(obj.name);
+                    }}
+                  />
+                  {obj.name.includes('lamp') && isShining && (
+                    <>
+                      <pointLight
+                        position={[
+                          obj.position[0],
+                          obj.position[1] + 3,
+                          obj.position[2],
+                        ]}
+                        color="#ffd000"
+                        castShadow
+                        distance={5}
+                        intensity={100}
+                        power={100}
+                      />
+                      {/* <pointLight
+                        name="Point Light 3"
+                        intensity={1.5}
+                        distance={20}
+                        shadow-mapSize-width={1024}
+                        shadow-mapSize-height={1024}
+                        shadow-camera-near={100}
+                        shadow-camera-far={2000}
+                        color="#fed500"
+                        position={[
+                          obj.position[0],
+                          obj.position[1] + 3,
+                          obj.position[2],
+                        ]}
+                      /> */}
+                    </>
+                  )}
+                </React.Fragment>
               );
             })}
 
