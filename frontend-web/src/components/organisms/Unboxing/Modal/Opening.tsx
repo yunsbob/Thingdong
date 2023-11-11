@@ -11,7 +11,7 @@ import {
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { ImageWrapper } from './Opening.styles';
 import { IMAGES } from '@/constants/images';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useGetUnboxing } from '@/apis/Inventory/Queries/useGetUnboxing';
 import toast, { Toaster } from 'react-hot-toast';
 import { UNBOXING_MESSAGES } from '@/constants/messages';
@@ -106,18 +106,22 @@ const Opening = () => {
     return !isLoading && tt3Data;
   };
 
-  if (canRender()) {
-    setUnboxingObject(tt3Data);
-    toast.success(UNBOXING_MESSAGES.TOAST.SUCCESS);
-  }
+  useCallback(() => {
+    if (canRender()) {
+      setUnboxingObject(tt3Data);
+      toast.success(UNBOXING_MESSAGES.TOAST.SUCCESS);
+    }
+  }, [isLoading, tt3Data]);
 
-  if (isError) {
-    toast.error(UNBOXING_MESSAGES.TOAST.ERROR);
+  useEffect(() => {
+    if (isError) {
+      toast.error(UNBOXING_MESSAGES.TOAST.ERROR);
 
-    setTimeout(() => {
-      closeModal();
-    }, 1500);
-  }
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    }
+  }, [isError]);
 
   return (
     <Modal height={31} isOpen={modalOpen}>
