@@ -74,6 +74,7 @@ public class UserObject {
 	}
 
 	public void setUserObjectPosition(ArrangeObjectPositionDto arrangeObjectPositionDto, UserRoom room) {
+		this.userObjectStatus = UserObjectStatus.Room;
 		this.room = room;
 		this.x = arrangeObjectPositionDto.getPosition().getX();
 		this.y = arrangeObjectPositionDto.getPosition().getY();
