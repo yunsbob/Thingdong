@@ -34,6 +34,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
 import { IMAGES } from '@/constants/images';
+import { MOVE, ROTATE } from '@/constants/transformations';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -64,6 +65,7 @@ const HomePage = () => {
     console.log(colorName); // Or any other action
     setSelectedRoomColor(colorName);
   };
+
   const colors = [
     ['white', '#FFFFFF'],
     ['yellow', '#FFDCB6'],
@@ -83,9 +85,6 @@ const HomePage = () => {
   //     onClick={() => handleColorClick(color)}
   //   />
   // ));
-  // 이동 & 회전 단위
-  const MOVE = 0.75;
-  const ROTATE = Math.PI * 0.5;
 
   // 임시 myObjectList
   const [myObjectList, setMyObjectList] = useState<UserObject[]>([
