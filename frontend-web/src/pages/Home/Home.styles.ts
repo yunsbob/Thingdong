@@ -23,6 +23,7 @@ export const EditButton = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 export const RoomName = styled.div`
   background-color: ${({ theme }) => theme.color.white};
   box-shadow: ${({ theme }) => theme.shadow.shadowBtn};
@@ -34,18 +35,7 @@ export const RoomName = styled.div`
   justify-content: center;
   align-items: center;
 `;
-export const HeaderButtonWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  height: 3rem;
-  gap: 10px;
-`;
+
 export const ImageWrapper = styled.div`
   width: 40px;
   height: 40px;
@@ -80,4 +70,5 @@ export const BottomButtonWrapper = styled.div`
 export const ButtonWrapper = styled.div`
   display: flex;
   align-items: flex-end;
+  gap: 10px;
 `;
