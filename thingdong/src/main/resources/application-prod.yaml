@@ -12,11 +12,9 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://thingdong.com:5555/ssafy_b304?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://45.76.219.8:5555/ssafy_b304?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: ssafy_b304
     password: ssafy_b304_1
-    hikari:
-      connection-timeout: 5000
 
   jpa:
     hibernate:
