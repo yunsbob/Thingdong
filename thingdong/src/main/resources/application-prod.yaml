@@ -15,6 +15,8 @@ spring:
     url: jdbc:mariadb://thingdong.com:5555/ssafy_b304?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: ssafy_b304
     password: ssafy_b304_1
+    hikari:
+      connection-timeout: 5000
 
   jpa:
     hibernate:
