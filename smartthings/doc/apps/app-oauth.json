@@ -9,6 +9,6 @@
     "x:scenes:*"
   ],
   "redirectUris": [
-    "http://localhost:3000/oauth/callback"
+    "https://thingdong.com/smart/oauth/callback"
   ]
 }

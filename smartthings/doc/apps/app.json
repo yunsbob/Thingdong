@@ -1,5 +1,5 @@
 {
-  "appName": "thingdongs101",
+  "appName": "thingdongs102",
   "appType": "API_ONLY",
   "classifications": [
     "AUTOMATION"
@@ -21,6 +21,6 @@
       "r:devices:*",
       "x:devices:*"
     ],
-    "redirectUris": ["http://localhost:3000/oauth/callback"]
+    "redirectUris": ["https://thingdong.com/smart/oauth/callback"]
   }
 }
