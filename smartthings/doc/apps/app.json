@@ -1,5 +1,5 @@
 {
-  "appName": "thingdong30",
+  "appName": "thingdong31",
   "appType": "API_ONLY",
   "classifications": [
     "AUTOMATION"
@@ -9,7 +9,7 @@
   "singleInstance": false,
   "installMetadata": {},
   "apiOnly": {
-    "targetUrl": "https://thingdong.com/smartApp"
+    "targetUrl": "http://45.76.219.8:4000"
   },
   "oauth": {
     "clientName": "thingdong",
