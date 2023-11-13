@@ -39,7 +39,6 @@ export const RoomName = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 export const HeaderButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
