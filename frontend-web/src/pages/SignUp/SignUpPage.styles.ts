@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const Ellipse = styled.div`
-  width: 800px;
-  height: 800px;
-  border-radius: 803px;
+  width: 200%;
+  height: 125%;
+  border-radius: 100%;
   background: linear-gradient(180deg, #fff1b6 0%, rgba(255, 255, 255, 0) 100%);
   position: absolute;
   left: -50%;
