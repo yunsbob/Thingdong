@@ -138,6 +138,7 @@ export const EnterScene = () => {
         </Button>
       </EnterButtonContainer>
       <LandingScene />
+      
     </EnterSceneContainer>
   );
 };
