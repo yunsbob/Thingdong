@@ -20,43 +20,35 @@ class ResourceReq(BaseModel):
 class ResourceRes(BaseModel):
     pngPath: str
     glbPath: str
+    gifPath: str
 
 
 model = Model()
 
 
 @spaces.GPU
-def run_generate3d(prompt: str):
-    seed = random.randint(0, 2100000000)
-    glb_path = model.make_glb(prompt=prompt, seed=seed)
-
-    png_path = model.glb2img(glb_path)
+async def run_generate3d(prompt: str):
+    glb_path = await model.make_glb(prompt=prompt)
+    gif_path, png_path = await model.make_img(prompt=prompt)
     model.make_transparent(png_path)
 
-    return glb_path, png_path
+    return glb_path, png_path, gif_path
 
 
 @app.get("/")
-def read_root():
+def health_check():
     return {"Hello": "World"}
 
 
 @app.post("/")
-def get_3d(resource_req: ResourceReq):
+async def get_3d(resource_req: ResourceReq):
     input_sentence = resource_req.sentence
-    glb_path, png_path = run_generate3d(input_sentence)
-    pre = "https://masoori.site/resources/"
+    glb_path, png_path, gif_path = await run_generate3d(input_sentence)
+    pre = "https://thingdong.com/resources/"
     glb_path = pre + glb_path[20:]
     png_path = pre + png_path[20:]
+    gif_path = pre + gif_path[20:]
 
-    resource_res = ResourceRes(pngPath=png_path, glbPath=glb_path)
+    resource_res = ResourceRes(pngPath=png_path, glbPath=glb_path, gifPath=gif_path)
 
     return resource_res
-
-
-if __name__ == "__main__":
-    current_dir = os.path.dirname(__file__)
-
-    sys.path.append(current_dir)
-
-    uvicorn.run("main:app", host="0.0.0.0", port=1234, reload=True)

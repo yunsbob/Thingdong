@@ -52,4 +52,4 @@ translator:
 
 generator:
   stable-diffusion:
-    url: https://thingdong.com
+    url: https://thingdong.com/generate3D
