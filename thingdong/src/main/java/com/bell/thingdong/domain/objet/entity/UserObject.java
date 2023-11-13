@@ -53,23 +53,29 @@ public class UserObject {
 	@Column(name = "user_object_status", nullable = false)
 	private UserObjectStatus userObjectStatus;
 
+	@Builder.Default
 	@Column(name = "x")
-	private Double x;
+	private Double x = 0.0;
 
+	@Builder.Default
 	@Column(name = "y")
-	private Double y;
+	private Double y = 0.0;
 
+	@Builder.Default
 	@Column(name = "z")
-	private Double z;
+	private Double z = 0.0;
 
+	@Builder.Default
 	@Column(name = "rotation_x")
-	private Double rotationX;
+	private Double rotationX = 0.0;
 
+	@Builder.Default
 	@Column(name = "rotation_y")
-	private Double rotationY;
+	private Double rotationY = 0.0;
 
+	@Builder.Default
 	@Column(name = "rotation_z")
-	private Double rotationZ;
+	private Double rotationZ = 0.0;
 
 	@OneToOne(mappedBy = "userObject")
 	private SmartThings smartThings;
