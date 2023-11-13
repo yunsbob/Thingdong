@@ -24,6 +24,7 @@ import couch_1 from './couch1.glb';
 import table_1 from './table1.glb';
 import clock_2 from './clock2.glb';
 import painting_2 from './painting2.glb';
+
 import lamp_1 from './lamp1.glb';
 import { UserObject } from '../../types/room';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -82,7 +83,7 @@ const HomePage = () => {
 
   // 찐 userObjectList
   const roomState = useGetRoom(userId);
-    const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
+  const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
 
   // 임시 myObjectList
   // const [myObjectList, setMyObjectList] = useState<UserObject[]>([

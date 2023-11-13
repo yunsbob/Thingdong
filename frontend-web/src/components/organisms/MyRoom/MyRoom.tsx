@@ -21,20 +21,8 @@ const MyRoom = ({
   onObjectClick,
   selectedRoomColor,
 }: MyRoomProps) => {
-  // console.log(selectedRoomColor);
-
-  // const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
-
-  // (roomPinkLight as any).scene.traverse((node: any) => {
-  //   // console.log(node.type);
-  //   if (node.type === 'Mesh') {
-  //     node.castShadow = true;
-  //     node.receiveShadow = true;
-  //   }
-  // });
   const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
   if (!scene) {
-    // scene이 로드되지 않았거나 유효하지 않은 경우 처리
     return <div>Loading...</div>;
   }
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
@@ -65,7 +53,7 @@ const MyRoom = ({
               position={[5, 5, 5]}
               intensity={1}
               castShadow
-              shadow-mapSize-width={2048} // Higher values give better shadow resolution
+              shadow-mapSize-width={2048}
               shadow-mapSize-height={2048}
               shadow-camera-near={0.5}
               shadow-camera-far={500}
@@ -141,6 +129,7 @@ const MyRoom = ({
                         intensity={100}
                         power={100}
                       />
+
                       {/* <pointLight
                         name="Point Light 3"
                         intensity={1.5}
@@ -156,6 +145,7 @@ const MyRoom = ({
                           obj.position[2],
                         ]}
                       /> */}
+
                     </>
                   )}
                 </React.Fragment>

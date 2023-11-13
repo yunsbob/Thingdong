@@ -7,9 +7,9 @@ const LandingContainer = styled.div`
 const SceneContainer = styled.div`
   animation: fadeIn 2.5s forwards;
   position: absolute;
-  transform: translate(-45%, -45%) scale(111%);
+  transform: translate(-50%, -45%);
   left: 50%;
-  top: 45%;
+  top: 41%;
   width: 100%;
 
   @keyframes fadeIn {
