@@ -16,6 +16,7 @@ const useAddLogin = (redirectPath = PATH.ROOT) => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('nickName', data.nickName);
       localStorage.setItem('userId', data.userId);
+      console.log('로그인 요청까지도 된건가?')
       setUser(data);
       navigate(redirectPath);
     },
