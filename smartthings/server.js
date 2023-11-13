@@ -165,14 +165,14 @@ server.use(function (req, res, next) {
   next();
 });
 
-server.post("/", async (req, res) => {
+server.post("/smartApp", async (req, res) => {
   apiApp.handleHttpCallback(req, res);
 });
 
 /**
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
-server.get("/", async (req, res) => {
+server.get("/smartApp", async (req, res) => {
   const ctx = await apiApp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
