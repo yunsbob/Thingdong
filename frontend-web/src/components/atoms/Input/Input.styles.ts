@@ -43,6 +43,7 @@ const Input = styled.input<InputProps>`
   font-family: 'NanumSquareNeo';
   ${({ option = 'default' }) => getOptionStyling(option)};
   ${({ $inputSize = 'medium' }) => getInputSizeStyling($inputSize)};
+  font-size: ${({theme}) => theme.fontSize.body3};
 
   &::placeholder {
     color: ${({ theme }) => theme.color.grey2};

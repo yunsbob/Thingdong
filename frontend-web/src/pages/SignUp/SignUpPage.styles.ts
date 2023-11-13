@@ -15,6 +15,7 @@ const SignUpTextWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 `;
 
 const SignUpInputWrapper = styled.div`
@@ -24,6 +25,14 @@ const SignUpInputWrapper = styled.div`
   gap: 20px 0;
   z-index: 1;
   padding: 0 20px;
+  
 `;
 
-export { Ellipse, SignUpTextWrapper, SignUpInputWrapper };
+const ErrorMassegeWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 5px;
+`;
+export { Ellipse, SignUpTextWrapper, SignUpInputWrapper, ErrorMassegeWrapper };

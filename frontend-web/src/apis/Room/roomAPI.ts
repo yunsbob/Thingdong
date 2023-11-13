@@ -1,5 +1,5 @@
 import { instance } from '@/apis/instance';
-import { RoomPosition } from '@/interfaces/room';
+import { RoomColor, RoomPosition } from '@/interfaces/room';
 
 const getRoom = async (userId: string) => {
   try {
@@ -27,4 +27,12 @@ const updateRoomPosition = async (roomPosition: RoomPosition) => {
   }
 }
 
-export { getRoom, getRoomInventory, updateRoomPosition };
+const updateRoomColor = async (data: RoomColor) => {
+  try {
+    await instance.put('/rooms/colors', data);
+  } catch {
+    new Error('room color update error');
+  }
+};
+
+export { getRoom, getRoomInventory, updateRoomPosition, updateRoomColor };
