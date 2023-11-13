@@ -10,8 +10,7 @@ import { Spinner } from '../../molecules/Spinner/Spinner';
 import { MyRoomProps } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { SkeletonUtils } from 'three-stdlib';
-import room_pink_light from './room-pink-light.glb';
-import { GridHelper, Mesh } from 'three';
+import { Mesh } from 'three';
 import GridHelpers from '@/components/molecules/GridHelpers/GridHelpers';
 
 const MyRoom = ({
@@ -22,8 +21,6 @@ const MyRoom = ({
   selectedRoomColor,
   roomColor
 }: MyRoomProps) => {
-  console.log(roomColor, '방색');
-
   const loadedObjects = useMemo(() => {
     if (userObject) {
       return userObject.map(obj => {
@@ -79,7 +76,7 @@ const MyRoom = ({
           >
             <scene name="Scene" position={[0, -2, 0]}>
               <ambientLight intensity={0.4} />
-              {/* <GridHelpers/> */}
+              {/* <GridHelpers /> */}
               <directionalLight
                 position={[5, 5, 5]}
                 intensity={1}
@@ -93,7 +90,6 @@ const MyRoom = ({
               {loadedObjects ? (
                 loadedObjects.map(obj => {
                   const glb = useLoader(GLTFLoader, obj.objectModelPath);
-
                   glb.scene.traverse(node => {
                     // console.log(node.type);
                     if (node.type === 'Mesh') {
@@ -184,7 +180,13 @@ const MyRoom = ({
                 );
               })}
 
-              <primitive name="room" object={clone} scale={1} />
+              {/* 화면 중앙에 객체들 배치되게 scale, position 조정 */}
+              <primitive
+                name="room"
+                object={clone}
+                scale={1.05}
+                position={[-0.25, 0, -0.25]}
+              />
 
               <OrthographicCamera
                 name="Default Camera"

@@ -18,8 +18,9 @@ import bed_2 from './bed2.glb';
 import mirror_1 from './mirror1.glb';
 import curtain_open_1 from './curtain-open1.glb';
 import { MOVE, ROTATE } from '@/constants/transformations';
-import { ThingsObject } from '@/types/room';
+import { ThingsObject, UserObject } from '@/types/room';
 import MyRoom from '@/components/organisms/MyRoom/MyRoom';
+import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 
 const FriendRoomPage = () => {
   const location = useLocation();
@@ -66,65 +67,12 @@ const FriendRoomPage = () => {
 
   // FriendRoom State
   // TODO: 데이터바인딩
-  const [friendRoomState, setFriendRoomState] = useState<RoomState>({
-    userObjectList: [
-      {
-        name: 'audio1',
-        userObjectId: 1,
-        position: [MOVE * -3, 0, 0],
-        rotation: [0, ROTATE, 0],
-        objectModelPath: audio_1,
-        isWall: false,
-      },
-      {
-        name: 'bed2',
-        userObjectId: 2,
-        position: [MOVE * -2, 0, MOVE * 3],
-        rotation: [0, ROTATE, 0],
-        objectModelPath: bed_2,
-        isWall: false,
-      },
-      {
-        name: 'coffeeMachine1',
-        userObjectId: 3,
-        position: [MOVE * -1, 0, MOVE * -3],
-        rotation: [0, 0, 0],
-        objectModelPath: coffee_machine_1,
-        isWall: false,
-      },
-      {
-        name: 'fan1',
-        userObjectId: 4,
-        position: [2, 0, -2],
-        rotation: [0, 0, 0],
-        objectModelPath: fan_1,
-        isWall: false,
-      },
-      {
-        name: 'mirror1',
-        userObjectId: 5,
-        position: [MOVE, 0, 0],
-        rotation: [0, 0, 0],
-        objectModelPath: mirror_1,
-        isWall: true,
-      },
-    ],
-    roomColor: 'puple',
-    roomId: 2,
-    userId: localStorage.getItem('userId') || '',
-  });
+  const friendRoomState = useGetRoom(userId);
+  const [friendThingsList, setFriendThingsList] = useState<ThingsObject[]>(
+    friendRoomState && friendRoomState.smartThingsList ? friendRoomState.smartThingsList : []
+  )
 
-  const [friendThingsList, setFriendThingsList] = useState<ThingsObject[]>([
-    {
-      name: 'curtainOpen1',
-      deviceId: 0,
-      userObjectId: 8,
-      position: [0, 0, 0],
-      rotation: [0, 0, 0],
-      objectModelPath: curtain_open_1,
-      isWall: true,
-    },
-  ]);
+  const [selectedRoomColor, setSelectedRoomColor] = useState('white');
 
   const handleObjectClick = (objectName: string) => {
     // setSelectedObjectName(objectName);
@@ -261,9 +209,6 @@ const FriendRoomPage = () => {
           }}
         ></Image>
       </S.FriendRoomHeader>
-      {/* TODO: 각 띵구 userId로 방 상태 DB로부터 불러와야함 */}
-      {/* <FriendRoomScene /> */}
-      {/* <FriendRoom/> */}
       <MyRoom
         userObject={friendRoomState.userObjectList}
         thingsObject={friendThingsList}
