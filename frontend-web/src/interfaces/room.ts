@@ -17,3 +17,8 @@ export interface RoomState {
     roomId: number;
     userId: string;
 }
+
+export interface RoomColor {
+  roomId : number;
+  roomColor: string;
+}
