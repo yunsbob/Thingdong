@@ -8,8 +8,8 @@ import {
   Splash3,
   Splash4,
   Splash5,
-  EnterScene,
 } from '@/components/molecules/Splash/Splash';
+import EnterPage from '@/pages/Enter/EnterPage';
 
 const components = [
   <Splash1 />,
@@ -17,12 +17,14 @@ const components = [
   <Splash3 />,
   <Splash4 />,
   <Splash5 />,
-  <EnterScene />,
+  <EnterPage />,
 ];
 
 const SliderItem = styled.div`
   width: 100%;
   height: 100vh;
+  left: ${({ key }) => (key === 5 ? '500%' : 'initial')};
+  position: relative;
   img {
     max-width: 100%;
     height: auto;
