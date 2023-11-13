@@ -15,4 +15,6 @@ public class ResourceRes {
 	private String pngPath;
 	@Schema(description = "glb 이미지 파일 경로", example = "https://masoori.site/resources/glb/s40gn23ndf.glb")
 	private String glbPath;
+	@Schema(description = "gif 이미지 파일 경로", example = "https://masoori.site/resources/glb/s40gn23ndf.gif")
+	private String gifPath;
 }
