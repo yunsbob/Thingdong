@@ -164,7 +164,7 @@ server.use(function (req, res, next) {
   res.flush = function () {};
   next();
 });
-server.post('/', (req, res) => {
+server.post('/', (req, res, next) => {
   req.url = req.originalUrl;
   apiApp.handleHttpCallback(req, res);
 });
