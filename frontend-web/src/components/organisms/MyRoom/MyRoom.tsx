@@ -35,6 +35,7 @@ const MyRoom = ({
   // });
 
   const loadedObjects = useMemo(() => {
+    if (userObject) {
     return userObject.map(obj => {
       const glb = useLoader(GLTFLoader, obj.objectModelPath);
       glb.scene.traverse(node => {
@@ -45,6 +46,7 @@ const MyRoom = ({
       });
       return { ...obj, glb: glb.scene };
     });
+  }
   }, [userObject]); // userObject 배열이 변경될 때만 이 코드 블록 실행
 
   const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
