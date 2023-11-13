@@ -26,6 +26,7 @@ import clock_2 from './clock2.glb';
 import painting_2 from './painting2.glb';
 
 import lamp_1 from './lamp1.glb';
+
 import { UserObject } from '../../types/room';
 
 import { useUpdateRoomPosition } from '@/apis/Room/Mutations/useUpdateRoomPosition';

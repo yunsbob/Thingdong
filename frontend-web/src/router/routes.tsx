@@ -12,6 +12,7 @@ import SignUpPage from '@/pages/SignUp/SignUpPage';
 import SplashPage from '@/pages/Splash/SplashPage';
 import LoginPage from '@/pages/Login/LoginPage';
 import FriendRoomPage from '@/pages/FriendRoom/FriendRoomPage';
+import Redirect from '@/pages/Things/NoPAT/Redirect';
 const router = createBrowserRouter([
   {
     path: PATH.ROOT,
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
   { path: PATH.SPLASH, element: <SplashPage /> },
   { path: PATH.LOGIN, element: <LoginPage /> },
   { path: PATH.FRIENDROOM, element: <FriendRoomPage /> }, //TODO: 여기 friendId값 넘길거임...(외부에서)
+  { path: PATH.REDIRECT, element: <Redirect /> },
 ]);
 
 const AppRouter = () => {

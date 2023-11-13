@@ -95,8 +95,6 @@ const FriendListPage = () => {
 };
 
 const FriendPage = () => {
-  console.log(process.env.REACT_APP_SERVER_URL);
-
   return (
     <>
       {/* search */}

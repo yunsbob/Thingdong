@@ -11,6 +11,8 @@ import { NewThingsModal } from '@/pages/Things/PAT/Modal/NewThingsModal/NewThing
 import { useLongPress } from '@/hooks/useLongPress';
 import { LightModal } from '@/pages/Things/PAT/Modal/LightModal/LightModal';
 import { IMAGES } from '@/constants/images';
+import { useGetThings } from '@/apis/Things/Queries/useGetThings';
+import { thingsInstance } from '@/apis/instance';
 
 interface ThingsList {
   src: string;
@@ -20,8 +22,135 @@ interface ThingsList {
 }
 
 const PATPage = () => {
+  const data = useGetThings();
+  if (data) {
+    console.log('data', data);
+  }
+
+  // const [wholeData, setWholeData] = useState({
+  //   locationId: '447d8a8b-d16b-48ac-a19a-232436a44f72',
+  //   errorMessage: '',
+  //   devices: [
+  //     {
+  //       deviceId: '44f8383c-8038-42c3-a684-2800a55b1a48',
+  //       ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+  //       category: 'SmartPlug',
+  //       label: 'Aqara Smart Plug 1',
+  //       switchStatus: 'on',
+  //       humidityStatus: '',
+  //       temperatureStatus: '',
+  //       blindStatus: '',
+  //       levelStatus: '',
+  //       hueStatus: '',
+  //       saturationStatus: '',
+  //     },
+  //     {
+  //       deviceId: '9f9ffda3-982f-47a4-808f-b34a26a66414',
+  //       ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+  //       category: 'Thermostat',
+  //       label: 'Aqara Temperature and Humidity Sensor T1',
+  //       switchStatus: '',
+  //       humidityStatus: 44,
+  //       temperatureStatus: 26,
+  //       blindStatus: '',
+  //       levelStatus: '',
+  //       hueStatus: '',
+  //       saturationStatus: '',
+  //     },
+  //     {
+  //       deviceId: '80449d40-5f15-4a47-9dba-e1e6b7976d2c',
+  //       ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+  //       category: 'Charger',
+  //       label: 'SmartThings Station',
+  //       switchStatus: '',
+  //       humidityStatus: '',
+  //       temperatureStatus: '',
+  //       blindStatus: '',
+  //       levelStatus: '',
+  //       hueStatus: '',
+  //       saturationStatus: '',
+  //     },
+  //     {
+  //       deviceId: '0994236d-f8d4-4472-aba6-fe0335bf9b55',
+  //       ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+  //       category: 'Hub',
+  //       label: 'SmartThings Station',
+  //       switchStatus: '',
+  //       humidityStatus: '',
+  //       temperatureStatus: '',
+  //       blindStatus: '',
+  //       levelStatus: '',
+  //       hueStatus: '',
+  //       saturationStatus: '',
+  //     },
+  //     {
+  //       deviceId: 'a9f78294-fc9f-4245-80bd-fe2eea0fcac4',
+  //       ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+  //       category: 'Switch',
+  //       label: 'test',
+  //       switchStatus: 'off',
+  //       humidityStatus: '',
+  //       temperatureStatus: '',
+  //       blindStatus: '',
+  //       levelStatus: '',
+  //       hueStatus: '',
+  //       saturationStatus: '',
+  //     },
+  //     {
+  //       deviceId: 'edccc0e5-238c-4030-9071-0360542cba26',
+  //       ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+  //       category: 'Switch',
+  //       label: '봇 31',
+  //       switchStatus: 'off',
+  //       humidityStatus: '',
+  //       temperatureStatus: '',
+  //       blindStatus: '',
+  //       levelStatus: '',
+  //       hueStatus: '',
+  //       saturationStatus: '',
+  //     },
+  //     {
+  //       deviceId: '6e0eac14-6f36-4f7b-8d12-ea17b0673782',
+  //       ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+  //       category: 'Blind',
+  //       label: '전동커튼 E2',
+  //       switchStatus: '',
+  //       humidityStatus: '',
+  //       temperatureStatus: '',
+  //       blindStatus: 'closed',
+  //       levelStatus: 0,
+  //       hueStatus: '',
+  //       saturationStatus: '',
+  //     },
+  //     {
+  //       deviceId: 'f46e189b-d634-4a99-b37e-c2c4a6bc3af1',
+  //       ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+  //       category: 'Light',
+  //       label: '컬러 전구 EE',
+  //       switchStatus: 'off',
+  //       humidityStatus: '',
+  //       temperatureStatus: '',
+  //       blindStatus: '',
+  //       levelStatus: 30,
+  //       hueStatus: 9.722222222222221,
+  //       saturationStatus: 100,
+  //     },
+  //   ],
+  // });
+
   const [thingsList, setThingsList] = useState<ThingsList[]>([
     {
+      // deviceId: '44f8383c-8038-42c3-a684-2800a55b1a48',
+      // ownerId: 'ac267370-1351-16e0-afbd-275fed04e953',
+      // category: 'SmartPlug',
+      // label: 'Aqara Smart Plug 1',
+      // switchStatus: 'on',
+      // humidityStatus: '',
+      // temperatureStatus: '',
+      // blindStatus: '',
+      // levelStatus: '',
+      // hueStatus: '',
+      // saturationStatus: '',
       src: 'https://thingdong.com/images/dummythings1.png',
       status: 'ON',
       isSensor: 'N',
