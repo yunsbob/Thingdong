@@ -70,8 +70,9 @@ const MyRoom = ({
               shadow-camera-near={0.5}
               shadow-camera-far={500}
             />
-
-            {userObject.map(obj => {
+            {
+            userObject ? (
+            userObject.map(obj => {
               const glb = useLoader(GLTFLoader, obj.objectModelPath);
 
               glb.scene.traverse(node => {
@@ -96,8 +97,8 @@ const MyRoom = ({
                   }}
                 />
               );
-            })}
-
+            })
+          ) : (<></>)}
             {thingsObject.map(obj => {
               const glb = useLoader(GLTFLoader, obj.objectModelPath);
 

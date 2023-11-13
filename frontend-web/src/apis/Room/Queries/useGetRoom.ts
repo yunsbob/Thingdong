@@ -8,10 +8,11 @@ import { useSuspenseQuery } from '@tanstack/react-query';
  */
 
 const useGetRoom = (inputValue: string) => {
-  return useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['room', inputValue],
     queryFn: () => getRoom(inputValue),
   });
+  return data;
 };
 
 export { useGetRoom };
