@@ -266,7 +266,7 @@ server.get("/smart/logout", async function (req, res) {
 /*
  * Handles OAuth redirect
  */
-server.get("/oauth/callback", async (req, res, next) => {
+server.get("/smart/oauth/callback", async (req, res, next) => {
   try {
     // Store the SmartApp context including access and refresh tokens. Returns a context object for use in making
     // API calls to SmartThings
