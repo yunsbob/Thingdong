@@ -22,7 +22,7 @@ public class UserRoomRes {
 	@Schema(description = "해당 방에 존재하는 스마트 띵스 리스트들")
 	private List<SmartThingsRoomDto> smartThingsList;
 
-	@Schema(description = "해당 방의 벽지 색상", example = "RRGGBB")
+	@Schema(description = "해당 방의 벽지 색상", example = "yellow, green, purple, white, black, pink")
 	private String roomColor;
 
 	@Schema(description = "해당 방 번호", example = "2")

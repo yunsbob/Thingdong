@@ -54,10 +54,8 @@ public class UserRoomController {
 
 	@Operation(summary = "벽지 색상 변경", description = "방 색상을 변경한다.")
 	@PutMapping("/colors")
-	public ResponseEntity<?> changeRoomColor(Principal principal, @RequestBody ColorReq colorReq) {
-		String email = principal.getName();
-
-		userRoomService.updateRoomColor(email, colorReq.getRoomColor());
+	public ResponseEntity<?> changeRoomColor(@RequestBody ColorReq colorReq) {
+		userRoomService.updateRoomColor(colorReq);
 
 		return ResponseEntity.ok().build();
 	}
