@@ -89,7 +89,10 @@ const HomePage = () => {
 
   // 찐 userObjectList
   const roomState = useGetRoom(userId);
-  const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
+  // const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
+  const [myObjectList, setMyObjectList] = useState<UserObject[]>(
+    roomState && roomState.myObjectList ? roomState.myObjectList : []
+  );
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
     {
       name: 'lamp1',
@@ -119,12 +122,12 @@ const HomePage = () => {
 
   useEffect(() => {
     setRoomInventory({
-      furnitureList: furnitureList,
-      homeApplianceList: homeApplianceList,
-      propList: propList,
-      floorList: floorList,
-      smartThingsList: smartThingsList,
-      unBoxThingList: unBoxThingList,
+      furnitureList: furnitureList || [],
+      homeApplianceList: homeApplianceList || [],
+      propList: propList || [],
+      floorList: floorList || [],
+      smartThingsList: smartThingsList || [],
+      unBoxThingList: unBoxThingList || [],
     })
   }, [furnitureList, homeApplianceList, propList, floorList, smartThingsList, unBoxThingList]);
 
@@ -178,15 +181,15 @@ const HomePage = () => {
   }
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
-      가구: roomInventory.furnitureList,
-      가전: roomInventory.homeApplianceList,
-      소품: roomInventory.propList,
-      바닥: roomInventory.floorList,
-      띵즈: roomInventory.smartThingsList,
-      언박띵: roomInventory.unBoxThingList,
+      가구: roomInventory.furnitureList || [],
+      가전: roomInventory.homeApplianceList || [],
+      소품: roomInventory.propList || [],
+      바닥: roomInventory.floorList || [],
+      띵즈: roomInventory.smartThingsList || [],
+      언박띵: roomInventory.unBoxThingList || [],
     };
 
-    return categoryDataMap[activeCategory!].map(item => (
+    return categoryDataMap[activeCategory!]?.map(item => (
       <RoomInventoryItem
         key={item.userObjectId}
         isOwned={item.objectStatus === 'N'}
