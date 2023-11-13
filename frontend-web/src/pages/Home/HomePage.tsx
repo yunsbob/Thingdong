@@ -29,12 +29,14 @@ import { UserObject } from '../../types/room';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useUpdateRoomPosition } from '@/apis/Room/Mutations/useUpdateRoomPosition';
-import { RoomPosition, RoomState } from '@/interfaces/room';
+import { ObjectPosition, RoomPosition, RoomState } from '@/interfaces/room';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
 import { IMAGES } from '@/constants/images';
 import { MOVE, ROTATE } from '@/constants/transformations';
+
+import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -49,6 +51,7 @@ const toastVariants = {
 };
 
 const HomePage = () => {
+  const userId = localStorage.getItem('userId') || '';
   const nickName = localStorage.getItem('nickName') || '';
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
@@ -56,6 +59,8 @@ const HomePage = () => {
   const [selectedRoomColor, setSelectedRoomColor] = useState<string | null>(
     'white'
   );
+  const roomData = useGetRoom(userId); // Fetching real data using the custom hook
+  console.log(roomData);
 
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
@@ -74,77 +79,70 @@ const HomePage = () => {
     ['puple', '#9F98E0'],
     ['black', '#545454'],
   ];
-  // const colorCircles = colors.map((color, index) => (
-  //   <S.ColorCircle
-  //     key={color}
-  //     initial={{ scale: 0 }}
-  //     animate={{ scale: 1 }}
-  //     exit={{ scale: 0 }}
-  //     transition={{ delay: index * 0.1 }}
-  //     color={color}
-  //     onClick={() => handleColorClick(color)}
-  //   />
-  // ));
+
+  // 찐 userObjectList
+  const roomState = useGetRoom(userId);
+    const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
 
   // 임시 myObjectList
-  const [myObjectList, setMyObjectList] = useState<UserObject[]>([
-    {
-      name: 'bed1',
-      userObjectId: 1,
-      objectModelPath: bed_1,
-      isWall: false,
-      position: [-2, 0, 2],
-      rotation: [0, ROTATE * 2, 0],
-    },
-    {
-      name: 'cabinet1',
-      userObjectId: 2,
-      isWall: false,
-      position: [2, 0, 4],
-      rotation: [0, ROTATE * 2, 0],
-      objectModelPath: cabinet_1,
-    },
-    {
-      name: 'chair1',
-      userObjectId: 3,
-      isWall: false,
-      position: [2, 0, 0],
-      rotation: [0, 0, 0],
-      objectModelPath: chair_1,
-    },
-    {
-      name: 'table1',
-      userObjectId: 4,
-      position: [-3, 0, -2],
-      rotation: [0, ROTATE, 0],
-      objectModelPath: table_1,
-      isWall: false,
-    },
-    {
-      name: 'couch1',
-      userObjectId: 5,
-      isWall: false,
-      position: [1, 0, -2],
-      rotation: [0, 0, 0],
-      objectModelPath: couch_1,
-    },
-    {
-      name: 'clock2',
-      userObjectId: 6,
-      isWall: true,
-      position: [0, 0, 0],
-      rotation: [0, ROTATE, 0],
-      objectModelPath: clock_2,
-    },
-    {
-      name: 'painting2',
-      userObjectId: 7,
-      position: [0, 0, 0],
-      rotation: [0, 0, 0],
-      objectModelPath: painting_2,
-      isWall: true,
-    },
-  ]);
+  // const [myObjectList, setMyObjectList] = useState<UserObject[]>([
+  //   {
+  //     name: 'bed1',
+  //     userObjectId: 1,
+  //     objectModelPath: bed_1,
+  //     isWall: false,
+  //     position: [-2, 0, 2],
+  //     rotation: [0, ROTATE * 2, 0],
+  //   },
+  //   {
+  //     name: 'cabinet1',
+  //     userObjectId: 2,
+  //     isWall: false,
+  //     position: [2, 0, 4],
+  //     rotation: [0, ROTATE * 2, 0],
+  //     objectModelPath: cabinet_1,
+  //   },
+  //   {
+  //     name: 'chair1',
+  //     userObjectId: 3,
+  //     isWall: false,
+  //     position: [2, 0, 0],
+  //     rotation: [0, 0, 0],
+  //     objectModelPath: chair_1,
+  //   },
+  //   {
+  //     name: 'table1',
+  //     userObjectId: 4,
+  //     position: [-3, 0, -2],
+  //     rotation: [0, ROTATE, 0],
+  //     objectModelPath: table_1,
+  //     isWall: false,
+  //   },
+  //   {
+  //     name: 'couch1',
+  //     userObjectId: 5,
+  //     isWall: false,
+  //     position: [1, 0, -2],
+  //     rotation: [0, 0, 0],
+  //     objectModelPath: couch_1,
+  //   },
+  //   {
+  //     name: 'clock2',
+  //     userObjectId: 6,
+  //     isWall: true,
+  //     position: [0, 0, 0],
+  //     rotation: [0, ROTATE, 0],
+  //     objectModelPath: clock_2,
+  //   },
+  //   {
+  //     name: 'painting2',
+  //     userObjectId: 7,
+  //     position: [0, 0, 0],
+  //     rotation: [0, 0, 0],
+  //     objectModelPath: painting_2,
+  //     isWall: true,
+  //   },
+  // ]);
 
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
     {
@@ -159,20 +157,20 @@ const HomePage = () => {
   ]);
 
   // 임시 RoomState
-  const [roomState, setRoomState] = useState<RoomState>({
-    userObjectList: myObjectList,
-    roomColor: 'pink',
-    roomId: 1,
-    userId: localStorage.getItem('userId') || '',
-  });
+  // const [roomState, setRoomState] = useState<RoomState>({
+  //   userObjectList: myObjectList,
+  //   roomColor: 'pink',
+  //   roomId: 1,
+  //   userId: localStorage.getItem('userId') || '',
+  // });
 
   // 임시 RoomState 업데이트
-  useEffect(() => {
-    setRoomState(prevState => ({
-      ...prevState,
-      userObjectList: myObjectList,
-    }));
-  }, [myObjectList]);
+  // useEffect(() => {
+  //   setRoomState(prevState => ({
+  //     ...prevState,
+  //     userObjectList: myObjectList,
+  //   }));
+  // }, [myObjectList]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -232,6 +230,9 @@ const HomePage = () => {
   const [position, setPosition] = useState<Position>([0, 0, 0]);
   const handleArrowClick = (direction: string | null) => {
     setMyObjectList(currentObjects => {
+      if (currentObjects.length === 0) {
+        return currentObjects;
+      }
       return currentObjects.map(obj => {
         if (obj.name === selectedObjectName) {
           let [x, y, z] = obj.position;
@@ -298,6 +299,9 @@ const HomePage = () => {
   const [rotation, setRotation] = useState<Rotation>([0, 0, 0]);
   const handleRotationClick = () => {
     setMyObjectList(currentObjects => {
+      if (currentObjects.length === 0) {
+        return currentObjects;
+      }
       return currentObjects.map(obj => {
         if (obj.name === selectedObjectName) {
           let [x, y, z] = obj.rotation;
@@ -343,7 +347,7 @@ const HomePage = () => {
 
   // 방 상태 업데이트
   const handleUpdateRoomClick = () => {
-    const objectPositionList = roomState.userObjectList.map(obj => ({
+    const objectPositionList = roomState.userObjectList.map((obj: ObjectPosition) => ({
       userObjectId: obj.userObjectId,
       position: obj.position,
       rotation: obj.rotation,
@@ -363,7 +367,7 @@ const HomePage = () => {
   // 방명록 모달
   const [modalOpen, setModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const userId = localStorage.getItem('userId');
+  // const userId = localStorage.getItem('userId');
   const guestbooks = useGetGuestbooks(userId!);
 
   const handlePrev = () => {
