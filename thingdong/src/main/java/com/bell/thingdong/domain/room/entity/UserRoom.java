@@ -38,13 +38,14 @@ public class UserRoom {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	@Column(name = "room_color", nullable = false)
-	private String roomColor;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "room_color", nullable = false)
+	private RoomColor roomColor;
 
 	@OneToMany(mappedBy = "room")
 	private List<UserObject> userObjectList;
 
-	public void setRoomColor(String roomColor) {
+	public void setRoomColor(RoomColor roomColor) {
 		this.roomColor = roomColor;
 	}
 }
