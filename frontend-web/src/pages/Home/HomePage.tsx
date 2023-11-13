@@ -83,27 +83,25 @@ const HomePage = () => {
     ['black', '#545454'],
   ];
 
-  // 이동 & 회전 단위
-  const MOVE = 0.75;
-  const ROTATE = Math.PI * 0.5;
-
   // 찐 userObjectList
   const roomState = useGetRoom(userId);
-  // const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState && roomState.myObjectList ? roomState.myObjectList : []
   );
-  const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
-    {
-      name: 'lamp1',
-      deviceId: 0,
-      userObjectId: 8,
-      position: [0, 0, 0],
-      rotation: [0, 0, 0],
-      objectModelPath: lamp_1,
-      isWall: false,
-    },
-  ]);
+  const [myThingsList, setMyThingsList] = useState<ThingsObject[]>(
+    roomState && roomState.smartThingsList ? roomState.smartThingsList : []
+  );
+  // const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
+  //   {
+  //     name: 'lamp1',
+  //     deviceId: 0,
+  //     userObjectId: 8,
+  //     position: [0, 0, 0],
+  //     rotation: [0, 0, 0],
+  //     objectModelPath: lamp_1,
+  //     isWall: false,
+  //   },
+  // ]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -139,6 +137,7 @@ const HomePage = () => {
   
     const updateObjectStatus = (list: RoomInventoryItemProps[]): RoomInventoryItemProps[] => list.map(item => {
       if (item.userObjectId === selectedItemId) {
+        setSelectedObjectName(item.name)
         return {...item, objectStatus: 'Y'};
       }
       return item;
