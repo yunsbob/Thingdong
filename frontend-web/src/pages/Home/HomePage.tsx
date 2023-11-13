@@ -60,9 +60,7 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [selectedRoomColor, setSelectedRoomColor] = useState<string | null>(
-    'white'
-  );
+  const [selectedRoomColor, setSelectedRoomColor] = useState('white');
   const [deployedObjects, setDeployedObjects] = useState<DeployedObjectsProps[]>([])
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
   const toggleColorPicker = () => {
@@ -145,7 +143,7 @@ const HomePage = () => {
   // 임시 RoomState
   const [roomState, setRoomState] = useState<RoomState>({
     userObjectList: myObjectList,
-    roomColor: 'pink',
+    roomColor: selectedRoomColor,
     roomId: 1,
     userId: localStorage.getItem('userId') || '',
   });
@@ -230,22 +228,25 @@ console.log(roomInventory);
       ...updatedInventory.unBoxThingList,
     ];
     // myobjet에 추가하는 로직
-    // const clickedItem = allUpdatedObjects.find(item => item.userObjectId === selectedItemId);
+    const clickedItem = allUpdatedObjects.find(item => item.userObjectId === selectedItemId);
 
-    // if (clickedItem) {
-    //   // Prepare the new object to add to myObjectList
-    //   const newUserObject: UserObject = {
-    //     name: clickedItem.name,
-    //     userObjectId: clickedItem.userObjectId,
-    //     objectModelPath: clickedItem.objectModelPath,
-    //     isWall: clickedItem.isWall,
-    //     position: [0, 0, 0],
-    //     rotation: [0, 0, 0],
-    //   };
-  
-    //   // Add the new object to myObjectList
-    //   setMyObjectList(prevList => [...prevList, newUserObject]);
-    // }
+    if (clickedItem) {
+      // Prepare the new object to add to myObjectList
+      const newUserObject: UserObject = {
+        name: clickedItem.name,
+        userObjectId: clickedItem.userObjectId,
+        objectModelPath: clickedItem.objectModelPath,
+        isWall: clickedItem.isWall,
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+      };
+      console.log(clickedItem, '>>>>>>>>>');
+      
+      // Add the new object to myObjectList
+      setMyObjectList(prevList => [...prevList, newUserObject]);
+    }
+    console.log(myObjectList, '>>>>>>>>>>>>>>');
+    
   }
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
