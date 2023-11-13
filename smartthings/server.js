@@ -252,7 +252,7 @@ server.get("/smart", async (req, res) => {
 /*
  * Logout. Uninstalls app and clears context cookie
  */
-server.get("/logout", async function (req, res) {
+server.get("/smart/logout", async function (req, res) {
   try {
     const ctx = await apiApp.withContext(req.headers.installedappid);
     await ctx.api.installedApps.delete();
@@ -321,7 +321,7 @@ server.get("/oauth/callback", async (req, res, next) => {
 /**
  * Executes a device command from the web page
  */
-server.post("/command/:deviceId", async (req, res, next) => {
+server.post("/smart/command/:deviceId", async (req, res, next) => {
   try {
     const ctx = await apiApp.withContext(req.headers.installedappid);
     await ctx.api.devices.executeCommands(
@@ -334,7 +334,7 @@ server.post("/command/:deviceId", async (req, res, next) => {
   }
 });
 
-server.get("/events", (req, res) => {
+server.get("/smart/events", (req, res) => {
   //   const ctx = req.session.smartThings;
   const ctx = apiApp.withContext(req.headers.installedappid);
   const userSSE = userSSEStreams.get(ctx.api.config.locationId);
