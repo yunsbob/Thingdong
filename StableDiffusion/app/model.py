@@ -49,7 +49,7 @@ class Model:
         )
         export_to_ply(images[0], ply_path.name)
 
-        mesh = trimesh.load(ply_path, file_type="ply")
+        mesh = trimesh.load(ply_path.name, file_type="ply")
         rot = trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0])
         mesh = mesh.apply_transform(rot)
         rot = trimesh.transformations.rotation_matrix(np.pi, [0, 1, 0])
@@ -69,7 +69,7 @@ class Model:
     ):
         images = self.pipe(
             prompt=prompt,
-            guidance_scale=8,
+            guidance_scale=7.5,
             num_inference_steps=40,
             frame_size=256,
         ).images
@@ -77,7 +77,7 @@ class Model:
         gif_path = tempfile.NamedTemporaryFile(
             suffix=".gif", delete=False, dir="/root/www/resources/gif"
         )
-        export_to_gif(images[0], ply_path.name)
+        export_to_gif(images[0], gif_path.name)
 
         png_path = tempfile.NamedTemporaryFile(
             suffix=".png", delete=False, dir="/root/www/resources/png/unbox"
