@@ -6,4 +6,4 @@ services:
     build:
       context: ./smartthings
     ports:
-      - "3000:4000"
+      - "4000:3000"
