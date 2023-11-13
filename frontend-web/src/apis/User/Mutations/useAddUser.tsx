@@ -9,7 +9,7 @@ const useAddUser = () => {
   return useMutation({
     mutationFn: (user: UserInfo) => addUser(user),
     onSuccess: (_, variables: UserInfo) => {
-      console.log('회원 등록! 로그인 자동으로 시켜주기');
+      console.log('회원 등록');
       addLoginMutation.mutate({
         userId: variables.userId,
         password: variables.password,

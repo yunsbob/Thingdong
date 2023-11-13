@@ -21,7 +21,6 @@ const MyRoom = ({
   onObjectClick,
   selectedRoomColor,
 }: MyRoomProps) => {
-  console.log(selectedRoomColor);
 
   const loadedObjects = useMemo(() => {
     if (userObject) {
@@ -73,7 +72,7 @@ const MyRoom = ({
           >
             <scene name="Scene" position={[0, -2, 0]}>
               <ambientLight intensity={0.4} />
-              {/* <GridHelpers/> */}
+              <GridHelpers/>
               <directionalLight
                 position={[5, 5, 5]}
                 intensity={1}
@@ -178,7 +177,7 @@ const MyRoom = ({
                 );
               })}
 
-              <primitive name="roomPinkLight" object={clone} scale={1} />
+              <primitive name="roomPinkLight" object={clone} scale={1.05} position={[-0.25, 0, -0.25]}/>
 
               <OrthographicCamera
                 name="Default Camera"
