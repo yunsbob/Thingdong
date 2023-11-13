@@ -35,7 +35,7 @@ const MyRoom = ({
   // });
 
   const loadedObjects = useMemo(() => {
-    return userObject.map(obj => {
+    return userObject?.map(obj => {
       const glb = useLoader(GLTFLoader, obj.objectModelPath);
       glb.scene.traverse(node => {
         if ((node as Mesh).isMesh) {
