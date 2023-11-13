@@ -1,0 +1,26 @@
+{
+  "appName": "thingdong22",
+  "appType": "API_ONLY",
+  "classifications": [
+    "AUTOMATION"
+  ],
+  "displayName": "thingdong",
+  "description": "thingdongsub",
+  "singleInstance": false,
+  "installMetadata": {},
+  "apiOnly": {
+    "targetUrl": "https://thingdong.com/smartApp"
+  },
+  "oauth": {
+    "clientName": "thingdong",
+    "scope": [
+      "i:deviceprofiles",
+      "r:locations:*",
+      "r:scenes:*",
+      "x:scenes:*",
+      "r:devices:*",
+      "x:devices:*"
+    ],
+    "redirectUris": ["https://thingdong.com/smartApp/oauth/callback"]
+  }
+}
