@@ -71,7 +71,7 @@ const MyRoom = ({
           >
             <scene name="Scene" position={[0, -2, 0]}>
               <ambientLight intensity={0.4} />
-              <GridHelpers />
+              {/* <GridHelpers /> */}
               <directionalLight
                 position={[5, 5, 5]}
                 intensity={1}
