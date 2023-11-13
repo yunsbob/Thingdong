@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ColorReq {
-	@Schema(description = "방 색상", example = "RRGGBB")
+	@Schema(description = "방 번호", example = "1")
+	private Long roomId;
+
+	@Schema(description = "방 색상", example = "black")
 	private String roomColor;
 }

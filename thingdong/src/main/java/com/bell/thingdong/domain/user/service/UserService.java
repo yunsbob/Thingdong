@@ -17,7 +17,10 @@ import com.bell.thingdong.domain.objet.entity.Objet;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.objet.repository.ObjetRepository;
 import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
+import com.bell.thingdong.domain.room.entity.RoomColor;
 import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.room.exception.RoomColorNotFoundException;
+import com.bell.thingdong.domain.room.repository.RoomColorRepository;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.thinggu.entity.Thinggu;
 import com.bell.thingdong.domain.thinggu.repository.ThingguRepository;
@@ -56,6 +59,7 @@ public class UserService {
 	private final UserRoomRepository userRoomRepository;
 	private final ObjetRepository objectRepository;
 	private final ThingguRepository thingguRepository;
+	private final RoomColorRepository roomColorRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -109,7 +113,8 @@ public class UserService {
 
 		userRepository.save(build);
 
-		UserRoom userRoom = UserRoom.builder().user(build).roomColor("000000").build();
+		RoomColor roomColor = roomColorRepository.findById("yellow").orElseThrow(RoomColorNotFoundException::new);
+		UserRoom userRoom = UserRoom.builder().user(build).roomColor(roomColor).build();
 
 		List<Objet> objetList = objectRepository.findAllObjectNotUnBoxThingAndSmartThings();
 		for (Objet objet : objetList) {
