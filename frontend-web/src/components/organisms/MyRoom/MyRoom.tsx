@@ -21,17 +21,32 @@ const MyRoom = ({
   onObjectClick,
   selectedRoomColor,
 }: MyRoomProps) => {
-  // console.log(selectedRoomColor);
 
-  // const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
+  console.log(selectedRoomColor);
+  
+  // const testObject = useLoader(GLTFLoader, "https://thingdong.com/resources/glb/furniture/bed1.glb");
 
-  // (roomPinkLight as any).scene.traverse((node: any) => {
+  // (testObject as any).scene.traverse((node: any) => {
   //   // console.log(node.type);
   //   if (node.type === 'Mesh') {
   //     node.castShadow = true;
   //     node.receiveShadow = true;
   //   }
   // });
+
+  const loadedObjects = useMemo(() => {
+    return userObject.map(obj => {
+      const glb = useLoader(GLTFLoader, obj.objectModelPath);
+      glb.scene.traverse(node => {
+        if ((node as Mesh).isMesh) {
+          node.castShadow = true;
+          node.receiveShadow = true;
+        }
+      });
+      return { ...obj, glb: glb.scene };
+    });
+  }, [userObject]); // userObject 배열이 변경될 때만 이 코드 블록 실행
+
   const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
   if (!scene) {
     // scene이 로드되지 않았거나 유효하지 않은 경우 처리
@@ -70,9 +85,8 @@ const MyRoom = ({
               shadow-camera-near={0.5}
               shadow-camera-far={500}
             />
-            {
-            userObject ? (
-            userObject.map(obj => {
+
+            {loadedObjects ? (loadedObjects.map(obj => {
               const glb = useLoader(GLTFLoader, obj.objectModelPath);
 
               glb.scene.traverse(node => {
@@ -85,7 +99,7 @@ const MyRoom = ({
 
               return (
                 <primitive
-                  key={obj.name}
+                  key={obj.userObjectId}
                   object={glb.scene}
                   name={obj.name}
                   position={obj.position}
