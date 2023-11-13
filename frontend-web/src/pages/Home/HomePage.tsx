@@ -54,7 +54,6 @@ const toastVariants = {
   },
 };
 
-
 const HomePage = () => {
   const userId = localStorage.getItem('userId') || '';
   const nickName = localStorage.getItem('nickName') || '';
@@ -63,7 +62,9 @@ const HomePage = () => {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
   const roomState = useGetRoom(userId); // Fetching real data using the custom hook
-  const [selectedRoomColor, setSelectedRoomColor] = useState(roomState.roomColor);
+  const [selectedRoomColor, setSelectedRoomColor] = useState(
+    roomState.roomColor
+  );
   // const [selectedRoomColor, setSelectedRoomColor] = useState('white');
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
@@ -71,40 +72,68 @@ const HomePage = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
 
-  const handleColorClick = (colorName: string, colorValue: string, colorPath: string) => {
+  const handleColorClick = (
+    colorName: string,
+    colorValue: string,
+    colorPath: string
+  ) => {
     setSelectedRoomColor(colorPath);
   };
 
   const colors = [
-    ['white', '#FFFFFF', "https://thingdong.com/resources/glb/room/room-white.glb"],
-    ['yellow', '#FFDCB6', "https://thingdong.com/resources/glb/room/room_yellow.glb"],
-    ['green', '#C2E1B9', "https://thingdong.com/resources/glb/room/room_green.glb"],
-    ['pink', '#E698A8', "https://thingdong.com/resources/glb/room/room-pink.glb"],
-    ['puple', '#9F98E0', "https://thingdong.com/resources/glb/room/room-puple.glb"],
-    ['black', '#545454', "https://thingdong.com/resources/glb/room/room_black.glb"],
+    [
+      'white',
+      '#FFFFFF',
+      'https://thingdong.com/resources/glb/room/room-white.glb',
+    ],
+    [
+      'yellow',
+      '#FFDCB6',
+      'https://thingdong.com/resources/glb/room/room_yellow.glb',
+    ],
+    [
+      'green',
+      '#C2E1B9',
+      'https://thingdong.com/resources/glb/room/room_green.glb',
+    ],
+    [
+      'pink',
+      '#E698A8',
+      'https://thingdong.com/resources/glb/room/room-pink.glb',
+    ],
+    [
+      'puple',
+      '#9F98E0',
+      'https://thingdong.com/resources/glb/room/room-puple.glb',
+    ],
+    [
+      'black',
+      '#545454',
+      'https://thingdong.com/resources/glb/room/room_black.glb',
+    ],
   ];
-
-  // 이동 & 회전 단위
-  const MOVE = 0.75;
-  const ROTATE = Math.PI * 0.5;
 
   // 찐 userObjectList
 
   // const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
-    roomState && roomState.myObjectList ? roomState.myObjectList : []
+    roomState && roomState.userObjectList ? roomState.userObjectList : []
   );
-  const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
-    {
-      name: 'lamp1',
-      deviceId: 0,
-      userObjectId: 8,
-      position: [0, 0, 0],
-      rotation: [0, 0, 0],
-      objectModelPath: lamp_1,
-      isWall: false,
-    },
-  ]);
+  const [myThingsList, setMyThingsList] = useState<ThingsObject[]>(
+    roomState && roomState.smartThingsList ? roomState.smartThingsList : []
+  );
+
+  // const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
+  //   {
+  //     name: 'lamp1',
+  //     deviceId: 0,
+  //     userObjectId: 8,
+  //     position: [0, 0, 0],
+  //     rotation: [0, 0, 0],
+  //     objectModelPath: lamp_1,
+  //     isWall: false,
+  //   },
+  // ]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -129,32 +158,62 @@ const HomePage = () => {
       floorList: floorList || [],
       smartThingsList: smartThingsList || [],
       unBoxThingList: unBoxThingList || [],
-    })
-  }, [furnitureList, homeApplianceList, propList, floorList, smartThingsList, unBoxThingList]);
+    });
+  }, [
+    furnitureList,
+    homeApplianceList,
+    propList,
+    floorList,
+    smartThingsList,
+    unBoxThingList,
+  ]);
+
+  useEffect(() => {
+    if (myObjectList[0]) {
+      console.log(
+        myObjectList[0].position,
+        myObjectList[0].size?.width,
+        myObjectList[0].size?.height
+      );
+    }
+  }, [myObjectList]);
 
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
   };
-  const handleItemClick = (selectedItemId: number) => {
-    let updatedInventory = {...roomInventory};
-    setSelectedItemId(selectedItemId);
-  
-    const updateObjectStatus = (list: RoomInventoryItemProps[]): RoomInventoryItemProps[] => list.map(item => {
-      if (item.userObjectId === selectedItemId) {
-        return {...item, objectStatus: 'Y'};
-      }
-      return item;
-    });
 
-    updatedInventory.furnitureList = updateObjectStatus(updatedInventory.furnitureList);
-    updatedInventory.homeApplianceList = updateObjectStatus(updatedInventory.homeApplianceList);
+  const handleItemClick = (selectedItemId: number) => {
+    let updatedInventory = { ...roomInventory };
+    setSelectedItemId(selectedItemId);
+
+    const updateObjectStatus = (
+      list: RoomInventoryItemProps[]
+    ): RoomInventoryItemProps[] =>
+      list.map(item => {
+        if (item.userObjectId === selectedItemId) {
+          setSelectedObjectName(item.name);
+          return { ...item, objectStatus: 'Y' };
+        }
+        return item;
+      });
+
+    updatedInventory.furnitureList = updateObjectStatus(
+      updatedInventory.furnitureList
+    );
+    updatedInventory.homeApplianceList = updateObjectStatus(
+      updatedInventory.homeApplianceList
+    );
     updatedInventory.propList = updateObjectStatus(updatedInventory.propList);
     updatedInventory.floorList = updateObjectStatus(updatedInventory.floorList);
-    updatedInventory.smartThingsList = updateObjectStatus(updatedInventory.smartThingsList);
-    updatedInventory.unBoxThingList = updateObjectStatus(updatedInventory.unBoxThingList);
-  
+    updatedInventory.smartThingsList = updateObjectStatus(
+      updatedInventory.smartThingsList
+    );
+    updatedInventory.unBoxThingList = updateObjectStatus(
+      updatedInventory.unBoxThingList
+    );
+
     setRoomInventory(updatedInventory);
-  
+
     const allUpdatedObjects = [
       ...updatedInventory.furnitureList,
       ...updatedInventory.homeApplianceList,
@@ -163,26 +222,30 @@ const HomePage = () => {
       ...updatedInventory.smartThingsList,
       ...updatedInventory.unBoxThingList,
     ];
-    const clickedItem = allUpdatedObjects.find(item => item.userObjectId === selectedItemId);
+    const clickedItem = allUpdatedObjects.find(
+      item => item.userObjectId === selectedItemId
+    );
 
-  if (clickedItem) {
-    // 아이템이 이미 myObjectList에 있는지 확인
-    const isItemAlreadyInList = myObjectList.some(item => item.userObjectId === selectedItemId);
+    if (clickedItem) {
+      // 아이템이 이미 myObjectList에 있는지 확인
+      const isItemAlreadyInList = myObjectList.some(
+        item => item.userObjectId === selectedItemId
+      );
 
-    if (!isItemAlreadyInList) {
-      const newUserObject: UserObject = {
-        name: clickedItem.name,
-        userObjectId: clickedItem.userObjectId,
-        objectModelPath: clickedItem.objectModelPath,
-        isWall: clickedItem.isWall,
-        position: [0, 0, 0],
-        rotation: [0, 0, 0],
-      };
+      if (!isItemAlreadyInList) {
+        const newUserObject: UserObject = {
+          name: clickedItem.name,
+          userObjectId: clickedItem.userObjectId,
+          objectModelPath: clickedItem.objectModelPath,
+          isWall: clickedItem.isWall,
+          position: [0, 0, 0],
+          rotation: [0, 0, 0],
+        };
 
-      setMyObjectList(prevList => [...prevList, newUserObject]);
+        setMyObjectList(prevList => [...prevList, newUserObject]);
+      }
     }
-  }
-};
+  };
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
       가구: roomInventory.furnitureList || [],
@@ -281,6 +344,8 @@ const HomePage = () => {
                 break;
             }
           }
+          console.log('W:', obj.size?.width, 'H:', obj.size?.height);
+          console.log(obj.position);
           return { ...obj, position: [x, y, z] };
         }
         return obj;
@@ -332,20 +397,32 @@ const HomePage = () => {
     setMyObjectList(currentObjects => {
       return currentObjects.filter(obj => obj.name !== selectedObjectName);
     });
-    let updatedInventory = {...roomInventory};
+    let updatedInventory = { ...roomInventory };
 
-  // 각 인벤토리 리스트에서 해당 아이템의 상태를 'N'으로 변경
-  const updateObjectStatus = (list: RoomInventoryItemProps[]): RoomInventoryItemProps[] => 
-    list.map(item => item.name === selectedObjectName ? {...item, objectStatus: 'N'} : item);
+    // 각 인벤토리 리스트에서 해당 아이템의 상태를 'N'으로 변경
+    const updateObjectStatus = (
+      list: RoomInventoryItemProps[]
+    ): RoomInventoryItemProps[] =>
+      list.map(item =>
+        item.name === selectedObjectName ? { ...item, objectStatus: 'N' } : item
+      );
 
-  updatedInventory.furnitureList = updateObjectStatus(updatedInventory.furnitureList);
-  updatedInventory.homeApplianceList = updateObjectStatus(updatedInventory.homeApplianceList);
-  updatedInventory.propList = updateObjectStatus(updatedInventory.propList);
-  updatedInventory.floorList = updateObjectStatus(updatedInventory.floorList);
-  updatedInventory.smartThingsList = updateObjectStatus(updatedInventory.smartThingsList);
-  updatedInventory.unBoxThingList = updateObjectStatus(updatedInventory.unBoxThingList);
+    updatedInventory.furnitureList = updateObjectStatus(
+      updatedInventory.furnitureList
+    );
+    updatedInventory.homeApplianceList = updateObjectStatus(
+      updatedInventory.homeApplianceList
+    );
+    updatedInventory.propList = updateObjectStatus(updatedInventory.propList);
+    updatedInventory.floorList = updateObjectStatus(updatedInventory.floorList);
+    updatedInventory.smartThingsList = updateObjectStatus(
+      updatedInventory.smartThingsList
+    );
+    updatedInventory.unBoxThingList = updateObjectStatus(
+      updatedInventory.unBoxThingList
+    );
 
-  setRoomInventory(updatedInventory);
+    setRoomInventory(updatedInventory);
   };
 
   const updateRoomPositionMutation = useUpdateRoomPosition();
@@ -356,18 +433,19 @@ const HomePage = () => {
 
   // 방 상태 업데이트
   const handleUpdateRoomClick = () => {
-    const objectPositionList = roomState.userObjectList.map((obj: ObjectPosition) => ({
-      userObjectId: obj.userObjectId,
-      position: obj.position,
-      rotation: obj.rotation,
-    }));
+    const objectPositionList = roomState.userObjectList.map(
+      (obj: ObjectPosition) => ({
+        userObjectId: obj.userObjectId,
+        position: obj.position,
+        rotation: obj.rotation,
+      })
+    );
 
     const roomPosition = {
       roomId: roomState.roomId,
       objectPositionList: objectPositionList,
     };
 
-    console.log('here', roomPosition);
     setIsEditing(!isEditing);
     // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
     updateRoomPosition(roomPosition);
@@ -376,7 +454,6 @@ const HomePage = () => {
   // 방명록 모달
   const [modalOpen, setModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const userId = localStorage.getItem('userId');
   const guestbooks = useGetGuestbooks(userId!);
 
   const handlePrev = () => {
@@ -436,7 +513,9 @@ const HomePage = () => {
                       exit={{ scale: 0 }}
                       transition={{ delay: index * 0.1 }}
                       color={colorValue}
-                      onClick={() => handleColorClick(colorName, colorValue, colorPath)}
+                      onClick={() =>
+                        handleColorClick(colorName, colorValue, colorPath)
+                      }
                     />
                   ))}
                 </S.ColorCircleWrapper>

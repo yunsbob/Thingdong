@@ -6,7 +6,6 @@ const useGetInventory = () => {
     queryKey: ['inventory'],
     queryFn: () => getInventory(),
   });
-  console.log('fefe', data);
   return data;
 };
 
