@@ -10,7 +10,7 @@ const FileContextStore = require("@smartthings/file-context-store");
 const SmartApp = require("@smartthings/smartapp");
 const { stat } = require("fs");
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 const appId = process.env.APP_ID;
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
@@ -164,12 +164,11 @@ server.use(function (req, res, next) {
   res.flush = function () {};
   next();
 });
-// server.post('/', (req, res, next) => {
-//   req.url = req.originalUrl;
-//   apiApp.handleHttpCallback(req, res);
-// });
 server.post("/", async (req, res) => {
+  const tempUrl = req.url;
   req.url = req.originalUrl;
+  sigHead = httpSignature.parse(req);
+  req.url = tempUrl;
   apiApp.handleHttpCallback(req, res);
 });
 
