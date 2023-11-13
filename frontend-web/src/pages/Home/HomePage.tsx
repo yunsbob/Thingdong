@@ -63,8 +63,11 @@ const HomePage = () => {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [selectedRoomColor, setSelectedRoomColor] = useState('white');
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+
   const roomData = useGetRoom(userId); // Fetching real data using the custom hook
   console.log(roomData);
+  
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
@@ -136,6 +139,7 @@ const HomePage = () => {
   };
   const handleItemClick = (selectedItemId: number) => {
     let updatedInventory = {...roomInventory};
+    setSelectedItemId(selectedItemId);
   
     const updateObjectStatus = (list: RoomInventoryItemProps[]): RoomInventoryItemProps[] => list.map(item => {
       if (item.userObjectId === selectedItemId) {
@@ -161,10 +165,13 @@ const HomePage = () => {
       ...updatedInventory.smartThingsList,
       ...updatedInventory.unBoxThingList,
     ];
-    // myobjet에 추가하는 로직
     const clickedItem = allUpdatedObjects.find(item => item.userObjectId === selectedItemId);
 
-    if (clickedItem) {
+  if (clickedItem) {
+    // 아이템이 이미 myObjectList에 있는지 확인
+    const isItemAlreadyInList = myObjectList.some(item => item.userObjectId === selectedItemId);
+
+    if (!isItemAlreadyInList) {
       const newUserObject: UserObject = {
         name: clickedItem.name,
         userObjectId: clickedItem.userObjectId,
@@ -176,9 +183,8 @@ const HomePage = () => {
 
       setMyObjectList(prevList => [...prevList, newUserObject]);
     }
-
-    
   }
+};
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
       가구: roomInventory.furnitureList || [],
@@ -324,9 +330,25 @@ const HomePage = () => {
 
   // 객체 인벤토리에 저장 (방에서 삭제)
   const handleRemoveClick = () => {
+    if (selectedItemId == null) return;
+
     setMyObjectList(currentObjects => {
       return currentObjects.filter(obj => obj.name !== selectedObjectName);
     });
+    let updatedInventory = {...roomInventory};
+
+  // 각 인벤토리 리스트에서 해당 아이템의 상태를 'N'으로 변경
+  const updateObjectStatus = (list: RoomInventoryItemProps[]): RoomInventoryItemProps[] => 
+    list.map(item => item.name === selectedObjectName ? {...item, objectStatus: 'N'} : item);
+
+  updatedInventory.furnitureList = updateObjectStatus(updatedInventory.furnitureList);
+  updatedInventory.homeApplianceList = updateObjectStatus(updatedInventory.homeApplianceList);
+  updatedInventory.propList = updateObjectStatus(updatedInventory.propList);
+  updatedInventory.floorList = updateObjectStatus(updatedInventory.floorList);
+  updatedInventory.smartThingsList = updateObjectStatus(updatedInventory.smartThingsList);
+  updatedInventory.unBoxThingList = updateObjectStatus(updatedInventory.unBoxThingList);
+
+  setRoomInventory(updatedInventory);
   };
 
   const updateRoomPositionMutation = useUpdateRoomPosition();
