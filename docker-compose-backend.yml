@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./thingdong
+      args:
+        SERVER_MODE: prod
+    networks:
+      - deploy
+
+networks:
+  deploy:
+    external: true
