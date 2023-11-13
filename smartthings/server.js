@@ -311,7 +311,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
       "*",
       "switchLevelHandler"
     );
-    const url = `?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}}`;
+    const url = `?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
     res.redirect(url);
   } catch (error) {
     next(error);
