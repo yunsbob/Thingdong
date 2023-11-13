@@ -1,25 +1,25 @@
-import FriendRoomScene from '@/components/molecules/FriendRoom/FriendRoom';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as S from './FriendRoomPage.styles';
 import backButtonWhite from '@/assets/images/friend/search/back-white.png';
 import { changeModalOpen } from '@/utils/changeModalOpen';
 import { useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
-import guestbook from '@/assets/images/room/guestbook.png';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { IMAGES } from '@/constants/images';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import Button from '@/components/atoms/Button/Button';
 import { useAddGuestbook } from '@/apis/Guestbook/Mutations/useAddGuestbook';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
-
-type Guestbook = {
-  guestBookId: number;
-  content: string;
-  writeDay: string;
-  writerId: string;
-  writerName: string;
-};
+import { RoomState } from '@/interfaces/room';
+import audio_1 from './audio1.glb';
+import coffee_machine_1 from './coffee-machine1.glb';
+import fan_1 from './fan1.glb';
+import bed_2 from './bed2.glb';
+import mirror_1 from './mirror1.glb';
+import curtain_open_1 from './curtain-open1.glb';
+import { MOVE, ROTATE } from '@/constants/transformations';
+import { ThingsObject } from '@/types/room';
+import MyRoom from '@/components/organisms/MyRoom/MyRoom';
 
 const FriendRoomPage = () => {
   const location = useLocation();
@@ -62,6 +62,73 @@ const FriendRoomPage = () => {
   const handleDeleteGuestbook = (guestBookId: number) => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
+  };
+
+  // FriendRoom State
+  // TODO: 데이터바인딩
+  const [friendRoomState, setFriendRoomState] = useState<RoomState>({
+    userObjectList: [
+      {
+        name: 'audio1',
+        userObjectId: 1,
+        position: [MOVE * -3, 0, 0],
+        rotation: [0, ROTATE, 0],
+        objectModelPath: audio_1,
+        isWall: false,
+      },
+      {
+        name: 'bed2',
+        userObjectId: 2,
+        position: [MOVE * -2, 0, MOVE * 3],
+        rotation: [0, ROTATE, 0],
+        objectModelPath: bed_2,
+        isWall: false,
+      },
+      {
+        name: 'coffeeMachine1',
+        userObjectId: 3,
+        position: [MOVE * -1, 0, MOVE * -3],
+        rotation: [0, 0, 0],
+        objectModelPath: coffee_machine_1,
+        isWall: false,
+      },
+      {
+        name: 'fan1',
+        userObjectId: 4,
+        position: [2, 0, -2],
+        rotation: [0, 0, 0],
+        objectModelPath: fan_1,
+        isWall: false,
+      },
+      {
+        name: 'mirror1',
+        userObjectId: 5,
+        position: [MOVE, 0, 0],
+        rotation: [0, 0, 0],
+        objectModelPath: mirror_1,
+        isWall: true,
+      },
+    ],
+    roomColor: 'puple',
+    roomId: 2,
+    userId: localStorage.getItem('userId') || '',
+  });
+
+  const [friendThingsList, setFriendThingsList] = useState<ThingsObject[]>([
+    {
+      name: 'curtainOpen1',
+      deviceId: 0,
+      userObjectId: 8,
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+      objectModelPath: curtain_open_1,
+      isWall: true,
+    },
+  ]);
+
+  const handleObjectClick = (objectName: string) => {
+    // setSelectedObjectName(objectName);
+    // console.log()
   };
 
   return (
@@ -158,7 +225,8 @@ const FriendRoomPage = () => {
                 $lineHeight="1.5"
                 color="grey1"
               >
-                작성된 방명록이 없어요. {nickname}에게 하고 싶은 말을 남겨주세요!
+                작성된 방명록이 없어요. {nickname}에게 하고 싶은 말을
+                남겨주세요!
               </Text>
             </S.ContentArea>
           </S.WriteArea>
@@ -194,7 +262,14 @@ const FriendRoomPage = () => {
         ></Image>
       </S.FriendRoomHeader>
       {/* TODO: 각 띵구 userId로 방 상태 DB로부터 불러와야함 */}
-      <FriendRoomScene />
+      {/* <FriendRoomScene /> */}
+      {/* <FriendRoom/> */}
+      <MyRoom
+        userObject={friendRoomState.userObjectList}
+        thingsObject={friendThingsList}
+        selectedRoomColor={friendRoomState.roomColor}
+        onObjectClick={handleObjectClick}
+      />
     </>
   );
 };
