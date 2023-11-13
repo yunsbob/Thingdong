@@ -9,7 +9,6 @@
     "x:scenes:*"
   ],
   "redirectUris": [
-    "http://localhost:3000/oauth/callback",
-    "https://5e73-121-152-137-242.ngrok-free.app/oauth/callback"
+    "https://thingdong.com/smartApp/oauth/callback"
   ]
 }
