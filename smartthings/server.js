@@ -5,10 +5,10 @@ const cookieSession = require("cookie-session");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const encodeUrl = require("encodeurl");
-const baseUrl = "https://api.smartthing.com";
 const SSE = require("express-sse");
 const FileContextStore = require("@smartthings/file-context-store");
 const SmartApp = require("@smartthings/smartapp");
+const { stat } = require("fs");
 
 const port = process.env.PORT || 3000;
 const appId = process.env.APP_ID;
@@ -119,16 +119,10 @@ const apiApp = new SmartApp()
         );
       }
     }
-    console.log("color change");
-    console.log(
-      `EVENT ${event.deviceId} ${event.componentId}.${event.capability}.${event.attribute}: ${event.value}`
-    );
   })
   .subscribedEventHandler("switchHandler", async (ctx, event) => {
-    // 스위치 온오프
     console.log("switch change");
     if (event.componentId === "main") {
-      //   const ctx2 = await apiApp.withContext(ctx.installedAppId);
       const locationId = ctx.locationId;
       const sse = userSSEStreams.get(locationId);
       if (sse && event.locationId == ctx.locationId) {
@@ -171,44 +165,19 @@ server.use(function (req, res, next) {
   next();
 });
 
-server.post("/", async (req, res) => {
+server.post("/smartApp", async (req, res) => {
   apiApp.handleHttpCallback(req, res);
 });
 
-/*
- * Main web page. Shows link to SmartThings if not authenticated and list of switch devices afterwards
- */
-server.get("/", async (req, res) => {
-  if (req.session.smartThings) {
-    // Cookie found, display page with list of devices
-    // 되어있으면 장치 정보 불러옴
-    const data = req.session.smartThings;
-    res.render("devices", {
-      data: data,
-      installedAppId: data.installedAppId,
-      locationName: data.locationName,
-    });
-  } else {
-    // No context cookie. Display link to authenticate with SmartThings
-    // 로그인 안 되어있으면 로그인 시킴
-    res.render("index", {
-      url: `${apiUrl}/oauth/authorize?client_id=${clientId}&scope=${scope}&response_type=code&redirect_uri=${redirectUri}`,
-    });
-  }
-});
-
 /**
- * Returns view model data for the devices page
+ * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
-server.get("/viewData", async (req, res) => {
-  const data = req.session.smartThings;
-
-  const ctx = await apiApp.withContext(data.installedAppId);
+server.get("/smartApp", async (req, res) => {
+  const ctx = await apiApp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
     const ops = deviceList.map((it) => {
       return ctx.api.devices.getStatus(it.deviceId).then((state) => {
-        // console.log(88, state);
         let switchStatus = "";
         let humidityStatus = "";
         let temperatureStatus = "";
@@ -244,7 +213,6 @@ server.get("/viewData", async (req, res) => {
           }
         }
         return {
-          // state: state.components.main,
           deviceId: it.deviceId,
           ownerId: it.ownerId,
           category: it.components[0].categories[0].name,
@@ -265,7 +233,7 @@ server.get("/viewData", async (req, res) => {
 
     // Respond to the request
     res.send({
-      installedAppId: data.installedAppId,
+      installedAppId: req.headers.installedAppId,
       locationId: ctx.api.config.locationId,
       errorMessage:
         devices.length > 0 ? "" : "No switch devices found in location",
@@ -286,18 +254,12 @@ server.get("/viewData", async (req, res) => {
  */
 server.get("/logout", async function (req, res) {
   try {
-    // Read the context from DynamoDB so that API calls can be made
-    const ctx = await apiApp.withContext(
-      req.session.smartThings.installedAppId
-    );
-
-    // Delete the installed app instance from SmartThings
+    const ctx = await apiApp.withContext(req.headers.installedappid);
     await ctx.api.installedApps.delete();
   } catch (error) {
     console.error("Error logging out", error.message);
   }
   // Delete the session data
-  req.session = null;
   res.redirect("/");
 });
 
@@ -349,8 +311,8 @@ server.get("/oauth/callback", async (req, res, next) => {
       "*",
       "switchLevelHandler"
     );
-    // Redirect back to the main page
-    res.redirect("/");
+    const url = `?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}}`;
+    res.redirect(url);
   } catch (error) {
     next(error);
   }
@@ -359,24 +321,23 @@ server.get("/oauth/callback", async (req, res, next) => {
 /**
  * Executes a device command from the web page
  */
-server.post("/command/:deviceId", async (req, res, next) => {
+server.post("/command/:deviceId", async (req, res, next) => {	
   try {
-    const ctx = await apiApp.withContext(
-      req.session.smartThings.installedAppId
-    );
-
+    const ctx = await apiApp.withContext(req.headers.installedappid);
     await ctx.api.devices.executeCommands(
       req.params.deviceId,
       req.body.commands
     );
-    res.send({});
+    res.send();
   } catch (error) {
     next(error);
   }
 });
+
 server.get("/events", (req, res) => {
-  const ctx = req.session.smartThings;
-  const userSSE = userSSEStreams.get(ctx.locationId);
+  //   const ctx = req.session.smartThings;
+  const ctx = apiApp.withContext(req.headers.installedappid);
+  const userSSE = userSSEStreams.get(ctx.api.config.locationId);
 
   // If the user has a specific SSE stream, use it; otherwise, use the default SSE stream
   if (userSSE) {

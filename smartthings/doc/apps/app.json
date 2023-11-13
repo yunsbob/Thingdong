@@ -1,5 +1,5 @@
 {
-  "appName": "thingdongtttest",
+  "appName": "thingdong22",
   "appType": "API_ONLY",
   "classifications": [
     "AUTOMATION"
@@ -9,7 +9,7 @@
   "singleInstance": false,
   "installMetadata": {},
   "apiOnly": {
-    "targetUrl": "https://5e73-121-152-137-242.ngrok-free.app"
+    "targetUrl": "https://thingdong.com/smartApp"
   },
   "oauth": {
     "clientName": "thingdong",
@@ -21,6 +21,6 @@
       "r:devices:*",
       "x:devices:*"
     ],
-    "redirectUris": ["https://5e73-121-152-137-242.ngrok-free.app/oauth/callback"]
+    "redirectUris": ["https://thingdong.com/smartApp/oauth/callback"]
   }
 }

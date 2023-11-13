@@ -8,6 +8,7 @@ spring:
       port: 1234
       repositories:
         enabled: false
+      timeout: 5000
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -47,4 +48,4 @@ translator:
 
 generator:
   stable-diffusion:
-    url: https://masoori.site
+    url: https://thingdong.com
