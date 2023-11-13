@@ -10,7 +10,7 @@ const FileContextStore = require("@smartthings/file-context-store");
 const SmartApp = require("@smartthings/smartapp");
 const { stat } = require("fs");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 const appId = process.env.APP_ID;
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
@@ -325,7 +325,7 @@ server.get("/oauth/callback", async (req, res, next) => {
 /**
  * Executes a device command from the web page
  */
-server.post("/command/:deviceId", async (req, res, next) => {	
+server.post("/command/:deviceId", async (req, res, next) => {
   try {
     const ctx = await apiApp.withContext(req.headers.installedappid);
     await ctx.api.devices.executeCommands(
