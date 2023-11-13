@@ -169,7 +169,6 @@ server.post("/", async (req, res) => {
   apiApp.handleHttpCallback(req, res);
 });
 
-
 /**
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
@@ -322,7 +321,7 @@ server.get("/oauth/callback", async (req, res, next) => {
 /**
  * Executes a device command from the web page
  */
-server.post("/command/:deviceId", async (req, res, next) => {
+server.post("/command/:deviceId", async (req, res, next) => {	
   try {
     const ctx = await apiApp.withContext(req.headers.installedappid);
     await ctx.api.devices.executeCommands(
