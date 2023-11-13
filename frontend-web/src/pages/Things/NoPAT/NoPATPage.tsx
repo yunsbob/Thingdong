@@ -1,4 +1,3 @@
-import Header from '@/components/molecules/Header/Header';
 import * as S from '@/pages/Things/NoPAT/NoPATPage.styles';
 
 import Button from '@/components/atoms/Button/Button';
@@ -34,7 +33,14 @@ const NoPATPage = () => {
             </Text>
           </div>
         </S.BlueDotWrapper>
-        <Button size="large">발급하러 가기</Button>
+        <Button
+          size="large"
+          onClick={() => {
+            window.location.href = process.env.REACT_APP_SAMSUNG_LOGIN_URL;
+          }}
+        >
+          발급하러 가기
+        </Button>
       </S.PATMessageContainer>
     </S.ThingsContents>
   );

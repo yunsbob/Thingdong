@@ -23,7 +23,7 @@ const Complete = () => {
   const unboxingObject = useAtomValue(unboxingObjectAtom);
 
   const handleConfirm = () => {
-    setModalContent('sendingList');
+    setModalContent(UNBOXING_MODAL_NAME.SENDING_LIST);
     setSendingFrind('멋쟁이 토마토');
   };
 
