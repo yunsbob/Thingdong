@@ -9,6 +9,6 @@
     "x:scenes:*"
   ],
   "redirectUris": [
-    "https://thingdong.com/smartApp/oauth/callback"
+    "https://thingdong.com/smart_app/oauth/callback"
   ]
 }

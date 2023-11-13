@@ -165,10 +165,7 @@ server.use(function (req, res, next) {
   next();
 });
 server.post("/", async (req, res) => {
-  const tempUrl = req.url;
   req.url = req.originalUrl;
-  sigHead = httpSignature.parse(req);
-  req.url = tempUrl;
   apiApp.handleHttpCallback(req, res);
 });
 
