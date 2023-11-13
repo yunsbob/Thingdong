@@ -54,7 +54,7 @@ const InventoryPage = () => {
       언박띵: unBoxThingList,
     };
 
-    return categoryDataMap[activeCategory!].map((item, index) => (
+    return categoryDataMap[activeCategory!]?.map((item, index) => (
       <InventoryItem
         key={item.userObjectId}
         price={item.objectThing}
@@ -63,7 +63,7 @@ const InventoryPage = () => {
         $isRoom={'N'}
         onClick={() => handleItemClick(item)}
       />
-    ));
+    )) || [];
   };
   return (
     <Background>

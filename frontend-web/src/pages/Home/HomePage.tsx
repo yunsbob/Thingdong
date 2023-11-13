@@ -65,6 +65,7 @@ const HomePage = () => {
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
   const roomData = useGetRoom(userId); // Fetching real data using the custom hook
   console.log(roomData);
+  
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
