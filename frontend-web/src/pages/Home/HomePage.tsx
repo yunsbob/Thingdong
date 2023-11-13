@@ -1,6 +1,6 @@
 import MyRoom from '@/components/organisms/MyRoom/MyRoom';
 import * as S from './Home.styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
 import { useGetRoomInventory } from '@/apis/Room/Queries/useGetRoomInventory';
 import {
@@ -11,7 +11,6 @@ import {
 import * as SS from '@/pages/Inventory/InventoryPage.styles';
 import InventoryButtons from '@/components/molecules/InventoryButtons/InventoryButtons';
 import RoomInventoryItem from '@/components/molecules/RoomInventoryItem/RoomInventoryItem';
-import { IMAGES } from '@/constants/images';
 import { changeModalOpen } from '../../utils/changeModalOpen';
 import { useGetGuestbooks } from '@/apis/Guestbook/Queries/useGetGuestbooks';
 import { useDeleteGuestbook } from '@/apis/Guestbook/Mutations/useDeleteGuestbook';
@@ -28,6 +27,14 @@ import painting_2 from './painting2.glb';
 import lamp_1 from './lamp1.glb';
 
 import { UserObject } from '../../types/room';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { useUpdateRoomPosition } from '@/apis/Room/Mutations/useUpdateRoomPosition';
+import { RoomPosition, RoomState } from '@/interfaces/room';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '@/constants/path';
+import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
+import { IMAGES } from '@/constants/images';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -42,10 +49,41 @@ const toastVariants = {
 };
 
 const HomePage = () => {
-  const nickName = localStorage.getItem('nickName');
+  const nickName = localStorage.getItem('nickName') || '';
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [selectedRoomColor, setSelectedRoomColor] = useState<string | null>(
+    'white'
+  );
 
+  const toggleColorPicker = () => {
+    setIsColorPickerOpen(!isColorPickerOpen);
+  };
+
+  const handleColorClick = (colorName: string, colorValue: string) => {
+    console.log(colorName); // Or any other action
+    setSelectedRoomColor(colorName);
+  };
+  const colors = [
+    ['white', '#FFFFFF'],
+    ['yellow', '#FFDCB6'],
+    ['green', '#C2E1B9'],
+    ['pink', '#E698A8'],
+    ['puple', '#9F98E0'],
+    ['black', '#545454'],
+  ];
+  // const colorCircles = colors.map((color, index) => (
+  //   <S.ColorCircle
+  //     key={color}
+  //     initial={{ scale: 0 }}
+  //     animate={{ scale: 1 }}
+  //     exit={{ scale: 0 }}
+  //     transition={{ delay: index * 0.1 }}
+  //     color={color}
+  //     onClick={() => handleColorClick(color)}
+  //   />
+  // ));
   // 이동 & 회전 단위
   const MOVE = 0.75;
   const ROTATE = Math.PI * 0.5;
@@ -55,7 +93,6 @@ const HomePage = () => {
     {
       name: 'bed1',
       userObjectId: 1,
-      objectId: 1,
       objectModelPath: bed_1,
       isWall: false,
       position: [-2, 0, 2],
@@ -64,7 +101,7 @@ const HomePage = () => {
     {
       name: 'cabinet1',
       userObjectId: 2,
-      objectId: 2,
+      isWall: false,
       position: [2, 0, 4],
       rotation: [0, ROTATE * 2, 0],
       objectModelPath: cabinet_1,
@@ -72,7 +109,7 @@ const HomePage = () => {
     {
       name: 'chair1',
       userObjectId: 3,
-      objectId: 3,
+      isWall: false,
       position: [2, 0, 0],
       rotation: [0, 0, 0],
       objectModelPath: chair_1,
@@ -80,15 +117,15 @@ const HomePage = () => {
     {
       name: 'table1',
       userObjectId: 4,
-      objectId: 4,
       position: [-3, 0, -2],
       rotation: [0, ROTATE, 0],
       objectModelPath: table_1,
+      isWall: false,
     },
     {
       name: 'couch1',
       userObjectId: 5,
-      objectId: 5,
+      isWall: false,
       position: [1, 0, -2],
       rotation: [0, 0, 0],
       objectModelPath: couch_1,
@@ -96,17 +133,15 @@ const HomePage = () => {
     {
       name: 'clock2',
       userObjectId: 6,
-      objectId: 6,
+      isWall: true,
       position: [0, 0, 0],
       rotation: [0, ROTATE, 0],
       objectModelPath: clock_2,
-      isWall: true,
     },
     {
       name: 'painting2',
       userObjectId: 7,
-      objectId: 7,
-      position: [1, 0, 0],
+      position: [0, 0, 0],
       rotation: [0, 0, 0],
       objectModelPath: painting_2,
       isWall: true,
@@ -118,7 +153,6 @@ const HomePage = () => {
       name: 'lamp1',
       deviceId: 0,
       userObjectId: 8,
-      objectId: 8,
       position: [0, 0, 0],
       rotation: [0, 0, 0],
       objectModelPath: lamp_1,
@@ -126,10 +160,28 @@ const HomePage = () => {
     },
   ]);
 
+  // 임시 RoomState
+  const [roomState, setRoomState] = useState<RoomState>({
+    userObjectList: myObjectList,
+    roomColor: 'pink',
+    roomId: 1,
+    userId: localStorage.getItem('userId') || '',
+  });
+
+  // 임시 RoomState 업데이트
+  useEffect(() => {
+    setRoomState(prevState => ({
+      ...prevState,
+      userObjectList: myObjectList,
+    }));
+  }, [myObjectList]);
+
   const handleEdit = () => {
     setIsEditing(!isEditing);
+    setIsColorPickerOpen(false);
   };
 
+  // TODO: useState로 상태 저장
   const {
     furnitureList,
     homeApplianceList,
@@ -244,21 +296,26 @@ const HomePage = () => {
     });
   };
 
-  // 객체 회전 TODO: 0,0,0이 아니면 벽에서 뜨는 경우가 있다
+  // 객체 회전
   const [rotation, setRotation] = useState<Rotation>([0, 0, 0]);
   const handleRotationClick = () => {
-    setMyObjectList(currentObjects => {
-      return currentObjects.map(obj => {
-        if (obj.name === selectedObjectName) {
-          let [x, y, z] = obj.rotation;
-          if (!obj.isWall) {
-            y += ROTATE;
-          } else if (obj.isWall && obj.rotation[1] === 0) {
-            y += ROTATE;
-          } else if (obj.isWall && obj.rotation[1] !== 0) {
-            y = 0;
-          }
-          return { ...obj, rotation: [x, y, z] };
+    setMyObjectList((currentObjects: any) => {
+      return currentObjects.map((obj: UserObject) => {
+        if (obj.name !== selectedObjectName) {
+          return obj;
+        } else if (obj.name === selectedObjectName) {
+          const newYRotation =
+            obj.isWall && obj.rotation[1] !== 0 ? 0 : obj.rotation[1] + ROTATE;
+          const newPosition =
+            obj.isWall && newYRotation !== 0
+              ? [-obj.position[2], obj.position[1], -obj.position[0]]
+              : obj.position;
+
+          return {
+            ...obj,
+            rotation: [obj.rotation[0], newYRotation, obj.rotation[2]],
+            position: newPosition,
+          };
         }
         return obj;
       });
@@ -272,6 +329,32 @@ const HomePage = () => {
     });
   };
 
+  const updateRoomPositionMutation = useUpdateRoomPosition();
+  const updateRoomPosition = (roomPosition: RoomPosition) => {
+    updateRoomPositionMutation.mutate(roomPosition);
+    //TODO: 메인으로 navigate 시켜주기
+  };
+
+  // 방 상태 업데이트
+  const handleUpdateRoomClick = () => {
+    const objectPositionList = roomState.userObjectList.map(obj => ({
+      userObjectId: obj.userObjectId,
+      position: obj.position,
+      rotation: obj.rotation,
+    }));
+
+    const roomPosition = {
+      roomId: roomState.roomId,
+      objectPositionList: objectPositionList,
+    };
+
+    console.log('here', roomPosition);
+    setIsEditing(!isEditing);
+    // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
+    // updateRoomPosition(roomPosition);
+  };
+
+  // 방명록 모달
   const [modalOpen, setModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const userId = localStorage.getItem('userId');
@@ -286,12 +369,12 @@ const HomePage = () => {
       prevIndex < (guestbooks.data?.length ?? 1) - 1 ? prevIndex + 1 : prevIndex
     );
   };
-
   const deleteGuestbookMutation = useDeleteGuestbook();
   const handleDeleteGuestbook = (guestBookId: number) => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(0);
   };
+
   return (
     <>
       <GuestbookModal
@@ -303,9 +386,10 @@ const HomePage = () => {
         handleNext={handleNext}
         handleDeleteGuestbook={handleDeleteGuestbook}
       />
-      <S.HeaderButtonWrapper style={{ zIndex: 1 }}>
-        {isEditing ? (
-          <>
+
+      {isEditing ? (
+        <>
+          <S.BackButtonWrapper>
             <Image
               src={IMAGES.ROOM.BACK_ICON}
               $unit={'px'}
@@ -313,74 +397,87 @@ const HomePage = () => {
               height={40}
               onClick={handleEdit}
             />
+          </S.BackButtonWrapper>
+          <S.ChangeRoomWrapper>
             <Image
               src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
               $unit={'px'}
               width={40}
               height={40}
+              onClick={toggleColorPicker}
             />
-          </>
-        ) : (
-          <>
-            <S.RoomName>{nickName}네 방</S.RoomName>
-            <Image
-              src={IMAGES.ROOM.EDIT_ICON}
-              width={3.4}
-              onClick={handleEdit}
-            ></Image>
-            <Image
-              src={IMAGES.ROOM.GUESTBOOK_ICON}
-              width={3.4}
-              onClick={() => {
-                setModalOpen(true);
-              }}
-            ></Image>
-          </>
-        )}
-      </S.HeaderButtonWrapper>
+            <AnimatePresence>
+              {isColorPickerOpen && (
+                <S.ColorCircleWrapper>
+                  {colors.map(([colorName, colorValue], index) => (
+                    <S.ColorCircle
+                      key={colorName}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      color={colorValue}
+                      onClick={() => handleColorClick(colorName, colorValue)}
+                    />
+                  ))}
+                </S.ColorCircleWrapper>
+              )}
+            </AnimatePresence>
+          </S.ChangeRoomWrapper>
+        </>
+      ) : (
+        <HeaderButtons
+          isEditing={isEditing}
+          handleEdit={handleEdit}
+          setModalOpen={setModalOpen}
+          nickName={nickName}
+        />
+      )}
       {isEditing && (
         <>
-          <S.BottomButtonWrapper style={{ zIndex: 1 }}>
-            <S.ArrowKeyWrapper>
-              {arrowButtons.map((button, index) => {
-                const imagePath = require(
-                  `@/assets/images/room/${button.src}`
-                ).default;
-                return (
-                  <Image
-                    key={button.src + index}
-                    src={imagePath}
-                    $unit={'px'}
-                    width={40}
-                    height={40}
-                    onClick={() => handleArrowClick(button.direction)}
-                    style={{
-                      visibility: button.direction ? 'visible' : 'hidden',
-                    }}
-                  />
-                );
-              })}
-            </S.ArrowKeyWrapper>
-            <S.ButtonWrapper>
-              <Image
-                src={
-                  require('@/assets/images/room/rotation-button.png').default
-                }
-                $unit={'px'}
-                width={40}
-                height={40}
-                $margin="0 10px 0 0"
-                onClick={handleRotationClick}
-              />
-              <Image
-                src={require('@/assets/images/room/save-button.png').default}
-                $unit={'px'}
-                width={40}
-                height={40}
-                onClick={handleRemoveClick}
-              />
-            </S.ButtonWrapper>
-          </S.BottomButtonWrapper>
+          <S.ArrowKeyWrapper>
+            {arrowButtons.map((button, index) => {
+              const imagePath = require(
+                `@/assets/images/room/${button.src}`
+              ).default;
+              return (
+                <Image
+                  key={button.src + index}
+                  src={imagePath}
+                  $unit={'px'}
+                  width={40}
+                  height={40}
+                  onClick={() => handleArrowClick(button.direction)}
+                  style={{
+                    visibility: button.direction ? 'visible' : 'hidden',
+                  }}
+                />
+              );
+            })}
+          </S.ArrowKeyWrapper>
+          <S.ButtonWrapper>
+            <Image
+              src={require('@/assets/images/room/rotation-button.png').default}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={handleRotationClick}
+            />
+            <Image
+              src={require('@/assets/images/room/save-button.png').default}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={handleRemoveClick}
+            />
+            <Image
+              src={require('@/assets/images/room/save-room-button.png').default}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={handleUpdateRoomClick}
+            />
+          </S.ButtonWrapper>
         </>
       )}
 
@@ -391,9 +488,10 @@ const HomePage = () => {
         userObject={myObjectList}
         thingsObject={myThingsList}
         onObjectClick={handleObjectClick}
+        selectedRoomColor={selectedRoomColor}
       />
       {isEditing && (
-        <S.TempToast
+        <S.ItemToast
           variants={toastVariants}
           initial="hidden"
           animate="visible"
@@ -408,7 +506,7 @@ const HomePage = () => {
               {activeCategory && renderItems()}
             </SS.InventoryItemWrapper>
           </SS.InventoryContainer>
-        </S.TempToast>
+        </S.ItemToast>
       )}
     </>
   );

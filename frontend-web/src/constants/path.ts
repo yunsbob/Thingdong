@@ -6,7 +6,7 @@ const PATH = {
   SPLASH: '/splash',
   THINGSTORY: 'thingstory',
   FRIENDROOM: '/friendRoom',
-  REDIRECT: '/redirect',
+  REDIRECT: '/oauth/callback',
 };
 
 const CHILDREN_PATH = {

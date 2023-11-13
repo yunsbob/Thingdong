@@ -12,7 +12,7 @@ const ThingsPage = () => {
       <S.ThingsContainer>
         <Header text="띵즈" />
         {/* TODO: 페이지 개발 완 하고 다시 주석 풀고 아래 코드 지우기 */}
-        {localStorage.getItem('patToken') ? <PATPage /> : <NoPATPage />}
+        {localStorage.getItem('authToken') ? <PATPage /> : <NoPATPage />}
         {/* {user.patoken && user.patoken.length !== 0 ? (
           <NoPATPage />
         ) : (

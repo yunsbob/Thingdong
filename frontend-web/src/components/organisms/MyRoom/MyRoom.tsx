@@ -1,33 +1,53 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import {
   Environment,
   OrbitControls,
   OrthographicCamera,
+  useGLTF,
 } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
 import { Position, Rotation, MyRoomProps } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-
+import { SkeletonUtils } from 'three-stdlib';
 import room_pink_light from './room-pink-light.glb';
+import { GridHelper, Mesh } from 'three';
+import GridHelpers from '@/components/molecules/GridHelpers/GridHelpers';
 
 const MyRoom = ({
   isEditing,
   position,
   rotation,
   userObject,
+  thingsObject,
   onObjectClick,
+  selectedRoomColor,
 }: MyRoomProps) => {
-  const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
+  // console.log(selectedRoomColor);
 
-  (roomPinkLight as any).scene.traverse((node: any) => {
-    // console.log(node.type);
-    if (node.type === 'Mesh') {
-      node.castShadow = true;
-      node.receiveShadow = true;
-    }
-  });
+  // const roomPinkLight = useLoader(GLTFLoader, room_pink_light);
 
+  // (roomPinkLight as any).scene.traverse((node: any) => {
+  //   // console.log(node.type);
+  //   if (node.type === 'Mesh') {
+  //     node.castShadow = true;
+  //     node.receiveShadow = true;
+  //   }
+  // });
+  const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
+  if (!scene) {
+    // scene이 로드되지 않았거나 유효하지 않은 경우 처리
+    return <div>Loading...</div>;
+  }
+  const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  useEffect(() => {
+    clone.traverse(child => {
+      if ((child as Mesh).isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+  }, [clone]);
   return (
     <div style={{ backgroundColor: '#efddad', width: '100%', height: '100vh' }}>
       <Suspense fallback={<Spinner />}>
@@ -42,6 +62,7 @@ const MyRoom = ({
         >
           <scene name="Scene" position={[0, -2, 0]}>
             <ambientLight intensity={0.4} />
+            {/* <GridHelpers/> */}
             <directionalLight
               position={[5, 5, 5]}
               intensity={1}
@@ -79,11 +100,70 @@ const MyRoom = ({
               );
             })}
 
-            <primitive
-              name="roomPinkLight"
-              object={(roomPinkLight as any).scene}
-              scale={1}
-            />
+            {thingsObject.map(obj => {
+              const glb = useLoader(GLTFLoader, obj.objectModelPath);
+
+              glb.scene.traverse(node => {
+                if (node.type === 'Mesh') {
+                  node.castShadow = true;
+                  node.receiveShadow = true;
+                }
+              });
+
+              const [isShining, setIsShining] = useState(false);
+
+              return (
+                <React.Fragment key={obj.name}>
+                  <primitive
+                    object={glb.scene}
+                    name={obj.name}
+                    position={obj.position}
+                    rotation={obj.rotation}
+                    scale={1}
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      if (obj.name.includes('lamp') && !isEditing) {
+                        setIsShining(!isShining);
+                      }
+                      onObjectClick(obj.name);
+                    }}
+                  />
+                  {obj.name.includes('lamp') && isShining && (
+                    <>
+                      <pointLight
+                        position={[
+                          obj.position[0],
+                          obj.position[1] + 3,
+                          obj.position[2],
+                        ]}
+                        color="#ffd000"
+                        castShadow
+                        distance={5}
+                        intensity={100}
+                        power={100}
+                      />
+                      {/* <pointLight
+                        name="Point Light 3"
+                        intensity={1.5}
+                        distance={20}
+                        shadow-mapSize-width={1024}
+                        shadow-mapSize-height={1024}
+                        shadow-camera-near={100}
+                        shadow-camera-far={2000}
+                        color="#fed500"
+                        position={[
+                          obj.position[0],
+                          obj.position[1] + 3,
+                          obj.position[2],
+                        ]}
+                      /> */}
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })}
+
+            <primitive name="roomPinkLight" object={clone} scale={1} />
 
             <OrthographicCamera
               name="Default Camera"

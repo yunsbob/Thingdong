@@ -36,9 +36,7 @@ const NoPATPage = () => {
         <Button
           size="large"
           onClick={() => {
-            const SAMSUNG_PAT_URL =
-              'https://api.smartthings.com/oauth/authorize?client_id=e4467bc0-30c6-4ae0-86fc-b28cb3a88476&scope=r:locations:*%20r:devices:*%20x:devices:*&response_type=code&redirect_uri=https://5e73-121-152-137-242.ngrok-free.app/oauth/callback';
-            window.location.href = SAMSUNG_PAT_URL;
+            window.location.href = process.env.REACT_APP_SAMSUNG_LOGIN_URL;
           }}
         >
           발급하러 가기
