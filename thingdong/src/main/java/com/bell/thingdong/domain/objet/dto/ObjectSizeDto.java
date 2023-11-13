@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ObjectSizeDto {
 	@Schema(description = "오브젝트 높이 값", example = "2")
-	private Long height;
+	private Double height;
 
 	@Schema(description = "오브젝트 넓이 값", example = "3")
-	private Long width;
+	private Double width;
 }
