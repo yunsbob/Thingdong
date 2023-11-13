@@ -52,13 +52,7 @@ const toastVariants = {
     },
   },
 };
-interface DeployedObjectsProps {
-  userObjectId: number;
-  name: string;
-  objectModelPath: string;
-  isWall: boolean;
-  objectStatus: 'Y' | 'N';
-}
+
 
 const HomePage = () => {
   const userId = localStorage.getItem('userId') || '';
@@ -67,7 +61,6 @@ const HomePage = () => {
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [selectedRoomColor, setSelectedRoomColor] = useState('white');
-  const [deployedObjects, setDeployedObjects] = useState<DeployedObjectsProps[]>([])
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
   const roomData = useGetRoom(userId); // Fetching real data using the custom hook
   console.log(roomData);
@@ -96,67 +89,6 @@ const HomePage = () => {
   // 찐 userObjectList
   const roomState = useGetRoom(userId);
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
-
-  // 임시 myObjectList
-  // const [myObjectList, setMyObjectList] = useState<UserObject[]>([
-  //   {
-  //     name: 'bed1',
-  //     userObjectId: 1,
-  //     objectModelPath: bed_1,
-  //     isWall: false,
-  //     position: [-2, 0, 2],
-  //     rotation: [0, ROTATE * 2, 0],
-  //   },
-  //   {
-  //     name: 'cabinet1',
-  //     userObjectId: 2,
-  //     isWall: false,
-  //     position: [2, 0, 4],
-  //     rotation: [0, ROTATE * 2, 0],
-  //     objectModelPath: cabinet_1,
-  //   },
-  //   {
-  //     name: 'chair1',
-  //     userObjectId: 3,
-  //     isWall: false,
-  //     position: [2, 0, 0],
-  //     rotation: [0, 0, 0],
-  //     objectModelPath: chair_1,
-  //   },
-  //   {
-  //     name: 'table1',
-  //     userObjectId: 4,
-  //     position: [-3, 0, -2],
-  //     rotation: [0, ROTATE, 0],
-  //     objectModelPath: table_1,
-  //     isWall: false,
-  //   },
-  //   {
-  //     name: 'couch1',
-  //     userObjectId: 5,
-  //     isWall: false,
-  //     position: [1, 0, -2],
-  //     rotation: [0, 0, 0],
-  //     objectModelPath: couch_1,
-  //   },
-  //   {
-  //     name: 'clock2',
-  //     userObjectId: 6,
-  //     isWall: true,
-  //     position: [0, 0, 0],
-  //     rotation: [0, ROTATE, 0],
-  //     objectModelPath: clock_2,
-  //   },
-  //   {
-  //     name: 'painting2',
-  //     userObjectId: 7,
-  //     position: [0, 0, 0],
-  //     rotation: [0, 0, 0],
-  //     objectModelPath: painting_2,
-  //     isWall: true,
-  //   },
-  // ]);
-
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
     {
       name: 'lamp1',
@@ -168,28 +100,6 @@ const HomePage = () => {
       isWall: false,
     },
   ]);
-
-  // 임시 RoomState
-  // const [roomState, setRoomState] = useState<RoomState>({
-  //   userObjectList: myObjectList,
-  //   roomColor: selectedRoomColor,
-  //   roomId: 1,
-  //   userId: localStorage.getItem('userId') || '',
-  // });
-  // const [roomState, setRoomState] = useState<RoomState>({
-  //   userObjectList: myObjectList,
-  //   roomColor: 'pink',
-  //   roomId: 1,
-  //   userId: localStorage.getItem('userId') || '',
-  // });
-
-  // 임시 RoomState 업데이트
-  // useEffect(() => {
-  //   setRoomState(prevState => ({
-  //     ...prevState,
-  //     userObjectList: myObjectList,
-  //   }));
-  // }, [myObjectList]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -205,10 +115,8 @@ const HomePage = () => {
     smartThingsList,
     unBoxThingList,
   } = useGetRoomInventory() as RoomInventoryData;
-console.log(roomInventory);
 
   useEffect(() => {
-    // 모든 목록을 하나의 배열로 결합
     setRoomInventory({
       furnitureList: furnitureList,
       homeApplianceList: homeApplianceList,
@@ -217,20 +125,6 @@ console.log(roomInventory);
       smartThingsList: smartThingsList,
       unBoxThingList: unBoxThingList,
     })
-    const allObjects = [
-      ...furnitureList,
-      ...homeApplianceList,
-      ...propList,
-      ...floorList,
-      ...smartThingsList,
-      ...unBoxThingList,
-    ];
-
-    // objectStatus가 'N'인 객체만 필터링
-    const deployed = allObjects.filter(item => item.objectStatus === 'Y');
-
-    // 필터링된 객체들을 상태에 저장
-    setDeployedObjects(deployed);
   }, [furnitureList, homeApplianceList, propList, floorList, smartThingsList, unBoxThingList]);
 
   const handleCategoryClick = (category: Category) => {
@@ -267,7 +161,6 @@ console.log(roomInventory);
     const clickedItem = allUpdatedObjects.find(item => item.userObjectId === selectedItemId);
 
     if (clickedItem) {
-      // Prepare the new object to add to myObjectList
       const newUserObject: UserObject = {
         name: clickedItem.name,
         userObjectId: clickedItem.userObjectId,
@@ -276,9 +169,7 @@ console.log(roomInventory);
         position: [0, 0, 0],
         rotation: [0, 0, 0],
       };
-      console.log(clickedItem, '>>>>>>>>>');
-      
-      // Add the new object to myObjectList
+
       setMyObjectList(prevList => [...prevList, newUserObject]);
     }
 
