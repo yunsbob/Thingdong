@@ -15,6 +15,7 @@ export interface MyRoomProps {
   thingsObject: ThingsObject[];
   onObjectClick: (objectName: string) => void;
   selectedRoomColor?: string | null;
+  roomColor?: string;
 }
 
 export interface UserObject {

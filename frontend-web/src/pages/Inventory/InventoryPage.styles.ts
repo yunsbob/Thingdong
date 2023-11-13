@@ -16,6 +16,17 @@ const InventoryItemWrapper = styled.div`
     display: none;
   }
 `;
+const RoomInventoryItemWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 4vw;
+  margin-top: 20px;
+  overflow-y: auto;
+  max-height: 60%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 const ThingWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -37,6 +48,7 @@ export const ItemWrapper = styled.div`
 export {
   InventoryContainer,
   InventoryItemWrapper,
+  RoomInventoryItemWrapper,
   ThingWrapper,
   ButtonWrapper,
   ThingBox,
