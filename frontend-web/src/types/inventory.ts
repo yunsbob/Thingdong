@@ -31,7 +31,10 @@ export interface UnboxingProps {
 // roomInventory
 export interface RoomInventoryItemProps {
   userObjectId: number;
+  name: string;
+  objectModelPath: string;
   objectImagePath: string;
+  isWall: boolean;
   objectStatus: 'Y' | 'N';
 }
 
