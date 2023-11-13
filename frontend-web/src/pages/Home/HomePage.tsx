@@ -60,33 +60,69 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [selectedRoomColor, setSelectedRoomColor] = useState('white');
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
+  const roomState = useGetRoom(userId); // Fetching real data using the custom hook
+  const [selectedRoomColor, setSelectedRoomColor] = useState(
+    roomState.roomColor
+  );
+  // const [selectedRoomColor, setSelectedRoomColor] = useState('white');
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
 
-  const handleColorClick = (colorName: string, colorValue: string) => {
-    setSelectedRoomColor(colorName);
+  const handleColorClick = (
+    colorName: string,
+    colorValue: string,
+    colorPath: string
+  ) => {
+    setSelectedRoomColor(colorPath);
   };
 
   const colors = [
-    ['white', '#FFFFFF'],
-    ['yellow', '#FFDCB6'],
-    ['green', '#C2E1B9'],
-    ['pink', '#E698A8'],
-    ['puple', '#9F98E0'],
-    ['black', '#545454'],
+    [
+      'white',
+      '#FFFFFF',
+      'https://thingdong.com/resources/glb/room/room-white.glb',
+    ],
+    [
+      'yellow',
+      '#FFDCB6',
+      'https://thingdong.com/resources/glb/room/room_yellow.glb',
+    ],
+    [
+      'green',
+      '#C2E1B9',
+      'https://thingdong.com/resources/glb/room/room_green.glb',
+    ],
+    [
+      'pink',
+      '#E698A8',
+      'https://thingdong.com/resources/glb/room/room-pink.glb',
+    ],
+    [
+      'puple',
+      '#9F98E0',
+      'https://thingdong.com/resources/glb/room/room-puple.glb',
+    ],
+    [
+      'black',
+      '#545454',
+      'https://thingdong.com/resources/glb/room/room_black.glb',
+    ],
   ];
 
   // 찐 userObjectList
-  const roomState = useGetRoom(userId);
+
+  // const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState && roomState.userObjectList ? roomState.userObjectList : []
   );
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>(
     roomState && roomState.smartThingsList ? roomState.smartThingsList : []
   );
+
   // const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
   //   {
   //     name: 'lamp1',
@@ -145,8 +181,10 @@ const HomePage = () => {
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
   };
+
   const handleItemClick = (selectedItemId: number) => {
     let updatedInventory = { ...roomInventory };
+    setSelectedItemId(selectedItemId);
 
     const updateObjectStatus = (
       list: RoomInventoryItemProps[]
@@ -184,22 +222,28 @@ const HomePage = () => {
       ...updatedInventory.smartThingsList,
       ...updatedInventory.unBoxThingList,
     ];
-    // myobjet에 추가하는 로직
     const clickedItem = allUpdatedObjects.find(
       item => item.userObjectId === selectedItemId
     );
 
     if (clickedItem) {
-      const newUserObject: UserObject = {
-        name: clickedItem.name,
-        userObjectId: clickedItem.userObjectId,
-        objectModelPath: clickedItem.objectModelPath,
-        isWall: clickedItem.isWall,
-        position: [0, 0, 0],
-        rotation: [0, 0, 0],
-      };
+      // 아이템이 이미 myObjectList에 있는지 확인
+      const isItemAlreadyInList = myObjectList.some(
+        item => item.userObjectId === selectedItemId
+      );
 
-      setMyObjectList(prevList => [...prevList, newUserObject]);
+      if (!isItemAlreadyInList) {
+        const newUserObject: UserObject = {
+          name: clickedItem.name,
+          userObjectId: clickedItem.userObjectId,
+          objectModelPath: clickedItem.objectModelPath,
+          isWall: clickedItem.isWall,
+          position: [0, 0, 0],
+          rotation: [0, 0, 0],
+        };
+
+        setMyObjectList(prevList => [...prevList, newUserObject]);
+      }
     }
   };
   const renderItems = () => {
@@ -237,7 +281,6 @@ const HomePage = () => {
   const handleObjectClick = (objectName: string) => {
     setSelectedObjectName(objectName);
   };
-  // console.log(deployedObjects, "<<<<<<<<<<<<<<<<<<");
 
   // 객체 위치 변경
   const [position, setPosition] = useState<Position>([0, 0, 0]);
@@ -349,9 +392,37 @@ const HomePage = () => {
 
   // 객체 인벤토리에 저장 (방에서 삭제)
   const handleRemoveClick = () => {
+    if (selectedItemId == null) return;
+
     setMyObjectList(currentObjects => {
       return currentObjects.filter(obj => obj.name !== selectedObjectName);
     });
+    let updatedInventory = { ...roomInventory };
+
+    // 각 인벤토리 리스트에서 해당 아이템의 상태를 'N'으로 변경
+    const updateObjectStatus = (
+      list: RoomInventoryItemProps[]
+    ): RoomInventoryItemProps[] =>
+      list.map(item =>
+        item.name === selectedObjectName ? { ...item, objectStatus: 'N' } : item
+      );
+
+    updatedInventory.furnitureList = updateObjectStatus(
+      updatedInventory.furnitureList
+    );
+    updatedInventory.homeApplianceList = updateObjectStatus(
+      updatedInventory.homeApplianceList
+    );
+    updatedInventory.propList = updateObjectStatus(updatedInventory.propList);
+    updatedInventory.floorList = updateObjectStatus(updatedInventory.floorList);
+    updatedInventory.smartThingsList = updateObjectStatus(
+      updatedInventory.smartThingsList
+    );
+    updatedInventory.unBoxThingList = updateObjectStatus(
+      updatedInventory.unBoxThingList
+    );
+
+    setRoomInventory(updatedInventory);
   };
 
   const updateRoomPositionMutation = useUpdateRoomPosition();
@@ -377,13 +448,12 @@ const HomePage = () => {
 
     setIsEditing(!isEditing);
     // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
-    // updateRoomPosition(roomPosition);
+    updateRoomPosition(roomPosition);
   };
 
   // 방명록 모달
   const [modalOpen, setModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const userId = localStorage.getItem('userId');
   const guestbooks = useGetGuestbooks(userId!);
 
   const handlePrev = () => {
@@ -435,7 +505,7 @@ const HomePage = () => {
             <AnimatePresence>
               {isColorPickerOpen && (
                 <S.ColorCircleWrapper>
-                  {colors.map(([colorName, colorValue], index) => (
+                  {colors.map(([colorName, colorValue, colorPath], index) => (
                     <S.ColorCircle
                       key={colorName}
                       initial={{ scale: 0 }}
@@ -443,7 +513,9 @@ const HomePage = () => {
                       exit={{ scale: 0 }}
                       transition={{ delay: index * 0.1 }}
                       color={colorValue}
-                      onClick={() => handleColorClick(colorName, colorValue)}
+                      onClick={() =>
+                        handleColorClick(colorName, colorValue, colorPath)
+                      }
                     />
                   ))}
                 </S.ColorCircleWrapper>
@@ -528,9 +600,9 @@ const HomePage = () => {
               onCategoryClick={handleCategoryClick}
               $isRoom={'Y'}
             />
-            <SS.InventoryItemWrapper>
+            <SS.RoomInventoryItemWrapper>
               {activeCategory && renderItems()}
-            </SS.InventoryItemWrapper>
+            </SS.RoomInventoryItemWrapper>
           </SS.InventoryContainer>
         </S.ItemToast>
       )}

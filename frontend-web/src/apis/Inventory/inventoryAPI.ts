@@ -3,6 +3,7 @@ import { instance } from '@/apis/instance';
 const getInventory = async () => {
   try {
     const response = await instance.get('/objects/inventory');
+    // console.log('here', response);
     return response.data;
   } catch {
     throw new Error('get inventory error');

@@ -10,8 +10,7 @@ import { Spinner } from '../../molecules/Spinner/Spinner';
 import { MyRoomProps } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { SkeletonUtils } from 'three-stdlib';
-import room_pink_light from './room-pink-light.glb';
-import { GridHelper, Mesh } from 'three';
+import { Mesh } from 'three';
 import GridHelpers from '@/components/molecules/GridHelpers/GridHelpers';
 
 const MyRoom = ({
@@ -20,6 +19,7 @@ const MyRoom = ({
   thingsObject,
   onObjectClick,
   selectedRoomColor,
+  roomColor
 }: MyRoomProps) => {
   const loadedObjects = useMemo(() => {
     if (userObject) {
@@ -36,10 +36,13 @@ const MyRoom = ({
     }
   }, [userObject]); // userObject 배열이 변경될 때만 이 코드 블록 실행
 
-  const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
-  if (!scene) {
-    return <div>Loading...</div>;
+  // const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
+  
+  if (!selectedRoomColor) {
+    return <div>Loading...</div>; // 혹은 다른 기본 상태 렌더링
   }
+  const { scene } = useGLTF(selectedRoomColor);
+
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   useEffect(() => {
     clone.traverse(child => {
@@ -49,6 +52,8 @@ const MyRoom = ({
       }
     });
   }, [clone]);
+  console.log(selectedRoomColor, '방색깔');
+
   return (
     <div style={{ backgroundColor: '#efddad', width: '100%', height: '100vh' }}>
       {/* background에 gradient 추가 */}
@@ -177,7 +182,7 @@ const MyRoom = ({
 
               {/* 화면 중앙에 객체들 배치되게 scale, position 조정 */}
               <primitive
-                name="roomPinkLight"
+                name="room"
                 object={clone}
                 scale={1.05}
                 position={[-0.25, 0, -0.25]}
