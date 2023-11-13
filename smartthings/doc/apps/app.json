@@ -9,7 +9,7 @@
   "singleInstance": false,
   "installMetadata": {},
   "apiOnly": {
-    "targetUrl": "http://45.76.219.8:4000"
+    "targetUrl": "https://thingdong.com/smartApp"
   },
   "oauth": {
     "clientName": "thingdong",
@@ -21,6 +21,6 @@
       "r:devices:*",
       "x:devices:*"
     ],
-    "redirectUris": ["http://45.76.219.8:4000/oauth/callback"]
+    "redirectUris": ["https://thingdong.com/smartApp/oauth/callback"]
   }
 }
