@@ -164,13 +164,13 @@ server.use(function (req, res, next) {
   res.flush = function () {};
   next();
 });
-server.post('/', (req, res) => {
+// server.post('/', (req, res) => {
+//   apiApp.handleHttpCallback(req, res);
+// });
+server.post("/", async (req, res) => {
   req.url = req.originalUrl;
   apiApp.handleHttpCallback(req, res);
 });
-// server.post("/", async (req, res) => {
-//   apiApp.handleHttpCallback(req, res);
-// });
 
 /**
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
