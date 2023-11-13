@@ -20,8 +20,9 @@ const MyRoom = ({
   thingsObject,
   onObjectClick,
   selectedRoomColor,
+  roomColor
 }: MyRoomProps) => {
-  console.log(selectedRoomColor);
+  console.log(roomColor, '방색');
 
   const loadedObjects = useMemo(() => {
     if (userObject) {
@@ -38,10 +39,13 @@ const MyRoom = ({
     }
   }, [userObject]); // userObject 배열이 변경될 때만 이 코드 블록 실행
 
-  const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
-  if (!scene) {
-    return <div>Loading...</div>;
+  // const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
+  
+  if (!selectedRoomColor) {
+    return <div>Loading...</div>; // 혹은 다른 기본 상태 렌더링
   }
+  const { scene } = useGLTF(selectedRoomColor);
+
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   useEffect(() => {
     clone.traverse(child => {
@@ -51,6 +55,8 @@ const MyRoom = ({
       }
     });
   }, [clone]);
+  console.log(selectedRoomColor, '방색깔');
+
   return (
     <div style={{ backgroundColor: '#efddad', width: '100%', height: '100vh' }}>
       {/* background에 gradient 추가 */}
@@ -178,7 +184,7 @@ const MyRoom = ({
                 );
               })}
 
-              <primitive name="roomPinkLight" object={clone} scale={1} />
+              <primitive name="room" object={clone} scale={1} />
 
               <OrthographicCamera
                 name="Default Camera"

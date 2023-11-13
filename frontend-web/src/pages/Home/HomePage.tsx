@@ -61,29 +61,27 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [selectedRoomColor, setSelectedRoomColor] = useState('white');
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
+  const roomState = useGetRoom(userId); // Fetching real data using the custom hook
+  const [selectedRoomColor, setSelectedRoomColor] = useState(roomState.roomColor);
+  // const [selectedRoomColor, setSelectedRoomColor] = useState('white');
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
-  const roomData = useGetRoom(userId); // Fetching real data using the custom hook
-  console.log(roomData);
-  
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
 
-  const handleColorClick = (colorName: string, colorValue: string) => {
-    console.log(colorName); // Or any other action
-    setSelectedRoomColor(colorName);
+  const handleColorClick = (colorName: string, colorValue: string, colorPath: string) => {
+    setSelectedRoomColor(colorPath);
   };
 
   const colors = [
-    ['white', '#FFFFFF'],
-    ['yellow', '#FFDCB6'],
-    ['green', '#C2E1B9'],
-    ['pink', '#E698A8'],
-    ['puple', '#9F98E0'],
-    ['black', '#545454'],
+    ['white', '#FFFFFF', "https://thingdong.com/resources/glb/room/room-white.glb"],
+    ['yellow', '#FFDCB6', "https://thingdong.com/resources/glb/room/room_yellow.glb"],
+    ['green', '#C2E1B9', "https://thingdong.com/resources/glb/room/room_green.glb"],
+    ['pink', '#E698A8', "https://thingdong.com/resources/glb/room/room-pink.glb"],
+    ['puple', '#9F98E0', "https://thingdong.com/resources/glb/room/room-puple.glb"],
+    ['black', '#545454', "https://thingdong.com/resources/glb/room/room_black.glb"],
   ];
 
   // 이동 & 회전 단위
@@ -91,7 +89,7 @@ const HomePage = () => {
   const ROTATE = Math.PI * 0.5;
 
   // 찐 userObjectList
-  const roomState = useGetRoom(userId);
+
   // const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState && roomState.myObjectList ? roomState.myObjectList : []
@@ -220,7 +218,6 @@ const HomePage = () => {
   const handleObjectClick = (objectName: string) => {
     setSelectedObjectName(objectName);
   };
-// console.log(deployedObjects, "<<<<<<<<<<<<<<<<<<");
 
   // 객체 위치 변경
   const [position, setPosition] = useState<Position>([0, 0, 0]);
@@ -373,7 +370,7 @@ const HomePage = () => {
     console.log('here', roomPosition);
     setIsEditing(!isEditing);
     // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
-    // updateRoomPosition(roomPosition);
+    updateRoomPosition(roomPosition);
   };
 
   // 방명록 모달
@@ -431,7 +428,7 @@ const HomePage = () => {
             <AnimatePresence>
               {isColorPickerOpen && (
                 <S.ColorCircleWrapper>
-                  {colors.map(([colorName, colorValue], index) => (
+                  {colors.map(([colorName, colorValue, colorPath], index) => (
                     <S.ColorCircle
                       key={colorName}
                       initial={{ scale: 0 }}
@@ -439,7 +436,7 @@ const HomePage = () => {
                       exit={{ scale: 0 }}
                       transition={{ delay: index * 0.1 }}
                       color={colorValue}
-                      onClick={() => handleColorClick(colorName, colorValue)}
+                      onClick={() => handleColorClick(colorName, colorValue, colorPath)}
                     />
                   ))}
                 </S.ColorCircleWrapper>
@@ -524,9 +521,9 @@ const HomePage = () => {
               onCategoryClick={handleCategoryClick}
               $isRoom={'Y'}
             />
-            <SS.InventoryItemWrapper>
+            <SS.RoomInventoryItemWrapper>
               {activeCategory && renderItems()}
-            </SS.InventoryItemWrapper>
+            </SS.RoomInventoryItemWrapper>
           </SS.InventoryContainer>
         </S.ItemToast>
       )}
