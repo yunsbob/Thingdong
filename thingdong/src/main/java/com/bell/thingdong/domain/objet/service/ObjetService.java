@@ -235,7 +235,7 @@ public class ObjetService {
 	}
 
 	@Transactional
-	public void giveUnBoxThing(PresentReq presentReq) {
+	public void presentUnBoxThing(PresentReq presentReq) {
 		User user = userRepository.findByEmail(presentReq.getUserId()).orElseThrow(UserNotFoundException::new);
 
 		UserObject userObject = userObjectRepository.findById(presentReq.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);

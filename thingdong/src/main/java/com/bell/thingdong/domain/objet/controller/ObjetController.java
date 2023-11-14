@@ -76,10 +76,10 @@ public class ObjetController {
 		return ResponseEntity.ok().build();
 	}
 
-	@Operation(summary = "오브제 선물", description = "오브제를 해당 사용자에게 선물한다.")
+	@Operation(summary = "언박띵 선물", description = "오브제를 해당 사용자에게 선물한다.")
 	@PostMapping("/present")
-	public ResponseEntity<?> presentObject(@RequestBody PresentReq presentReq) {
-		objetService.giveUnBoxThing(presentReq);
+	public ResponseEntity<?> presentUnBoxThing(@RequestBody PresentReq presentReq) {
+		objetService.presentUnBoxThing(presentReq);
 
 		return ResponseEntity.ok().build();
 	}
