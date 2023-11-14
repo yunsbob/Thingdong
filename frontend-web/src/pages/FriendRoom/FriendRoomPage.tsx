@@ -214,8 +214,9 @@ const FriendRoomPage = () => {
       <MyRoom
         userObject={friendRoomState.userObjectList}
         thingsObject={friendThingsList}
-        selectedRoomColor={friendRoomState.roomColor}
+        selectedRoomColor={friendRoomState.roomColorPath}
         onObjectClick={handleObjectClick}
+        darkMode={friendRoomState.darkMode}
       />
     </>
   );

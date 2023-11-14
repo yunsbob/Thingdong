@@ -16,6 +16,7 @@ export interface MyRoomProps {
   onObjectClick: (objectName: string) => void;
   selectedRoomColor?: string | null;
   roomColor?: string;
+  darkMode: boolean;
 }
 
 export interface UserObject {
@@ -55,4 +56,9 @@ export interface MyRoom {
   roomId?: number;
   nextRoom?: number;
   prevRoom?: number;
+}
+
+export interface RoomStyle {
+  outerBackgroundColor: string;
+  innerBackground: string;
 }

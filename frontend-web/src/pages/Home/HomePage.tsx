@@ -43,6 +43,7 @@ import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 import { roomInventoryAtom } from '@/states/roomInventoryStates';
 import { useAtom } from 'jotai';
 import { useUpdateRoomColor } from '@/apis/Room/Mutations/useUpdateRoomColor';
+import { roomColorAtom } from '@/states/roomState';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -65,24 +66,25 @@ const HomePage = () => {
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
   const { data: roomState, isLoading } = useGetRoom(userId); // Fetching real data using the custom hook
   const [selectedRoomColor, setSelectedRoomColor] = useState(
-    roomState.roomColor
+    roomState.roomColorPath
   );
-  // const [selectedRoomColor, setSelectedRoomColor] = useState('white');
+  
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-
+  const [darkMode, setDarkMode] = useState<boolean>(roomState.darkMode);
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
   const updateRoomColorMutation = useUpdateRoomColor();
   const handleColorClick = (colorName: string, colorValue: string, colorPath: string) => {
     setSelectedRoomColor(colorPath);
+    setRoomColorState(colorName);
     const roomColorData = {
       roomId: roomState.roomId,
       roomColor: colorName
     }
     updateRoomColorMutation.mutate(roomColorData)
   };
-
+  
   const colors = [
     ['white', '#FFFFFF', "https://thingdong.com/resources/glb/room/room-white.glb"],
     ['yellow', '#FFDCB6', "https://thingdong.com/resources/glb/room/room_yellow.glb"],
@@ -91,28 +93,7 @@ const HomePage = () => {
     ['purple', '#9F98E0', "https://thingdong.com/resources/glb/room/room-puple.glb"],
     ['black', '#545454', "https://thingdong.com/resources/glb/room/room_black.glb"],
   ];
-
-  // 찐 userObjectList
-  const [tempObectList, setTempObectList] = useState<UserObject[]>([
-    {
-      name: 'bed1',
-      userObjectId: 1,
-      position: [MOVE * -3, 0, 0],
-      rotation: [0, ROTATE, 0],
-      objectModelPath: bed_1,
-      isWall: false,
-    },
-    {
-      name: 'cabinet1',
-      userObjectId: 2,
-      position: [MOVE * -2, 0, MOVE * 3],
-      rotation: [0, ROTATE, 0],
-      objectModelPath: cabinet_1,
-      isWall: false,
-    },
-  ]);
-
-  // const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
+  const [, setRoomColorState] = useAtom(roomColorAtom);
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState.userObjectList
   );
@@ -124,18 +105,6 @@ const HomePage = () => {
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>(
     roomState && roomState.smartThingsList ? roomState.smartThingsList : []
   );
-
-  // const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
-  //   {
-  //     name: 'lamp1',
-  //     deviceId: 0,
-  //     userObjectId: 8,
-  //     position: [0, 0, 0],
-  //     rotation: [0, 0, 0],
-  //     objectModelPath: lamp_1,
-  //     isWall: false,
-  //   },
-  // ]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -152,6 +121,7 @@ const HomePage = () => {
     unBoxThingList,
   } = useGetRoomInventory() as RoomInventoryData;
 
+  // 룸 인벤토리 atom에 저장
   useEffect(() => {
     setRoomInventory({
       furnitureList: furnitureList || [],
@@ -250,7 +220,9 @@ const HomePage = () => {
       }
     }
   };
-console.log(myObjectList, '>>>>>>>>>>');
+console.log(myObjectList, 'myObject');
+console.log(roomState, 'roomstate');
+
 
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
@@ -399,8 +371,6 @@ console.log(myObjectList, '>>>>>>>>>>');
 
   // 객체 인벤토리에 저장 (방에서 삭제)
   const handleRemoveClick = () => {
-    if (selectedItemId == null) return;
-
     setMyObjectList(currentObjects => {
       return currentObjects.filter(obj => obj.name !== selectedObjectName);
     });
@@ -478,6 +448,9 @@ console.log(myObjectList, '>>>>>>>>>>');
     setCurrentIndex(0);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode)
+  }
   return (
     <>
       <GuestbookModal
@@ -501,6 +474,15 @@ console.log(myObjectList, '>>>>>>>>>>');
               onClick={handleEdit}
             />
           </S.BackButtonWrapper>
+          <S.DarkModeWrapper>
+          <Image
+              src={darkMode ? IMAGES.ROOM.DARK_MODE : IMAGES.ROOM.LIGHT_MODE}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={toggleDarkMode}
+            />
+          </S.DarkModeWrapper>
           <S.ChangeRoomWrapper>
             <Image
               src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
@@ -594,6 +576,7 @@ console.log(myObjectList, '>>>>>>>>>>');
         thingsObject={myThingsList}
         onObjectClick={handleObjectClick}
         selectedRoomColor={selectedRoomColor}
+        darkMode={darkMode}
       />
       {isEditing && (
         <S.ItemToast
