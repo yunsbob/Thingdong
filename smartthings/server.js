@@ -195,7 +195,7 @@ server.get("/smart", async (req, res) => {
         let hueStatus = "";
         let saturationStatus = "";
         let status = health;
-        if (state.components.main && health == "ONLINE") {
+        if (state.components.main) {
           if (Object.keys(state.components.main).includes("switch")) {
             status = state.components.main.switch.switch.value;
           }
