@@ -133,7 +133,7 @@ const MyRoom = ({
                           setIsShining(!isShining);
                         }
                         onObjectClick(obj.name);
-                        console.log(obj.name, 'here'); // TODO: 여기가 인식이 안되는거잖아?
+                        console.log(obj.name, 'herewww');
                       }}
                     />
                     {obj.name.includes('lamp') && isShining && (

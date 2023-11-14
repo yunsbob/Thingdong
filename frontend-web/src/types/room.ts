@@ -33,6 +33,10 @@ export interface ThingsObject extends UserObject {
   status: boolean;
 }
 
+export interface UpdatedList {
+  
+}
+
 // 스마트용따로
 // export interface UserObjectList {
 //   name: string;

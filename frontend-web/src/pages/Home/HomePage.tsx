@@ -257,77 +257,84 @@ const HomePage = () => {
   const [selectedObjectName, setSelectedObjectName] = useState('');
   const handleObjectClick = (objectName: string) => {
     setSelectedObjectName(objectName);
+    console.log(objectName);
   };
 
   // 객체 위치 변경
   const [position, setPosition] = useState<Position>([0, 0, 0]);
   const handleArrowClick = (direction: string | null) => {
-    setMyObjectList(currentObjects => {
-      if (currentObjects.length === 0) {
-        return currentObjects;
-      }
-      return currentObjects.map(obj => {
-        if (obj.name === selectedObjectName) {
-          let [x, y, z] = obj.position;
-          if (!obj.isWall) {
-            switch (direction) {
-              case 'right':
-                x += MOVE;
-                break;
-              case 'left':
-                x -= MOVE;
-                break;
-              case 'up':
-                z -= MOVE;
-                break;
-              case 'down':
-                z += MOVE;
-                break;
-              default:
-                break;
-            }
-          } else if (obj.isWall && obj.rotation[1] === 0) {
-            switch (direction) {
-              case 'right':
-                x += MOVE;
-                break;
-              case 'left':
-                x -= MOVE;
-                break;
-              case 'up':
-                y += MOVE;
-                break;
-              case 'down':
-                y -= MOVE;
-                break;
-              default:
-                break;
-            }
-          } else if (obj.isWall && obj.rotation[1] !== 0) {
-            switch (direction) {
-              case 'right':
-                z -= MOVE;
-                break;
-              case 'left':
-                z += MOVE;
-                break;
-              case 'up':
-                y += MOVE;
-                break;
-              case 'down':
-                y -= MOVE;
-                break;
-              default:
-                break;
-            }
+    const combinedList = [...myObjectList, ...myThingsList];
+
+    // setMyObjectList(currentObjects => {
+    //   if (currentObjects.length === 0) {
+    //     return currentObjects;
+    //   }
+
+    const updatedList = combinedList.map(obj => {
+      if (obj.name === selectedObjectName) {
+        let [x, y, z] = obj.position;
+
+        if (!obj.isWall) {
+          switch (direction) {
+            case 'right':
+              x += MOVE;
+              break;
+            case 'left':
+              x -= MOVE;
+              break;
+            case 'up':
+              z -= MOVE;
+              break;
+            case 'down':
+              z += MOVE;
+              break;
+            default:
+              break;
           }
-          console.log('W:', obj.size?.width, 'H:', obj.size?.height);
-          console.log(obj.position);
-          return { ...obj, position: [x, y, z] };
+        } else if (obj.isWall && obj.rotation[1] === 0) {
+          switch (direction) {
+            case 'right':
+              x += MOVE;
+              break;
+            case 'left':
+              x -= MOVE;
+              break;
+            case 'up':
+              y += MOVE;
+              break;
+            case 'down':
+              y -= MOVE;
+              break;
+            default:
+              break;
+          }
+        } else if (obj.isWall && obj.rotation[1] !== 0) {
+          switch (direction) {
+            case 'right':
+              z -= MOVE;
+              break;
+            case 'left':
+              z += MOVE;
+              break;
+            case 'up':
+              y += MOVE;
+              break;
+            case 'down':
+              y -= MOVE;
+              break;
+            default:
+              break;
+          }
         }
-        return obj;
-      });
+        return { ...obj, position: [x, y, z] as Position };
+      }
+      return obj;
     });
+
+    setMyObjectList(updatedList.filter(obj => !('deviceId' in obj)));
+    setMyThingsList(updatedList.filter(obj => 'deviceId' in obj) as ThingsObject[]);
+
+    // });
   };
 
   // 객체 회전
