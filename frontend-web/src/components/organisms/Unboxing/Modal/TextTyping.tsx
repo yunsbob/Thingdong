@@ -22,7 +22,8 @@ const TextTyping = () => {
 
   const onModalClose = () => {
     setModalOpen(false);
-    setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
+    console.log('hihi');
+    // setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
   };
 
   const handleConfirm = () => {
