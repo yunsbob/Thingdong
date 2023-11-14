@@ -19,6 +19,7 @@ import com.bell.thingdong.domain.objet.dto.request.UserObjectPositionReq;
 import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
 import com.bell.thingdong.domain.objet.entity.Objet;
+import com.bell.thingdong.domain.objet.entity.UnBoxThingHistory;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.objet.exception.ObjectCategoryNotFoundException;
 import com.bell.thingdong.domain.objet.exception.ObjectIsExpensiveException;
@@ -230,8 +231,12 @@ public class ObjetService {
 		objetRepository.save(objet);
 
 		UserObject userObject = UserObject.builder().objet(objet).user(user).userObjectStatus(UserObjectStatus.Inventory).build();
+		Long userObjectId = userObjectRepository.save(userObject).getUserObjectId();
 
-		return userObjectRepository.save(userObject).getUserObjectId();
+		UnBoxThingHistory unBoxThingHistory = UnBoxThingHistory.builder().objet(objet).user(user).objetName(name).build();
+		unBoxThingHistoryRepository.save(unBoxThingHistory);
+
+		return userObjectId;
 	}
 
 	@Transactional
