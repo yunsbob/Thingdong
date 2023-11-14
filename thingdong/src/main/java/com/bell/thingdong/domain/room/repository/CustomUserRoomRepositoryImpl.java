@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bell.thingdong.domain.objet.dto.ObjectCategory;
-import com.bell.thingdong.domain.objet.dto.ObjectPositionDto;
-import com.bell.thingdong.domain.objet.dto.ObjectRotationDto;
 import com.bell.thingdong.domain.objet.dto.ObjectSizeDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectRoomDto;
 import com.bell.thingdong.domain.objet.entity.UserObject;
@@ -31,8 +29,16 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 		List<UserObjectRoomDto> userObjectRoomDtoList = new ArrayList<>();
 		List<SmartThingsRoomDto> smartThingsRoomDtoList = new ArrayList<>();
 		for (UserObject userObject : userRoomOne.getUserObjectList()) {
-			ObjectPositionDto objectPositionDto = ObjectPositionDto.builder().x(userObject.getX()).y(userObject.getY()).z(userObject.getZ()).build();
-			ObjectRotationDto objectRotationDto = ObjectRotationDto.builder().x(userObject.getRotationX()).y(userObject.getRotationY()).z(userObject.getRotationZ()).build();
+			List<Double> positionList = new ArrayList<>();
+			positionList.add(userObject.getX());
+			positionList.add(userObject.getY());
+			positionList.add(userObject.getZ());
+
+			List<Double> rotationList = new ArrayList<>();
+			rotationList.add(userObject.getRotationX());
+			rotationList.add(userObject.getRotationY());
+			rotationList.add(userObject.getRotationZ());
+
 			ObjectSizeDto objectSizeDto = ObjectSizeDto.builder().width(userObject.getObjet().getObjectWidth()).height(userObject.getObjet().getObjectHeight()).build();
 
 			if (userObject.getObjet().getObjectCategory().equals(ObjectCategory.SmartThings)) {
@@ -42,8 +48,8 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 					                                                          userObject.getSmartThings().getActivationPath() : userObject.getObjet().getObjectModelPath())
 				                                                          .name(userObject.getObjet().getObjectName())
 				                                                          .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
-				                                                          .position(objectPositionDto)
-				                                                          .rotation(objectRotationDto)
+				                                                          .position(positionList)
+				                                                          .rotation(rotationList)
 				                                                          .size(objectSizeDto)
 				                                                          .deviceId(userObject.getSmartThings().getDeviceId())
 				                                                          .status(userObject.getSmartThings().getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
@@ -56,8 +62,8 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 				                                                       .objectModelPath(userObject.getObjet().getObjectModelPath())
 				                                                       .name(userObject.getObjet().getObjectName())
 				                                                       .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
-				                                                       .position(objectPositionDto)
-				                                                       .rotation(objectRotationDto)
+				                                                       .position(positionList)
+				                                                       .rotation(rotationList)
 				                                                       .size(objectSizeDto)
 				                                                       .build();
 
