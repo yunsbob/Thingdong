@@ -1,13 +1,15 @@
 package com.bell.thingdong.domain.room.service;
 
-import java.util.List;
-import java.util.Objects;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bell.thingdong.domain.room.dto.request.ColorReq;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
+import com.bell.thingdong.domain.room.entity.RoomColor;
 import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.room.exception.RoomColorNotFoundException;
+import com.bell.thingdong.domain.room.exception.RoomNotFoundException;
+import com.bell.thingdong.domain.room.repository.RoomColorRepository;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
@@ -23,12 +25,14 @@ import lombok.extern.slf4j.Slf4j;
 public class UserRoomService {
 	private final UserRepository userRepository;
 	private final UserRoomRepository userRoomRepository;
+	private final RoomColorRepository roomColorRepository;
 
 	@Transactional
 	public void createRoom(String email) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-		UserRoom userRoom = UserRoom.builder().user(user).roomColor("000000").build();
+		RoomColor roomColor = roomColorRepository.findById("yellow").orElseThrow(RoomColorNotFoundException::new);
+		UserRoom userRoom = UserRoom.builder().user(user).roomColor(roomColor).build();
 
 		userRoomRepository.save(userRoom);
 	}
@@ -45,33 +49,14 @@ public class UserRoomService {
 			user = userRepository.findByEmail(userRoomRes.getUserId()).orElseThrow(UserNotFoundException::new);
 		}
 
-		List<Long> rooms = userRoomRepository.findRoomIdByUserId(user.getId());
-		for (int i = 0; i < rooms.size(); i++) {
-			if (Objects.equals(rooms.get(i), userRoomRes.getRoomId())) {
-				if (i == 0) {
-					userRoomRes.setPrevRoom(0L);
-				} else {
-					userRoomRes.setPrevRoom(rooms.get(i - 1));
-				}
-				if (i == rooms.size() - 1) {
-					userRoomRes.setNextRoom(0L);
-				} else {
-					userRoomRes.setNextRoom(rooms.get(i + 1));
-				}
-				break;
-			}
-		}
-
 		return userRoomRes;
 	}
 
-	public void updateRoomColor(String email, String roomColor) {
-		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+	@Transactional
+	public void updateRoomColor(ColorReq colorReq) {
+		UserRoom userRoom = userRoomRepository.findById(colorReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
+		RoomColor findRoomColor = roomColorRepository.findById(colorReq.getRoomColor()).orElseThrow(RoomColorNotFoundException::new);
 
-		List<UserRoom> userRoomList = userRoomRepository.findAllByUserId(user.getId());
-
-		for (UserRoom userRoom : userRoomList) {
-			userRoom.setRoomColor(roomColor);
-		}
+		userRoom.setRoomColor(findRoomColor);
 	}
 }

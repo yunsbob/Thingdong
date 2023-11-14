@@ -1,25 +1,34 @@
 package com.bell.thingdong.domain.objet.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bell.thingdong.domain.objet.dto.ArrangeObjectPositionDto;
 import com.bell.thingdong.domain.objet.dto.FindObjectDto;
 import com.bell.thingdong.domain.objet.dto.ObjectCategory;
 import com.bell.thingdong.domain.objet.dto.ObjectInventoryDto;
 import com.bell.thingdong.domain.objet.dto.ObjectRoomInventoryDto;
 import com.bell.thingdong.domain.objet.dto.UnBoxThingHistoryDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
+import com.bell.thingdong.domain.objet.dto.request.PresentReq;
+import com.bell.thingdong.domain.objet.dto.request.UserObjectPositionReq;
 import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
+import com.bell.thingdong.domain.objet.entity.Objet;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.objet.exception.ObjectCategoryNotFoundException;
 import com.bell.thingdong.domain.objet.exception.ObjectIsExpensiveException;
 import com.bell.thingdong.domain.objet.exception.UserObjectNotFoundException;
+import com.bell.thingdong.domain.objet.repository.ObjetRepository;
 import com.bell.thingdong.domain.objet.repository.UnBoxThingHistoryRepository;
 import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
+import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.room.exception.RoomNotFoundException;
+import com.bell.thingdong.domain.room.repository.UserRoomRepository;
 import com.bell.thingdong.domain.thinghistory.service.ThingHistoryService;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
@@ -34,7 +43,9 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 public class ObjetService {
 	private final UnBoxThingHistoryRepository unBoxThingHistoryRepository;
+	private final ObjetRepository objetRepository;
 	private final UserObjectRepository userObjectRepository;
+	private final UserRoomRepository userRoomRepository;
 	private final UserRepository userRepository;
 	private final ThingHistoryService thingHistoryService;
 
@@ -75,6 +86,9 @@ public class ObjetService {
 			ObjectRoomInventoryDto objectRoomInventoryDto = ObjectRoomInventoryDto.builder()
 			                                                                      .userObjectId(findObjectDto.getUserObjectId())
 			                                                                      .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
+			                                                                      .objectModelPath(findObjectDto.getObjet().getObjectModelPath())
+			                                                                      .name(findObjectDto.getObjet().getObjectName())
+			                                                                      .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
 			                                                                      .build();
 
 			if (findObjectDto.getObjectStatus().equals(UserObjectStatus.Room))
@@ -157,5 +171,75 @@ public class ObjetService {
 		                         .smartThingsList(smartThingsList)
 		                         .unBoxThingList(unBoxThingHistoryList)
 		                         .build();
+	}
+
+	@Transactional
+	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq) {
+		UserRoom userRoom = userRoomRepository.findById(userObjectPositionReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
+		// 해당 방에 배치되어 있는 오브제들을 모두 불러옴
+		List<UserObject> userObjectCheckList = userObjectRepository.findUserObjectIdByRoomId(userRoom.getRoomId());
+
+		// 해당 방에 배치될 오브제들을 정렬함
+		List<ArrangeObjectPositionDto> userObjectList = userObjectPositionReq.getObjectPositionList()
+		                                                                     .stream()
+		                                                                     .sorted(Comparator.comparing(ArrangeObjectPositionDto::getUserObjectId))
+		                                                                     .toList();
+
+		// idx == 현재 인덱스, last == 탐색이 끝나는 지점
+		int idx = 0, last = userObjectCheckList.size();
+
+		// 배치될 오브제들을 기준으로 반복문 돌림
+		for (ArrangeObjectPositionDto arrangeObjectPositionDto : userObjectList) {
+			while (idx < last && userObjectCheckList.get(idx).getUserObjectId() < arrangeObjectPositionDto.getUserObjectId()) {
+				userObjectCheckList.get(idx).setUserObjectPosition(0.0, 0.0, 0.0, 0.0, null, UserObjectStatus.Inventory);
+				idx++;
+			}
+
+			if (idx < last && userObjectCheckList.get(idx).getUserObjectId().equals(arrangeObjectPositionDto.getUserObjectId())) {
+				userObjectCheckList.get(idx)
+				                   .setUserObjectPosition(arrangeObjectPositionDto.getPosition().getX(), arrangeObjectPositionDto.getPosition().getY(),
+					                   arrangeObjectPositionDto.getPosition().getZ(), arrangeObjectPositionDto.getRotation().getY(), userRoom, UserObjectStatus.Room);
+				idx++;
+			} else {
+				UserObject userObject = userObjectRepository.findById(arrangeObjectPositionDto.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
+				userObject.setUserObjectPosition(arrangeObjectPositionDto.getPosition().getX(), arrangeObjectPositionDto.getPosition().getY(),
+					arrangeObjectPositionDto.getPosition().getZ(), arrangeObjectPositionDto.getRotation().getY(), userRoom, UserObjectStatus.Room);
+			}
+		}
+
+		while (idx < last) {
+			userObjectCheckList.get(idx).setUserObjectPosition(0.0, 0.0, 0.0, 0.0, null, UserObjectStatus.Inventory);
+			idx++;
+		}
+	}
+
+	@Transactional
+	public Long addUnBoxThing(String email, String name, String imgPath, String modelPath) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+		Objet objet = Objet.builder()
+		                   .objectImagePath(imgPath)
+		                   .objectModelPath(modelPath)
+		                   .objectName(name)
+		                   .objectWidth(2.0)
+		                   .objectHeight(2.0)
+		                   .isWall("N")
+		                   .objectCategory(ObjectCategory.UnBoxThing)
+		                   .build();
+
+		objetRepository.save(objet);
+
+		UserObject userObject = UserObject.builder().objet(objet).user(user).userObjectStatus(UserObjectStatus.Inventory).build();
+
+		return userObjectRepository.save(userObject).getUserObjectId();
+	}
+
+	@Transactional
+	public void presentUnBoxThing(PresentReq presentReq) {
+		User user = userRepository.findByEmail(presentReq.getUserId()).orElseThrow(UserNotFoundException::new);
+
+		UserObject userObject = userObjectRepository.findById(presentReq.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
+
+		userObject.setUser(user);
 	}
 }

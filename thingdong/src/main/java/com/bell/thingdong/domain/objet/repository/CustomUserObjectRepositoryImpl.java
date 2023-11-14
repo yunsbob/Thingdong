@@ -39,6 +39,11 @@ public class CustomUserObjectRepositoryImpl implements CustomUserObjectRepositor
 		return findObjectList;
 	}
 
+	@Override
+	public List<UserObject> findUserObjectIdByRoomId(Long roomId) {
+		return jpaQueryFactory.selectFrom(userObject).where(userObject.room.roomId.eq(roomId)).orderBy(userObject.userObjectId.asc()).fetch();
+	}
+
 	private BooleanExpression userObjectStatusNe(UserObjectStatus userObjectStatus) {
 		return userObjectStatus == null ? null : userObject.userObjectStatus.ne(userObjectStatus);
 	}

@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +38,7 @@ public class UserController {
 
 	@PostMapping("/login")
 	@Operation(summary = "로그인 API", description = "사용자를 로그인 시키고 사용자 정보와 accessToken을 반환한다")
-	public ResponseEntity<LoginRes> login(@RequestBody LoginReq loginReq, HttpServletResponse response, HttpServletRequest request) {
+	public ResponseEntity<LoginRes> login(@Valid @RequestBody LoginReq loginReq, HttpServletResponse response, HttpServletRequest request) {
 		LoginRes loginRes = userService.login(loginReq, request, response);
 		return ResponseEntity.ok(loginRes);
 	}
@@ -51,7 +52,7 @@ public class UserController {
 
 	@PostMapping("/signUp")
 	@Operation(summary = "회원가입 API", description = "사용자를 회원가입 시킵니다.")
-	public ResponseEntity<?> signUp(@RequestBody SignUpReq signUpReq) {
+	public ResponseEntity<?> signUp(@Valid @RequestBody SignUpReq signUpReq) {
 		userService.signUp(signUpReq);
 		return ResponseEntity.ok().build();
 	}

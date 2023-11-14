@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
   backend:
@@ -7,9 +7,5 @@ services:
       context: ./thingdong
       args:
         SERVER_MODE: prod
-    networks:
-      - deploy
-
-networks:
-  deploy:
-    external: true
+    ports:
+      - "8080:8080"
