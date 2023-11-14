@@ -17,6 +17,7 @@ import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 import { QueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { CHILDREN_PATH } from '@/constants/path';
+import { resetUnboxingModal } from '@/utils/resetUnboxingModal';
 
 const Complete = () => {
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
@@ -31,16 +32,8 @@ const Complete = () => {
   const queryClient = new QueryClient();
 
   const handleGet = () => {
-    setModalOpen(false);
-    setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
-    setTypingContent('');
-    setUnboxingObject({
-      glbPath: '',
-      pngPath: '',
-      gifPath: '',
-      userObjectId: 0,
-    });
-    queryClient.refetchQueries({
+    resetUnboxingModal();
+    queryClient.invalidateQueries({
       queryKey: ['inventory'],
     });
   };

@@ -38,7 +38,7 @@ const Modal = ({
             >
               {children}
             </S.ModalContainer>
-            <div
+            {/* <div
               onClick={onClose}
               style={{
                 height: '30%',
@@ -47,7 +47,7 @@ const Modal = ({
                 bottom: '0%',
                 translate: 'transformY(100%)',
               }}
-            ></div>
+            ></div> */}
           </S.ModalWrapper>
         </ModalPortal>
       )}
