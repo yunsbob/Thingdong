@@ -317,7 +317,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
       "*",
       "switchLevelHandler"
     );
-    const url = `http://localhost:3000/oauth/redirect?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
+    const url = `https://thingdong.com/smart/oauth/redirect?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
     res.redirect(url);
   } catch (error) {
     next(error);
