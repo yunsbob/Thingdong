@@ -10,6 +10,12 @@ import { useAcceptFriend } from '@/apis/Friend/Mutations/useAcceptFriend';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/path';
 import { IMAGES } from '@/constants/images';
+import { useSetAtom } from 'jotai';
+import {
+  modalContentAtom,
+  sendingFriendAtom,
+} from '@/states/unboxingModalStates';
+import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 
 interface FriendBlockProps extends User {
   $backgroundColor?: string;
@@ -39,6 +45,9 @@ const FriendBlock = ({
     IMAGES.FRIEND.FACE.BLUE_ICON,
   ];
 
+  const setSendingFriend = useSetAtom(sendingFriendAtom);
+  const setModalContent = useSetAtom(modalContentAtom);
+
   const deleteFriendMutation = useDeleteFriend();
   const deleteThinggu = (userId: string) => {
     deleteFriendMutation.mutate(userId);
@@ -57,18 +66,18 @@ const FriendBlock = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
+    if ($isPresent === 'true') {
+      setSendingFriend({ userId, nickname });
+      setModalContent(UNBOXING_MODAL_NAME.CHECK);
+      return;
+    }
     navigate(PATH.FRIENDROOM, { state: { userId, nickname } });
   };
 
   return (
     <S.FriendBlockContainer $backgroundColor={$backgroundColor}>
-      <S.FriendBlockProfile>
-        <Image
-          src={imageSrcs[userId.length % 3]}
-          width={3}
-          height={3}
-          onClick={handleClick}
-        />
+      <S.FriendBlockProfile onClick={handleClick}>
+        <Image src={imageSrcs[userId.length % 3]} width={3} height={3} />
         <S.FriendBlockText
           size={$nickNameFontSize}
           fontWeight={$nickNameFontWeight}

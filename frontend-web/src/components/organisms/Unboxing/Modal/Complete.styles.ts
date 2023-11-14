@@ -8,7 +8,6 @@ const ObjectBox = styled.div`
   height: 220px;
   margin: 10px 0 30px 0;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.color.coolGrey};
   position: relative;
 `;
 const ModalWrapper = styled.div`
@@ -29,4 +28,4 @@ const DateBox = styled.div`
   left: 22px;
   transform: rotate(-22deg);
 `;
-export { ObjectBox, ModalWrapper, DateBox }
+export { ObjectBox, ModalWrapper, DateBox };
