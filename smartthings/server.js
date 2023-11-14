@@ -148,11 +148,8 @@ const apiApp = new SmartApp()
  * Webserver setup
  */
 const server = express();
-server.use(
-  cors({
-    origin: "*",
-  })
-);
+
+server.use(cors());
 
 server.set("views", path.join(__dirname, "views"));
 server.use(
@@ -172,6 +169,7 @@ server.use(function (req, res, next) {
   res.flush = function () {};
   next();
 });
+
 server.post("/smart", async (req, res) => {
   req.url = req.originalUrl;
   apiApp.handleHttpCallback(req, res);
