@@ -41,7 +41,8 @@ const MyRoom = ({
       <div
         style={{
           // background: `linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(153, 153, 255, 50) 140%`, // purple
-          background: `linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 129, 79, 50) 140%`, // orange
+          background: `linear-gradient(rgba(255, 255, 255, 0) 0%, #adc4ef 120%`, // skyblue
+          // background: `linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 129, 79, 50) 140%`, // orange
           width: '100%',
           height: '100vh',
         }}
@@ -133,7 +134,7 @@ const MyRoom = ({
                           setIsShining(!isShining);
                         }
                         onObjectClick(obj);
-                        console.log(obj.name, 'herewww');
+                        console.log(obj.name, 'clicked on thingsObject');
                       }}
                     />
                     {obj.name.includes('lamp') && isShining && (

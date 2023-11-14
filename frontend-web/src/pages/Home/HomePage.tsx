@@ -264,9 +264,9 @@ const HomePage = () => {
     if (obj.deviceId) {
       const thingStatus = {
         deviceId: obj.deviceId,
-        status: !obj.status
-      }
-      updateThingsStatusMutation.mutate(thingStatus)
+        status: !obj.status,
+      };
+      updateThingsStatusMutation.mutate(thingStatus);
     }
   };
 
@@ -438,6 +438,8 @@ const HomePage = () => {
       roomId: roomState.roomId,
       objectPositionList: objectPositionList,
     };
+
+    console.log(roomPosition, 'hererere');
 
     setIsEditing(!isEditing);
     updateRoomPosition(roomPosition);
