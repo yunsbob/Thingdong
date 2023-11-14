@@ -151,14 +151,8 @@ const MyRoom = ({
                     node.receiveShadow = true;
                   }
                 });
-                glb.scene.traverse(node => {
-                  if (node.type === 'Mesh') {
-                    node.castShadow = true;
-                    node.receiveShadow = true;
-                  }
-                });
 
-                const [isShining, setIsShining] = useState(false);
+                const [isShining, setIsShining] = useState(obj.status);
 
                 return (
                   <React.Fragment key={obj.name}>
@@ -219,13 +213,6 @@ const MyRoom = ({
                 scale={1.05}
                 position={[-0.2, 0, -0.2]}
               />
-              {/* 화면 중앙에 객체들 배치되게 scale, position 조정 */}
-              <primitive
-                name="room"
-                object={clone}
-                scale={1.05}
-                position={[-0.2, 0, -0.2]}
-              />
 
               <OrthographicCamera
                 name="Default Camera"
@@ -237,19 +224,7 @@ const MyRoom = ({
                 rotation={[10, 40, 0.31]}
                 scale={1}
               />
-              <OrthographicCamera
-                name="Default Camera"
-                makeDefault={true}
-                zoom={32}
-                far={10000}
-                near={-5000}
-                position={[265, 350, 423]}
-                rotation={[10, 40, 0.31]}
-                scale={1}
-              />
 
-              <pointLight position={[-5, 5, -10]} castShadow intensity={0.6} />
-              {/* <spotLight intensity={1} position={[0, 1000, 0]} /> */}
               <pointLight position={[-5, 5, -10]} castShadow intensity={0.6} />
               {/* <spotLight intensity={1} position={[0, 1000, 0]} /> */}
 
@@ -272,18 +247,6 @@ const MyRoom = ({
               {/* Light */}
               {/* <ambientLight intensity={0.05} /> */}
               {/* <Environment preset="sunset" /> */}
-              <pointLight
-                name="LampLight1"
-                castShadow
-                intensity={0.2}
-                distance={205}
-                shadow-mapSize-width={1024}
-                shadow-mapSize-height={1024}
-                shadow-camera-near={100}
-                shadow-camera-far={2000}
-                color="#ffd000"
-                position={[5, 16, -1]}
-              />
               {/* <hemisphereLight
               name="Default Ambient Light"
               intensity={0.1}
@@ -294,7 +257,6 @@ const MyRoom = ({
           </Canvas>
         </Suspense>
       </div>
-      //{' '}
     </div>
   );
 };
