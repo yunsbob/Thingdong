@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bell.thingdong.domain.objet.dto.request.PresentReq;
 import com.bell.thingdong.domain.objet.dto.request.UserObjectPositionReq;
 import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
@@ -71,6 +72,14 @@ public class ObjetController {
 	@PostMapping("/position")
 	public ResponseEntity<?> arrangeObject(@RequestBody UserObjectPositionReq userObjectPositionReq) {
 		objetService.setUserObjectPosition(userObjectPositionReq);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@Operation(summary = "오브제 선물", description = "오브제를 해당 사용자에게 선물한다.")
+	@PostMapping("/present")
+	public ResponseEntity<?> presentObject(@RequestBody PresentReq presentReq) {
+		objetService.giveUnBoxThing(presentReq);
 
 		return ResponseEntity.ok().build();
 	}
