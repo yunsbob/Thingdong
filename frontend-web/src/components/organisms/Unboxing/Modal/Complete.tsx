@@ -14,23 +14,35 @@ import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';
 import Modal from '@/components/molecules/Modal/Modal';
 import { getToday } from '@/utils/getToday';
 import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
+import { QueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { CHILDREN_PATH } from '@/constants/path';
 
 const Complete = () => {
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
   const [, setModalContent] = useAtom(modalContentAtom);
   const [typingContent, setTypingContent] = useAtom(typingContentAtom);
-  const [, setSendingFrind] = useAtom(sendingFriendAtom);
-  const unboxingObject = useAtomValue(unboxingObjectAtom);
+  const [unboxingObject, setUnboxingObject] = useAtom(unboxingObjectAtom);
 
   const handleConfirm = () => {
     setModalContent(UNBOXING_MODAL_NAME.SENDING_LIST);
-    setSendingFrind('멋쟁이 토마토');
   };
+
+  const queryClient = new QueryClient();
 
   const handleGet = () => {
     setModalOpen(false);
     setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
     setTypingContent('');
+    setUnboxingObject({
+      glbPath: '',
+      pngPath: '',
+      gifPath: '',
+      userObjectId: 0,
+    });
+    queryClient.refetchQueries({
+      queryKey: ['inventory'],
+    });
   };
 
   // 조사 맞춤 함수
@@ -56,7 +68,7 @@ const Complete = () => {
               {getToday()}
             </Text>
           </S.DateBox>
-          <Image src={unboxingObject.pngPath} $unit={'px'} height={180} />
+          <Image src={unboxingObject.gifPath} $unit={'px'} height={250} />
         </S.ObjectBox>
         <Text
           size="body1"

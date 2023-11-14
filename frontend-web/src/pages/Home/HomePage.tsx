@@ -61,7 +61,7 @@ const HomePage = () => {
   const [selectedRoomColor, setSelectedRoomColor] = useState(
     roomState.roomColorPath
   );
-  
+
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [darkMode, setDarkMode] = useState<boolean>(roomState.darkMode);
   const toggleColorPicker = () => {
@@ -81,7 +81,7 @@ const HomePage = () => {
     };
     updateRoomColorMutation.mutate(roomColorData);
   };
-  
+
   const colors = [
     [
       'white',
@@ -211,17 +211,22 @@ const HomePage = () => {
       ...updatedInventory.smartThingsList,
       ...updatedInventory.unBoxThingList,
     ];
+
+    // 보유한 아이디로 무슨 아이템을 클릭했는지 서치
     const clickedItem = allUpdatedObjects.find(
       item => item.userObjectId === selectedItemId
     );
 
     if (clickedItem) {
+      // console.log(clickedItem, '얘에요', activeCategory);
       // 아이템이 이미 myObjectList에 있는지 확인
       const isItemAlreadyInList = myObjectList.some(
         item => item.userObjectId === selectedItemId
       );
 
-      if (!isItemAlreadyInList) {
+      console.log(isItemAlreadyInList);
+      console.log(clickedItem);
+      if (!isItemAlreadyInList && activeCategory !== '띵즈') {
         const newUserObject: UserObject = {
           name: clickedItem.name,
           userObjectId: clickedItem.userObjectId,
@@ -232,6 +237,18 @@ const HomePage = () => {
         };
 
         setMyObjectList(prevList => [...prevList, newUserObject]);
+        // } else {
+        // TODO: API 수정되면 smartThingsList에 넣기
+        // const newUserObe ject: ThingsObject = {
+        //   name: clickedIt785 em.name,
+        //   userObjectId: clickedItem.userObjectId,
+        //   objectModelPath: clickedItem.objectModelPath,
+        //   isWall: clickedItem.isWall,
+        //   position: [0, 0, 0],
+        //   rotation: [0, 0, 0],
+        // deviceId: clickedItem.deviceId,
+        // status: clickedItem.status,
+        // };/
       }
     }
   };
@@ -275,9 +292,9 @@ const HomePage = () => {
     if (obj.deviceId) {
       const thingStatus = {
         deviceId: obj.deviceId,
-        status: !obj.status
-      }
-      updateThingsStatusMutation.mutate(thingStatus)
+        status: !obj.status,
+      };
+      updateThingsStatusMutation.mutate(thingStatus);
     }
   };
 
@@ -450,6 +467,8 @@ const HomePage = () => {
       objectPositionList: objectPositionList,
     };
 
+    console.log(roomPosition, 'hererere');
+
     setIsEditing(!isEditing);
     updateRoomPosition(roomPosition);
   };
@@ -475,11 +494,8 @@ const HomePage = () => {
   };
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-  }
-
-  console.log(roomState, 'roomstate');
-  
+    setDarkMode(!darkMode);
+  };
   return (
     <>
       <GuestbookModal
@@ -507,7 +523,7 @@ const HomePage = () => {
             />
           </S.BackButtonWrapper>
           <S.DarkModeWrapper>
-          <Image
+            <Image
               src={darkMode ? IMAGES.ROOM.DARK_MODE : IMAGES.ROOM.LIGHT_MODE}
               $unit={'px'}
               width={40}
