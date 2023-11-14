@@ -1,5 +1,5 @@
 import { instance } from '@/apis/instance';
-import { RoomColor, RoomPosition } from '@/interfaces/room';
+import { RoomColor, RoomPosition, RoomDark } from '@/interfaces/room';
 
 const getRoom = async (userId: string) => {
   try {
@@ -35,4 +35,12 @@ const updateRoomColor = async (data: RoomColor) => {
   }
 };
 
-export { getRoom, getRoomInventory, updateRoomPosition, updateRoomColor };
+const updateDarkMode = async (data: RoomDark) => {
+  try {
+    await instance.put('rooms/dark-mode', data);
+  } catch {
+    new Error('room dark mode update error')
+  }
+}
+
+export { getRoom, getRoomInventory, updateRoomPosition, updateRoomColor, updateDarkMode };
