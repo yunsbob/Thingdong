@@ -134,6 +134,7 @@ const MyRoom = ({
                       onClick={(e: any) => {
                         e.stopPropagation();
                         onObjectClick(obj.name);
+                        
                       }}
                     />
                   );
