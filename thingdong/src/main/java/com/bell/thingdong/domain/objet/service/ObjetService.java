@@ -199,7 +199,7 @@ public class ObjetService {
 	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq) {
 		UserRoom userRoom = userRoomRepository.findById(userObjectPositionReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
 		// 해당 방에 배치되어 있는 오브제들을 모두 불러옴
-		List<UserObject> userObjectCheckList = userObjectRepository.findUserObjectByRoomId(userRoom.getRoomId());
+		List<UserObject> userObjectCheckList = userRoom.getUserObjectList();
 
 		// 해당 방에 배치될 오브제들을 정렬함
 		List<ArrangeObjectPositionDto> userObjectList = userObjectPositionReq.getObjectPositionList()
