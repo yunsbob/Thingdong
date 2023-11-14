@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Button from '@/components/atoms/Button/Button';
 import { Image } from '@/components/atoms/Image/Image';
 import Input from '@/components/atoms/Input/Input';
@@ -8,8 +8,9 @@ import {
   modalContentAtom,
   modalOpenAtom,
   typingContentAtom,
+  unboxingObjectAtom,
 } from '@/states/unboxingModalStates';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { IMAGES } from '@/constants/images';
 import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 

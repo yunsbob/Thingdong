@@ -25,9 +25,7 @@ const FriendBlockText = styled(Text)<{ $ellipse: string }>`
   ${props =>
     props.$ellipse === 'true' &&
     `  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 4.5rem;`}
+  white-space: nowrap;`}
 `;
 
 const FriendAlarmBlockWrapper = styled.div`
