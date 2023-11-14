@@ -214,7 +214,7 @@ public class ObjetService {
 	}
 
 	@Transactional
-	public void addUnBoxThing(String email, String name, String imgPath, String modelPath) {
+	public Long addUnBoxThing(String email, String name, String imgPath, String modelPath) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
 		Objet objet = Objet.builder()
@@ -231,7 +231,7 @@ public class ObjetService {
 
 		UserObject userObject = UserObject.builder().objet(objet).user(user).userObjectStatus(UserObjectStatus.Inventory).build();
 
-		userObjectRepository.save(userObject);
+		return userObjectRepository.save(userObject).getUserObjectId();
 	}
 
 	@Transactional

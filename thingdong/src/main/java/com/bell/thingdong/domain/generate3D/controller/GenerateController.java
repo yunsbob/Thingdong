@@ -39,7 +39,8 @@ public class GenerateController {
 		ResourceRes resourceRes = generate3dService.generate3d(enSentence);
 
 		String email = principal.getName();
-		objetService.addUnBoxThing(email, sentence, resourceRes.getPngPath(), resourceRes.getGlbPath());
+		Long userObjectId = objetService.addUnBoxThing(email, sentence, resourceRes.getPngPath(), resourceRes.getGlbPath());
+		resourceRes.setUserObjectId(userObjectId);
 		return ResponseEntity.ok(resourceRes);
 	}
 }
