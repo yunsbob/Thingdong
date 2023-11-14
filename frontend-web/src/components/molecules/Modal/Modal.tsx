@@ -32,9 +32,10 @@ const Modal = ({
               $borderRadius={$borderRadius}
               $padding={$padding}
               $unit={$unit}
-              onClick={(e: any) => {
-                e.stopPropagation();
-              }}
+              // onClick={(e: any) => {
+              //   e.stopPropagation();
+              //   console.log('????')
+              // }}
             >
               {children}
             </S.ModalContainer>

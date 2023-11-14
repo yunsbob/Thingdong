@@ -22,19 +22,24 @@ const TextTyping = () => {
 
   const onModalClose = () => {
     setModalOpen(false);
-    console.log('hihi');
-    // setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
+    // console.log('hihi');
+    setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
   };
+console.log(typingContent);
 
   const handleConfirm = () => {
     if (typingContent.length === 0) {
       inputRef.current?.focus();
+      console.log('?');
+      
     } else {
+      console.log('텍스트 모달 확인');
       setModalContent(UNBOXING_MODAL_NAME.OPENING);
+      
     }
   };
 
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
     setTypingContent(newNickname);
   };
@@ -60,7 +65,7 @@ const TextTyping = () => {
         $inputSize="small"
         option="grey"
         onChange={e => {
-          handleNicknameChange(e);
+          handleTextTyping(e);
         }}
       />
       <Button
