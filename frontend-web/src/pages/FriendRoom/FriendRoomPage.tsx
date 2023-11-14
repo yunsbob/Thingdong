@@ -216,6 +216,7 @@ const FriendRoomPage = () => {
         thingsObject={friendThingsList}
         selectedRoomColor={friendRoomState.roomColorPath}
         onObjectClick={handleObjectClick}
+        darkMode={friendRoomState.darkMode}
       />
     </>
   );

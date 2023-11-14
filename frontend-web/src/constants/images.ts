@@ -42,6 +42,8 @@ const IMAGES = {
     GUESTBOOK_WRITE_ICON:
       require('@/assets/images/room/guestbook-write-icon.png').default,
     GUESTBOOK: require('@/assets/images/room/guestbook.png').default,
+    DARK_MODE: require('@/assets/images/room/dark-mode.png').default,
+    LIGHT_MODE: require('@/assets/images/room/light-mode.png').default,
   },
   SPLASH: {
     SPLASH1_ROOM_IMAGE: require('@/assets/images/splash/splash1_room.png')

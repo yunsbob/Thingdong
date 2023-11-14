@@ -34,6 +34,7 @@ import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 import { roomInventoryAtom } from '@/states/roomInventoryStates';
 import { useAtom } from 'jotai';
 import { useUpdateRoomColor } from '@/apis/Room/Mutations/useUpdateRoomColor';
+import { roomColorAtom } from '@/states/roomState';
 import { ThingsStatus } from '../../types/things';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 
@@ -60,9 +61,9 @@ const HomePage = () => {
   const [selectedRoomColor, setSelectedRoomColor] = useState(
     roomState.roomColorPath
   );
-  // const [selectedRoomColor, setSelectedRoomColor] = useState('white');
+  
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-
+  const [darkMode, setDarkMode] = useState<boolean>(roomState.darkMode);
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
@@ -73,13 +74,14 @@ const HomePage = () => {
     colorPath: string
   ) => {
     setSelectedRoomColor(colorPath);
+    setRoomColorState(colorName);
     const roomColorData = {
       roomId: roomState.roomId,
       roomColor: colorName,
     };
     updateRoomColorMutation.mutate(roomColorData);
   };
-
+  
   const colors = [
     [
       'white',
@@ -113,6 +115,7 @@ const HomePage = () => {
     ],
   ];
 
+  const [, setRoomColorState] = useAtom(roomColorAtom);
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState.userObjectList
   );
@@ -138,6 +141,7 @@ const HomePage = () => {
     unBoxThingList,
   } = useGetRoomInventory() as RoomInventoryData;
 
+  // 룸 인벤토리 atom에 저장
   useEffect(() => {
     setRoomInventory({
       furnitureList: furnitureList || [],
@@ -463,6 +467,9 @@ const HomePage = () => {
     setCurrentIndex(currentIndex - 1);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode)
+  }
   return (
     <>
       <GuestbookModal
@@ -489,6 +496,15 @@ const HomePage = () => {
               onClick={handleEdit}
             />
           </S.BackButtonWrapper>
+          <S.DarkModeWrapper>
+          <Image
+              src={darkMode ? IMAGES.ROOM.DARK_MODE : IMAGES.ROOM.LIGHT_MODE}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={toggleDarkMode}
+            />
+          </S.DarkModeWrapper>
           <S.ChangeRoomWrapper>
             <Image
               src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
@@ -582,6 +598,7 @@ const HomePage = () => {
         thingsObject={myThingsList}
         onObjectClick={handleObjectClick}
         selectedRoomColor={selectedRoomColor}
+        darkMode={darkMode}
       />
       {isEditing && (
         <S.ItemToast
