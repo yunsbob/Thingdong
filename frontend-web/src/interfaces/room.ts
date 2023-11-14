@@ -22,3 +22,8 @@ export interface RoomColor {
   roomId : number;
   roomColor: string;
 }
+
+export interface RoomDark {
+  roomId : number;
+  darkMode: boolean;
+}

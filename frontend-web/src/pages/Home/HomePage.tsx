@@ -37,6 +37,7 @@ import { useUpdateRoomColor } from '@/apis/Room/Mutations/useUpdateRoomColor';
 import { roomColorAtom } from '@/states/roomState';
 import { ThingsStatus } from '../../types/things';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
+import { useUpdateDarkMode } from '@/apis/Room/Mutations/useUpdateDarkMode';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -455,12 +456,11 @@ const HomePage = () => {
       })
     );
 
+
     const roomPosition = {
       roomId: roomState.roomId,
       objectPositionList: objectPositionList,
     };
-
-    console.log(roomPosition, 'hererere');
 
     setIsEditing(!isEditing);
     updateRoomPosition(roomPosition);
@@ -486,9 +486,16 @@ const HomePage = () => {
     setCurrentIndex(currentIndex - 1);
   };
 
+  const updateDarkModeMutation = useUpdateDarkMode();
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    setDarkMode(darkMode => !darkMode);
+    const roomDarkData = {
+      roomId: roomState.roomId,
+      darkMode: !darkMode,
+    };
+    updateDarkModeMutation.mutate(roomDarkData);
   };
+
   return (
     <>
       <GuestbookModal
