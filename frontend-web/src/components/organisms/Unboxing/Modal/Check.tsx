@@ -6,33 +6,53 @@ import {
   modalOpenAtom,
   sendingFriendAtom,
   typingContentAtom,
+  unboxingObjectAtom,
 } from '@/states/unboxingModalStates';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { ButtonWrapper } from '@/pages/Inventory/InventoryPage.styles';
 import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';
 import Modal from '@/components/molecules/Modal/Modal';
 import { IMAGES } from '@/constants/images';
 import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
-import { userObjectsAtom } from '../../../../states/roomState';
+import { QueryClient } from '@tanstack/react-query';
+import {
+  PresentFriend,
+  usePresentUnboxing,
+} from '@/apis/Inventory/Mutations/usePresentUnboxing';
 
 const Check = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
   const [sendingFriend] = useAtom(sendingFriendAtom);
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
   const [, setTypingContent] = useAtom(typingContentAtom);
-  const userObjects = useAtom(userObjectsAtom);
+  const unboxingObject = useAtomValue(unboxingObjectAtom);
 
   const handleCancel = () => {
     setModalContent(UNBOXING_MODAL_NAME.SENDING_LIST);
   };
 
+  const usePresentUnboxingMutation = usePresentUnboxing();
+  const presentUnboxing = async (presentFriend: PresentFriend) => {
+    usePresentUnboxingMutation.mutate(presentFriend);
+  };
+
+  const setUnboxingObject = useSetAtom(unboxingObjectAtom);
+
   const handleConfirm = () => {
-    //TODO: 데이터 바인딩 선물하기
-    // userObjects 이용
-    console.log(sendingFriend);
+    presentUnboxing({
+      userId: sendingFriend.userId,
+      userObjectId: unboxingObject.userObjectId,
+    });
+
     setModalOpen(false);
     setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
     setTypingContent('');
+    setUnboxingObject({
+      glbPath: '',
+      pngPath: '',
+      gifPath: '',
+      userObjectId: 0,
+    });
   };
 
   return (

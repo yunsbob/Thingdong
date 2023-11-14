@@ -1,3 +1,4 @@
+import { PresentFriend } from '@/apis/Inventory/Mutations/usePresentUnboxing';
 import { instance } from '@/apis/instance';
 
 const getInventory = async () => {
@@ -35,11 +36,26 @@ const getThingStory = async () => {
   }
 };
 
-const getUnBoxing = async (sentence: string) => {
+const getUnboxing = async (sentence: string) => {
   const response = await instance.get(
     `/generate3d/unBoxThing?sentence=${sentence}`
   );
   return response.data;
 };
 
-export { getInventory, buyObject, deleteObject, getThingStory, getUnBoxing };
+const presentUnboxing = async (presentFriend: PresentFriend) => {
+  try {
+    await instance.post(`/objects/present`, presentFriend);
+  } catch {
+    throw new Error('present unboxing error');
+  }
+};
+
+export {
+  getInventory,
+  buyObject,
+  deleteObject,
+  getThingStory,
+  getUnboxing,
+  presentUnboxing,
+};

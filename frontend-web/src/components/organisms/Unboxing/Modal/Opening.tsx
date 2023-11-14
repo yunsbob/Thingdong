@@ -58,21 +58,10 @@ const Complete3DGenerate = () => {
 };
 
 const Making3DObject = () => {
-  const setModalContent = useSetAtom(modalContentAtom);
-
-  const handleConfirm = () => {
-    setModalContent(UNBOXING_MODAL_NAME.COMPLETE);
-  };
-
   return (
     <>
       <ImageWrapper>
-        <Image
-          src={IMAGES.INVENTORY.GIFT_IMAGE}
-          $unit={'px'}
-          height={250}
-          onClick={handleConfirm}
-        />
+        <Image src={IMAGES.INVENTORY.GIFT_IMAGE} $unit={'px'} height={250} />
       </ImageWrapper>
       <Text
         size="body1"
@@ -106,10 +95,16 @@ const Opening = () => {
     setModalOpen(false);
     setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
     setTypingContent('');
+    setUnboxingObject({
+      glbPath: '',
+      pngPath: '',
+      gifPath: '',
+      userObjectId: 0,
+    });
   };
 
   const canRender = () => {
-    return !isLoading && tt3Data;
+    return isSuccess && tt3Data && !isLoading;
   };
 
   useEffect(() => {
@@ -118,7 +113,7 @@ const Opening = () => {
       console.log(tt3Data);
       toast.success(UNBOXING_MESSAGES.TOAST.SUCCESS);
     }
-  }, [isLoading, tt3Data]);
+  }, [tt3Data, isSuccess, isLoading]);
 
   useEffect(() => {
     if (isError) {
