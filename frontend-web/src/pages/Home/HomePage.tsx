@@ -41,7 +41,8 @@ import { MOVE, ROTATE } from '@/constants/transformations';
 
 import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 import { roomInventoryAtom } from '@/states/roomInventoryStates';
-import { atom, useAtom } from 'jotai';
+import { useAtom } from 'jotai';
+import { useUpdateRoomColor } from '@/apis/Room/Mutations/useUpdateRoomColor';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -72,46 +73,23 @@ const HomePage = () => {
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
-
-  const handleColorClick = (
-    colorName: string,
-    colorValue: string,
-    colorPath: string
-  ) => {
+  const updateRoomColorMutation = useUpdateRoomColor();
+  const handleColorClick = (colorName: string, colorValue: string, colorPath: string) => {
     setSelectedRoomColor(colorPath);
+    const roomColorData = {
+      roomId: roomState.roomId,
+      roomColor: colorName
+    }
+    updateRoomColorMutation.mutate(roomColorData)
   };
 
   const colors = [
-    [
-      'white',
-      '#FFFFFF',
-      'https://thingdong.com/resources/glb/room/room-white.glb',
-    ],
-    [
-      'yellow',
-      '#FFDCB6',
-      'https://thingdong.com/resources/glb/room/room_yellow.glb',
-    ],
-    [
-      'green',
-      '#C2E1B9',
-      'https://thingdong.com/resources/glb/room/room_green.glb',
-    ],
-    [
-      'pink',
-      '#E698A8',
-      'https://thingdong.com/resources/glb/room/room-pink.glb',
-    ],
-    [
-      'puple',
-      '#9F98E0',
-      'https://thingdong.com/resources/glb/room/room-puple.glb',
-    ],
-    [
-      'black',
-      '#545454',
-      'https://thingdong.com/resources/glb/room/room_black.glb',
-    ],
+    ['white', '#FFFFFF', "https://thingdong.com/resources/glb/room/room-white.glb"],
+    ['yellow', '#FFDCB6', "https://thingdong.com/resources/glb/room/room_yellow.glb"],
+    ['green', '#C2E1B9', "https://thingdong.com/resources/glb/room/room_green.glb"],
+    ['pink', '#E698A8', "https://thingdong.com/resources/glb/room/room-pink.glb"],
+    ['purple', '#9F98E0', "https://thingdong.com/resources/glb/room/room-puple.glb"],
+    ['black', '#545454', "https://thingdong.com/resources/glb/room/room_black.glb"],
   ];
 
   // 찐 userObjectList
