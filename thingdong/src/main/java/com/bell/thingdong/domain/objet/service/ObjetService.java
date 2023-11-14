@@ -1,6 +1,7 @@
 package com.bell.thingdong.domain.objet.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -171,10 +172,40 @@ public class ObjetService {
 	@Transactional
 	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq) {
 		UserRoom userRoom = userRoomRepository.findById(userObjectPositionReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
+		// 해당 방에 배치되어 있는 오브제들을 모두 불러옴
+		List<UserObject> userObjectCheckList = userObjectRepository.findUserObjectIdByRoomId(userRoom.getRoomId());
 
-		for (ArrangeObjectPositionDto arrangeObjectPositionDto : userObjectPositionReq.getObjectPositionList()) {
-			UserObject userObject = userObjectRepository.findById(arrangeObjectPositionDto.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
-			userObject.setUserObjectPosition(arrangeObjectPositionDto, userRoom, UserObjectStatus.Room);
+		// 해당 방에 배치될 오브제들을 정렬함
+		List<ArrangeObjectPositionDto> userObjectList = userObjectPositionReq.getObjectPositionList()
+		                                                                     .stream()
+		                                                                     .sorted(Comparator.comparing(ArrangeObjectPositionDto::getUserObjectId))
+		                                                                     .toList();
+
+		// idx == 현재 인덱스, last == 탐색이 끝나는 지점
+		int idx = 0, last = userObjectCheckList.size();
+
+		// 배치될 오브제들을 기준으로 반복문 돌림
+		for (ArrangeObjectPositionDto arrangeObjectPositionDto : userObjectList) {
+			while (idx < last && userObjectCheckList.get(idx).getUserObjectId() < arrangeObjectPositionDto.getUserObjectId()) {
+				userObjectCheckList.get(idx).setUserObjectPosition(0.0, 0.0, 0.0, 0.0, null, UserObjectStatus.Inventory);
+				idx++;
+			}
+
+			if (idx < last && userObjectCheckList.get(idx).getUserObjectId().equals(arrangeObjectPositionDto.getUserObjectId())) {
+				userObjectCheckList.get(idx)
+				                   .setUserObjectPosition(arrangeObjectPositionDto.getPosition().getX(), arrangeObjectPositionDto.getPosition().getY(),
+					                   arrangeObjectPositionDto.getPosition().getZ(), arrangeObjectPositionDto.getRotation().getY(), userRoom, UserObjectStatus.Room);
+				idx++;
+			} else {
+				UserObject userObject = userObjectRepository.findById(arrangeObjectPositionDto.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
+				userObject.setUserObjectPosition(arrangeObjectPositionDto.getPosition().getX(), arrangeObjectPositionDto.getPosition().getY(),
+					arrangeObjectPositionDto.getPosition().getZ(), arrangeObjectPositionDto.getRotation().getY(), userRoom, UserObjectStatus.Room);
+			}
+		}
+
+		while (idx < last) {
+			userObjectCheckList.get(idx).setUserObjectPosition(0.0, 0.0, 0.0, 0.0, null, UserObjectStatus.Inventory);
+			idx++;
 		}
 	}
 }

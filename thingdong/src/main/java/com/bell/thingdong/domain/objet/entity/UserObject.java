@@ -1,6 +1,5 @@
 package com.bell.thingdong.domain.objet.entity;
 
-import com.bell.thingdong.domain.objet.dto.ArrangeObjectPositionDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.smartthings.entity.SmartThings;
@@ -84,12 +83,12 @@ public class UserObject {
 		this.userObjectStatus = userObjectStatus;
 	}
 
-	public void setUserObjectPosition(ArrangeObjectPositionDto arrangeObjectPositionDto, UserRoom room, UserObjectStatus userObjectStatus) {
+	public void setUserObjectPosition(Double x, Double y, Double z, Double rotationY, UserRoom room, UserObjectStatus userObjectStatus) {
 		this.userObjectStatus = userObjectStatus;
 		this.room = room;
-		this.x = arrangeObjectPositionDto.getPosition().getX();
-		this.y = arrangeObjectPositionDto.getPosition().getY();
-		this.z = arrangeObjectPositionDto.getPosition().getZ();
-		this.rotationY = arrangeObjectPositionDto.getRotation().getY();
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.rotationY = rotationY;
 	}
 }
