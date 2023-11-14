@@ -182,18 +182,22 @@ server.get("/smart", async (req, res) => {
   const ctx = await apiApp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
-    const ops = deviceList.map((it) => {
+    const ops = deviceList.map(async (it) => {
+      const health = await ctx.api.devices
+        .getHealth(it.deviceId)
+        .then((state) => {
+          return state.state;
+        });
       return ctx.api.devices.getStatus(it.deviceId).then((state) => {
-        let switchStatus = "";
         let humidityStatus = "";
         let temperatureStatus = "";
-        let blindStatus = "";
         let levelStatus = "";
         let hueStatus = "";
         let saturationStatus = "";
-        if (state.components.main) {
+        let status = health;
+        if (state.components.main && health == "ONLINE") {
           if (Object.keys(state.components.main).includes("switch")) {
-            switchStatus = state.components.main.switch.switch.value;
+            status = state.components.main.switch.switch.value;
           }
           if (
             Object.keys(state.components.main).includes(
@@ -205,31 +209,39 @@ server.get("/smart", async (req, res) => {
             temperatureStatus =
               state.components.main.temperatureMeasurement.temperature.value;
           }
-          if (Object.keys(state.components.main).includes("windowShade")) {
-            blindStatus = state.components.main.windowShade.windowShade.value;
+          if (
+            Object.keys(state.components.main).includes("windowShade")
+          ) {
+            status = state.components.main.windowShade.windowShade.value;
           }
 
-          if (Object.keys(state.components.main).includes("switchLevel")) {
+          if (
+            Object.keys(state.components.main).includes("switchLevel")
+          ) {
             levelStatus = state.components.main.switchLevel.level.value;
           }
-          if (Object.keys(state.components.main).includes("colorControl")) {
+          if (
+            Object.keys(state.components.main).includes("colorControl")
+          ) {
             hueStatus = state.components.main.colorControl.hue.value;
             saturationStatus =
               state.components.main.colorControl.saturation.value;
           }
         }
+        const lightStatus = {
+          h: hueStatus,
+          s: saturationStatus,
+          l: levelStatus,
+        };
         return {
           deviceId: it.deviceId,
-          ownerId: it.ownerId,
           category: it.components[0].categories[0].name,
           label: it.label,
-          switchStatus: switchStatus,
-          humidityStatus: humidityStatus,
-          temperatureStatus: temperatureStatus,
-          blindStatus: blindStatus,
-          levelStatus: levelStatus,
-          hueStatus: hueStatus,
-          saturationStatus: saturationStatus,
+          status: status.toUpperCase(),
+          ownerId: it.ownerId,
+          temperature: temperatureStatus,
+          humidity: humidityStatus,
+          hsl: lightStatus,
         };
       });
     });
@@ -317,7 +329,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
       "*",
       "switchLevelHandler"
     );
-    const url = `https://thingdong.com/smart/oauth/redirect?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
+    const url = `https://thingdong.com/smart/oauth?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
     res.redirect(url);
   } catch (error) {
     next(error);
