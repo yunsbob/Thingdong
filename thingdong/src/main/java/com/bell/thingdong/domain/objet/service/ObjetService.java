@@ -236,6 +236,8 @@ public class ObjetService {
 		UnBoxThingHistory unBoxThingHistory = UnBoxThingHistory.builder().objet(objet).user(user).objetName(name).build();
 		unBoxThingHistoryRepository.save(unBoxThingHistory);
 
+		thingHistoryService.createThingHistory(user, "언박띵 구매", -30L);
+		user.setThingAmount(-30L);
 		return userObjectId;
 	}
 
