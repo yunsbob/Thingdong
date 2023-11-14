@@ -12,6 +12,7 @@ import com.bell.thingdong.domain.objet.dto.FindObjectDto;
 import com.bell.thingdong.domain.objet.dto.ObjectCategory;
 import com.bell.thingdong.domain.objet.dto.ObjectInventoryDto;
 import com.bell.thingdong.domain.objet.dto.ObjectRoomInventoryDto;
+import com.bell.thingdong.domain.objet.dto.SmartThingsRoomInventoryDto;
 import com.bell.thingdong.domain.objet.dto.UnBoxThingHistoryDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
 import com.bell.thingdong.domain.objet.dto.request.PresentReq;
@@ -78,39 +79,55 @@ public class ObjetService {
 		List<ObjectRoomInventoryDto> homeApplianceList = new ArrayList<>();
 		List<ObjectRoomInventoryDto> propList = new ArrayList<>();
 		List<ObjectRoomInventoryDto> floorList = new ArrayList<>();
-		List<ObjectRoomInventoryDto> smartThingsList = new ArrayList<>();
+		List<SmartThingsRoomInventoryDto> smartThingsList = new ArrayList<>();
 		List<ObjectRoomInventoryDto> unBoxThingList = new ArrayList<>();
 
 		List<FindObjectDto> objectRoomInventoryDtoList = userObjectRepository.findObjectByUserIdAndObjectStatusAndObjectCategory(user.getId(), UserObjectStatus.Shop, null);
 
 		for (FindObjectDto findObjectDto : objectRoomInventoryDtoList) {
-			ObjectRoomInventoryDto objectRoomInventoryDto = ObjectRoomInventoryDto.builder()
-			                                                                      .userObjectId(findObjectDto.getUserObjectId())
-			                                                                      .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
-			                                                                      .objectModelPath(findObjectDto.getObjet().getObjectModelPath())
-			                                                                      .name(findObjectDto.getObjet().getObjectName())
-			                                                                      .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
-			                                                                      .build();
+			if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.SmartThings)) {
+				SmartThingsRoomInventoryDto smartThingsRoomInventoryDto = SmartThingsRoomInventoryDto.builder()
+				                                                                                     .userObjectId(findObjectDto.getUserObject().getUserObjectId())
+				                                                                                     .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
+				                                                                                     .objectModelPath(findObjectDto.getObjet().getObjectModelPath())
+				                                                                                     .name(findObjectDto.getObjet().getObjectName())
+				                                                                                     .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE :
+					                                                                                     Boolean.FALSE)
+				                                                                                     .objectStatus("Y")
+				                                                                                     .deviceId(findObjectDto.getUserObject().getSmartThings().getDeviceId())
+				                                                                                     .smartThingsStatus(
+					                                                                                     findObjectDto.getUserObject().getSmartThings().getStatus().equals("Y") ?
+						                                                                                     Boolean.TRUE : Boolean.FALSE)
+				                                                                                     .build();
 
-			if (findObjectDto.getObjectStatus().equals(UserObjectStatus.Room))
-				objectRoomInventoryDto.setObjectStatus("Y");
-			else
-				objectRoomInventoryDto.setObjectStatus("N");
-
-			if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.Furniture)) {
-				furnitureList.add(objectRoomInventoryDto);
-			} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.HomeAppliances)) {
-				homeApplianceList.add(objectRoomInventoryDto);
-			} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.Prop)) {
-				propList.add(objectRoomInventoryDto);
-			} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.Floor)) {
-				floorList.add(objectRoomInventoryDto);
-			} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.SmartThings)) {
-				smartThingsList.add(objectRoomInventoryDto);
-			} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.UnBoxThing)) {
-				unBoxThingList.add(objectRoomInventoryDto);
+				smartThingsList.add(smartThingsRoomInventoryDto);
 			} else {
-				throw new ObjectCategoryNotFoundException();
+				ObjectRoomInventoryDto objectRoomInventoryDto = ObjectRoomInventoryDto.builder()
+				                                                                      .userObjectId(findObjectDto.getUserObject().getUserObjectId())
+				                                                                      .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
+				                                                                      .objectModelPath(findObjectDto.getObjet().getObjectModelPath())
+				                                                                      .name(findObjectDto.getObjet().getObjectName())
+				                                                                      .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                                      .build();
+
+				if (findObjectDto.getUserObject().getUserObjectStatus().equals(UserObjectStatus.Room))
+					objectRoomInventoryDto.setObjectStatus("Y");
+				else
+					objectRoomInventoryDto.setObjectStatus("N");
+
+				if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.Furniture)) {
+					furnitureList.add(objectRoomInventoryDto);
+				} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.HomeAppliances)) {
+					homeApplianceList.add(objectRoomInventoryDto);
+				} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.Prop)) {
+					propList.add(objectRoomInventoryDto);
+				} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.Floor)) {
+					floorList.add(objectRoomInventoryDto);
+				} else if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.UnBoxThing)) {
+					unBoxThingList.add(objectRoomInventoryDto);
+				} else {
+					throw new ObjectCategoryNotFoundException();
+				}
 			}
 		}
 
@@ -137,12 +154,12 @@ public class ObjetService {
 
 		for (FindObjectDto findObjectDto : objectInventoryDtoList) {
 			ObjectInventoryDto objectInventoryDto = ObjectInventoryDto.builder()
-			                                                          .userObjectId(findObjectDto.getUserObjectId())
+			                                                          .userObjectId(findObjectDto.getUserObject().getUserObjectId())
 			                                                          .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
 			                                                          .objectThing(findObjectDto.getObjet().getObjectThing())
 			                                                          .build();
 
-			if (findObjectDto.getObjectStatus().equals(UserObjectStatus.Shop))
+			if (findObjectDto.getUserObject().getUserObjectStatus().equals(UserObjectStatus.Shop))
 				objectInventoryDto.setObjectStatus("N");
 			else
 				objectInventoryDto.setObjectStatus("Y");

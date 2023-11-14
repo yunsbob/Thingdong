@@ -10,6 +10,7 @@ import com.bell.thingdong.domain.objet.dto.FindObjectDto;
 import com.bell.thingdong.domain.objet.dto.ObjectCategory;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
 import com.bell.thingdong.domain.objet.entity.UserObject;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -21,22 +22,23 @@ public class CustomUserObjectRepositoryImpl implements CustomUserObjectRepositor
 
 	@Override
 	public List<FindObjectDto> findObjectByUserIdAndObjectStatusAndObjectCategory(Long userId, UserObjectStatus userObjectStatus, ObjectCategory objectCategory) {
-		List<UserObject> userObjects = jpaQueryFactory.selectFrom(userObject)
-		                                              .join(userObject.objet, objet)
-		                                              .where(userObject.user.id.eq(userId), userObjectStatusNe(userObjectStatus), objectCategoryNe(objectCategory))
-		                                              .fetch();
+		List<Tuple> tuples = jpaQueryFactory.select(userObject, objet)
+		                                    .from(userObject)
+		                                    .join(userObject.objet, objet)
+		                                    .where(userObject.user.id.eq(userId), userObjectStatusNe(userObjectStatus), objectCategoryNe(objectCategory))
+		                                    .fetch();
 
-		List<FindObjectDto> findObjectList = new ArrayList<>();
-		for (UserObject userObj : userObjects) {
-			FindObjectDto findObjectDto = FindObjectDto.builder()
-			                                           .userObjectId(userObj.getUserObjectId())
-			                                           .objectStatus(userObj.getUserObjectStatus())
-			                                           .objet(userObj.getObjet())
-			                                           .build();
-			findObjectList.add(findObjectDto);
+		List<FindObjectDto> findObjectDtoList = new ArrayList<>();
+
+		for (Tuple tuple : tuples) {
+			FindObjectDto findObjectDto = new FindObjectDto();
+			findObjectDto.setUserObject(tuple.get(userObject));
+			findObjectDto.setObjet(tuple.get(objet));
+
+			findObjectDtoList.add(findObjectDto);
 		}
 
-		return findObjectList;
+		return findObjectDtoList;
 	}
 
 	@Override

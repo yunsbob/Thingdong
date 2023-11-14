@@ -3,6 +3,7 @@ package com.bell.thingdong.domain.objet.dto.response;
 import java.util.List;
 
 import com.bell.thingdong.domain.objet.dto.ObjectRoomInventoryDto;
+import com.bell.thingdong.domain.objet.dto.SmartThingsRoomInventoryDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class ObjectRoomInventoryRes {
 	List<ObjectRoomInventoryDto> floorList;
 
 	@Schema(description = "띵즈 목록")
-	List<ObjectRoomInventoryDto> smartThingsList;
+	List<SmartThingsRoomInventoryDto> smartThingsList;
 
 	@Schema(description = "언박띵 목록")
 	List<ObjectRoomInventoryDto> unBoxThingList;
