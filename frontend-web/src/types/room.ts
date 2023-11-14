@@ -13,7 +13,7 @@ export interface MyRoomProps {
   rotation?: Rotation;
   userObject: UserObject[];
   thingsObject: ThingsObject[];
-  onObjectClick: (objectName: string) => void;
+  onObjectClick: (obj: any) => void;
   selectedRoomColor?: string | null;
   roomColor?: string;
 }
