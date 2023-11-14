@@ -1,6 +1,10 @@
-import { getUnBoxing } from '@/apis/Inventory/inventoryAPI';
+import { getUnboxing } from '@/apis/Inventory/inventoryAPI';
 import { modalContentAtom } from '@/states/unboxingModalStates';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import {
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 
 const useGetUnboxing = (setence: string) => {
@@ -8,7 +12,7 @@ const useGetUnboxing = (setence: string) => {
 
   return useQuery({
     queryKey: ['unboxing'],
-    queryFn: () => getUnBoxing(setence),
+    queryFn: () => getUnboxing(setence),
     enabled: modalContent === 'opening',
     retry: false,
   });
