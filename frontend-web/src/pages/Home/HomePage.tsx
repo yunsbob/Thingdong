@@ -219,7 +219,8 @@ const HomePage = () => {
 
       console.log(isItemAlreadyInList);
       console.log(clickedItem);
-      if (!isItemAlreadyInList && activeCategory !== '띵즈') {
+      if (!isItemAlreadyInList) {
+        // if (!isItemAlreadyInList && activeCategory !== '띵즈') {
         const newUserObject: UserObject = {
           name: clickedItem.name,
           userObjectId: clickedItem.userObjectId,
