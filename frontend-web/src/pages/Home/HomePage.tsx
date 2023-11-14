@@ -34,6 +34,8 @@ import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 import { roomInventoryAtom } from '@/states/roomInventoryStates';
 import { useAtom } from 'jotai';
 import { useUpdateRoomColor } from '@/apis/Room/Mutations/useUpdateRoomColor';
+import { ThingsStatus } from '../../types/things';
+import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -56,7 +58,7 @@ const HomePage = () => {
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
   const { data: roomState, isLoading } = useGetRoom(userId); // Fetching real data using the custom hook
   const [selectedRoomColor, setSelectedRoomColor] = useState(
-    roomState.roomColor
+    roomState.roomColorPath
   );
   // const [selectedRoomColor, setSelectedRoomColor] = useState('white');
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
@@ -253,11 +255,19 @@ const HomePage = () => {
     { src: 'right-button.png', direction: 'right' },
   ];
 
+  const updateThingsStatusMutation = useUpdateThingsStatus();
+
   // 선택된 객체 인식
   const [selectedObjectName, setSelectedObjectName] = useState('');
-  const handleObjectClick = (objectName: string) => {
-    setSelectedObjectName(objectName);
-    console.log(objectName);
+  const handleObjectClick = (obj: any) => {
+    setSelectedObjectName(obj.name);
+    if (obj.deviceId) {
+      const thingStatus = {
+        deviceId: obj.deviceId,
+        status: !obj.status
+      }
+      updateThingsStatusMutation.mutate(thingStatus)
+    }
   };
 
   // 객체 위치 변경
@@ -332,7 +342,9 @@ const HomePage = () => {
     });
 
     setMyObjectList(updatedList.filter(obj => !('deviceId' in obj)));
-    setMyThingsList(updatedList.filter(obj => 'deviceId' in obj) as ThingsObject[]);
+    setMyThingsList(
+      updatedList.filter(obj => 'deviceId' in obj) as ThingsObject[]
+    );
 
     // });
   };

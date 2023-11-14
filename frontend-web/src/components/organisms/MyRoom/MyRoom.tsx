@@ -99,7 +99,7 @@ const MyRoom = ({
                     scale={obj.isWall ? 1.05 : 1}
                     onClick={(e: any) => {
                       e.stopPropagation();
-                      onObjectClick(obj.name);
+                      onObjectClick(obj);
                     }}
                   />
                 );
@@ -132,7 +132,7 @@ const MyRoom = ({
                         if (obj.name.includes('lamp') && !isEditing) {
                           setIsShining(!isShining);
                         }
-                        onObjectClick(obj.name);
+                        onObjectClick(obj);
                         console.log(obj.name, 'herewww');
                       }}
                     />
