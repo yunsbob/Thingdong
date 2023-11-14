@@ -329,7 +329,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
       "*",
       "switchLevelHandler"
     );
-    const url = `https://thingdong.com/smart/oauth?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
+    const url = `https://thingdong.com/smart/oauth/redirect?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
     res.redirect(url);
   } catch (error) {
     next(error);
@@ -353,7 +353,6 @@ server.post("/smart/command/:deviceId", async (req, res, next) => {
 });
 
 server.get("/smart/events", (req, res) => {
-  //   const ctx = req.session.smartThings;
   const ctx = apiApp.withContext(req.headers.installedappid);
   const userSSE = userSSEStreams.get(ctx.api.config.locationId);
 
