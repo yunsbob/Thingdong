@@ -75,6 +75,7 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 		userRoomRes.setRoomColor(userRoomOne.getRoomColor().getRoomModelPath());
 		userRoomRes.setUserId(userRoomOne.getUser().getEmail());
 		userRoomRes.setRoomId(userRoomOne.getRoomId());
+		userRoomRes.setDarkMode(userRoomOne.getDarkMode().equals("Y") ? Boolean.TRUE : Boolean.FALSE);
 
 		return userRoomRes;
 	}

@@ -30,4 +30,7 @@ public class UserRoomRes {
 
 	@Schema(description = "해당 방 주인의 id", example = "hello")
 	private String userId;
+
+	@Schema(description = "다크 모드 여부", example = "true")
+	private Boolean darkMode;
 }
