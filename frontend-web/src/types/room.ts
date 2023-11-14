@@ -13,7 +13,7 @@ export interface MyRoomProps {
   rotation?: Rotation;
   userObject: UserObject[];
   thingsObject: ThingsObject[];
-  onObjectClick: (objectName: string) => void;
+  onObjectClick: (obj: any) => void;
   selectedRoomColor?: string | null;
   roomColor?: string;
   darkMode: boolean;
@@ -31,6 +31,11 @@ export interface UserObject {
 
 export interface ThingsObject extends UserObject {
   deviceId: number;
+  status: boolean;
+}
+
+export interface UpdatedList {
+  
 }
 
 // 스마트용따로

@@ -19,21 +19,12 @@ import GuestbookModal from '@/components/organisms/GuestbookModal/GuestbookModal
 
 import bed_1 from './bed1.glb';
 import cabinet_1 from './cabinet1.glb';
-
-import chair_1 from './chair1.glb';
-import couch_1 from './couch1.glb';
-import table_1 from './table1.glb';
-import clock_2 from './clock2.glb';
-import painting_2 from './painting2.glb';
-
 import lamp_1 from './lamp1.glb';
 
 import { UserObject } from '../../types/room';
 
 import { useUpdateRoomPosition } from '@/apis/Room/Mutations/useUpdateRoomPosition';
 import { ObjectPosition, RoomPosition, RoomState } from '@/interfaces/room';
-import { useNavigate } from 'react-router-dom';
-import { PATH } from '@/constants/path';
 import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IMAGES } from '@/constants/images';
@@ -44,6 +35,8 @@ import { roomInventoryAtom } from '@/states/roomInventoryStates';
 import { useAtom } from 'jotai';
 import { useUpdateRoomColor } from '@/apis/Room/Mutations/useUpdateRoomColor';
 import { roomColorAtom } from '@/states/roomState';
+import { ThingsStatus } from '../../types/things';
+import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -75,35 +68,63 @@ const HomePage = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
   const updateRoomColorMutation = useUpdateRoomColor();
-  const handleColorClick = (colorName: string, colorValue: string, colorPath: string) => {
+  const handleColorClick = (
+    colorName: string,
+    colorValue: string,
+    colorPath: string
+  ) => {
     setSelectedRoomColor(colorPath);
     setRoomColorState(colorName);
     const roomColorData = {
       roomId: roomState.roomId,
-      roomColor: colorName
-    }
-    updateRoomColorMutation.mutate(roomColorData)
+      roomColor: colorName,
+    };
+    updateRoomColorMutation.mutate(roomColorData);
   };
   
   const colors = [
-    ['white', '#FFFFFF', "https://thingdong.com/resources/glb/room/room-white.glb"],
-    ['yellow', '#FFDCB6', "https://thingdong.com/resources/glb/room/room_yellow.glb"],
-    ['green', '#C2E1B9', "https://thingdong.com/resources/glb/room/room_green.glb"],
-    ['pink', '#E698A8', "https://thingdong.com/resources/glb/room/room-pink.glb"],
-    ['purple', '#9F98E0', "https://thingdong.com/resources/glb/room/room-puple.glb"],
-    ['black', '#545454', "https://thingdong.com/resources/glb/room/room_black.glb"],
+    [
+      'white',
+      '#FFFFFF',
+      'https://thingdong.com/resources/glb/room/room-white.glb',
+    ],
+    [
+      'yellow',
+      '#FFDCB6',
+      'https://thingdong.com/resources/glb/room/room_yellow.glb',
+    ],
+    [
+      'green',
+      '#C2E1B9',
+      'https://thingdong.com/resources/glb/room/room_green.glb',
+    ],
+    [
+      'pink',
+      '#E698A8',
+      'https://thingdong.com/resources/glb/room/room-pink.glb',
+    ],
+    [
+      'purple',
+      '#9F98E0',
+      'https://thingdong.com/resources/glb/room/room-puple.glb',
+    ],
+    [
+      'black',
+      '#545454',
+      'https://thingdong.com/resources/glb/room/room_black.glb',
+    ],
   ];
+
   const [, setRoomColorState] = useAtom(roomColorAtom);
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState.userObjectList
   );
-
   useEffect(() => {
     setMyObjectList(roomState.userObjectList);
   }, [isLoading, roomState]);
 
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>(
-    roomState && roomState.smartThingsList ? roomState.smartThingsList : []
+    roomState.smartThingsList
   );
 
   const handleEdit = () => {
@@ -111,7 +132,6 @@ const HomePage = () => {
     setIsColorPickerOpen(false);
   };
 
-  // TODO: useState로 상태 저장
   const {
     furnitureList,
     homeApplianceList,
@@ -140,21 +160,9 @@ const HomePage = () => {
     unBoxThingList,
   ]);
 
-  useEffect(() => {
-    if (myObjectList[0]) {
-      console.log(
-        myObjectList[0].position,
-        myObjectList[0].size?.width,
-        myObjectList[0].size?.height
-      );
-    }
-  }, [myObjectList]);
-
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
   };
-
-  // TODO: 업데이트 X 
 
   const handleItemClick = (selectedItemId: number) => {
     let updatedInventory = { ...roomInventory };
@@ -220,9 +228,6 @@ const HomePage = () => {
       }
     }
   };
-console.log(myObjectList, 'myObject');
-console.log(roomState, 'roomstate');
-
 
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
@@ -241,7 +246,6 @@ console.log(roomState, 'roomstate');
         imagePath={item.objectImagePath}
         $isRoom={'Y'}
         onClick={() => handleItemClick(item.userObjectId)}
-        // onClick={() => {}}
       />
     ));
   };
@@ -255,81 +259,98 @@ console.log(roomState, 'roomstate');
     { src: 'right-button.png', direction: 'right' },
   ];
 
+  const updateThingsStatusMutation = useUpdateThingsStatus();
+
   // 선택된 객체 인식
   const [selectedObjectName, setSelectedObjectName] = useState('');
-  const handleObjectClick = (objectName: string) => {
-    setSelectedObjectName(objectName);
+  const handleObjectClick = (obj: any) => {
+    setSelectedObjectName(obj.name);
+    if (obj.deviceId) {
+      const thingStatus = {
+        deviceId: obj.deviceId,
+        status: !obj.status
+      }
+      updateThingsStatusMutation.mutate(thingStatus)
+    }
   };
 
   // 객체 위치 변경
   const [position, setPosition] = useState<Position>([0, 0, 0]);
   const handleArrowClick = (direction: string | null) => {
-    setMyObjectList(currentObjects => {
-      if (currentObjects.length === 0) {
-        return currentObjects;
-      }
-      return currentObjects.map(obj => {
-        if (obj.name === selectedObjectName) {
-          let [x, y, z] = obj.position;
-          if (!obj.isWall) {
-            switch (direction) {
-              case 'right':
-                x += MOVE;
-                break;
-              case 'left':
-                x -= MOVE;
-                break;
-              case 'up':
-                z -= MOVE;
-                break;
-              case 'down':
-                z += MOVE;
-                break;
-              default:
-                break;
-            }
-          } else if (obj.isWall && obj.rotation[1] === 0) {
-            switch (direction) {
-              case 'right':
-                x += MOVE;
-                break;
-              case 'left':
-                x -= MOVE;
-                break;
-              case 'up':
-                y += MOVE;
-                break;
-              case 'down':
-                y -= MOVE;
-                break;
-              default:
-                break;
-            }
-          } else if (obj.isWall && obj.rotation[1] !== 0) {
-            switch (direction) {
-              case 'right':
-                z -= MOVE;
-                break;
-              case 'left':
-                z += MOVE;
-                break;
-              case 'up':
-                y += MOVE;
-                break;
-              case 'down':
-                y -= MOVE;
-                break;
-              default:
-                break;
-            }
+    const combinedList = [...myObjectList, ...myThingsList];
+
+    // setMyObjectList(currentObjects => {
+    //   if (currentObjects.length === 0) {
+    //     return currentObjects;
+    //   }
+
+    const updatedList = combinedList.map(obj => {
+      if (obj.name === selectedObjectName) {
+        let [x, y, z] = obj.position;
+
+        if (!obj.isWall) {
+          switch (direction) {
+            case 'right':
+              x += MOVE;
+              break;
+            case 'left':
+              x -= MOVE;
+              break;
+            case 'up':
+              z -= MOVE;
+              break;
+            case 'down':
+              z += MOVE;
+              break;
+            default:
+              break;
           }
-          console.log('W:', obj.size?.width, 'H:', obj.size?.height);
-          console.log(obj.position);
-          return { ...obj, position: [x, y, z] };
+        } else if (obj.isWall && obj.rotation[1] === 0) {
+          switch (direction) {
+            case 'right':
+              x += MOVE;
+              break;
+            case 'left':
+              x -= MOVE;
+              break;
+            case 'up':
+              y += MOVE;
+              break;
+            case 'down':
+              y -= MOVE;
+              break;
+            default:
+              break;
+          }
+        } else if (obj.isWall && obj.rotation[1] !== 0) {
+          switch (direction) {
+            case 'right':
+              z -= MOVE;
+              break;
+            case 'left':
+              z += MOVE;
+              break;
+            case 'up':
+              y += MOVE;
+              break;
+            case 'down':
+              y -= MOVE;
+              break;
+            default:
+              break;
+          }
         }
-        return obj;
-      });
+        return { ...obj, position: [x, y, z] as Position };
+      }
+      return obj;
     });
+
+    setMyObjectList(updatedList.filter(obj => !('deviceId' in obj)));
+    setMyThingsList(
+      updatedList.filter(obj => 'deviceId' in obj) as ThingsObject[]
+    );
+
+    // });
   };
 
   // 객체 회전
@@ -405,7 +426,6 @@ console.log(roomState, 'roomstate');
   const updateRoomPositionMutation = useUpdateRoomPosition();
   const updateRoomPosition = (roomPosition: RoomPosition) => {
     updateRoomPositionMutation.mutate(roomPosition);
-    //TODO: 메인으로 navigate 시켜주기
   };
 
   // 방 상태 업데이트
@@ -424,7 +444,6 @@ console.log(roomState, 'roomstate');
     };
 
     setIsEditing(!isEditing);
-    // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
     updateRoomPosition(roomPosition);
   };
 
@@ -445,7 +464,7 @@ console.log(roomState, 'roomstate');
   const deleteGuestbookMutation = useDeleteGuestbook();
   const handleDeleteGuestbook = (guestBookId: number) => {
     deleteGuestbookMutation.mutate(guestBookId);
-    setCurrentIndex(0);
+    setCurrentIndex(currentIndex - 1);
   };
 
   const toggleDarkMode = () => {
@@ -455,7 +474,10 @@ console.log(roomState, 'roomstate');
     <>
       <GuestbookModal
         isOpen={modalOpen}
-        onClose={() => changeModalOpen(modalOpen, setModalOpen)}
+        onClose={() => {
+          changeModalOpen(modalOpen, setModalOpen);
+          setCurrentIndex(0);
+        }}
         guestbooks={guestbooks}
         currentIndex={currentIndex}
         handlePrev={handlePrev}
@@ -572,7 +594,7 @@ console.log(roomState, 'roomstate');
         isEditing={isEditing}
         position={position}
         rotation={rotation}
-        userObject={myObjectList} // TODO: here
+        userObject={myObjectList}
         thingsObject={myThingsList}
         onObjectClick={handleObjectClick}
         selectedRoomColor={selectedRoomColor}

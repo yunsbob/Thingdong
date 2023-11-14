@@ -11,7 +11,6 @@ export interface ModalProps extends S.ModalStyleProps {
 
 const Modal = ({
   width = 21,
-  height,
   $padding = '2.25rem',
   $borderRadius = 16,
   $unit = 'rem',
@@ -29,7 +28,7 @@ const Modal = ({
             <S.ModalContainer
               className={className}
               width={width}
-              height={height}
+              height="auto"
               $borderRadius={$borderRadius}
               $padding={$padding}
               $unit={$unit}
@@ -39,6 +38,16 @@ const Modal = ({
             >
               {children}
             </S.ModalContainer>
+            <div
+              onClick={onClose}
+              style={{
+                height: '30%',
+                width: '100%',
+                position: 'absolute',
+                bottom: '0%',
+                translate: 'transformY(100%)',
+              }}
+            ></div>
           </S.ModalWrapper>
         </ModalPortal>
       )}
