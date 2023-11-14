@@ -164,15 +164,15 @@ server.use(function (req, res, next) {
   res.flush = function () {};
   next();
 });
-
-server.post("/smartApp", async (req, res) => {
+server.post("/smart", async (req, res) => {
+  req.url = req.originalUrl;
   apiApp.handleHttpCallback(req, res);
 });
 
 /**
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
-server.get("/smartApp", async (req, res) => {
+server.get("/smart", async (req, res) => {
   const ctx = await apiApp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
@@ -252,7 +252,7 @@ server.get("/smartApp", async (req, res) => {
 /*
  * Logout. Uninstalls app and clears context cookie
  */
-server.get("/logout", async function (req, res) {
+server.get("/smart/logout", async function (req, res) {
   try {
     const ctx = await apiApp.withContext(req.headers.installedappid);
     await ctx.api.installedApps.delete();
@@ -266,7 +266,7 @@ server.get("/logout", async function (req, res) {
 /*
  * Handles OAuth redirect
  */
-server.get("/oauth/callback", async (req, res, next) => {
+server.get("/smart/oauth/callback", async (req, res, next) => {
   try {
     // Store the SmartApp context including access and refresh tokens. Returns a context object for use in making
     // API calls to SmartThings
@@ -311,7 +311,7 @@ server.get("/oauth/callback", async (req, res, next) => {
       "*",
       "switchLevelHandler"
     );
-    const url = `?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}}`;
+    const url = `?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
     res.redirect(url);
   } catch (error) {
     next(error);
@@ -321,7 +321,7 @@ server.get("/oauth/callback", async (req, res, next) => {
 /**
  * Executes a device command from the web page
  */
-server.post("/command/:deviceId", async (req, res, next) => {	
+server.post("/smart/command/:deviceId", async (req, res, next) => {
   try {
     const ctx = await apiApp.withContext(req.headers.installedappid);
     await ctx.api.devices.executeCommands(
@@ -334,7 +334,7 @@ server.post("/command/:deviceId", async (req, res, next) => {
   }
 });
 
-server.get("/events", (req, res) => {
+server.get("/smart/events", (req, res) => {
   //   const ctx = req.session.smartThings;
   const ctx = apiApp.withContext(req.headers.installedappid);
   const userSSE = userSSEStreams.get(ctx.api.config.locationId);

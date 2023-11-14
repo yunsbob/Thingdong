@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  smart:
+    container_name: smart
+    build:
+      context: ./smartthings
+    ports:
+      - "4000:3000"

@@ -2,6 +2,7 @@ package com.bell.thingdong.domain.objet.entity;
 
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
 import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.smartthings.entity.SmartThings;
 import com.bell.thingdong.domain.user.entity.User;
 
 import jakarta.persistence.Column;
@@ -15,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -44,15 +46,53 @@ public class UserObject {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "room_id")
-	private UserRoom roomId;
+	private UserRoom room;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "user_object_status", nullable = false)
 	private UserObjectStatus userObjectStatus;
 
-	// 설계에 따라 방 내부 위치별 컬럼 추가 예정
+	@Builder.Default
+	@Column(name = "x")
+	private Double x = 0.0;
+
+	@Builder.Default
+	@Column(name = "y")
+	private Double y = 0.0;
+
+	@Builder.Default
+	@Column(name = "z")
+	private Double z = 0.0;
+
+	@Builder.Default
+	@Column(name = "rotation_x")
+	private Double rotationX = 0.0;
+
+	@Builder.Default
+	@Column(name = "rotation_y")
+	private Double rotationY = 0.0;
+
+	@Builder.Default
+	@Column(name = "rotation_z")
+	private Double rotationZ = 0.0;
+
+	@OneToOne(mappedBy = "userObject")
+	private SmartThings smartThings;
 
 	public void setUserObjectStatus(UserObjectStatus userObjectStatus) {
 		this.userObjectStatus = userObjectStatus;
+	}
+
+	public void setUserObjectPosition(Double x, Double y, Double z, Double rotationY, UserRoom room, UserObjectStatus userObjectStatus) {
+		this.userObjectStatus = userObjectStatus;
+		this.room = room;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.rotationY = rotationY;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

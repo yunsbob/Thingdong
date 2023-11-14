@@ -1,5 +1,5 @@
 {
-  "appName": "thingdong22",
+  "appName": "thingdongs102",
   "appType": "API_ONLY",
   "classifications": [
     "AUTOMATION"
@@ -9,7 +9,7 @@
   "singleInstance": false,
   "installMetadata": {},
   "apiOnly": {
-    "targetUrl": "https://thingdong.com/smartApp"
+    "targetUrl": "https://thingdong.com/smart"
   },
   "oauth": {
     "clientName": "thingdong",
@@ -21,6 +21,6 @@
       "r:devices:*",
       "x:devices:*"
     ],
-    "redirectUris": ["https://thingdong.com/smartApp/oauth/callback"]
+    "redirectUris": ["https://thingdong.com/smart/oauth/callback"]
   }
 }

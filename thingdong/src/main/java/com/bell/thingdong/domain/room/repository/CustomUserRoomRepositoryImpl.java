@@ -5,10 +5,13 @@ import static com.bell.thingdong.domain.room.entity.QUserRoom.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bell.thingdong.domain.objet.dto.ObjectCategory;
+import com.bell.thingdong.domain.objet.dto.ObjectSizeDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectRoomDto;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
+import com.bell.thingdong.domain.smartthings.dto.SmartThingsRoomDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -24,15 +27,52 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 
 		UserRoomRes userRoomRes = new UserRoomRes();
 		List<UserObjectRoomDto> userObjectRoomDtoList = new ArrayList<>();
+		List<SmartThingsRoomDto> smartThingsRoomDtoList = new ArrayList<>();
 		for (UserObject userObject : userRoomOne.getUserObjectList()) {
-			UserObjectRoomDto userObjectRoomDto = UserObjectRoomDto.builder()
-			                                                       .userObjectId(userObject.getUserObjectId())
-			                                                       .objectModelPath(userObject.getObjet().getObjectModelPath())
-			                                                       .build();
-			userObjectRoomDtoList.add(userObjectRoomDto);
+			List<Double> positionList = new ArrayList<>();
+			positionList.add(userObject.getX());
+			positionList.add(userObject.getY());
+			positionList.add(userObject.getZ());
+
+			List<Double> rotationList = new ArrayList<>();
+			rotationList.add(userObject.getRotationX());
+			rotationList.add(userObject.getRotationY());
+			rotationList.add(userObject.getRotationZ());
+
+			ObjectSizeDto objectSizeDto = ObjectSizeDto.builder().width(userObject.getObjet().getObjectWidth()).height(userObject.getObjet().getObjectHeight()).build();
+
+			if (userObject.getObjet().getObjectCategory().equals(ObjectCategory.SmartThings)) {
+				SmartThingsRoomDto smartThingsRoomDto = SmartThingsRoomDto.builder()
+				                                                          .userObjectId(userObject.getUserObjectId())
+				                                                          .objectModelPath(userObject.getSmartThings().getStatus().equals("Y") ?
+					                                                          userObject.getSmartThings().getActivationPath() : userObject.getObjet().getObjectModelPath())
+				                                                          .name(userObject.getObjet().getObjectName())
+				                                                          .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                          .position(positionList)
+				                                                          .rotation(rotationList)
+				                                                          .size(objectSizeDto)
+				                                                          .deviceId(userObject.getSmartThings().getDeviceId())
+				                                                          .status(userObject.getSmartThings().getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                          .build();
+
+				smartThingsRoomDtoList.add(smartThingsRoomDto);
+			} else {
+				UserObjectRoomDto userObjectRoomDto = UserObjectRoomDto.builder()
+				                                                       .userObjectId(userObject.getUserObjectId())
+				                                                       .objectModelPath(userObject.getObjet().getObjectModelPath())
+				                                                       .name(userObject.getObjet().getObjectName())
+				                                                       .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                       .position(positionList)
+				                                                       .rotation(rotationList)
+				                                                       .size(objectSizeDto)
+				                                                       .build();
+
+				userObjectRoomDtoList.add(userObjectRoomDto);
+			}
 		}
 		userRoomRes.setUserObjectList(userObjectRoomDtoList);
-		userRoomRes.setRoomColor(userRoomOne.getRoomColor());
+		userRoomRes.setSmartThingsList(smartThingsRoomDtoList);
+		userRoomRes.setRoomColor(userRoomOne.getRoomColor().getRoomModelPath());
 		userRoomRes.setUserId(userRoomOne.getUser().getEmail());
 		userRoomRes.setRoomId(userRoomOne.getRoomId());
 

@@ -3,6 +3,7 @@ package com.bell.thingdong.domain.room.dto.response;
 import java.util.List;
 
 import com.bell.thingdong.domain.objet.dto.UserObjectRoomDto;
+import com.bell.thingdong.domain.smartthings.dto.SmartThingsRoomDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,10 @@ public class UserRoomRes {
 	@Schema(description = "해당 방에 존재하는 가구 리스트들")
 	private List<UserObjectRoomDto> userObjectList;
 
-	@Schema(description = "해당 방의 벽지 색상", example = "RRGGBB")
+	@Schema(description = "해당 방에 존재하는 스마트 띵스 리스트들")
+	private List<SmartThingsRoomDto> smartThingsList;
+
+	@Schema(description = "해당 방의 벽지 색상", example = "yellow, green, purple, white, black, pink")
 	private String roomColor;
 
 	@Schema(description = "해당 방 번호", example = "2")
@@ -26,10 +30,4 @@ public class UserRoomRes {
 
 	@Schema(description = "해당 방 주인의 id", example = "hello")
 	private String userId;
-
-	@Schema(description = "다음 방 번호, 없다면 0", example = "3")
-	private Long nextRoom;
-
-	@Schema(description = "이전 방 번호, 없다면 0", example = "1")
-	private Long prevRoom;
 }
