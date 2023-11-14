@@ -98,7 +98,9 @@ public class ObjetService {
 				                                                                                     .name(findObjectDto.getObjet().getObjectName())
 				                                                                                     .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE :
 					                                                                                     Boolean.FALSE)
-				                                                                                     .objectStatus("Y")
+				                                                                                     .objectStatus(findObjectDto.getUserObject()
+				                                                                                                                .getUserObjectStatus()
+				                                                                                                                .equals(UserObjectStatus.Room) ? "Y" : "N")
 				                                                                                     .deviceId(smartThings.getDeviceId())
 				                                                                                     .smartThingsStatus(
 					                                                                                     smartThings.getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
@@ -112,12 +114,10 @@ public class ObjetService {
 				                                                                      .objectModelPath(findObjectDto.getObjet().getObjectModelPath())
 				                                                                      .name(findObjectDto.getObjet().getObjectName())
 				                                                                      .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                                      .objectStatus(
+					                                                                      findObjectDto.getUserObject().getUserObjectStatus().equals(UserObjectStatus.Room) ? "Y" :
+						                                                                      "N")
 				                                                                      .build();
-
-				if (findObjectDto.getUserObject().getUserObjectStatus().equals(UserObjectStatus.Room))
-					objectRoomInventoryDto.setObjectStatus("Y");
-				else
-					objectRoomInventoryDto.setObjectStatus("N");
 
 				if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.Furniture)) {
 					furnitureList.add(objectRoomInventoryDto);
