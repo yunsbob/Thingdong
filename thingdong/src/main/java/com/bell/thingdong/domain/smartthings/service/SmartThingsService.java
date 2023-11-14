@@ -1,5 +1,7 @@
 package com.bell.thingdong.domain.smartthings.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +21,16 @@ public class SmartThingsService {
 
 	@Transactional
 	public void updateStatus(SmartThingsStatusReq smartThingsStatusReq) {
-		SmartThings smartThings = smartThingsRepository.findByDeviceId(smartThingsStatusReq.getDeviceId());
+		List<SmartThings> smartThingsList = smartThingsRepository.findAllByDeviceId(smartThingsStatusReq.getDeviceId());
 
+		String status;
 		if (smartThingsStatusReq.getStatus())
-			smartThings.setStatus("Y");
+			status = "Y";
 		else
-			smartThings.setStatus("N");
+			status = "N";
+
+		for (SmartThings smartThings : smartThingsList) {
+			smartThings.setStatus(status);
+		}
 	}
 }
