@@ -30,6 +30,7 @@ export interface UserObject {
 
 export interface ThingsObject extends UserObject {
   deviceId: number;
+  status: boolean;
 }
 
 // 스마트용따로

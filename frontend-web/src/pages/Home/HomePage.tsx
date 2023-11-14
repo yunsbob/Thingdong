@@ -19,21 +19,12 @@ import GuestbookModal from '@/components/organisms/GuestbookModal/GuestbookModal
 
 import bed_1 from './bed1.glb';
 import cabinet_1 from './cabinet1.glb';
-
-import chair_1 from './chair1.glb';
-import couch_1 from './couch1.glb';
-import table_1 from './table1.glb';
-import clock_2 from './clock2.glb';
-import painting_2 from './painting2.glb';
-
 import lamp_1 from './lamp1.glb';
 
 import { UserObject } from '../../types/room';
 
 import { useUpdateRoomPosition } from '@/apis/Room/Mutations/useUpdateRoomPosition';
 import { ObjectPosition, RoomPosition, RoomState } from '@/interfaces/room';
-import { useNavigate } from 'react-router-dom';
-import { PATH } from '@/constants/path';
 import HeaderButtons from '@/components/molecules/HeaderButtons/HeaderButtons';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IMAGES } from '@/constants/images';
@@ -74,75 +65,68 @@ const HomePage = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
   const updateRoomColorMutation = useUpdateRoomColor();
-  const handleColorClick = (colorName: string, colorValue: string, colorPath: string) => {
+  const handleColorClick = (
+    colorName: string,
+    colorValue: string,
+    colorPath: string
+  ) => {
     setSelectedRoomColor(colorPath);
     const roomColorData = {
       roomId: roomState.roomId,
-      roomColor: colorName
-    }
-    updateRoomColorMutation.mutate(roomColorData)
+      roomColor: colorName,
+    };
+    updateRoomColorMutation.mutate(roomColorData);
   };
 
   const colors = [
-    ['white', '#FFFFFF', "https://thingdong.com/resources/glb/room/room-white.glb"],
-    ['yellow', '#FFDCB6', "https://thingdong.com/resources/glb/room/room_yellow.glb"],
-    ['green', '#C2E1B9', "https://thingdong.com/resources/glb/room/room_green.glb"],
-    ['pink', '#E698A8', "https://thingdong.com/resources/glb/room/room-pink.glb"],
-    ['purple', '#9F98E0', "https://thingdong.com/resources/glb/room/room-puple.glb"],
-    ['black', '#545454', "https://thingdong.com/resources/glb/room/room_black.glb"],
+    [
+      'white',
+      '#FFFFFF',
+      'https://thingdong.com/resources/glb/room/room-white.glb',
+    ],
+    [
+      'yellow',
+      '#FFDCB6',
+      'https://thingdong.com/resources/glb/room/room_yellow.glb',
+    ],
+    [
+      'green',
+      '#C2E1B9',
+      'https://thingdong.com/resources/glb/room/room_green.glb',
+    ],
+    [
+      'pink',
+      '#E698A8',
+      'https://thingdong.com/resources/glb/room/room-pink.glb',
+    ],
+    [
+      'purple',
+      '#9F98E0',
+      'https://thingdong.com/resources/glb/room/room-puple.glb',
+    ],
+    [
+      'black',
+      '#545454',
+      'https://thingdong.com/resources/glb/room/room_black.glb',
+    ],
   ];
 
-  // 찐 userObjectList
-  const [tempObectList, setTempObectList] = useState<UserObject[]>([
-    {
-      name: 'bed1',
-      userObjectId: 1,
-      position: [MOVE * -3, 0, 0],
-      rotation: [0, ROTATE, 0],
-      objectModelPath: bed_1,
-      isWall: false,
-    },
-    {
-      name: 'cabinet1',
-      userObjectId: 2,
-      position: [MOVE * -2, 0, MOVE * 3],
-      rotation: [0, ROTATE, 0],
-      objectModelPath: cabinet_1,
-      isWall: false,
-    },
-  ]);
-
-  // const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState.userObjectList
   );
-
   useEffect(() => {
     setMyObjectList(roomState.userObjectList);
   }, [isLoading, roomState]);
 
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>(
-    roomState && roomState.smartThingsList ? roomState.smartThingsList : []
+    roomState.smartThingsList
   );
-
-  // const [myThingsList, setMyThingsList] = useState<ThingsObject[]>([
-  //   {
-  //     name: 'lamp1',
-  //     deviceId: 0,
-  //     userObjectId: 8,
-  //     position: [0, 0, 0],
-  //     rotation: [0, 0, 0],
-  //     objectModelPath: lamp_1,
-  //     isWall: false,
-  //   },
-  // ]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
     setIsColorPickerOpen(false);
   };
 
-  // TODO: useState로 상태 저장
   const {
     furnitureList,
     homeApplianceList,
@@ -170,21 +154,9 @@ const HomePage = () => {
     unBoxThingList,
   ]);
 
-  useEffect(() => {
-    if (myObjectList[0]) {
-      console.log(
-        myObjectList[0].position,
-        myObjectList[0].size?.width,
-        myObjectList[0].size?.height
-      );
-    }
-  }, [myObjectList]);
-
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
   };
-
-  // TODO: 업데이트 X 
 
   const handleItemClick = (selectedItemId: number) => {
     let updatedInventory = { ...roomInventory };
@@ -250,7 +222,6 @@ const HomePage = () => {
       }
     }
   };
-console.log(myObjectList, '>>>>>>>>>>');
 
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
@@ -269,7 +240,6 @@ console.log(myObjectList, '>>>>>>>>>>');
         imagePath={item.objectImagePath}
         $isRoom={'Y'}
         onClick={() => handleItemClick(item.userObjectId)}
-        // onClick={() => {}}
       />
     ));
   };
@@ -399,8 +369,6 @@ console.log(myObjectList, '>>>>>>>>>>');
 
   // 객체 인벤토리에 저장 (방에서 삭제)
   const handleRemoveClick = () => {
-    if (selectedItemId == null) return;
-
     setMyObjectList(currentObjects => {
       return currentObjects.filter(obj => obj.name !== selectedObjectName);
     });
@@ -435,7 +403,6 @@ console.log(myObjectList, '>>>>>>>>>>');
   const updateRoomPositionMutation = useUpdateRoomPosition();
   const updateRoomPosition = (roomPosition: RoomPosition) => {
     updateRoomPositionMutation.mutate(roomPosition);
-    //TODO: 메인으로 navigate 시켜주기
   };
 
   // 방 상태 업데이트
@@ -454,7 +421,6 @@ console.log(myObjectList, '>>>>>>>>>>');
     };
 
     setIsEditing(!isEditing);
-    // TODO: 데이터 바인딩 후 navigating 해주기 OR isEditing 반대로
     updateRoomPosition(roomPosition);
   };
 
@@ -475,14 +441,17 @@ console.log(myObjectList, '>>>>>>>>>>');
   const deleteGuestbookMutation = useDeleteGuestbook();
   const handleDeleteGuestbook = (guestBookId: number) => {
     deleteGuestbookMutation.mutate(guestBookId);
-    setCurrentIndex(0);
+    setCurrentIndex(currentIndex - 1);
   };
 
   return (
     <>
       <GuestbookModal
         isOpen={modalOpen}
-        onClose={() => changeModalOpen(modalOpen, setModalOpen)}
+        onClose={() => {
+          changeModalOpen(modalOpen, setModalOpen);
+          setCurrentIndex(0);
+        }}
         guestbooks={guestbooks}
         currentIndex={currentIndex}
         handlePrev={handlePrev}
@@ -590,7 +559,7 @@ console.log(myObjectList, '>>>>>>>>>>');
         isEditing={isEditing}
         position={position}
         rotation={rotation}
-        userObject={myObjectList} // TODO: here
+        userObject={myObjectList}
         thingsObject={myThingsList}
         onObjectClick={handleObjectClick}
         selectedRoomColor={selectedRoomColor}
