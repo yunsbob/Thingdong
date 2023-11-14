@@ -94,10 +94,15 @@ export const ChangeRoomWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   position: absolute;
   top: 20px;
   right: 15px;
+  z-index: 1;
+`;
+export const DarkModeWrapper = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 65px;
   z-index: 1;
 `;
 
