@@ -17,6 +17,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { UNBOXING_MESSAGES } from '@/constants/messages';
 import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 import { useQueryClient } from '@tanstack/react-query';
+import { resetUnboxingModal } from '@/utils/resetUnboxingModal';
 
 /* Complete 3D Generate Modal */
 const Complete3DGenerate = () => {
@@ -92,15 +93,7 @@ const Opening = () => {
   } = useGetUnboxing(typingContent);
 
   const closeModal = () => {
-    setModalOpen(false);
-    setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
-    setTypingContent('');
-    setUnboxingObject({
-      glbPath: '',
-      pngPath: '',
-      gifPath: '',
-      userObjectId: 0,
-    });
+    resetUnboxingModal();
   };
 
   const canRender = () => {
@@ -110,7 +103,7 @@ const Opening = () => {
   useEffect(() => {
     if (canRender()) {
       setUnboxingObject(tt3Data);
-      console.log(tt3Data);
+      console.log('렌더링 가능', tt3Data);
       toast.success(UNBOXING_MESSAGES.TOAST.SUCCESS);
     }
   }, [tt3Data, isSuccess, isLoading]);
