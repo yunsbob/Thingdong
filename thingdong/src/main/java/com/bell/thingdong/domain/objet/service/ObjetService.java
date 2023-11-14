@@ -14,13 +14,17 @@ import com.bell.thingdong.domain.objet.dto.ObjectInventoryDto;
 import com.bell.thingdong.domain.objet.dto.ObjectRoomInventoryDto;
 import com.bell.thingdong.domain.objet.dto.UnBoxThingHistoryDto;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
+import com.bell.thingdong.domain.objet.dto.request.PresentReq;
 import com.bell.thingdong.domain.objet.dto.request.UserObjectPositionReq;
 import com.bell.thingdong.domain.objet.dto.response.ObjectInventoryRes;
 import com.bell.thingdong.domain.objet.dto.response.ObjectRoomInventoryRes;
+import com.bell.thingdong.domain.objet.entity.Objet;
+import com.bell.thingdong.domain.objet.entity.UnBoxThingHistory;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.objet.exception.ObjectCategoryNotFoundException;
 import com.bell.thingdong.domain.objet.exception.ObjectIsExpensiveException;
 import com.bell.thingdong.domain.objet.exception.UserObjectNotFoundException;
+import com.bell.thingdong.domain.objet.repository.ObjetRepository;
 import com.bell.thingdong.domain.objet.repository.UnBoxThingHistoryRepository;
 import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
 import com.bell.thingdong.domain.room.entity.UserRoom;
@@ -40,6 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 public class ObjetService {
 	private final UnBoxThingHistoryRepository unBoxThingHistoryRepository;
+	private final ObjetRepository objetRepository;
 	private final UserObjectRepository userObjectRepository;
 	private final UserRoomRepository userRoomRepository;
 	private final UserRepository userRepository;
@@ -207,5 +212,39 @@ public class ObjetService {
 			userObjectCheckList.get(idx).setUserObjectPosition(0.0, 0.0, 0.0, 0.0, null, UserObjectStatus.Inventory);
 			idx++;
 		}
+	}
+
+	@Transactional
+	public Long addUnBoxThing(String email, String name, String imgPath, String modelPath) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+		Objet objet = Objet.builder()
+		                   .objectImagePath(imgPath)
+		                   .objectModelPath(modelPath)
+		                   .objectName(name)
+		                   .objectWidth(2.0)
+		                   .objectHeight(2.0)
+		                   .isWall("N")
+		                   .objectCategory(ObjectCategory.UnBoxThing)
+		                   .build();
+
+		objetRepository.save(objet);
+
+		UserObject userObject = UserObject.builder().objet(objet).user(user).userObjectStatus(UserObjectStatus.Inventory).build();
+		Long userObjectId = userObjectRepository.save(userObject).getUserObjectId();
+
+		UnBoxThingHistory unBoxThingHistory = UnBoxThingHistory.builder().objet(objet).user(user).objetName(name).build();
+		unBoxThingHistoryRepository.save(unBoxThingHistory);
+
+		return userObjectId;
+	}
+
+	@Transactional
+	public void presentUnBoxThing(PresentReq presentReq) {
+		User user = userRepository.findByEmail(presentReq.getUserId()).orElseThrow(UserNotFoundException::new);
+
+		UserObject userObject = userObjectRepository.findById(presentReq.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
+
+		userObject.setUser(user);
 	}
 }

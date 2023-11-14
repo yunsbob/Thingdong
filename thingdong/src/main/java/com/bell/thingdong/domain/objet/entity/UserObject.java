@@ -91,4 +91,8 @@ public class UserObject {
 		this.z = z;
 		this.rotationY = rotationY;
 	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
