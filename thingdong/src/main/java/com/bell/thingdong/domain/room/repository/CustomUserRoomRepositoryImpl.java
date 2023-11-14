@@ -12,6 +12,8 @@ import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.smartthings.dto.SmartThingsRoomDto;
+import com.bell.thingdong.domain.smartthings.entity.SmartThings;
+import com.bell.thingdong.domain.smartthings.repository.SmartThingsRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 	private final JPAQueryFactory jpaQueryFactory;
+	private final SmartThingsRepository smartThingsRepository;
 
 	@Override
 	public UserRoomRes findRoomByUserIdOrRoomId(Long userId, Long roomId) {
@@ -42,17 +45,19 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 			ObjectSizeDto objectSizeDto = ObjectSizeDto.builder().width(userObject.getObjet().getObjectWidth()).height(userObject.getObjet().getObjectHeight()).build();
 
 			if (userObject.getObjet().getObjectCategory().equals(ObjectCategory.SmartThings)) {
+				SmartThings smartThings = smartThingsRepository.findByUserObject(userObject);
+
 				SmartThingsRoomDto smartThingsRoomDto = SmartThingsRoomDto.builder()
 				                                                          .userObjectId(userObject.getUserObjectId())
-				                                                          .objectModelPath(userObject.getSmartThings().getStatus().equals("Y") ?
-					                                                          userObject.getSmartThings().getActivationPath() : userObject.getObjet().getObjectModelPath())
+				                                                          .objectModelPath(smartThings.getStatus().equals("Y") ? smartThings.getActivationPath() :
+					                                                          userObject.getObjet().getObjectModelPath())
 				                                                          .name(userObject.getObjet().getObjectName())
 				                                                          .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
 				                                                          .position(positionList)
 				                                                          .rotation(rotationList)
 				                                                          .size(objectSizeDto)
-				                                                          .deviceId(userObject.getSmartThings().getDeviceId())
-				                                                          .status(userObject.getSmartThings().getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                          .deviceId(smartThings.getDeviceId())
+				                                                          .status(smartThings.getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
 				                                                          .build();
 
 				smartThingsRoomDtoList.add(smartThingsRoomDto);

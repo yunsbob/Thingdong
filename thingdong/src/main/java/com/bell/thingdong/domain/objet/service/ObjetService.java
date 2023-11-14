@@ -31,6 +31,8 @@ import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
 import com.bell.thingdong.domain.room.entity.UserRoom;
 import com.bell.thingdong.domain.room.exception.RoomNotFoundException;
 import com.bell.thingdong.domain.room.repository.UserRoomRepository;
+import com.bell.thingdong.domain.smartthings.entity.SmartThings;
+import com.bell.thingdong.domain.smartthings.repository.SmartThingsRepository;
 import com.bell.thingdong.domain.thinghistory.service.ThingHistoryService;
 import com.bell.thingdong.domain.user.entity.User;
 import com.bell.thingdong.domain.user.exception.UserNotFoundException;
@@ -49,6 +51,7 @@ public class ObjetService {
 	private final UserObjectRepository userObjectRepository;
 	private final UserRoomRepository userRoomRepository;
 	private final UserRepository userRepository;
+	private final SmartThingsRepository smartThingsRepository;
 	private final ThingHistoryService thingHistoryService;
 
 	@Transactional
@@ -86,6 +89,8 @@ public class ObjetService {
 
 		for (FindObjectDto findObjectDto : objectRoomInventoryDtoList) {
 			if (findObjectDto.getObjet().getObjectCategory().equals(ObjectCategory.SmartThings)) {
+				SmartThings smartThings = smartThingsRepository.findByUserObject(findObjectDto.getUserObject());
+
 				SmartThingsRoomInventoryDto smartThingsRoomInventoryDto = SmartThingsRoomInventoryDto.builder()
 				                                                                                     .userObjectId(findObjectDto.getUserObject().getUserObjectId())
 				                                                                                     .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
@@ -94,10 +99,9 @@ public class ObjetService {
 				                                                                                     .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE :
 					                                                                                     Boolean.FALSE)
 				                                                                                     .objectStatus("Y")
-				                                                                                     .deviceId(findObjectDto.getUserObject().getSmartThings().getDeviceId())
+				                                                                                     .deviceId(smartThings.getDeviceId())
 				                                                                                     .smartThingsStatus(
-					                                                                                     findObjectDto.getUserObject().getSmartThings().getStatus().equals("Y") ?
-						                                                                                     Boolean.TRUE : Boolean.FALSE)
+					                                                                                     smartThings.getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
 				                                                                                     .build();
 
 				smartThingsList.add(smartThingsRoomInventoryDto);
