@@ -11,18 +11,21 @@ const resetUnboxingModal = () => {
   const setModalContent = useSetAtom(modalContentAtom);
   const setModalOpen = useSetAtom(modalOpenAtom);
   const setTypingContent = useSetAtom(typingContentAtom);
-
   const setUnboxingObject = useSetAtom(unboxingObjectAtom);
 
-  setModalOpen(false);
-  setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
-  setTypingContent('');
-  setUnboxingObject({
-    glbPath: '',
-    pngPath: '',
-    gifPath: '',
-    userObjectId: 0,
-  });
+  const reset = () => {
+    setModalOpen(false);
+    setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
+    setTypingContent('');
+    setUnboxingObject({
+      glbPath: '',
+      pngPath: '',
+      gifPath: '',
+      userObjectId: 0,
+    });
+  };
+
+  return reset;
 };
 
 export { resetUnboxingModal };
