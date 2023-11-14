@@ -19,27 +19,7 @@ const MyRoom = ({
   thingsObject,
   onObjectClick,
   selectedRoomColor,
-  roomColor,
 }: MyRoomProps) => {
-  const loadedObjects = useMemo(() => {
-    if (userObject) {
-      return userObject.map(obj => {
-        // console.log('here2222222', obj.name);
-        const glb = useLoader(GLTFLoader, obj.objectModelPath);
-        // const glb = useLoader(GLTFLoader,'https://thingdong.com/resources/glb/furniture/bed1.glb');
-        glb.scene.traverse(node => {
-          if ((node as Mesh).isMesh) {
-            node.castShadow = true;
-            node.receiveShadow = true;
-          }
-        });
-        return { ...obj, glb: glb.scene };
-      });
-    }
-  }, [userObject]); // userObject 배열이 변경될 때만 이 코드 블록 실행
-
-  // const { scene } = useGLTF(`/models/rooms/room-${selectedRoomColor}.glb`);
-
   if (!selectedRoomColor) {
     return <div>Loading...</div>; // 혹은 다른 기본 상태 렌더링
   }
@@ -54,140 +34,124 @@ const MyRoom = ({
       }
     });
   }, [clone]);
-  console.log(selectedRoomColor, '방색깔');
 
   return (
     <div style={{ backgroundColor: '#efddad', width: '100%', height: '100vh' }}>
       {/* background에 gradient 추가 */}
       <div
         style={{
-          background: `linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(153, 153, 255, 50) 140%`,
+          // background: `linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(153, 153, 255, 50) 140%`, // purple
+          background: `linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 129, 79, 50) 140%`, // orange
           width: '100%',
           height: '100vh',
         }}
       >
-      <Suspense fallback={<Spinner />}>
-        <Canvas
-          shadows
-          // linear
-          // flat
-          style={{
-            width: '100%',
-            height: isEditing ? '60vh' : '100vh',
-          }}
-        >
-          <scene name="Scene" position={[0, -2, 0]}>
-            <ambientLight intensity={0.4} />
-            {/* <GridHelpers /> */}
-            <directionalLight
-              position={[5, 5, 5]}
-              intensity={1}
-              castShadow
-              shadow-mapSize-width={2048}
-              shadow-mapSize-height={2048}
-              shadow-camera-near={0.5}
-              shadow-camera-far={500}
-            />
+        <Suspense fallback={<Spinner />}>
+          <Canvas
+            shadows
+            // linear
+            // flat
+            style={{
+              width: '100%',
+              height: isEditing ? '60vh' : '100vh',
+            }}
+          >
+            <scene name="Scene" position={[0, -2, 0]}>
+              <ambientLight intensity={0.4} />
+              {/* <GridHelpers /> */}
+              <directionalLight
+                position={[5, 5, 5]}
+                intensity={1}
+                castShadow
+                shadow-mapSize-width={2048}
+                shadow-mapSize-height={2048}
+                shadow-camera-near={0.5}
+                shadow-camera-far={500}
+              />
 
-            <primitive
-              key={561}
-              object={
-                useLoader(
-                  GLTFLoader,
-                  'https://thingdong.com/resources/glb/furniture/bed1.glb'
-                ).scene
-              }
-              name={'bed1'}
-              position={[0, 0, 0]}
-              rotation={[0, 0, 0]}
-              scale={1}
-              onClick={(e: any) => {
-                e.stopPropagation();
-                console.log(e);
-                onObjectClick('안보이는거니');
-                // onObjectClick(obj.name);
-              }}
-            />
+              {/* userObjectList 렌더링 */}
+              {userObject.map(obj => {
+                const glb = useLoader(GLTFLoader, obj.objectModelPath);
 
-            {userObject.map(obj => {
-              console.log('???here???', obj);
-              const glb = useLoader(GLTFLoader, obj.objectModelPath);
-
-              glb.scene.traverse(node => {
-                // console.log(node.type);
-                if (node.type === 'Mesh') {
-                  node.castShadow = true;
-                  node.receiveShadow = true;
-                }
-              });
-
-              return (
-                <primitive
-                  key={obj.userObjectId}
-                  object={glb.scene}
-                  name={obj.name}
-                  position={
-                    obj.isWall
-                      ? [
-                          obj.position[0] - 0.2,
-                          obj.position[1],
-                          obj.position[2] - 0.2,
-                        ]
-                      : obj.position
+                glb.scene.traverse(node => {
+                  // console.log(node.type);
+                  if (node.type === 'Mesh') {
+                    node.castShadow = true;
+                    node.receiveShadow = true;
                   }
-                  rotation={obj.rotation}
-                  scale={obj.isWall ? 1.05 : 1}
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    onObjectClick(obj.name);
-                  }}
-                />
-              );
-            })}
-            {thingsObject.map(obj => {
-              const glb = useLoader(GLTFLoader, obj.objectModelPath);
+                });
 
-              glb.scene.traverse(node => {
-                if (node.type === 'Mesh') {
-                  node.castShadow = true;
-                  node.receiveShadow = true;
-                }
-              });
-
-              const [isShining, setIsShining] = useState(false);
-
-              return (
-                <React.Fragment key={obj.name}>
+                return (
                   <primitive
+                    key={obj.userObjectId}
                     object={glb.scene}
                     name={obj.name}
-                    position={obj.position}
+                    position={
+                      obj.isWall
+                        ? [
+                            obj.position[0] - 0.2,
+                            obj.position[1],
+                            obj.position[2] - 0.2,
+                          ]
+                        : obj.position
+                    }
                     rotation={obj.rotation}
-                    scale={1}
+                    scale={obj.isWall ? 1.05 : 1}
                     onClick={(e: any) => {
                       e.stopPropagation();
-                      if (obj.name.includes('lamp') && !isEditing) {
-                        setIsShining(!isShining);
-                      }
                       onObjectClick(obj.name);
                     }}
                   />
-                  {obj.name.includes('lamp') && isShining && (
-                    <>
-                      <pointLight
-                        position={[
-                          obj.position[0],
-                          obj.position[1] + 3,
-                          obj.position[2],
-                        ]}
-                        color="#ffd000"
-                        castShadow
-                        distance={5}
-                        intensity={100}
-                        power={100}
-                      />
+                );
+              })}
 
-                      {/* <pointLight
+              {/* thingsObjectList 렌더링 */}
+              {thingsObject.map(obj => {
+                const glb = useLoader(GLTFLoader, obj.objectModelPath);
+
+                glb.scene.traverse(node => {
+                  if (node.type === 'Mesh') {
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+                  }
+                });
+
+                // const [isShining, setIsShining] = useState(false);
+                const [isShining, setIsShining] = useState(obj.status);
+
+                return (
+                  <React.Fragment key={obj.name}>
+                    <primitive
+                      object={glb.scene}
+                      name={obj.name}
+                      position={obj.position}
+                      rotation={obj.rotation}
+                      scale={1}
+                      onClick={(e: any) => {
+                        e.stopPropagation();
+                        if (obj.name.includes('lamp') && !isEditing) {
+                          setIsShining(!isShining);
+                        }
+                        onObjectClick(obj.name);
+                        console.log(obj.name, 'herewww');
+                      }}
+                    />
+                    {obj.name.includes('lamp') && isShining && (
+                      <>
+                        <pointLight
+                          position={[
+                            obj.position[0],
+                            obj.position[1] + 3,
+                            obj.position[2],
+                          ]}
+                          color="#ffd000"
+                          castShadow
+                          distance={5}
+                          intensity={100}
+                          power={100}
+                        />
+
+                        {/* <pointLight
                         name="Point Light 3"
                         intensity={1.5}
                         distance={20}
@@ -202,60 +166,60 @@ const MyRoom = ({
                           obj.position[2],
                         ]}
                       /> */}
-                    </>
-                  )}
-                </React.Fragment>
-              );
-            })}
+                      </>
+                    )}
+                  </React.Fragment>
+                );
+              })}
 
-            {/* 화면 중앙에 객체들 배치되게 scale, position 조정 */}
-            <primitive
-              name="room"
-              object={clone}
-              scale={1.05}
-              position={[-0.2, 0, -0.2]}
-            />
+              {/* 화면 중앙에 객체들 배치되게 scale, position 조정 */}
+              <primitive
+                name="room"
+                object={clone}
+                scale={1.05}
+                position={[-0.2, 0, -0.2]}
+              />
 
-            <OrthographicCamera
-              name="Default Camera"
-              makeDefault={true}
-              zoom={32}
-              far={10000}
-              near={-5000}
-              position={[265, 350, 423]}
-              rotation={[10, 40, 0.31]}
-              scale={1}
-            />
+              <OrthographicCamera
+                name="Default Camera"
+                makeDefault={true}
+                zoom={32}
+                far={10000}
+                near={-5000}
+                position={[265, 350, 423]}
+                rotation={[10, 40, 0.31]}
+                scale={1}
+              />
 
-            <pointLight position={[-5, 5, -10]} castShadow intensity={0.6} />
-            {/* <spotLight intensity={1} position={[0, 1000, 0]} /> */}
+              <pointLight position={[-5, 5, -10]} castShadow intensity={0.6} />
+              {/* <spotLight intensity={1} position={[0, 1000, 0]} /> */}
 
-            {/* Light */}
-            {/* <ambientLight intensity={0.05} /> */}
-            {/* <Environment preset="sunset" /> */}
-            <pointLight
-              name="LampLight1"
-              castShadow
-              intensity={0.2}
-              distance={205}
-              shadow-mapSize-width={1024}
-              shadow-mapSize-height={1024}
-              shadow-camera-near={100}
-              shadow-camera-far={2000}
-              color="#ffd000"
-              position={[5, 16, -1]}
-            />
-            {/* <hemisphereLight
+              {/* Light */}
+              {/* <ambientLight intensity={0.05} /> */}
+              {/* <Environment preset="sunset" /> */}
+              <pointLight
+                name="LampLight1"
+                castShadow
+                intensity={0.2}
+                distance={205}
+                shadow-mapSize-width={1024}
+                shadow-mapSize-height={1024}
+                shadow-camera-near={100}
+                shadow-camera-far={2000}
+                color="#ffd000"
+                position={[5, 16, -1]}
+              />
+              {/* <hemisphereLight
               name="Default Ambient Light"
               intensity={0.1}
               color="#e8e8e8"
             /> */}
-          </scene>
-          <OrbitControls />
-        </Canvas>
-      </Suspense>
+            </scene>
+            <OrbitControls />
+          </Canvas>
+        </Suspense>
+      </div>
     </div>
-    // </div>
   );
 };
 
