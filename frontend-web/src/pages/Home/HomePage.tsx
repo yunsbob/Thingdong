@@ -19,6 +19,7 @@ import GuestbookModal from '@/components/organisms/GuestbookModal/GuestbookModal
 
 import bed_1 from './bed1.glb';
 import cabinet_1 from './cabinet1.glb';
+
 import chair_1 from './chair1.glb';
 import couch_1 from './couch1.glb';
 import table_1 from './table1.glb';
@@ -40,7 +41,7 @@ import { MOVE, ROTATE } from '@/constants/transformations';
 
 import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 import { roomInventoryAtom } from '@/states/roomInventoryStates';
-import { useAtom } from 'jotai';
+import { atom, useAtom } from 'jotai';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -61,7 +62,7 @@ const HomePage = () => {
   const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [roomInventory, setRoomInventory] = useAtom(roomInventoryAtom);
-  const roomState = useGetRoom(userId); // Fetching real data using the custom hook
+  const { data: roomState, isLoading } = useGetRoom(userId); // Fetching real data using the custom hook
   const [selectedRoomColor, setSelectedRoomColor] = useState(
     roomState.roomColor
   );
@@ -114,11 +115,34 @@ const HomePage = () => {
   ];
 
   // 찐 userObjectList
+  const [tempObectList, setTempObectList] = useState<UserObject[]>([
+    {
+      name: 'bed1',
+      userObjectId: 1,
+      position: [MOVE * -3, 0, 0],
+      rotation: [0, ROTATE, 0],
+      objectModelPath: bed_1,
+      isWall: false,
+    },
+    {
+      name: 'cabinet1',
+      userObjectId: 2,
+      position: [MOVE * -2, 0, MOVE * 3],
+      rotation: [0, ROTATE, 0],
+      objectModelPath: cabinet_1,
+      isWall: false,
+    },
+  ]);
 
   // const [myObjectList, setMyObjectList] = useState<UserObject[]>(roomState.myObjectList)
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
-    roomState && roomState.userObjectList ? roomState.userObjectList : []
+    roomState.userObjectList
   );
+
+  useEffect(() => {
+    setMyObjectList(roomState.userObjectList);
+  }, [isLoading, roomState]);
+
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>(
     roomState && roomState.smartThingsList ? roomState.smartThingsList : []
   );
@@ -181,6 +205,8 @@ const HomePage = () => {
   const handleCategoryClick = (category: Category) => {
     setActiveCategory(category);
   };
+
+  // TODO: 업데이트 X 
 
   const handleItemClick = (selectedItemId: number) => {
     let updatedInventory = { ...roomInventory };
@@ -246,6 +272,8 @@ const HomePage = () => {
       }
     }
   };
+console.log(myObjectList, '>>>>>>>>>>');
+
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
       가구: roomInventory.furnitureList || [],
@@ -263,6 +291,7 @@ const HomePage = () => {
         imagePath={item.objectImagePath}
         $isRoom={'Y'}
         onClick={() => handleItemClick(item.userObjectId)}
+        // onClick={() => {}}
       />
     ));
   };
@@ -583,7 +612,7 @@ const HomePage = () => {
         isEditing={isEditing}
         position={position}
         rotation={rotation}
-        userObject={myObjectList}
+        userObject={myObjectList} // TODO: here
         thingsObject={myThingsList}
         onObjectClick={handleObjectClick}
         selectedRoomColor={selectedRoomColor}
