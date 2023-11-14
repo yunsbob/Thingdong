@@ -219,13 +219,13 @@ public class ObjetService {
 
 			if (idx < last && userObjectCheckList.get(idx).getUserObjectId().equals(arrangeObjectPositionDto.getUserObjectId())) {
 				userObjectCheckList.get(idx)
-				                   .setUserObjectPosition(arrangeObjectPositionDto.getPosition().getX(), arrangeObjectPositionDto.getPosition().getY(),
-					                   arrangeObjectPositionDto.getPosition().getZ(), arrangeObjectPositionDto.getRotation().getY(), userRoom, UserObjectStatus.Room);
+				                   .setUserObjectPosition(arrangeObjectPositionDto.getPosition().get(0), arrangeObjectPositionDto.getPosition().get(1),
+					                   arrangeObjectPositionDto.getPosition().get(2), arrangeObjectPositionDto.getRotation().get(1), userRoom, UserObjectStatus.Room);
 				idx++;
 			} else {
 				UserObject userObject = userObjectRepository.findById(arrangeObjectPositionDto.getUserObjectId()).orElseThrow(UserObjectNotFoundException::new);
-				userObject.setUserObjectPosition(arrangeObjectPositionDto.getPosition().getX(), arrangeObjectPositionDto.getPosition().getY(),
-					arrangeObjectPositionDto.getPosition().getZ(), arrangeObjectPositionDto.getRotation().getY(), userRoom, UserObjectStatus.Room);
+				userObject.setUserObjectPosition(arrangeObjectPositionDto.getPosition().get(0), arrangeObjectPositionDto.getPosition().get(1),
+					arrangeObjectPositionDto.getPosition().get(2), arrangeObjectPositionDto.getRotation().get(1), userRoom, UserObjectStatus.Room);
 			}
 		}
 
