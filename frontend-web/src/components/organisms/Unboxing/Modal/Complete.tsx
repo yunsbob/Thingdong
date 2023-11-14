@@ -19,15 +19,15 @@ const Complete = () => {
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
   const [, setModalContent] = useAtom(modalContentAtom);
   const [typingContent, setTypingContent] = useAtom(typingContentAtom);
-  const [, setSendingFrind] = useAtom(sendingFriendAtom);
+  const [, setSendingFriend] = useAtom(sendingFriendAtom);
   const unboxingObject = useAtomValue(unboxingObjectAtom);
 
   const handleConfirm = () => {
     setModalContent(UNBOXING_MODAL_NAME.SENDING_LIST);
-    setSendingFrind('멋쟁이 토마토');
   };
 
   const handleGet = () => {
+    //TODO: 가지기 데이더 바인딩
     setModalOpen(false);
     setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
     setTypingContent('');
@@ -56,7 +56,7 @@ const Complete = () => {
               {getToday()}
             </Text>
           </S.DateBox>
-          <Image src={unboxingObject.pngPath} $unit={'px'} height={180} />
+          <Image src={unboxingObject.gifPath} $unit={'px'} height={250} />
         </S.ObjectBox>
         <Text
           size="body1"

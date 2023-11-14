@@ -11,7 +11,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { SkeletonUtils } from 'three-stdlib';
 import { GridHelper, Mesh } from 'three';
 
-// TODO: selectedRoomColor 받아오기
+// : selectedRoomColor 받아오기
 const FriendRoom = ({
   userObject,
   thingsObject,

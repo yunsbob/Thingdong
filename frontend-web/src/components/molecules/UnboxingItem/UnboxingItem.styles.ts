@@ -9,7 +9,7 @@ export const UnboxingItemWrapper = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 18px;
   margin-top: 10px;
-  height: calc(63vh - 7rem);
+  max-height: calc(63vh - 7rem);
   padding-bottom: 4rem;
   overflow-y: auto;
   &::-webkit-scrollbar {

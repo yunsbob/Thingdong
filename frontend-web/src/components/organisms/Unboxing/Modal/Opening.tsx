@@ -16,6 +16,7 @@ import { useGetUnboxing } from '@/apis/Inventory/Queries/useGetUnboxing';
 import toast, { Toaster } from 'react-hot-toast';
 import { UNBOXING_MESSAGES } from '@/constants/messages';
 import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
+import { useQueryClient } from '@tanstack/react-query';
 
 /* Complete 3D Generate Modal */
 const Complete3DGenerate = () => {
@@ -94,7 +95,12 @@ const Opening = () => {
   const [typingContent, setTypingContent] = useAtom(typingContentAtom);
   const setUnboxingObject = useSetAtom(unboxingObjectAtom);
 
-  const { data: tt3Data, isLoading, isError } = useGetUnboxing(typingContent);
+  const {
+    data: tt3Data,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useGetUnboxing(typingContent);
 
   const closeModal = () => {
     setModalOpen(false);
@@ -106,9 +112,10 @@ const Opening = () => {
     return !isLoading && tt3Data;
   };
 
-  useCallback(() => {
+  useEffect(() => {
     if (canRender()) {
       setUnboxingObject(tt3Data);
+      console.log(tt3Data);
       toast.success(UNBOXING_MESSAGES.TOAST.SUCCESS);
     }
   }, [isLoading, tt3Data]);
@@ -122,6 +129,13 @@ const Opening = () => {
       }, 1000);
     }
   }, [isError]);
+
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    if (isSuccess) {
+      queryClient.invalidateQueries({ queryKey: ['userInfo'] });
+    }
+  }, [isSuccess]);
 
   return (
     <Modal height={31} isOpen={modalOpen}>

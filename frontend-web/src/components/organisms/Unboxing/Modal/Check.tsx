@@ -13,18 +13,23 @@ import * as S from '@/components/organisms/Unboxing/Modal/Complete.styles';
 import Modal from '@/components/molecules/Modal/Modal';
 import { IMAGES } from '@/constants/images';
 import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
+import { userObjectsAtom } from '../../../../states/roomState';
 
 const Check = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
-  const [sendingFrind] = useAtom(sendingFriendAtom);
+  const [sendingFriend] = useAtom(sendingFriendAtom);
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
   const [, setTypingContent] = useAtom(typingContentAtom);
+  const userObjects = useAtom(userObjectsAtom);
 
   const handleCancel = () => {
     setModalContent(UNBOXING_MODAL_NAME.SENDING_LIST);
   };
 
   const handleConfirm = () => {
+    //TODO: 데이터 바인딩 선물하기
+    // userObjects 이용
+    console.log(sendingFriend);
     setModalOpen(false);
     setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
     setTypingContent('');
@@ -44,7 +49,7 @@ const Check = () => {
           $marginBottom="20px"
           $lineHeight="1.4"
         >
-          {sendingFrind}님에게
+          {sendingFriend.nickname}님에게
           <br />
           선물하시겠어요?
         </Text>
