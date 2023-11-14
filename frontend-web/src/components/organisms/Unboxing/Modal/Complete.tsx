@@ -29,13 +29,18 @@ const Complete = () => {
     setModalContent(UNBOXING_MODAL_NAME.SENDING_LIST);
   };
 
-  const queryClient = new QueryClient();
 
   const handleGet = () => {
-    resetUnboxingModal();
-    queryClient.invalidateQueries({
-      queryKey: ['inventory'],
+    setModalOpen(false);
+    setModalContent(UNBOXING_MODAL_NAME.TEXT_TYPING);
+    setTypingContent('');
+    setUnboxingObject({
+      glbPath: '',
+      pngPath: '',
+      gifPath: '',
+      userObjectId: 0,
     });
+    window.location.reload();
   };
 
   // 조사 맞춤 함수

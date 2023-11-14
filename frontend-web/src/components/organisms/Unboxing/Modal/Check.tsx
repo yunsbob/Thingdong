@@ -19,6 +19,7 @@ import {
   PresentFriend,
   usePresentUnboxing,
 } from '@/apis/Inventory/Mutations/usePresentUnboxing';
+import { resetUnboxingModal } from '@/utils/resetUnboxingModal';
 
 const Check = () => {
   const [, setModalContent] = useAtom(modalContentAtom);
@@ -37,7 +38,7 @@ const Check = () => {
   };
 
   const setUnboxingObject = useSetAtom(unboxingObjectAtom);
-
+  
   const handleConfirm = () => {
     presentUnboxing({
       userId: sendingFriend.userId,
@@ -53,6 +54,9 @@ const Check = () => {
       gifPath: '',
       userObjectId: 0,
     });
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   return (
