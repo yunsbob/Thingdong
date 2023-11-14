@@ -10,5 +10,5 @@ import com.bell.thingdong.domain.objet.entity.UserObject;
 public interface CustomUserObjectRepository {
 	List<FindObjectDto> findObjectByUserIdAndObjectStatusAndObjectCategory(Long userId, UserObjectStatus userObjectStatus, ObjectCategory objectCategory);
 
-	List<UserObject> findUserObjectIdByRoomId(Long roomId);
+	List<UserObject> findUserObjectByRoomId(Long roomId);
 }

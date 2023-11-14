@@ -42,7 +42,7 @@ public class CustomUserObjectRepositoryImpl implements CustomUserObjectRepositor
 	}
 
 	@Override
-	public List<UserObject> findUserObjectIdByRoomId(Long roomId) {
+	public List<UserObject> findUserObjectByRoomId(Long roomId) {
 		return jpaQueryFactory.selectFrom(userObject).where(userObject.room.roomId.eq(roomId)).orderBy(userObject.userObjectId.asc()).fetch();
 	}
 
