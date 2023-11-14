@@ -34,6 +34,7 @@ import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 import { roomInventoryAtom } from '@/states/roomInventoryStates';
 import { useAtom } from 'jotai';
 import { useUpdateRoomColor } from '@/apis/Room/Mutations/useUpdateRoomColor';
+import { roomColorAtom } from '@/states/roomState';
 import { ThingsStatus } from '../../types/things';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 
@@ -60,9 +61,9 @@ const HomePage = () => {
   const [selectedRoomColor, setSelectedRoomColor] = useState(
     roomState.roomColorPath
   );
-  // const [selectedRoomColor, setSelectedRoomColor] = useState('white');
-  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+  const [darkMode, setDarkMode] = useState<boolean>(roomState.darkMode);
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
@@ -73,6 +74,7 @@ const HomePage = () => {
     colorPath: string
   ) => {
     setSelectedRoomColor(colorPath);
+    setRoomColorState(colorName);
     const roomColorData = {
       roomId: roomState.roomId,
       roomColor: colorName,
@@ -113,6 +115,7 @@ const HomePage = () => {
     ],
   ];
 
+  const [, setRoomColorState] = useAtom(roomColorAtom);
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState.userObjectList
   );
@@ -138,6 +141,7 @@ const HomePage = () => {
     unBoxThingList,
   } = useGetRoomInventory() as RoomInventoryData;
 
+  // 룸 인벤토리 atom에 저장
   useEffect(() => {
     setRoomInventory({
       furnitureList: furnitureList || [],
@@ -200,17 +204,22 @@ const HomePage = () => {
       ...updatedInventory.smartThingsList,
       ...updatedInventory.unBoxThingList,
     ];
+
+    // 보유한 아이디로 무슨 아이템을 클릭했는지 서치
     const clickedItem = allUpdatedObjects.find(
       item => item.userObjectId === selectedItemId
     );
 
     if (clickedItem) {
+      // console.log(clickedItem, '얘에요', activeCategory);
       // 아이템이 이미 myObjectList에 있는지 확인
       const isItemAlreadyInList = myObjectList.some(
         item => item.userObjectId === selectedItemId
       );
 
-      if (!isItemAlreadyInList) {
+      console.log(isItemAlreadyInList);
+      console.log(clickedItem);
+      if (!isItemAlreadyInList && activeCategory !== '띵즈') {
         const newUserObject: UserObject = {
           name: clickedItem.name,
           userObjectId: clickedItem.userObjectId,
@@ -221,6 +230,18 @@ const HomePage = () => {
         };
 
         setMyObjectList(prevList => [...prevList, newUserObject]);
+        // } else {
+        // TODO: API 수정되면 smartThingsList에 넣기
+        // const newUserObe ject: ThingsObject = {
+        //   name: clickedIt785 em.name,
+        //   userObjectId: clickedItem.userObjectId,
+        //   objectModelPath: clickedItem.objectModelPath,
+        //   isWall: clickedItem.isWall,
+        //   position: [0, 0, 0],
+        //   rotation: [0, 0, 0],
+        // deviceId: clickedItem.deviceId,
+        // status: clickedItem.status,
+        // };/
       }
     }
   };
@@ -465,6 +486,9 @@ const HomePage = () => {
     setCurrentIndex(currentIndex - 1);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
   return (
     <>
       <GuestbookModal
@@ -491,6 +515,15 @@ const HomePage = () => {
               onClick={handleEdit}
             />
           </S.BackButtonWrapper>
+          <S.DarkModeWrapper>
+            <Image
+              src={darkMode ? IMAGES.ROOM.DARK_MODE : IMAGES.ROOM.LIGHT_MODE}
+              $unit={'px'}
+              width={40}
+              height={40}
+              onClick={toggleDarkMode}
+            />
+          </S.DarkModeWrapper>
           <S.ChangeRoomWrapper>
             <Image
               src={IMAGES.ROOM.EDIT_BACKGROUND_ICON}
@@ -584,6 +617,7 @@ const HomePage = () => {
         thingsObject={myThingsList}
         onObjectClick={handleObjectClick}
         selectedRoomColor={selectedRoomColor}
+        darkMode={darkMode}
       />
       {isEditing && (
         <S.ItemToast
