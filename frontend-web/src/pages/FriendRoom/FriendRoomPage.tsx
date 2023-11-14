@@ -67,10 +67,12 @@ const FriendRoomPage = () => {
 
   // FriendRoom State
   // TODO: 데이터바인딩
-  const friendRoomState = useGetRoom(userId);
+  const { data: friendRoomState } = useGetRoom(userId);
   const [friendThingsList, setFriendThingsList] = useState<ThingsObject[]>(
-    friendRoomState && friendRoomState.smartThingsList ? friendRoomState.smartThingsList : []
-  )
+    friendRoomState && friendRoomState.smartThingsList
+      ? friendRoomState.smartThingsList
+      : []
+  );
 
   const [selectedRoomColor, setSelectedRoomColor] = useState('white');
 
