@@ -1,6 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const express = require("express");
+const cors = require("cors");
 const cookieSession = require("cookie-session");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
@@ -20,6 +21,7 @@ const redirectUri = `${serverUrl}/oauth/callback`;
 const scope = encodeUrl("r:locations:* r:devices:* x:devices:*");
 const contextStore = new FileContextStore("data");
 const userSSEStreams = new Map();
+
 const apiApp = new SmartApp()
   .appId(appId)
   .clientId(clientId)
@@ -146,6 +148,12 @@ const apiApp = new SmartApp()
  * Webserver setup
  */
 const server = express();
+server.use(
+  cors({
+    origin: "*",
+  })
+);
+
 server.set("views", path.join(__dirname, "views"));
 server.use(
   cookieSession({
@@ -311,7 +319,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
       "*",
       "switchLevelHandler"
     );
-    const url = `https://thingdong.com/smart/oauth/redirect?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
+    const url = `https://localhost:3000/oauth/redirect?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
     res.redirect(url);
   } catch (error) {
     next(error);
