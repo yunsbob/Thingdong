@@ -14,7 +14,10 @@ import { PATH } from '@/constants/path';
 
 export function LandingScene() {
   return (
-    <Spline scene="https://prod.spline.design/nwYEiHrS9YGtJu34/scene.splinecode" />
+    <Spline
+      scene="https://prod.spline.design/nwYEiHrS9YGtJu34/scene.splinecode"
+      style={{ width: '100vh', height: '100vh' }}
+    />
   );
 }
 
