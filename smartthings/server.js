@@ -197,6 +197,7 @@ server.get("/smart", async (req, res) => {
         let status = health;
         let imgUrl = "";
         if (state.components.main) {
+          if (it.components[0].categories[0].name == "Charger") return;
           if (Object.keys(state.components.main).includes("switch")) {
             status = state.components.main.switch.switch.value;
           }
@@ -237,7 +238,7 @@ server.get("/smart", async (req, res) => {
             "https://thingdong.com/resources/png/things/smartThings-plug.png";
           }
         }
-        if (it.components[0].categories[0].name == "Charger" || it.components[0].categories[0].name == "Hub") {
+        if (it.components[0].categories[0].name == "Hub") {
           imgUrl =
             "https://thingdong.com/resources/png/things/smartThings-station.png";
         }
