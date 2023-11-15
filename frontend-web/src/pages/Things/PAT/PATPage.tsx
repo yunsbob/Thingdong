@@ -14,20 +14,16 @@ import { IMAGES } from '@/constants/images';
 import { useGetThings } from '@/apis/Things/Queries/useGetThings';
 import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
-import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
-import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
+const PATPage = () => {
+  const response = useGetThings();
+  if (response) {
+    console.log('useGetThings-devices', response.data.devices);
+  }
 
-  const PATPage = () => {
-    const response = useGetThings();
-    if (response) {
-      console.log('useGetThings-devices', response.data.devices);
-    }
-    
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
-  const updateThingsStatusMutation = useUpdateThingsStatus();
-  const toggleThingsStatusMutation = useToggleThingsStatus();
 
   useEffect(() => {
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
@@ -36,7 +32,63 @@ import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsSt
     }
   }, [response]);
 
-  const changeStatus = (status: 'ON' | 'OFF' | 'OPEN' | 'CLOSED' | 'OFFLINE' | 'ONLINE') => {
+  useEffect(() => {
+    const eventSourceInitDict = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        installedappid: localStorage.getItem('installedAppId'),
+      },
+    };
+
+    const url = `${process.env.REACT_APP_SERVER_URL}/smart/events`;
+
+    const eventSource = new EventSourcePolyfill(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        installedappid: localStorage.getItem('installedAppId')!,
+      },
+    });
+
+    // const eventSource = new EventSourcePolyfill(
+    //   `${process.env.REACT_APP_SERVER_URL}/smart/events`,
+    //   {eventSourceInitDict}
+    // );
+
+    eventSource.onopen = () => {
+      console.log('SSE 연결 완');
+    };
+
+    eventSource.onmessage = async event => {
+      const response = await event.data;
+      const data = JSON.parse(response);
+      console.log('SSE Data', data);
+    };
+
+    eventSource.onerror = (e: any) => {
+      eventSource.close();
+
+      if (e.error) {
+        console.log('SSE 에러');
+      }
+
+      if (e.target.readyState === EventSource.CLOSED) {
+        console.log('종료');
+      }
+    };
+
+    // eventSource.addEventListener('message', async function (event) {
+    //   const data = JSON.parse(event.data);
+    //   console.log('SSE 테스트', data);
+    // });
+
+    // eventSource.addEventListener('close', () => eventSource.close());
+
+    return () => eventSource.close();
+  });
+
+  const changeStatus = (
+    status: 'ON' | 'OFF' | 'OPEN' | 'CLOSED' | 'OFFLINE' | 'ONLINE'
+  ) => {
     switch (status) {
       case 'ON':
         return 'OFF';
@@ -50,54 +102,22 @@ import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsSt
         return status;
     }
   };
-  
-  const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
-    if (things.status !== 'OFFLINE') {
-      let newStatus, smartThingsStatus;
-      switch (things.category) {
-        case 'SmartPlug':
-        case 'Switch':
-        case 'Light':
-          newStatus = things.status === 'ON' ? 'off' : 'on';
-          smartThingsStatus = things.status === 'ON';
-          break;
-        case 'Blind':
-          newStatus = things.status === 'OPEN' ? 'close' : 'open';
-          smartThingsStatus = things.status === 'OPEN';
-          break;
-        default:
-          newStatus = things.status; // 다른 카테고리의 경우 상태를 변경하지 않음
-          smartThingsStatus = false; // 기본값
+
+  const onClickThingsBlock =
+    (things: ThingsPageProps, idx: number) => (e: any) => {
+      if (things.status !== 'OFFLINE') {
+        let newThings = [...thingsList];
+        newThings[idx] = { ...things, status: changeStatus(things.status) };
+
+        setThingsList(newThings);
       }
-  
-      const thingStatus = {
-        deviceId: things.deviceId,
-        smartThingsStatus: smartThingsStatus,
-      };
-  
-      updateThingsStatusMutation.mutate(thingStatus);
-  
-      toggleThingsStatusMutation.mutate({
-        deviceId: things.deviceId,
-        data: {
-          commands: [{
-            component: 'main',
-            capability: things.category === 'Blind' ? 'windowShade' : 'switch',
-            command: newStatus,
-            arguments: [],
-          }],
-        },
-      });
+    };
 
-      let newThings = [...thingsList];
-      newThings[idx] = { ...things, status: changeStatus(things.status) };
-
-      setThingsList(newThings);
-    }
-  };
-
-
-  const getDeviceStatusText = (category: string, status: string, temperature?: number): string => {
+  const getDeviceStatusText = (
+    category: string,
+    status: string,
+    temperature?: number
+  ): string => {
     switch (category) {
       case 'SmartPlug':
         return status === 'ON' ? '켜짐' : '꺼짐';
@@ -154,7 +174,9 @@ import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsSt
               >
                 <S.ThingStatusWrapper
                   src={
-                    (things.status === 'ON' || things.status === 'ONLINE' || things.status === 'OPEN')
+                    things.status === 'ON' ||
+                    things.status === 'ONLINE' ||
+                    things.status === 'OPEN'
                       ? IMAGES.THIGNS.ON_ICON
                       : IMAGES.THIGNS.OFF_ICON
                   }
@@ -169,7 +191,11 @@ import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsSt
                   fontWeight="bold"
                   color={things.status === 'ON' ? 'blue' : 'grey2'}
                 >
-                  {getDeviceStatusText(things.category, things.status, things.temperature)}
+                  {getDeviceStatusText(
+                    things.category,
+                    things.status,
+                    things.temperature
+                  )}
                 </Text>
                 {things.status === 'OFFLINE' && <S.ThingsWrapper />}
               </S.ThingsContainer>
