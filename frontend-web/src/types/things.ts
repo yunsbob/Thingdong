@@ -13,7 +13,7 @@ export interface ThingsPageProps {
   category : string;
   deviceId : string;
   label : string;
-  status : 'ON' | 'OFF' | 'OFFLINE' | 'ONLINE' | 'OPEN' | 'CLOSED';
+  status : 'ON' | 'OFF' | 'OPEN' | 'CLOSED' | 'OFFLINE' | 'ONLINE';
   ownerId: string;
   temperature : number;
   humidity: number;
