@@ -88,7 +88,7 @@ import { ThingsPageProps } from '@/types/things';
   const PATPage = () => {
     const response = useGetThings();
     if (response) {
-      console.log('data1111', response.data.devices);
+      console.log('useGetThings-devices', response.data.devices);
     }
     
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
@@ -97,10 +97,13 @@ import { ThingsPageProps } from '@/types/things';
   useEffect(() => {
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
     if (response?.data?.devices) {
-      setThingsList(response.data.devices);
+      const filteredDevices = response.data.devices.filter((device: ThingsPageProps) => device != null);
+      setThingsList(filteredDevices);
     }
   }, [response]);
 
+  console.log(thingsList, 'thingsList');
+  
   const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
     if (things.status !== 'OFFLINE') {
       let newThings = [...thingsList];
