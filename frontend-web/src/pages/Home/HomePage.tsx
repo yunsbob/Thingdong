@@ -317,14 +317,14 @@ const HomePage = () => {
       updateThingsStatusMutation.mutate(thingStatus);
 
       // thingdong.com/smart 띵즈 API call
-      const toggleThingsStatusData = {
-        commands: {
-          component: 'main',
-          capability: 'switch',
-          command: newStatus ? 'on' : 'off',
-          arguments: [],
-        },
-      };
+      // const toggleThingsStatusData = {
+      //   commands: {
+      //     component: 'main',
+      //     capability: 'switch',
+      //     command: newStatus ? 'on' : 'off',
+      //     arguments: [],
+      //   },
+      // };
 
       toggleThingsStatusMutation.mutate({
         deviceId: obj.deviceId,
