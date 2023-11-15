@@ -297,14 +297,32 @@ const HomePage = () => {
   const [selectedObjectName, setSelectedObjectName] = useState('');
   const handleObjectClick = (obj: any) => {
     setSelectedObjectName(obj.name);
+
+    // 스마트띵즈인지 확인
     if (obj.deviceId) {
-      console.log('herehere', obj.deviceId, obj.smartThingsStatus);
+      const newStatus = !obj.smartThingsStatus;
+      console.log('이번에 들고온 smartThingsStatus', obj.smartThingsStatus);
+
+      setMyThingsList(prevList => {
+        return prevList.map(item => {
+          if (item.deviceId === obj.deviceId) {
+            return { ...item, smartThingsStatus: newStatus };
+          }
+          return item;
+        });
+      });
 
       const thingStatus = {
         deviceId: obj.deviceId,
-        smartThingsStatus: !obj.smartThingsStatus,
+        smartThingsStatus: newStatus,
       };
       updateThingsStatusMutation.mutate(thingStatus);
+      console.log(
+        'deviceId:',
+        obj.deviceId,
+        '이제 바뀌었을 smartThingsStatus:',
+        newStatus
+      );
     }
   };
 

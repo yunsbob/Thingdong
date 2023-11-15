@@ -5,7 +5,7 @@ const useGetThings = () => {
   return useSuspenseQuery({
     queryKey: ['things'],
     queryFn: () => getThings(),
-  });
+  }); 
 };
 
 export { useGetThings };
