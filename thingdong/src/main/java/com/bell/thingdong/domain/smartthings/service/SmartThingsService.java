@@ -24,7 +24,7 @@ public class SmartThingsService {
 		List<SmartThings> smartThingsList = smartThingsRepository.findAllByDeviceId(smartThingsStatusReq.getDeviceId());
 
 		String status;
-		if (smartThingsStatusReq.getStatus())
+		if (smartThingsStatusReq.getSmartThingsStatus())
 			status = "Y";
 		else
 			status = "N";

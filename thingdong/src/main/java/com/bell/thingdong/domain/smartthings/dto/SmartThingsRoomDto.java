@@ -37,7 +37,7 @@ public class SmartThingsRoomDto {
 	private ObjectSizeDto size;
 
 	@Schema(description = "스마트 띵스 상태", example = "true")
-	private Boolean status;
+	private Boolean smartThingsStatus;
 
 	@Schema(description = "디바이스 id", example = "dasdasasddas")
 	private String deviceId;

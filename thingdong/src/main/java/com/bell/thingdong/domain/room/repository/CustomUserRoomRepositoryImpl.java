@@ -57,7 +57,7 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 				                                                          .rotation(rotationList)
 				                                                          .size(objectSizeDto)
 				                                                          .deviceId(smartThings.getDeviceId())
-				                                                          .status(smartThings.getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
+				                                                          .smartThingsStatus(smartThings.getStatus().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
 				                                                          .build();
 
 				smartThingsRoomDtoList.add(smartThingsRoomDto);
