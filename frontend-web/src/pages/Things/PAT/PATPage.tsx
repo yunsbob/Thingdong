@@ -24,7 +24,7 @@ interface ThingsList {
 const PATPage = () => {
   const data = useGetThings();
   if (data) {
-    console.log('data', data);
+    console.log('data1111', data);
   }
 
   // const [wholeData, setWholeData] = useState({
