@@ -178,7 +178,7 @@ server.post("/smart", async (req, res) => {
 /**
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
-server.get("/", async (req, res) => {
+server.get("/smart", async (req, res) => {
   const ctx = await smartapp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
