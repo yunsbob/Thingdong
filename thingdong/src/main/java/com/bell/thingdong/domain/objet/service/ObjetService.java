@@ -197,8 +197,8 @@ public class ObjetService {
 
 	@Transactional
 	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq) {
+		log.info("userRoom = {}", userObjectPositionReq.getRoomId());
 		UserRoom userRoom = userRoomRepository.findById(userObjectPositionReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
-		log.info("userRoom = {}", userRoom.getRoomId());
 		// 해당 방에 배치되어 있는 오브제들을 모두 불러옴
 		List<UserObject> userObjectCheckList = userRoom.getUserObjectList();
 
