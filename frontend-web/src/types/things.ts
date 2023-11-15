@@ -5,5 +5,5 @@ export interface ThingsModalProps {
 
 export interface ThingsStatus {
   deviceId: string;
-  status: boolean;
+  smartThingsStatus: boolean;
 }

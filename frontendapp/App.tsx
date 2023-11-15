@@ -35,7 +35,7 @@ function App(): JSX.Element {
       <WebView
         javaScriptEnabled={true}
         injectedJavaScript={myInjectedJs}
-        source={{uri: 'http://192.168.6.136:3000/'}}
+        source={{uri: 'http://thingdong.com'}}
         // source={{uri: 'http://192.168.31.240:3000/'}}
       />
     </SafeAreaView>

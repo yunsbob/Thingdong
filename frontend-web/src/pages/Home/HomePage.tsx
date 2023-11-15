@@ -64,6 +64,7 @@ const HomePage = () => {
   );
 
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+  // const [isShining, setIsShining] - useState<boolean>()
   const [darkMode, setDarkMode] = useState<boolean>(roomState.darkMode);
   const toggleColorPicker = () => {
     setIsColorPickerOpen(!isColorPickerOpen);
@@ -120,8 +121,10 @@ const HomePage = () => {
   const [myObjectList, setMyObjectList] = useState<UserObject[]>(
     roomState.userObjectList
   );
+
   useEffect(() => {
     setMyObjectList(roomState.userObjectList);
+    setMyThingsList(roomState.smartThingsList);
   }, [isLoading, roomState]);
 
   const [myThingsList, setMyThingsList] = useState<ThingsObject[]>(
@@ -218,42 +221,53 @@ const HomePage = () => {
       item => item.userObjectId === selectedItemId
     );
 
-    if (clickedItem) {
-      // console.log(clickedItem, '얘에요', activeCategory);
-      // 아이템이 이미 myObjectList에 있는지 확인
-      const isItemAlreadyInList = myObjectList.some(
-        item => item.userObjectId === selectedItemId
-      );
+    // 1. clickedItem이 things인지 아닌지 activeCategory !== '띵즈'로 나눠주고
+    // 2-1. 이미 myObjectList에 있는지 확인
+    if (activeCategory !== '띵즈') {
+      if (clickedItem) {
+        const isItemAlreadyInList = myObjectList.some(
+          item => item.userObjectId === selectedItemId
+        );
 
-      console.log(isItemAlreadyInList);
-      console.log(clickedItem);
-      if (!isItemAlreadyInList) {
-        // if (!isItemAlreadyInList && activeCategory !== '띵즈') {
-        const newUserObject: UserObject = {
-          name: clickedItem.name,
-          userObjectId: clickedItem.userObjectId,
-          objectModelPath: clickedItem.objectModelPath,
-          isWall: clickedItem.isWall,
-          position: [0, 0, 0],
-          rotation: [0, 0, 0],
-        };
+        if (!isItemAlreadyInList) {
+          const newUserObject: UserObject = {
+            name: clickedItem.name,
+            userObjectId: clickedItem.userObjectId,
+            objectModelPath: clickedItem.objectModelPath,
+            isWall: clickedItem.isWall,
+            position: [0, 0, 0],
+            rotation: [0, 0, 0],
+          };
 
-        setMyObjectList(prevList => [...prevList, newUserObject]);
-        // } else {
-        // TODO: API 수정되면 smartThingsList에 넣기
-        // const newUserObe ject: ThingsObject = {
-        //   name: clickedIt785 em.name,
-        //   userObjectId: clickedItem.userObjectId,
-        //   objectModelPath: clickedItem.objectModelPath,
-        //   isWall: clickedItem.isWall,
-        //   position: [0, 0, 0],
-        //   rotation: [0, 0, 0],
-        // deviceId: clickedItem.deviceId,
-        // status: clickedItem.status,
-        // };/
+          setMyObjectList(prevList => [...prevList, newUserObject]);
+        }
+      }
+    } else if (activeCategory === '띵즈') {
+      if (clickedItem) {
+        const isItemAlreadyInList = myThingsList.some(
+          item => item.userObjectId === selectedItemId
+        );
+
+        if (!isItemAlreadyInList) {
+          const newThingsObject: ThingsObject = {
+            name: clickedItem.name,
+            userObjectId: clickedItem.userObjectId,
+            objectModelPath: clickedItem.objectModelPath,
+            isWall: clickedItem.isWall,
+            position: [0, 0, 0],
+            rotation: [0, 0, 0],
+            deviceId: clickedItem.deviceId!,
+            smartThingsStatus: clickedItem.smartThingsStatus!,
+          };
+          setMyThingsList(prevList => [...prevList, newThingsObject]);
+        }
       }
     }
   };
+
+  useEffect(() => {
+    console.log(myThingsList, '---', myObjectList, '---');
+  }, [myThingsList, myObjectList]);
 
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
@@ -276,6 +290,26 @@ const HomePage = () => {
     ));
   };
 
+  //
+  const updateThingsStatusMutation = useUpdateThingsStatus();
+
+  // 선택된 객체 인식
+  const [selectedObjectName, setSelectedObjectName] = useState('');
+  const handleObjectClick = (obj: any) => {
+    setSelectedObjectName(obj.name);
+    if (obj.deviceId) {
+      console.log('herehere', obj.deviceId, obj.smartThingsStatus);
+
+      const thingStatus = {
+        deviceId: obj.deviceId,
+        smartThingsStatus: !obj.smartThingsStatus,
+      };
+      updateThingsStatusMutation.mutate(thingStatus);
+    }
+  };
+
+  // 객체 위치 변경
+
   const arrowButtons = [
     { src: 'empty-button.png', direction: null },
     { src: 'up-button.png', direction: 'up' },
@@ -285,22 +319,6 @@ const HomePage = () => {
     { src: 'right-button.png', direction: 'right' },
   ];
 
-  const updateThingsStatusMutation = useUpdateThingsStatus();
-
-  // 선택된 객체 인식
-  const [selectedObjectName, setSelectedObjectName] = useState('');
-  const handleObjectClick = (obj: any) => {
-    setSelectedObjectName(obj.name);
-    if (obj.deviceId) {
-      const thingStatus = {
-        deviceId: obj.deviceId,
-        status: !obj.status,
-      };
-      updateThingsStatusMutation.mutate(thingStatus);
-    }
-  };
-
-  // 객체 위치 변경
   const [position, setPosition] = useState<Position>([0, 0, 0]);
   const handleArrowClick = (direction: string | null) => {
     const combinedList = [...myObjectList, ...myThingsList];
@@ -449,20 +467,22 @@ const HomePage = () => {
     setRoomInventory(updatedInventory);
   };
 
+  // 방 상태 업데이트
   const updateRoomPositionMutation = useUpdateRoomPosition();
   const updateRoomPosition = (roomPosition: RoomPosition) => {
     updateRoomPositionMutation.mutate(roomPosition);
   };
 
-  // 방 상태 업데이트
   const handleUpdateRoomClick = () => {
-    const objectPositionList = roomState.userObjectList.map(
-      (obj: ObjectPosition) => ({
-        userObjectId: obj.userObjectId,
-        position: obj.position,
-        rotation: obj.rotation,
-      })
-    );
+    // API로부터 받아온 roomState의 List가 아니라 수정중일 때 추가된 오브젝트 리스트
+    const combinedObjects = [...myObjectList, ...myThingsList];
+
+    const objectPositionList = combinedObjects.map((obj: ObjectPosition) => ({
+      userObjectId: obj.userObjectId,
+      position: obj.position,
+      rotation: obj.rotation,
+    }));
+
     const roomPosition = {
       roomId: roomState.roomId,
       objectPositionList: objectPositionList,
@@ -492,6 +512,7 @@ const HomePage = () => {
     setCurrentIndex(currentIndex - 1);
   };
 
+  // 다크모드
   const updateDarkModeMutation = useUpdateDarkMode();
   const toggleDarkMode = () => {
     setDarkMode(darkMode => !darkMode);
