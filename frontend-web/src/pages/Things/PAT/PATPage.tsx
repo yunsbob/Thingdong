@@ -36,6 +36,21 @@ import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsSt
     }
   }, [response]);
 
+  const changeStatus = (status: 'ON' | 'OFF' | 'OPEN' | 'CLOSED' | 'OFFLINE' | 'ONLINE') => {
+    switch (status) {
+      case 'ON':
+        return 'OFF';
+      case 'OFF':
+        return 'ON';
+      case 'OPEN':
+        return 'CLOSED';
+      case 'CLOSED':
+        return 'OPEN';
+      default:
+        return status;
+    }
+  };
+  
   const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
     if (things.status !== 'OFFLINE') {
       let newStatus, smartThingsStatus;
@@ -81,20 +96,7 @@ import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsSt
     }
   };
 
-  const changeStatus = (status: 'ON' | 'OFF' | 'OPEN' | 'CLOSED' | 'OFFLINE' | 'ONLINE') => {
-    switch (status) {
-      case 'ON':
-        return 'OFF';
-      case 'OFF':
-        return 'ON';
-      case 'OPEN':
-        return 'CLOSED';
-      case 'CLOSED':
-        return 'OPEN';
-      default:
-        return status;
-    }
-  };
+
   const getDeviceStatusText = (category: string, status: string, temperature?: number): string => {
     switch (category) {
       case 'SmartPlug':
