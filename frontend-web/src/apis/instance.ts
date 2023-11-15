@@ -70,10 +70,10 @@ thingsInstance.interceptors.response.use(
   },
   (error: AxiosError) => {
     console.log(error.response?.status);
-    if (error.response?.status === 401) {
-      localStorage.clear();
-      window.location.href = PATH.LOGIN;
-    }
+    // if (error.response?.status === 401) {
+    //   localStorage.clear();
+    //   window.location.href = PATH.LOGIN;
+    // }
     return Promise.reject(error);
   }
 );
