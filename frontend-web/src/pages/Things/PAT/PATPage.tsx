@@ -86,14 +86,20 @@ import { ThingsPageProps } from '@/types/things';
   // ]);
 
   const PATPage = () => {
-    const data = useGetThings();
-    if (data) {
-      console.log('data1111', data);
+    const response = useGetThings();
+    if (response) {
+      console.log('data1111', response.data.devices);
     }
     
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
-    
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
+
+  useEffect(() => {
+    // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
+    if (response?.data?.devices) {
+      setThingsList(response.data.devices);
+    }
+  }, [response]);
 
   const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
     if (things.status !== 'OFFLINE') {
