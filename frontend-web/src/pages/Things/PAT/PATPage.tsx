@@ -14,7 +14,7 @@ import { IMAGES } from '@/constants/images';
 import { useGetThings } from '@/apis/Things/Queries/useGetThings';
 import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
-import EventSource from 'eventsource';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 const PATPage = () => {
   const response = useGetThings();
@@ -40,10 +40,19 @@ const PATPage = () => {
       },
     };
 
-    const eventSource = new EventSource(
-      `${process.env.REACT_APP_SERVER_URL}/smart/events`,
-      eventSourceInitDict
-    );
+    const url = `${process.env.REACT_APP_SERVER_URL}/smart/events`;
+
+    const eventSource = new EventSourcePolyfill(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        installedappid: localStorage.getItem('installedAppId')!,
+      },
+    });
+
+    // const eventSource = new EventSourcePolyfill(
+    //   `${process.env.REACT_APP_SERVER_URL}/smart/events`,
+    //   {eventSourceInitDict}
+    // );
 
     eventSource.onopen = () => {
       console.log('SSE 연결 완');
