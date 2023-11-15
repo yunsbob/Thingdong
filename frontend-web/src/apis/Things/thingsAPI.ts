@@ -20,4 +20,6 @@ const updateThingsStatus = async (data: ThingsStatus) => {
   }
 };
 
+const toggleThingsStatus = async (data: )
+
 export { getThings, updateThingsStatus };

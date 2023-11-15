@@ -7,3 +7,14 @@ export interface ThingsStatus {
   deviceId: string;
   smartThingsStatus: boolean;
 }
+
+export interface ThingsCommands {
+  component: string;
+  capability: string;
+  command: string;
+  arguments: [];
+}
+
+export interface ToggleThingsStatus {
+  commands: ThingsCommands[]
+}
