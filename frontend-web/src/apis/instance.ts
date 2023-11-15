@@ -57,6 +57,12 @@ thingsInstance.interceptors.request.use(
       // 'Access-Control-Allow-Origin': `http://localhost:3000`,
       // 'Access-Control-Allow-Credentials': 'true',
     };
+    console.log(
+      'authToken: ',
+      localStorage.getItem('authToken'),
+      'installedAppId: ',
+      localStorage.getItem('installedAppId')
+    );
     return config;
   },
   (error: AxiosError | Error) => {

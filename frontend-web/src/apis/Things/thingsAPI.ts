@@ -25,9 +25,10 @@ const toggleThingsStatus = async (
   data: ToggleThingsStatus
 ) => {
   try {
-    await instance.post(`/command/${deviceId}`, data);
+    await thingsInstance.post(`/command/${deviceId}`, data);
   } catch (error) {
     console.error('update toggle things status error', error);
+    console.log('내가 넣은 데이타~', data);
     throw error;
   }
 };
