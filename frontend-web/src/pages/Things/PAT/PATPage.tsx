@@ -58,11 +58,11 @@ import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsSt
         case 'SmartPlug':
         case 'Switch':
         case 'Light':
-          newStatus = things.status === 'ON' ? 'OFF' : 'ON';
+          newStatus = things.status === 'ON' ? 'off' : 'on';
           smartThingsStatus = things.status === 'ON';
           break;
         case 'Blind':
-          newStatus = things.status === 'OPEN' ? 'CLOSE' : 'OPEN';
+          newStatus = things.status === 'OPEN' ? 'close' : 'open';
           smartThingsStatus = things.status === 'OPEN';
           break;
         default:
