@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as S from './FriendRoomPage.styles';
 import backButtonWhite from '@/assets/images/friend/search/back-white.png';
 import { changeModalOpen } from '@/utils/changeModalOpen';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image } from '@/components/atoms/Image/Image';
 import { Text } from '@/components/atoms/Text/Text.styles';
 import { IMAGES } from '@/constants/images';
@@ -21,11 +21,13 @@ import { MOVE, ROTATE } from '@/constants/transformations';
 import { ThingsObject, UserObject } from '@/types/room';
 import MyRoom from '@/components/organisms/MyRoom/MyRoom';
 import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
+import { useAtom } from 'jotai';
+import { roomColorAtom } from '@/states/roomState';
 
 const FriendRoomPage = () => {
   const location = useLocation();
   const { userId, nickname } = location.state || {};
-
+  const [roomColorState] = useAtom(roomColorAtom);
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [writeMode, setWriteMode] = useState(false);
@@ -73,13 +75,20 @@ const FriendRoomPage = () => {
       ? friendRoomState.smartThingsList
       : []
   );
-
+  const [, setRoomColorState] = useAtom(roomColorAtom);
   const [selectedRoomColor, setSelectedRoomColor] = useState('white');
 
   const handleObjectClick = (objectName: string) => {
     // setSelectedObjectName(objectName);
     // console.log()
   };
+console.log(friendRoomState);
+useEffect(() => {
+  const savedRoomColor = friendRoomState.roomColor;
+  if (savedRoomColor) {
+    setRoomColorState(savedRoomColor);
+  }
+}, [friendRoomState, setRoomColorState]);
 
   return (
     <>
