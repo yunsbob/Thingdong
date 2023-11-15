@@ -22,7 +22,6 @@ const getRoomInventory = async () => {
 const updateRoomPosition = async (data: RoomPosition) => {
   try {
     await instance.post('/objects/position', data);
-    console.log('잘들어왔니?? roomAPI', data);
   } catch {
     throw new Error('update room position error');
   }

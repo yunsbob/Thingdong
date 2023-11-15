@@ -652,6 +652,7 @@ const HomePage = () => {
         onObjectClick={handleObjectClick}
         selectedRoomColor={selectedRoomColor}
         darkMode={darkMode}
+        roomColor={roomState.roomColor}
       />
       {isEditing && (
         <S.ItemToast
