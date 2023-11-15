@@ -130,7 +130,7 @@ const MyRoom = ({
                 <></>
               )}
 
-              {thingsObject ? (
+              {/* {thingsObject ? (
                 thingsObject.map(obj => {
                   const glb = useLoader(GLTFLoader, obj.objectModelPath);
                   glb.scene.traverse((node: any) => {
@@ -181,7 +181,7 @@ const MyRoom = ({
                 })
               ) : (
                 <></>
-              )}
+              )} */}
 
               {/* 화면 중앙에 객체들 배치되게 scale, position 조정 */}
               <primitive
