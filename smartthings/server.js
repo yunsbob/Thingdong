@@ -197,7 +197,6 @@ server.get("/smart", async (req, res) => {
         let status = health;
         let imgUrl = "";
         if (state.components.main) {
-          if (it.components[0].categories[0].name == "Charger") return;
           if (Object.keys(state.components.main).includes("switch")) {
             status = state.components.main.switch.switch.value;
           }
