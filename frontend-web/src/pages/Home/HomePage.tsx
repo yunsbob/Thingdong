@@ -290,8 +290,7 @@ const HomePage = () => {
     ));
   };
 
-  
-  // 
+  //
   const updateThingsStatusMutation = useUpdateThingsStatus();
 
   // 선택된 객체 인식
@@ -303,7 +302,7 @@ const HomePage = () => {
 
       const thingStatus = {
         deviceId: obj.deviceId,
-        status: !obj.smartThingsStatus,
+        smartThingsStatus: !obj.smartThingsStatus,
       };
       updateThingsStatusMutation.mutate(thingStatus);
     }
@@ -473,13 +472,10 @@ const HomePage = () => {
   const updateRoomPosition = (roomPosition: RoomPosition) => {
     updateRoomPositionMutation.mutate(roomPosition);
   };
-  
+
   const handleUpdateRoomClick = () => {
     // API로부터 받아온 roomState의 List가 아니라 수정중일 때 추가된 오브젝트 리스트
-    const combinedObjects = [
-      ...myObjectList,
-      ...myThingsList,
-    ];
+    const combinedObjects = [...myObjectList, ...myThingsList];
 
     const objectPositionList = combinedObjects.map((obj: ObjectPosition) => ({
       userObjectId: obj.userObjectId,
@@ -493,7 +489,6 @@ const HomePage = () => {
     };
 
     setIsEditing(!isEditing);
-    console.log(roomPosition, 'sdf');
     updateRoomPosition(roomPosition);
   };
 
@@ -516,7 +511,7 @@ const HomePage = () => {
     deleteGuestbookMutation.mutate(guestBookId);
     setCurrentIndex(currentIndex - 1);
   };
-  
+
   // 다크모드
   const updateDarkModeMutation = useUpdateDarkMode();
   const toggleDarkMode = () => {
