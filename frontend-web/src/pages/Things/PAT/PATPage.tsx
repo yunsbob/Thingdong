@@ -97,8 +97,7 @@ import { ThingsPageProps } from '@/types/things';
   useEffect(() => {
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
     if (response?.data?.devices) {
-      const filteredDevices = response.data.devices.filter((device: ThingsPageProps) => device.category !== 'Charger');
-      setThingsList(filteredDevices);
+      setThingsList(response.data.devices);
     }
   }, [response]);
 
@@ -182,7 +181,7 @@ import { ThingsPageProps } from '@/types/things';
               >
                 <S.ThingStatusWrapper
                   src={
-                    things.status === 'ON' || 'ONLINE' || 'OPEN'
+                    (things.status === 'ON' || things.status === 'ONLINE' || things.status === 'OPEN')
                       ? IMAGES.THIGNS.ON_ICON
                       : IMAGES.THIGNS.OFF_ICON
                   }
