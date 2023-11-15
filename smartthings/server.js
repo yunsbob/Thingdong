@@ -151,12 +151,14 @@ const server = express();
 
 server.use(cors());
 
+server.set("views", path.join(__dirname, "views"));
 server.use(
   cookieSession({
     name: "session",
     keys: ["key1", "key2"],
   })
 );
+server.set("view engine", "ejs");
 server.use(logger("dev"));
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
