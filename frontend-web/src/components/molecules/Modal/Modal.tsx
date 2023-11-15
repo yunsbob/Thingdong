@@ -32,13 +32,14 @@ const Modal = ({
               $borderRadius={$borderRadius}
               $padding={$padding}
               $unit={$unit}
-              onClick={(e: any) => {
-                e.stopPropagation();
-              }}
+              // onClick={(e: any) => {
+              //   e.stopPropagation();
+              //   console.log('????')
+              // }}
             >
               {children}
             </S.ModalContainer>
-            <div
+            {/* <div
               onClick={onClose}
               style={{
                 height: '30%',
@@ -47,7 +48,7 @@ const Modal = ({
                 bottom: '0%',
                 translate: 'transformY(100%)',
               }}
-            ></div>
+            ></div> */}
           </S.ModalWrapper>
         </ModalPortal>
       )}

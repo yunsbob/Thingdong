@@ -17,6 +17,7 @@ import { UNBOXING_MODAL_NAME } from '@/constants/unboxing';
 import { QueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { CHILDREN_PATH } from '@/constants/path';
+import { resetUnboxingModal } from '@/utils/resetUnboxingModal';
 
 const Complete = () => {
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
@@ -28,7 +29,6 @@ const Complete = () => {
     setModalContent(UNBOXING_MODAL_NAME.SENDING_LIST);
   };
 
-  const queryClient = new QueryClient();
 
   const handleGet = () => {
     setModalOpen(false);
@@ -40,9 +40,7 @@ const Complete = () => {
       gifPath: '',
       userObjectId: 0,
     });
-    queryClient.refetchQueries({
-      queryKey: ['inventory'],
-    });
+    window.location.reload();
   };
 
   // 조사 맞춤 함수

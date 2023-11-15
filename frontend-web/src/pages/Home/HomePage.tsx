@@ -145,6 +145,13 @@ const HomePage = () => {
     unBoxThingList,
   } = useGetRoomInventory() as RoomInventoryData;
 
+  useEffect(() => {
+    const savedRoomColor = roomState.roomColor;
+    if (savedRoomColor) {
+      setRoomColorState(savedRoomColor);
+    }
+  }, [roomState, setRoomColorState]);
+
   // 룸 인벤토리 atom에 저장
   useEffect(() => {
     setRoomInventory({
