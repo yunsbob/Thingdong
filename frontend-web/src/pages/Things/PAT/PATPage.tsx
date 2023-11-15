@@ -16,75 +16,6 @@ import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
 
 
-// [{
-//   category : DoorSensor | Station | Thermostat | Light | Switch | Blind
-//   deviceId : string
-//   label : string
-//   status : ON | OFF | OFFLINE | OPEN(커튼용) | CLOSED(커튼용)
-//   ownerId: string
-//   temperature : number (ºC) 
-//   humidity: number (%) 
-//   hsl : {h: "", s : "", l: ""}
-//   img : string // 이미지 경로 나중에 추가
-//   }]
-
-  // const [thingsList, setThingsList] = useState<ThingsList[]>([
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings1.png',
-  //     status: 'ON',
-  //     isSensor: 'N',
-  //     name: 'BESPOKE 제트',
-  //   },
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings2.png',
-  //     status: 'OFFLINE',
-  //     isSensor: 'N',
-  //     name: 'Benexmart 3.0',
-  //   },
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings3.png',
-  //     status: 'ON',
-  //     isSensor: 'Y',
-  //     name: '문열림센서',
-  //   },
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings4.png',
-  //     status: 'OFF',
-  //     isSensor: 'N',
-  //     name: '스테이션',
-  //   },
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings3.png',
-  //     status: 'ON',
-  //     isSensor: 'Y',
-  //     name: '온습도센서',
-  //   },
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings2.png',
-  //     status: 'OFF',
-  //     isSensor: 'N',
-  //     name: '스마트 컬러 전구',
-  //   },
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings1.png',
-  //     status: 'ON',
-  //     isSensor: 'N',
-  //     name: 'BESPOKE 제트',
-  //   },
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings4.png',
-  //     status: 'ON',
-  //     isSensor: 'N',
-  //     name: '스테이션',
-  //   },
-  //   {
-  //     src: 'https://thingdong.com/images/dummythings3.png',
-  //     status: 'OFFLINE',
-  //     isSensor: 'Y',
-  //     name: '문열림센서',
-  //   },
-  // ]);
-
   const PATPage = () => {
     const response = useGetThings();
     if (response) {
@@ -140,7 +71,7 @@ import { ThingsPageProps } from '@/types/things';
       case 'Light':
         return status === 'ON' ? '켜짐' : '꺼짐';
       case 'Blind':
-        return status === 'ON' ? '열림' : '닫힘';
+        return status === 'OPEN' ? '열림' : '닫힘';
       default:
         return status === 'ONLINE' ? '온라인' : '오프라인';
     }
