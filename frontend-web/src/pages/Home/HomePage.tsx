@@ -463,8 +463,6 @@ const HomePage = () => {
         rotation: obj.rotation,
       })
     );
-
-
     const roomPosition = {
       roomId: roomState.roomId,
       objectPositionList: objectPositionList,
@@ -633,6 +631,7 @@ const HomePage = () => {
         onObjectClick={handleObjectClick}
         selectedRoomColor={selectedRoomColor}
         darkMode={darkMode}
+        roomColor={roomState.roomColor}
       />
       {isEditing && (
         <S.ItemToast
