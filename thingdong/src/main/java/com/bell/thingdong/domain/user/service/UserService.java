@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bell.thingdong.domain.objet.dto.UserObjectStatus;
 import com.bell.thingdong.domain.objet.entity.Objet;
 import com.bell.thingdong.domain.objet.entity.UserObject;
+import com.bell.thingdong.domain.objet.exception.ObjectIsExpensiveException;
 import com.bell.thingdong.domain.objet.repository.ObjetRepository;
 import com.bell.thingdong.domain.objet.repository.UserObjectRepository;
 import com.bell.thingdong.domain.room.entity.RoomColor;
@@ -173,5 +174,12 @@ public class UserService {
 		}
 
 		return userSearchResList;
+	}
+
+	public void userThingCheck(String email) {
+		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+		if (user.getThingAmount() < 30)
+			throw new ObjectIsExpensiveException();
 	}
 }
