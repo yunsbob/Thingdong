@@ -33,6 +33,7 @@ instance.interceptors.response.use(
   },
   (error: AxiosError) => {
     console.log(error.response?.status);
+    //TODO: 개발 완료 후 주석 제거
     // if (error.response?.status === 401) {
     //   localStorage.clear();
     //   window.location.href = PATH.LOGIN;

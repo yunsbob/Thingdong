@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import MainPage from '@/pages/Main/MainPage';
 import { Spinner } from '@/components/molecules/Spinner/Spinner';
 import { useState } from 'react';

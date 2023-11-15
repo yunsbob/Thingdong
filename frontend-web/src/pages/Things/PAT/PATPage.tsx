@@ -14,14 +14,14 @@ import { IMAGES } from '@/constants/images';
 import { useGetThings } from '@/apis/Things/Queries/useGetThings';
 import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
+import EventSource from 'eventsource';
 
+const PATPage = () => {
+  const response = useGetThings();
+  if (response) {
+    console.log('useGetThings-devices', response.data.devices);
+  }
 
-  const PATPage = () => {
-    const response = useGetThings();
-    if (response) {
-      console.log('useGetThings-devices', response.data.devices);
-    }
-    
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
 
@@ -32,16 +32,64 @@ import { ThingsPageProps } from '@/types/things';
     }
   }, [response]);
 
-  const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
-    if (things.status !== 'OFFLINE') {
-      let newThings = [...thingsList];
-      newThings[idx] = { ...things, status: changeStatus(things.status) };
+  useEffect(() => {
+    const eventSourceInitDict = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        installedappid: localStorage.getItem('installedAppId'),
+      },
+    };
 
-      setThingsList(newThings);
-    }
-  };
+    const eventSource = new EventSource(
+      `${process.env.REACT_APP_SERVER_URL}/smart/events`,
+      eventSourceInitDict
+    );
 
-  const changeStatus = (status: 'ON' | 'OFF' | 'OPEN' | 'CLOSED' | 'OFFLINE' | 'ONLINE') => {
+    eventSource.onopen = () => {
+      console.log('SSE 연결 완');
+    };
+
+    eventSource.onmessage = async event => {
+      const response = await event.data;
+      const data = JSON.parse(response);
+      console.log('SSE Data', data);
+    };
+
+    eventSource.onerror = (e: any) => {
+      eventSource.close();
+
+      if (e.error) {
+        console.log('SSE 에러');
+      }
+
+      if (e.target.readyState === EventSource.CLOSED) {
+        console.log('종료');
+      }
+    };
+
+    // eventSource.addEventListener('message', async function (event) {
+    //   const data = JSON.parse(event.data);
+    //   console.log('SSE 테스트', data);
+    // });
+
+    // eventSource.addEventListener('close', () => eventSource.close());
+
+    return () => eventSource.close();
+  });
+
+  const onClickThingsBlock =
+    (things: ThingsPageProps, idx: number) => (e: any) => {
+      if (things.status !== 'OFFLINE') {
+        let newThings = [...thingsList];
+        newThings[idx] = { ...things, status: changeStatus(things.status) };
+
+        setThingsList(newThings);
+      }
+    };
+
+  const changeStatus = (
+    status: 'ON' | 'OFF' | 'OPEN' | 'CLOSED' | 'OFFLINE' | 'ONLINE'
+  ) => {
     switch (status) {
       case 'ON':
         return 'OFF';
@@ -55,7 +103,11 @@ import { ThingsPageProps } from '@/types/things';
         return status;
     }
   };
-  const getDeviceStatusText = (category: string, status: string, temperature?: number): string => {
+  const getDeviceStatusText = (
+    category: string,
+    status: string,
+    temperature?: number
+  ): string => {
     switch (category) {
       case 'SmartPlug':
         return status === 'ON' ? '켜짐' : '꺼짐';
@@ -112,7 +164,9 @@ import { ThingsPageProps } from '@/types/things';
               >
                 <S.ThingStatusWrapper
                   src={
-                    (things.status === 'ON' || things.status === 'ONLINE' || things.status === 'OPEN')
+                    things.status === 'ON' ||
+                    things.status === 'ONLINE' ||
+                    things.status === 'OPEN'
                       ? IMAGES.THIGNS.ON_ICON
                       : IMAGES.THIGNS.OFF_ICON
                   }
@@ -127,7 +181,11 @@ import { ThingsPageProps } from '@/types/things';
                   fontWeight="bold"
                   color={things.status === 'ON' ? 'blue' : 'grey2'}
                 >
-                  {getDeviceStatusText(things.category, things.status, things.temperature)}
+                  {getDeviceStatusText(
+                    things.category,
+                    things.status,
+                    things.temperature
+                  )}
                 </Text>
                 {things.status === 'OFFLINE' && <S.ThingsWrapper />}
               </S.ThingsContainer>
