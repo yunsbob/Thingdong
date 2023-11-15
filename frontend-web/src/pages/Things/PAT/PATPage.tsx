@@ -77,16 +77,6 @@ const PATPage = () => {
     return () => eventSource.close();
   });
 
-  const onClickThingsBlock =
-    (things: ThingsPageProps, idx: number) => (e: any) => {
-      if (things.status !== 'OFFLINE') {
-        let newThings = [...thingsList];
-        newThings[idx] = { ...things, status: changeStatus(things.status) };
-
-        setThingsList(newThings);
-      }
-    };
-
   const changeStatus = (
     status: 'ON' | 'OFF' | 'OPEN' | 'CLOSED' | 'OFFLINE' | 'ONLINE'
   ) => {
@@ -103,6 +93,17 @@ const PATPage = () => {
         return status;
     }
   };
+
+  const onClickThingsBlock =
+    (things: ThingsPageProps, idx: number) => (e: any) => {
+      if (things.status !== 'OFFLINE') {
+        let newThings = [...thingsList];
+        newThings[idx] = { ...things, status: changeStatus(things.status) };
+
+        setThingsList(newThings);
+      }
+    };
+
   const getDeviceStatusText = (
     category: string,
     status: string,
