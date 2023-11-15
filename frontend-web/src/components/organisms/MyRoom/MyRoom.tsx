@@ -38,8 +38,8 @@ const MyRoom = ({
     });
   }, [clone]);
 
-  const CurtainOpenedGlb = useLoader(GLTFLoader, MODELS.CURTAIN_OPEN);
-  const CurtainClosedGlb = useLoader(GLTFLoader, MODELS.CURTAIN_CLOSE);
+  // const CurtainOpenedGlb = useLoader(GLTFLoader, MODELS.CURTAIN_OPEN);
+  // const CurtainClosedGlb = useLoader(GLTFLoader, MODELS.CURTAIN_CLOSE);
 
   const currentStyle = darkMode ? DARKMODE : ROOMSTYLES[roomColorState];
   return (
