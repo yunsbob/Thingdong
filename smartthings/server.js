@@ -182,84 +182,87 @@ server.get("/smart", async (req, res) => {
   const ctx = await smartApp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
-    const ops = deviceList.map(async (it) => {
-      const health = await ctx.api.devices
-        .getHealth(it.deviceId)
-        .then((state) => {
-          return state.state;
-        });
-      return ctx.api.devices.getStatus(it.deviceId).then((state) => {
-        let humidityStatus = "";
-        let temperatureStatus = "";
-        let levelStatus = "";
-        let hueStatus = "";
-        let saturationStatus = "";
-        let status = health;
-        let imgUrl = "";
-        if (state.components.main) {
-          if (Object.keys(state.components.main).includes("switch")) {
-            status = state.components.main.switch.switch.value;
-          }
-          if (
-            Object.keys(state.components.main).includes(
-              "relativeHumidityMeasurement"
-            )
-          ) {
-            humidityStatus =
-              state.components.main.relativeHumidityMeasurement.humidity.value;
-            temperatureStatus =
-              state.components.main.temperatureMeasurement.temperature.value;
-            imgUrl =
-              "https://thingdong.com/resources/png/things/smartThings-sensor.png";
-          }
-          if (Object.keys(state.components.main).includes("windowShade")) {
-            status = state.components.main.windowShade.windowShade.value;
-            imgUrl =
-              "https://thingdong.com/resources/png/things/smartThings-curtain.png";
-          }
+    const ops = deviceList
+      .filter((it) => it.components[0].categories[0].name != "Charger")
+      .map(async (it) => {
+        const health = await ctx.api.devices
+          .getHealth(it.deviceId)
+          .then((state) => {
+            return state.state;
+          });
+        return ctx.api.devices.getStatus(it.deviceId).then((state) => {
+          let humidityStatus = "";
+          let temperatureStatus = "";
+          let levelStatus = "";
+          let hueStatus = "";
+          let saturationStatus = "";
+          let status = health;
+          let imgUrl = "";
+          if (state.components.main) {
+            if (Object.keys(state.components.main).includes("switch")) {
+              status = state.components.main.switch.switch.value;
+            }
+            if (
+              Object.keys(state.components.main).includes(
+                "relativeHumidityMeasurement"
+              )
+            ) {
+              humidityStatus =
+                state.components.main.relativeHumidityMeasurement.humidity
+                  .value;
+              temperatureStatus =
+                state.components.main.temperatureMeasurement.temperature.value;
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-sensor.png";
+            }
+            if (Object.keys(state.components.main).includes("windowShade")) {
+              status = state.components.main.windowShade.windowShade.value;
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-curtain.png";
+            }
 
-          if (Object.keys(state.components.main).includes("switchLevel")) {
-            levelStatus = state.components.main.switchLevel.level.value;
+            if (Object.keys(state.components.main).includes("switchLevel")) {
+              levelStatus = state.components.main.switchLevel.level.value;
+            }
+            if (Object.keys(state.components.main).includes("colorControl")) {
+              hueStatus = state.components.main.colorControl.hue.value;
+              saturationStatus =
+                state.components.main.colorControl.saturation.value;
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-light.png";
+            }
+            if (it.components[0].categories[0].name == "Switch") {
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-switch.png";
+            }
+            if (it.components[0].categories[0].name == "SmartPlug") {
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-plug.png";
+            }
           }
-          if (Object.keys(state.components.main).includes("colorControl")) {
-            hueStatus = state.components.main.colorControl.hue.value;
-            saturationStatus =
-              state.components.main.colorControl.saturation.value;
+          if (it.components[0].categories[0].name == "Hub") {
             imgUrl =
-              "https://thingdong.com/resources/png/things/smartThings-light.png";
+              "https://thingdong.com/resources/png/things/smartThings-station.png";
           }
-          if (it.components[0].categories[0].name == "Switch") {
-            imgUrl =
-            "https://thingdong.com/resources/png/things/smartThings-switch.png";
-          }
-          if (it.components[0].categories[0].name == "SmartPlug") {
-            imgUrl =
-            "https://thingdong.com/resources/png/things/smartThings-plug.png";
-          }
-        }
-        if (it.components[0].categories[0].name == "Hub") {
-          imgUrl =
-            "https://thingdong.com/resources/png/things/smartThings-station.png";
-        }
-        const lightStatus = {
-          h: hueStatus,
-          s: saturationStatus,
-          l: levelStatus,
-        };
-        return {
-          // main: state.components,
-          deviceId: it.deviceId,
-          category: it.components[0].categories[0].name,
-          label: it.label,
-          status: status.toUpperCase(),
-          ownerId: it.ownerId,
-          temperature: temperatureStatus,
-          humidity: humidityStatus,
-          hsl: lightStatus,
-          img: imgUrl,
-        };
+          const lightStatus = {
+            h: hueStatus,
+            s: saturationStatus,
+            l: levelStatus,
+          };
+          return {
+            // main: state.components,
+            deviceId: it.deviceId,
+            category: it.components[0].categories[0].name,
+            label: it.label,
+            status: status.toUpperCase(),
+            ownerId: it.ownerId,
+            temperature: temperatureStatus,
+            humidity: humidityStatus,
+            hsl: lightStatus,
+            img: imgUrl,
+          };
+        });
       });
-    });
 
     // Wait for all those queries to complete
     const devices = await Promise.all(ops);
