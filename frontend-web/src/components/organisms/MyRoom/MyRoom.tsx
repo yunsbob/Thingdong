@@ -15,6 +15,7 @@ import { useAtom } from 'jotai';
 import { roomColorAtom } from '@/states/roomState';
 import StarField from '../StarField/StarField';
 
+
 const MyRoom = ({
   isEditing,
   userObject,
