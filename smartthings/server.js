@@ -151,14 +151,12 @@ const server = express();
 
 server.use(cors());
 
-server.set("views", path.join(__dirname, "views"));
 server.use(
   cookieSession({
     name: "session",
     keys: ["key1", "key2"],
   })
 );
-server.set("view engine", "ejs");
 server.use(logger("dev"));
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
@@ -178,8 +176,8 @@ server.post("/smart", async (req, res) => {
 /**
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
-server.get("/smart", async (req, res) => {
-  const ctx = await apiApp.withContext(req.headers.installedappid);
+server.get("/", async (req, res) => {
+  const ctx = await smartapp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
     const ops = deviceList.map(async (it) => {
@@ -195,6 +193,7 @@ server.get("/smart", async (req, res) => {
         let hueStatus = "";
         let saturationStatus = "";
         let status = health;
+        let imgUrl = "";
         if (state.components.main) {
           if (Object.keys(state.components.main).includes("switch")) {
             status = state.components.main.switch.switch.value;
@@ -208,25 +207,37 @@ server.get("/smart", async (req, res) => {
               state.components.main.relativeHumidityMeasurement.humidity.value;
             temperatureStatus =
               state.components.main.temperatureMeasurement.temperature.value;
+            imgUrl =
+              "https://thingdong.com/resources/png/things/smartThings-sensor.png";
           }
-          if (
-            Object.keys(state.components.main).includes("windowShade")
-          ) {
+          if (Object.keys(state.components.main).includes("windowShade")) {
             status = state.components.main.windowShade.windowShade.value;
+            imgUrl =
+              "https://thingdong.com/resources/png/things/smartThings-curtain.png";
           }
 
-          if (
-            Object.keys(state.components.main).includes("switchLevel")
-          ) {
+          if (Object.keys(state.components.main).includes("switchLevel")) {
             levelStatus = state.components.main.switchLevel.level.value;
           }
-          if (
-            Object.keys(state.components.main).includes("colorControl")
-          ) {
+          if (Object.keys(state.components.main).includes("colorControl")) {
             hueStatus = state.components.main.colorControl.hue.value;
             saturationStatus =
               state.components.main.colorControl.saturation.value;
+            imgUrl =
+              "https://thingdong.com/resources/png/things/smartThings-light.png";
           }
+          if (it.components[0].categories[0].name == "Switch") {
+            imgUrl =
+            "https://thingdong.com/resources/png/things/smartThings-switch.png";
+          }
+          if (it.components[0].categories[0].name == "SmartPlug") {
+            imgUrl =
+            "https://thingdong.com/resources/png/things/smartThings-plug.png";
+          }
+        }
+        if (it.components[0].categories[0].name == "Charger" || it.components[0].categories[0].name == "Hub") {
+          imgUrl =
+            "https://thingdong.com/resources/png/things/smartThings-station.png";
         }
         const lightStatus = {
           h: hueStatus,
@@ -234,6 +245,7 @@ server.get("/smart", async (req, res) => {
           l: levelStatus,
         };
         return {
+          // main: state.components,
           deviceId: it.deviceId,
           category: it.components[0].categories[0].name,
           label: it.label,
@@ -242,6 +254,7 @@ server.get("/smart", async (req, res) => {
           temperature: temperatureStatus,
           humidity: humidityStatus,
           hsl: lightStatus,
+          img: imgUrl,
         };
       });
     });
@@ -265,20 +278,6 @@ server.get("/smart", async (req, res) => {
       devices: [],
     });
   }
-});
-
-/*
- * Logout. Uninstalls app and clears context cookie
- */
-server.get("/smart/logout", async function (req, res) {
-  try {
-    const ctx = await apiApp.withContext(req.headers.installedappid);
-    await ctx.api.installedApps.delete();
-  } catch (error) {
-    console.error("Error logging out", error.message);
-  }
-  // Delete the session data
-  res.redirect("/");
 });
 
 /*
