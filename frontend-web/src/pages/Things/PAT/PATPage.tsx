@@ -97,13 +97,11 @@ import { ThingsPageProps } from '@/types/things';
   useEffect(() => {
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
     if (response?.data?.devices) {
-      const filteredDevices = response.data.devices.filter((device: ThingsPageProps) => device != null);
+      const filteredDevices = response.data.devices.filter((device: ThingsPageProps) => device.category !== 'Charger');
       setThingsList(filteredDevices);
     }
   }, [response]);
 
-  console.log(thingsList, 'thingsList');
-  
   const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
     if (things.status !== 'OFFLINE') {
       let newThings = [...thingsList];
@@ -137,7 +135,7 @@ import { ThingsPageProps } from '@/types/things';
       case 'Thermostat':
         let text = status === 'ONLINE' ? '온라인' : '오프라인';
         if (category === 'Thermostat' && status === 'ONLINE' && temperature) {
-          text += ` ${temperature}°C`;
+          `${temperature}°C`;
         }
         return text;
       case 'Light':
@@ -184,7 +182,7 @@ import { ThingsPageProps } from '@/types/things';
               >
                 <S.ThingStatusWrapper
                   src={
-                    things.status === 'ON'
+                    things.status === 'ON' || 'ONLINE' || 'OPEN'
                       ? IMAGES.THIGNS.ON_ICON
                       : IMAGES.THIGNS.OFF_ICON
                   }
@@ -212,6 +210,3 @@ import { ThingsPageProps } from '@/types/things';
 };
 
 export { PATPage };
-
-
-// SmartPlug "Switch" "Hub" "Thermostat" "Light" "Blind"
