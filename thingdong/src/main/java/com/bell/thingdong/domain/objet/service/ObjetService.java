@@ -198,6 +198,7 @@ public class ObjetService {
 	@Transactional
 	public void setUserObjectPosition(UserObjectPositionReq userObjectPositionReq) {
 		UserRoom userRoom = userRoomRepository.findById(userObjectPositionReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
+		log.info("userRoom = {}", userRoom.getRoomId());
 		// 해당 방에 배치되어 있는 오브제들을 모두 불러옴
 		List<UserObject> userObjectCheckList = userRoom.getUserObjectList();
 
@@ -212,6 +213,7 @@ public class ObjetService {
 
 		// 배치될 오브제들을 기준으로 반복문 돌림
 		for (ArrangeObjectPositionDto arrangeObjectPositionDto : userObjectList) {
+			log.info("userObjectId = {}", arrangeObjectPositionDto.getUserObjectId());
 			while (idx < last && userObjectCheckList.get(idx).getUserObjectId() < arrangeObjectPositionDto.getUserObjectId()) {
 				userObjectCheckList.get(idx).setUserObjectPosition(0.0, 0.0, 0.0, 0.0, null, UserObjectStatus.Inventory);
 				idx++;
