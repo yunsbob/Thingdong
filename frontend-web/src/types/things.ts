@@ -12,9 +12,9 @@ export interface ThingsCommands {
   component: string;
   capability: string;
   command: string;
-  arguments: [];
+  arguments: any[];
 }
 
 export interface ToggleThingsStatus {
-  commands: ThingsCommands[]
+  commands: ThingsCommands[];
 }
