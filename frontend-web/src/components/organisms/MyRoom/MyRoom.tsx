@@ -14,6 +14,7 @@ import { Mesh } from 'three';
 import GridHelpers from '@/components/molecules/GridHelpers/GridHelpers';
 import { useAtom } from 'jotai';
 import { roomColorAtom } from '@/states/roomState';
+import StarField from '../StarField/StarField';
 
 const MyRoom = ({
   isEditing,
@@ -87,6 +88,11 @@ const MyRoom = ({
         height: '100vh',
       }}
     >
+      {darkMode && (
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <StarField />
+        </div>
+      )}
       <div
         style={{
           background: currentStyle.innerBackground,
