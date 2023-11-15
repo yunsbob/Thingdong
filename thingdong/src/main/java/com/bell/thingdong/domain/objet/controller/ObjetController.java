@@ -75,7 +75,7 @@ public class ObjetController {
 	public ResponseEntity<?> arrangeObject(@RequestBody UserObjectPositionReq userObjectPositionReq) {
 		log.info("arrangeObject Controller Start");
 		objetService.setUserObjectPosition(userObjectPositionReq);
-		log.info("arrangeObject Controller Start");
+		log.info("arrangeObject Controller Finish");
 
 		return ResponseEntity.ok().build();
 	}
