@@ -94,6 +94,7 @@ const MyRoom = ({
           height: '100vh',
         }}
       >
+        
         <Suspense fallback={<Spinner />}>
           <Canvas
             shadows
