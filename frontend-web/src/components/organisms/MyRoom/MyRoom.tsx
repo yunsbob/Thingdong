@@ -29,6 +29,7 @@ const MyRoom = ({
     return <div>Loading...</div>; // 혹은 다른 기본 상태 렌더링
   }
   const { scene } = useGLTF(selectedRoomColor);
+  
 
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   useEffect(() => {
@@ -38,7 +39,7 @@ const MyRoom = ({
         child.receiveShadow = true;
       }
     });
-  }, [clone]);
+  }, [clone, ]);
   const darkModeStyle = {
     outerBackgroundColor: '#1a1a1a',
     innerBackground:
@@ -153,8 +154,10 @@ const MyRoom = ({
               ) : (
                 <></>
               )}
+
               {thingsObject.map(obj => {
                 const glb = useLoader(GLTFLoader, obj.objectModelPath);
+                // console.log(obj); // thingsObject에 램프가 추가되긴 함
 
                 glb.scene.traverse(node => {
                   if (node.type === 'Mesh') {
@@ -162,9 +165,6 @@ const MyRoom = ({
                     node.receiveShadow = true;
                   }
                 });
-
-                const [isShining, setIsShining] = useState(obj.status);
-
                 return (
                   <React.Fragment key={obj.name}>
                     <primitive
@@ -175,14 +175,11 @@ const MyRoom = ({
                       scale={1}
                       onClick={(e: any) => {
                         e.stopPropagation();
-                        if (obj.name.includes('lamp') && !isEditing) {
-                          setIsShining(!isShining);
-                        }
                         onObjectClick(obj);
-                        console.log(obj.name, 'clicked on thingsObject');
+                        // console.log(obj.name, 'clicked on thingsObject');
                       }}
                     />
-                    {obj.name.includes('lamp') && isShining && (
+                    {obj.name.includes('lamp') && obj.smartThingsStatus && (
                       <>
                         <pointLight
                           position={[
@@ -196,22 +193,6 @@ const MyRoom = ({
                           intensity={100}
                           power={100}
                         />
-
-                        {/* <pointLight
-                        name="Point Light 3"
-                        intensity={1.5}
-                        distance={20}
-                        shadow-mapSize-width={1024}
-                        shadow-mapSize-height={1024}
-                        shadow-camera-near={100}
-                        shadow-camera-far={2000}
-                        color="#fed500"
-                        position={[
-                          obj.position[0],
-                          obj.position[1] + 3,
-                          obj.position[2],
-                        ]}
-                      /> */}
                       </>
                     )}
                   </React.Fragment>
