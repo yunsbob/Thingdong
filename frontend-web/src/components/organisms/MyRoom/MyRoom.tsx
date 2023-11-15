@@ -13,6 +13,9 @@ import StarField from '../StarField/StarField';
 import { DARKMODE, ROOMSTYLES } from '@/constants/roomStyles';
 import { MODELS } from '@/constants/models';
 
+import curtainClose from '@/assets/models/curtains/curtain-close1.glb';
+import curtainOpen from '@/assets/models/curtains/curtain-open1.glb';
+
 const MyRoom = ({
   isEditing,
   userObject,
@@ -130,9 +133,14 @@ const MyRoom = ({
                 <></>
               )}
 
-              {/* {thingsObject ? (
+              {thingsObject ? (
                 thingsObject.map(obj => {
-                  const glb = useLoader(GLTFLoader, obj.objectModelPath);
+                  let modelPath = obj.objectModelPath;
+                  if (obj.name.includes('curtain')) {
+                    modelPath = obj.smartThingsStatus ? curtainOpen : curtainClose
+                  }
+                  const glb = useLoader(GLTFLoader, modelPath);
+
                   glb.scene.traverse((node: any) => {
                     if (node.type === 'Mesh') {
                       node.castShadow = true;
@@ -143,17 +151,15 @@ const MyRoom = ({
                   return (
                     <React.Fragment key={obj.name}>
                       <primitive
-                        object={
-                          obj.name.includes('curtain')
-                            ? obj.smartThingsStatus
-                              ? CurtainOpenedGlb.scene
-                              : CurtainClosedGlb.scene
-                            : glb.scene
-                        }
+                        object={glb.scene}
                         name={obj.name}
-                        position={obj.position}
+                        position={[
+                          obj.position[0] - 0.2,
+                          obj.position[1],
+                          obj.position[2] - 0.2,
+                        ]}
                         rotation={obj.rotation}
-                        scale={1}
+                        scale={obj.name.includes('curtain') ? 1.05 : 1}
                         onClick={(e: any) => {
                           e.stopPropagation();
                           onObjectClick(obj);
@@ -181,7 +187,7 @@ const MyRoom = ({
                 })
               ) : (
                 <></>
-              )} */}
+              )}
 
               {/* 화면 중앙에 객체들 배치되게 scale, position 조정 */}
               <primitive
