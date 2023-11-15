@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import {
-  Environment,
   OrbitControls,
   OrthographicCamera,
   useGLTF,
@@ -164,7 +163,6 @@ const MyRoom = ({
 
               {thingsObject.map(obj => {
                 const glb = useLoader(GLTFLoader, obj.objectModelPath);
-                // console.log(obj); // thingsObject에 램프가 추가되긴 함
 
                 glb.scene.traverse(node => {
                   if (node.type === 'Mesh') {
@@ -183,7 +181,6 @@ const MyRoom = ({
                       onClick={(e: any) => {
                         e.stopPropagation();
                         onObjectClick(obj);
-                        // console.log(obj.name, 'clicked on thingsObject');
                       }}
                     />
                     {obj.name.includes('lamp') && obj.smartThingsStatus && (

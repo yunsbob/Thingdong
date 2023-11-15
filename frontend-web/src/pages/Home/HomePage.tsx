@@ -38,6 +38,7 @@ import { roomColorAtom } from '@/states/roomState';
 import { ThingsStatus } from '../../types/things';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 import { useUpdateDarkMode } from '@/apis/Room/Mutations/useUpdateDarkMode';
+import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -265,10 +266,6 @@ const HomePage = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(myThingsList, '---', myObjectList, '---');
-  }, [myThingsList, myObjectList]);
-
   const renderItems = () => {
     const categoryDataMap: Record<Category, RoomInventoryItemProps[]> = {
       가구: roomInventory.furnitureList || [],
@@ -290,8 +287,8 @@ const HomePage = () => {
     ));
   };
 
-  //
   const updateThingsStatusMutation = useUpdateThingsStatus();
+  const toggleThingsStatusMutation = useToggleThingsStatus();
 
   // 선택된 객체 인식
   const [selectedObjectName, setSelectedObjectName] = useState('');
@@ -301,7 +298,6 @@ const HomePage = () => {
     // 스마트띵즈인지 확인
     if (obj.deviceId) {
       const newStatus = !obj.smartThingsStatus;
-      console.log('이번에 들고온 smartThingsStatus', obj.smartThingsStatus);
 
       setMyThingsList(prevList => {
         return prevList.map(item => {
@@ -316,13 +312,33 @@ const HomePage = () => {
         deviceId: obj.deviceId,
         smartThingsStatus: newStatus,
       };
+
+      // thingdong.com 서버 DB API call
       updateThingsStatusMutation.mutate(thingStatus);
-      console.log(
-        'deviceId:',
-        obj.deviceId,
-        '이제 바뀌었을 smartThingsStatus:',
-        newStatus
-      );
+
+      // thingdong.com/smart 띵즈 API call
+      const toggleThingsStatusData = {
+        commands: {
+          component: 'main',
+          capability: 'switch',
+          command: newStatus ? 'on' : 'off',
+          arguments: [],
+        },
+      };
+
+      toggleThingsStatusMutation.mutate({
+        deviceId: obj.deviceId,
+        data: {
+          commands: [
+            {
+              component: 'main',
+              capability: 'switch',
+              command: newStatus ? 'on' : 'off',
+              arguments: [],
+            },
+          ],
+        },
+      });
     }
   };
 
