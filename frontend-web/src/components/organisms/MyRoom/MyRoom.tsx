@@ -1,10 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
-import {
-  OrbitControls,
-  OrthographicCamera,
-  useGLTF,
-} from '@react-three/drei';
+import { OrbitControls, OrthographicCamera, useGLTF } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
 import { MyRoomProps, RoomStyle } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -14,7 +10,8 @@ import GridHelpers from '@/components/molecules/GridHelpers/GridHelpers';
 import { useAtom } from 'jotai';
 import { roomColorAtom } from '@/states/roomState';
 import StarField from '../StarField/StarField';
-
+import { DARKMODE, ROOMSTYLES } from '@/constants/roomStyles';
+import { MODELS } from '@/constants/models';
 
 const MyRoom = ({
   isEditing,
@@ -30,7 +27,6 @@ const MyRoom = ({
     return <div>Loading...</div>; // 혹은 다른 기본 상태 렌더링
   }
   const { scene } = useGLTF(selectedRoomColor);
-  
 
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   useEffect(() => {
@@ -40,46 +36,12 @@ const MyRoom = ({
         child.receiveShadow = true;
       }
     });
-  }, [clone, ]);
-  const darkModeStyle = {
-    outerBackgroundColor: '#1a1a1a',
-    innerBackground:
-      'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(39, 60, 77) 140%)',
-  };
+  }, [clone]);
 
-  const roomStyles: { [key: string]: RoomStyle } = {
-    yellow: {
-      outerBackgroundColor: '#efddad',
-      innerBackground:
-        'linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(153, 153, 255, 50) 140%)',
-    },
-    black: {
-      outerBackgroundColor: '#000000',
-      innerBackground:
-        'linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(163, 183, 199, 50) 140%)',
-    },
-    pink: {
-      outerBackgroundColor: '#efddad',
-      innerBackground:
-        'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(248, 195, 175) 140%)',
-    },
-    purple: {
-      outerBackgroundColor: '#efdada',
-      innerBackground:
-        'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(114, 134, 211) 140%)',
-    },
-    white: {
-      outerBackgroundColor: '#97c7d0',
-      innerBackground:
-        'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(250, 227, 217) 140%)',
-    },
-    green: {
-      outerBackgroundColor: '#c0bb9a',
-      innerBackground:
-        'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(187, 200, 214) 140%)',
-    },
-  };
-  const currentStyle = darkMode ? darkModeStyle : roomStyles[roomColorState];
+  const CurtainOpenedGlb = useLoader(GLTFLoader, MODELS.CURTAIN_OPEN);
+  const CurtainClosedGlb = useLoader(GLTFLoader, MODELS.CURTAIN_CLOSE);
+
+  const currentStyle = darkMode ? DARKMODE : ROOMSTYLES[roomColorState];
   return (
     <div
       style={{
@@ -89,7 +51,15 @@ const MyRoom = ({
       }}
     >
       {darkMode && (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+          }}
+        >
           <StarField />
         </div>
       )}
@@ -100,7 +70,6 @@ const MyRoom = ({
           height: '100vh',
         }}
       >
-        
         <Suspense fallback={<Spinner />}>
           <Canvas
             shadows
@@ -127,7 +96,6 @@ const MyRoom = ({
               {userObject ? (
                 userObject.map(obj => {
                   const glb = useLoader(GLTFLoader, obj.objectModelPath);
-
                   glb.scene.traverse(node => {
                     if (node.type === 'Mesh') {
                       node.castShadow = true;
@@ -162,47 +130,58 @@ const MyRoom = ({
                 <></>
               )}
 
-              {thingsObject.map(obj => {
-                const glb = useLoader(GLTFLoader, obj.objectModelPath);
+              {thingsObject ? (
+                thingsObject.map(obj => {
+                  const glb = useLoader(GLTFLoader, obj.objectModelPath);
+                  glb.scene.traverse((node: any) => {
+                    if (node.type === 'Mesh') {
+                      node.castShadow = true;
+                      node.receiveShadow = true;
+                    }
+                  });
 
-                glb.scene.traverse(node => {
-                  if (node.type === 'Mesh') {
-                    node.castShadow = true;
-                    node.receiveShadow = true;
-                  }
-                });
-                return (
-                  <React.Fragment key={obj.name}>
-                    <primitive
-                      object={glb.scene}
-                      name={obj.name}
-                      position={obj.position}
-                      rotation={obj.rotation}
-                      scale={1}
-                      onClick={(e: any) => {
-                        e.stopPropagation();
-                        onObjectClick(obj);
-                      }}
-                    />
-                    {obj.name.includes('lamp') && obj.smartThingsStatus && (
-                      <>
-                        <pointLight
-                          position={[
-                            obj.position[0],
-                            obj.position[1] + 3,
-                            obj.position[2],
-                          ]}
-                          color="#ffd000"
-                          castShadow
-                          distance={5}
-                          intensity={100}
-                          power={100}
-                        />
-                      </>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+                  return (
+                    <React.Fragment key={obj.name}>
+                      <primitive
+                        object={
+                          obj.name.includes('curtain')
+                            ? obj.smartThingsStatus
+                              ? CurtainOpenedGlb.scene
+                              : CurtainClosedGlb.scene
+                            : glb.scene
+                        }
+                        name={obj.name}
+                        position={obj.position}
+                        rotation={obj.rotation}
+                        scale={1}
+                        onClick={(e: any) => {
+                          e.stopPropagation();
+                          onObjectClick(obj);
+                        }}
+                      />
+
+                      {obj.name.includes('lamp') && obj.smartThingsStatus && (
+                        <>
+                          <pointLight
+                            position={[
+                              obj.position[0],
+                              obj.position[1] + 3,
+                              obj.position[2],
+                            ]}
+                            color="#ffd000"
+                            castShadow
+                            distance={5}
+                            intensity={100}
+                            power={100}
+                          />
+                        </>
+                      )}
+                    </React.Fragment>
+                  );
+                })
+              ) : (
+                <></>
+              )}
 
               {/* 화면 중앙에 객체들 배치되게 scale, position 조정 */}
               <primitive
