@@ -1,5 +1,5 @@
 {
-  "appName": "thingdongs103",
+  "appName": "thingdongs105",
   "appType": "API_ONLY",
   "classifications": [
     "AUTOMATION"
@@ -10,7 +10,7 @@
   "installMetadata": {},
   "apiOnly": {
     "targetUrl": "https://thingdong.com/smart"
-  },
+  },  
   "oauth": {
     "clientName": "thingdong",
     "scope": [
