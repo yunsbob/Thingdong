@@ -4,7 +4,7 @@ import { instance } from '@/apis/instance';
 
 const getThings = async () => {
   try {
-    const { data } = await thingsInstance.get('/');
+    const data = await thingsInstance.get('/');
     console.log('data123', data);
     return data;
   } catch {
