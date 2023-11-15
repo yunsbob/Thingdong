@@ -1,5 +1,5 @@
 import { thingsInstance } from '@/apis/instance';
-import { ThingsStatus } from '@/types/things';
+import { ThingsStatus, ToggleThingsStatus } from '@/types/things';
 import { instance } from '@/apis/instance';
 
 const getThings = async () => {
@@ -20,6 +20,16 @@ const updateThingsStatus = async (data: ThingsStatus) => {
   }
 };
 
-const toggleThingsStatus = async (data: )
+const toggleThingsStatus = async (
+  deviceId: string,
+  data: ToggleThingsStatus
+) => {
+  try {
+    await instance.post(`/command/${deviceId}`, data);
+  } catch (error) {
+    console.error('update toggle things status error', error);
+    throw error;
+  }
+};
 
-export { getThings, updateThingsStatus };
+export { getThings, updateThingsStatus, toggleThingsStatus };
