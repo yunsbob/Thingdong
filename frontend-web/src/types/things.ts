@@ -8,6 +8,16 @@ export interface ThingsStatus {
   smartThingsStatus: boolean;
 }
 
+export interface ThingsCommands {
+  component: string;
+  capability: string;
+  command: string;
+  arguments: any[];
+}
+
+export interface ToggleThingsStatus {
+  commands: ThingsCommands[];
+}
 
 export interface ThingsPageProps {
   category : string;
