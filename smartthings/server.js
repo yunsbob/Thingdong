@@ -179,7 +179,7 @@ server.post("/smart", async (req, res) => {
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
 server.get("/smart", async (req, res) => {
-  const ctx = await smartapp.withContext(req.headers.installedappid);
+  const ctx = await smartApp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
     const ops = deviceList.filter((it) => it.components[0].categories[0].name != "Charger").map(async (it) => {
