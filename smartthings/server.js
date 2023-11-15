@@ -22,7 +22,7 @@ const scope = encodeUrl("r:locations:* r:devices:* x:devices:*");
 const contextStore = new FileContextStore("data");
 const userSSEStreams = new Map();
 
-const apiApp = new SmartApp()
+const smartApp = new SmartApp()
   .appId(appId)
   .clientId(clientId)
   .clientSecret(clientSecret)
@@ -172,14 +172,14 @@ server.use(function (req, res, next) {
 
 server.post("/smart", async (req, res) => {
   req.url = req.originalUrl;
-  apiApp.handleHttpCallback(req, res);
+  smartApp.handleHttpCallback(req, res);
 });
 
 /**
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
 server.get("/smart", async (req, res) => {
-  const ctx = await smartapp.withContext(req.headers.installedappid);
+  const ctx = await smartApp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
     const ops = deviceList.map(async (it) => {
@@ -289,7 +289,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
   try {
     // Store the SmartApp context including access and refresh tokens. Returns a context object for use in making
     // API calls to SmartThings
-    const ctx = await apiApp.handleOAuthCallback(req);
+    const ctx = await smartApp.handleOAuthCallback(req);
 
     // Get the location name (for display on the web page)
     const location = await ctx.api.locations.get(ctx.locationId);
@@ -342,7 +342,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
  */
 server.post("/smart/command/:deviceId", async (req, res, next) => {
   try {
-    const ctx = await apiApp.withContext(req.headers.installedappid);
+    const ctx = await smartApp.withContext(req.headers.installedappid);
     await ctx.api.devices.executeCommands(
       req.params.deviceId,
       req.body.commands
@@ -354,7 +354,7 @@ server.post("/smart/command/:deviceId", async (req, res, next) => {
 });
 
 server.get("/smart/events", (req, res) => {
-  const ctx = apiApp.withContext(req.headers.installedappid);
+  const ctx = smartApp.withContext(req.headers.installedappid);
   const userSSE = userSSEStreams.get(ctx.api.config.locationId);
 
   // If the user has a specific SSE stream, use it; otherwise, use the default SSE stream
