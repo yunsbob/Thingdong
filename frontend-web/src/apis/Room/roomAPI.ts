@@ -19,13 +19,14 @@ const getRoomInventory = async () => {
   }
 };
 
-const updateRoomPosition = async (roomPosition: RoomPosition) => {
+const updateRoomPosition = async (data: RoomPosition) => {
   try {
-    await instance.post('/objects/position', { roomPosition });
+    await instance.post('/objects/position', data);
+    console.log('잘들어왔니?? roomAPI', data);
   } catch {
     throw new Error('update room position error');
   }
-}
+};
 
 const updateRoomColor = async (data: RoomColor) => {
   try {
@@ -39,8 +40,14 @@ const updateDarkMode = async (data: RoomDark) => {
   try {
     await instance.put('rooms/dark-mode', data);
   } catch {
-    new Error('room dark mode update error')
+    new Error('room dark mode update error');
   }
-}
+};
 
-export { getRoom, getRoomInventory, updateRoomPosition, updateRoomColor, updateDarkMode };
+export {
+  getRoom,
+  getRoomInventory,
+  updateRoomPosition,
+  updateRoomColor,
+  updateDarkMode,
+};

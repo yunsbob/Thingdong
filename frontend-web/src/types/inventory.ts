@@ -36,6 +36,8 @@ export interface RoomInventoryItemProps {
   objectImagePath: string;
   isWall: boolean;
   objectStatus: 'Y' | 'N';
+  deviceId?: string;
+  smartThingsStatus?: boolean;
 }
 
 export interface RoomInventoryData {

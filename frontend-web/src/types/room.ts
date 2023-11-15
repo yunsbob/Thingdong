@@ -30,28 +30,11 @@ export interface UserObject {
 }
 
 export interface ThingsObject extends UserObject {
-  deviceId: number;
-  status: boolean;
+  deviceId: string;
+  smartThingsStatus: boolean;
 }
 
-export interface UpdatedList {
-  
-}
-
-// 스마트용따로
-// export interface UserObjectList {
-//   name: string;
-//   userObjectId: number;
-//   objectId: number;
-//   category: string;
-//   x: number;
-//   y: number;
-//   z: number;
-//   source: string;
-//   isRightWall?: boolean;
-//   rotationY?: number;
-//   size?: ObjectSize; // 나중엔 필수값으로
-// }
+export interface UpdatedList {}
 
 export interface MyRoom {
   userObjectList: UserObject;
