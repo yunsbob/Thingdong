@@ -69,16 +69,20 @@ const PATPage = () => {
       // console.log('SSE Data', data);
     };
 
-    eventSource.onerror = (e: any) => {
-      eventSource.close();
-      console.log('에러 메시지', e.error.message);
+    eventSource.onerror = (event: any) => {
+      // eventSource.close();
+      // console.log('에러 메시지', e.error.message);
 
-      if (e.error) {
-        console.log('SSE 에러');
-      }
+      // if (e.error) {
+      //   console.log('SSE 에러');
+      // }
 
-      if (e.target.readyState === EventSource.CLOSED) {
-        console.log('종료');
+      // if (e.target.readyState === EventSource.CLOSED) {
+
+      //   console.log('종료');
+      // }
+      if (!event.error.message.includes('No activity')) {
+        eventSource.close();
       }
     };
 
