@@ -10,7 +10,7 @@ import { Background } from '@/components/atoms/Background/Background.style';
 import { useGetInventory } from '@/apis/Inventory/Queries/useGetInventory';
 import PurchaseChekModal from './Modal/PurchaseCheckModal';
 import { useAtom } from 'jotai';
-import { activeCategoryAtom, modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
+import {  modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
 import { Category, InventoryItemProps, InventoryData } from '@/types/inventory';
 import { useGetUserInfo } from '@/apis/User/Queries/useGetUserInfo';
 import { startTransition } from 'react';
@@ -18,7 +18,7 @@ import { motion } from 'framer-motion';
 
 const InventoryPage = () => {
 
-  const [activeCategory, setActiveCategory] = useAtom(activeCategoryAtom);
+  const [activeCategory, setActiveCategory] = useState<Category|null>('가구');
   const [, setModalOpen] = useAtom(modalOpenAtom);
   const [selectedItem, setSelectedItem] = useAtom(selectedItemAtom);
   const { thingAmount } = useGetUserInfo();

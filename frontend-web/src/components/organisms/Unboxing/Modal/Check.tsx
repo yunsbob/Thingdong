@@ -22,10 +22,11 @@ import {
 import { resetUnboxingModal } from '@/utils/resetUnboxingModal';
 import { useNavigate } from 'react-router-dom';
 import { CHILDREN_PATH, PATH } from '@/constants/path';
-import { activeCategoryAtom } from '@/states/inventoryModalStates';
+import { useState } from 'react';
+import { Category } from '@/types/inventory';
 
 const Check = () => {
-  const [activeCategory, setActiveCategory] = useAtom(activeCategoryAtom);
+  const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [, setModalContent] = useAtom(modalContentAtom);
   const [sendingFriend] = useAtom(sendingFriendAtom);
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
@@ -61,9 +62,9 @@ const Check = () => {
 
     setTimeout(() => {
       location.reload();
+      setActiveCategory('언박띵');
     }, 500);
     
-    setActiveCategory('언박띵');
   };
 
   return (
