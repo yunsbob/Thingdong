@@ -183,10 +183,7 @@ const PATPage = () => {
         return status === 'ON' ? '눌림' : '안눌림';
       case 'Hub':
       case 'Thermostat':
-        let text = status === 'ONLINE' ? '온라인' : '오프라인';
-        if (category === 'Thermostat' && status === 'ONLINE' && temperature) {
-          `${temperature}°C`;
-        }
+        let text = status === 'ONLINE' ? `${temperature}°C` : '오프라인';
         return text;
       case 'Light':
         return status === 'ON' ? '켜짐' : '꺼짐';
