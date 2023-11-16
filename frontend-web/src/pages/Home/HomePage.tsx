@@ -332,8 +332,14 @@ const HomePage = () => {
           commands: [
             {
               component: 'main',
-              capability: 'switch',
-              command: newStatus ? 'on' : 'off',
+              capability: obj.name.includes('lamp') ? 'switch' : 'windowShade',
+              command: obj.name.includes('lamp')
+                ? newStatus
+                  ? 'on'
+                  : 'off'
+                : newStatus
+                ? 'open'
+                : 'close',
               arguments: [],
             },
           ],
