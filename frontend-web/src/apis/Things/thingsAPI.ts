@@ -15,6 +15,8 @@ const getThings = async () => {
 const updateThingsStatus = async (data: ThingsStatus) => {
   try {
     await instance.put('smart-things/status', data);
+    console.log(data, 'updateThingsStatus');
+    
   } catch {
     throw new Error('update things status error');
   }
