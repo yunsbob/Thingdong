@@ -17,7 +17,7 @@ import { ThingsPageProps } from '@/types/things';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { QueryClient } from '@tanstack/react-query';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
-import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
+import { useCommandThingsStatus } from '@/apis/Things/Mutations/useCommandThingsStatus';
 
 const PATPage = () => {
   let { data: response, isLoading } = useGetThings();
@@ -25,7 +25,8 @@ const PATPage = () => {
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
   const updateThingsStatusMutation = useUpdateThingsStatus();
-  const toggleThingsStatusMutation = useCommandThingsStatus();
+  const commandThingsStatusMutation = useCommandThingsStatus();
+  const [selectedDeviceId, setSelectedDeviceId] = useState('');
 
   useEffect(() => {
     if (response) {
@@ -127,6 +128,7 @@ const PATPage = () => {
           case 'Light':
             newStatus = things.status === 'ON' ? 'off' : 'on';
             smartThingsStatus = things.status === 'ON';
+            setSelectedDeviceId(things.deviceId);
             break;
           case 'Blind':
             newStatus = things.status === 'OPEN' ? 'close' : 'open';
@@ -144,7 +146,7 @@ const PATPage = () => {
 
         updateThingsStatusMutation.mutate(thingStatus);
 
-        toggleThingsStatusMutation.mutate({
+        commandThingsStatusMutation.mutate({
           deviceId: things.deviceId,
           data: {
             commands: [
@@ -196,7 +198,11 @@ const PATPage = () => {
 
   return (
     <S.PATPageContainer>
-      <LightModal modalOpen={lightModalOpen} setModalOpen={setLightModalOpen} />
+      <LightModal
+        modalOpen={lightModalOpen}
+        setModalOpen={setLightModalOpen}
+        deviceId={selectedDeviceId}
+      />
       <NewThingsModal
         modalOpen={newThingsModalOpen}
         setModalOpen={setNewThingsModalOpen}
