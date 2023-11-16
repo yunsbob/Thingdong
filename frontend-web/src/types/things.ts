@@ -15,7 +15,7 @@ export interface ThingsCommands {
   arguments: any[];
 }
 
-export interface ToggleThingsStatus {
+export interface ThingsStatusCommands {
   commands: ThingsCommands[];
 }
 

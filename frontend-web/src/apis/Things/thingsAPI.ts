@@ -1,5 +1,5 @@
 import { thingsInstance } from '@/apis/instance';
-import { ThingsStatus, ToggleThingsStatus } from '@/types/things';
+import { ThingsStatus, ThingsStatusCommands } from '@/types/things';
 import { instance } from '@/apis/instance';
 
 const getThings = async () => {
@@ -22,9 +22,9 @@ const updateThingsStatus = async (data: ThingsStatus) => {
   }
 };
 
-const toggleThingsStatus = async (
+const commandThingsStatus = async (
   deviceId: string,
-  data: ToggleThingsStatus
+  data: ThingsStatusCommands
 ) => {
   try {
     await thingsInstance.post(`/command/${deviceId}`, data);
@@ -36,4 +36,4 @@ const toggleThingsStatus = async (
   }
 };
 
-export { getThings, updateThingsStatus, toggleThingsStatus };
+export { getThings, updateThingsStatus, commandThingsStatus };
