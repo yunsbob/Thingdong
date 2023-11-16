@@ -60,6 +60,7 @@ const PATPage = () => {
 
     eventSource.onmessage = async event => {
       queryClient.invalidateQueries({ queryKey: ['things'] });
+      console.log('SSE 메시지 수신');
       // const response = await event.data;
       // const data = JSON.parse(response);
       // console.log('SSE Data', data);
