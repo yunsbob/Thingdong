@@ -141,7 +141,7 @@ public class ObjetService {
 		                             .propList(propList)
 		                             .floorList(floorList)
 		                             .smartThingsList(smartThingsList)
-		                             .unBoxThingList(unBoxThingList)
+		                             .unBoxThingList(unBoxThingList.stream().sorted(Comparator.comparing(ObjectRoomInventoryDto::getUserObjectId).reversed()).toList())
 		                             .build();
 	}
 
