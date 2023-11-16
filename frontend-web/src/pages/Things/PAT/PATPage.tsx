@@ -26,9 +26,7 @@ const PATPage = () => {
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
   const updateThingsStatusMutation = useUpdateThingsStatus();
   const commandThingsStatusMutation = useCommandThingsStatus();
-  const [selectedDeviceId, setSelectedDeviceId] = useState(
-    'f46e189b-d634-4a99-b37e-c2c4a6bc3af1'
-  );
+  const [selectedDeviceId, setSelectedDeviceId] = useState('');
 
   useEffect(() => {
     if (response) {
@@ -210,7 +208,7 @@ const PATPage = () => {
       <LightModal
         modalOpen={lightModalOpen}
         setModalOpen={setLightModalOpen}
-        deviceId={selectedDeviceId}
+        deviceId={'f46e189b-d634-4a99-b37e-c2c4a6bc3af1'}
       />
       <NewThingsModal
         modalOpen={newThingsModalOpen}
