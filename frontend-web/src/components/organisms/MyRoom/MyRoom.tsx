@@ -16,6 +16,8 @@ import * as THREE from 'three';
 
 import curtainClose from '@/assets/models/curtains/curtain-close1.glb';
 import curtainOpen from '@/assets/models/curtains/curtain-open1.glb';
+import switchOn from '@/assets/models/switchs/switch-on1.glb';
+import switchOff from '@/assets/models/switchs/switch-off1.glb';
 
 const MyRoom = ({
   isEditing,
@@ -99,19 +101,19 @@ const MyRoom = ({
 
               {userObject ? (
                 userObject.map(obj => {
-                  console.log('userObject', obj);
+                  // console.log('userObject', obj);
                   //TODO: obj의 objectModalPath에 unbox가 들어있으면 height 계산해서 위치 조정
 
                   const glb = useLoader(GLTFLoader, obj.objectModelPath);
                   glb.scene.traverse(node => {
-                    console.log('node', node);
+                    // console.log('node', node);
                     if (node.type === 'Mesh') {
                       if (
                         obj.objectModelPath.includes('unbox') &&
                         node instanceof THREE.Mesh
                       ) {
                         node.material.metalness = 0;
-                        console.log('node material', node.material);
+                        // console.log('node material', node.material);
                       }
                       node.castShadow = true;
                       node.receiveShadow = true;
@@ -152,6 +154,8 @@ const MyRoom = ({
                     modelPath = obj.smartThingsStatus
                       ? curtainOpen
                       : curtainClose;
+                  } else if (obj.name.includes('switch')) {
+                    modelPath = obj.smartThingsStatus ? switchOn : switchOff;
                   }
                   const glb = useLoader(GLTFLoader, modelPath);
 
@@ -173,7 +177,7 @@ const MyRoom = ({
                           obj.position[2] - 0.2,
                         ]}
                         rotation={obj.rotation}
-                        scale={obj.name.includes('curtain') ? 1.05 : 1}
+                        scale={obj.isWall ? 1.05 : 1}
                         onClick={(e: any) => {
                           e.stopPropagation();
                           onObjectClick(obj);
@@ -193,6 +197,22 @@ const MyRoom = ({
                             distance={5}
                             intensity={100}
                             power={100}
+                          />
+                        </>
+                      )}
+                      {obj.name.includes('switch') && obj.smartThingsStatus && (
+                        <>
+                          <pointLight
+                            position={[
+                              0,
+                              4,
+                              0,
+                            ]}
+                            color="#ffd563"
+                            castShadow
+                            distance={6}
+                            intensity={200}
+                            power={130}
                           />
                         </>
                       )}

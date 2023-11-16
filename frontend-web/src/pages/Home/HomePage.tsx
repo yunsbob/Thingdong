@@ -332,14 +332,18 @@ const HomePage = () => {
           commands: [
             {
               component: 'main',
-              capability: obj.name.includes('lamp') ? 'switch' : 'windowShade',
-              command: obj.name.includes('lamp')
-                ? newStatus
-                  ? 'on'
-                  : 'off'
-                : newStatus
-                ? 'open'
-                : 'close',
+              capability:
+                obj.name.includes('lamp') || obj.name.includes('switch')
+                  ? 'switch'
+                  : 'windowShade',
+              command:
+                obj.name.includes('lamp') || obj.name.includes('switch')
+                  ? newStatus
+                    ? 'on'
+                    : 'off'
+                  : newStatus
+                  ? 'open'
+                  : 'close',
               arguments: [],
             },
           ],
@@ -480,7 +484,9 @@ const HomePage = () => {
       return currentObjects.filter(obj => obj.name !== selectedObjectName);
     });
     let updatedInventory = { ...roomInventory };
-
+    setMyThingsList(currentObjects => {
+      return currentObjects.filter(obj => obj.name !== selectedObjectName);
+    });
     // 각 인벤토리 리스트에서 해당 아이템의 상태를 'N'으로 변경
     const updateObjectStatus = (
       list: RoomInventoryItemProps[]
@@ -562,6 +568,7 @@ const HomePage = () => {
     };
     updateDarkModeMutation.mutate(roomDarkData);
   };
+  console.log(myThingsList, 'thingslist');
 
   return (
     <>
