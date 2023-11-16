@@ -45,14 +45,12 @@ const Complete3DGenerate = () => {
       >
         꺅 완성되었어요!
         <br />
-        선물상자를 흔들어서
-        <br />
         어떤 오브제가
         <br />
         도착했는지 확인해 볼까요?
       </Text>
       <Text size="body3" fontWeight="bold" color="grey2">
-        기기를 신나게 흔들어주세요~!
+        선물상자를 눌러주세요~!
       </Text>
     </>
   );
