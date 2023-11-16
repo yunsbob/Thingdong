@@ -10,7 +10,7 @@ import Button from '@/components/atoms/Button/Button';
 import { useEffect, useState } from 'react';
 import { HslStringColorPicker } from 'react-colorful';
 import { useDebounce } from '@/hooks/useDebounce';
-import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
+import { useCommandThingsStatus } from '@/apis/Things/Mutations/useCommandThingsStatus';
 import { extractHSL } from '@/utils/extractHSL';
 
 const LightModal = ({

@@ -17,7 +17,7 @@ import { ThingsPageProps } from '@/types/things';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { QueryClient } from '@tanstack/react-query';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
-import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
+import { useCommandThingsStatus } from '@/apis/Things/Mutations/useCommandThingsStatus';
 
 const PATPage = () => {
   let { data: response, isLoading } = useGetThings();
