@@ -148,6 +148,7 @@ const MyRoom = ({
               {thingsObject ? (
                 thingsObject.map(obj => {
                   let modelPath = obj.objectModelPath;
+                  // TODO: API로 경로 받아서 뿌렸을때 렌더링 깜빡임 심한지
                   if (obj.name.includes('curtain')) {
                     modelPath = obj.smartThingsStatus
                       ? curtainOpen

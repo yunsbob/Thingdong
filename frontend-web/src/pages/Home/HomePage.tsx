@@ -325,7 +325,6 @@ const HomePage = () => {
       //     arguments: [],
       //   },
       // };
-
       commandThingsStatusMutation.mutate({
         deviceId: obj.deviceId,
         data: {
