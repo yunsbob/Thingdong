@@ -11,7 +11,7 @@ const BottomNavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const onClickPath = location.pathname;
+  const onClickPath = location.pathname === '/' ? '/home' : location.pathname;
 
   const changePath = (path: PathType) => {
     setActivePath(path);
@@ -22,7 +22,7 @@ const BottomNavBar = () => {
 
   const BottomNavStyle = {
     backgroundColor:
-      onClickPath === '/' || onClickPath === '/home'
+      onClickPath  === '/home'
         ? 'transparent'
         : theme.color.blue2,
   };
@@ -39,7 +39,7 @@ const BottomNavBar = () => {
               src={
                 require(
                   `@/assets/images/bottomNavBar/${path.toLowerCase()}${
-                    activePath === path ? '-activate' : ''
+                    onClickPath.replaceAll('/', '').includes(path.toLowerCase()) ? '-activate' : ''
                   }.png`
                 ).default
               }
