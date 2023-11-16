@@ -29,4 +29,19 @@ public class MainActivity extends ReactActivity {
         // If you opted-in for the New Architecture, we enable the Fabric Renderer.
         DefaultNewArchitectureEntryPoint.getFabricEnabled());
   }
+
+  // @Override
+  // protected ReactInstanceManager getReactInstanceManager() {
+  //   ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
+  //       .setApplication(getApplication())
+  //       .setBundleAssetName("index.android.bundle")
+  //       .setJSMainModulePath("index")
+  //       .addPackage(new MainReactPackage())
+  //       // ... other packages
+  //       .setUseDeveloperSupport(BuildConfig.DEBUG); // Set this to false
+
+  //   return builder.build();
+}
+
+
 }
