@@ -20,7 +20,7 @@ import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsSt
 import { useCommandThingsStatus } from '@/apis/Things/Mutations/useCommandThingsStatus';
 
 const PATPage = () => {
-  let { data: response, isLoading } = useGetThings();
+  let { data: response, isLoading, refetch } = useGetThings();
 
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
@@ -60,8 +60,10 @@ const PATPage = () => {
     };
 
     eventSource.onmessage = async event => {
-      queryClient.invalidateQueries({ queryKey: ['things'] });
       console.log('SSE 메시지 수신');
+      // queryClient.invalidateQueries({ queryKey: ['things'] });
+
+      refetch();
       // const response = await event.data;
       // const data = JSON.parse(response);
       // console.log('SSE Data', data);
