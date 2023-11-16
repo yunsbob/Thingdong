@@ -16,7 +16,7 @@ import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
-import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
+import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
 
 const PATPage = () => {
   const response = useGetThings();
@@ -27,7 +27,7 @@ const PATPage = () => {
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
   const updateThingsStatusMutation = useUpdateThingsStatus();
-  const toggleThingsStatusMutation = useToggleThingsStatus();
+  const toggleThingsStatusMutation = useCommandThingsStatus();
 
 
   useEffect(() => {
