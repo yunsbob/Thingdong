@@ -12,6 +12,7 @@ import { roomColorAtom } from '@/states/roomState';
 import StarField from '../StarField/StarField';
 import { DARKMODE, ROOMSTYLES } from '@/constants/roomStyles';
 import { MODELS } from '@/constants/models';
+import * as THREE from 'three';
 
 import curtainClose from '@/assets/models/curtains/curtain-close1.glb';
 import curtainOpen from '@/assets/models/curtains/curtain-open1.glb';
@@ -98,9 +99,20 @@ const MyRoom = ({
 
               {userObject ? (
                 userObject.map(obj => {
+                  console.log('userObject', obj);
+                  //TODO: obj의 objectModalPath에 unbox가 들어있으면 height 계산해서 위치 조정
+
                   const glb = useLoader(GLTFLoader, obj.objectModelPath);
                   glb.scene.traverse(node => {
+                    console.log('node', node);
                     if (node.type === 'Mesh') {
+                      if (
+                        obj.objectModelPath.includes('unbox') &&
+                        node instanceof THREE.Mesh
+                      ) {
+                        node.material.metalness = 0;
+                        console.log('node material', node.material);
+                      }
                       node.castShadow = true;
                       node.receiveShadow = true;
                     }
@@ -137,7 +149,9 @@ const MyRoom = ({
                 thingsObject.map(obj => {
                   let modelPath = obj.objectModelPath;
                   if (obj.name.includes('curtain')) {
-                    modelPath = obj.smartThingsStatus ? curtainOpen : curtainClose
+                    modelPath = obj.smartThingsStatus
+                      ? curtainOpen
+                      : curtainClose;
                   }
                   const glb = useLoader(GLTFLoader, modelPath);
 
