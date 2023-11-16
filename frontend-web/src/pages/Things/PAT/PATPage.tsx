@@ -15,6 +15,7 @@ import { useGetThings } from '@/apis/Things/Queries/useGetThings';
 import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { QueryClient } from '@tanstack/react-query';
 
 const PATPage = () => {
   const response = useGetThings();
@@ -31,6 +32,8 @@ const PATPage = () => {
       setThingsList(response.data.devices);
     }
   }, [response]);
+
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     const eventSourceInitDict = {
@@ -59,13 +62,15 @@ const PATPage = () => {
     };
 
     eventSource.onmessage = async event => {
-      const response = await event.data;
-      const data = JSON.parse(response);
-      console.log('SSE Data', data);
+      queryClient.invalidateQueries({ queryKey: ['things'] });
+      // const response = await event.data;
+      // const data = JSON.parse(response);
+      // console.log('SSE Data', data);
     };
 
     eventSource.onerror = (e: any) => {
       eventSource.close();
+      console.log(e.error.message);
 
       if (e.error) {
         console.log('SSE 에러');
