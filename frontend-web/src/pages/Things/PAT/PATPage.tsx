@@ -174,7 +174,8 @@ const PATPage = () => {
     const getDeviceStatusText = (
       category: string,
       status: string,
-      temperature?: number
+      temperature?: number,
+      humidity?:number
     ): string => {
       switch (category) {
         case 'SmartPlug':
@@ -185,7 +186,7 @@ const PATPage = () => {
           return status === 'ONLINE' ? '온라인' : '오프라인';
         case 'Thermostat':
           if (status === 'ONLINE') {
-            return temperature ? `${temperature}°C` : '온라인';
+            return temperature ? `${temperature}°C, ${humidity}%` : '온라인';
           } else {
             return '오프라인';
           }
@@ -259,7 +260,8 @@ const PATPage = () => {
                   {getDeviceStatusText(
                     things.category,
                     things.status,
-                    things.temperature
+                    things.temperature,
+                    things.humidity
                   )}
                 </Text>
                 {things.status === 'OFFLINE' && <S.ThingsWrapper />}

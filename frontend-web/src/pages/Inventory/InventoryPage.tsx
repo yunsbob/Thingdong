@@ -10,7 +10,7 @@ import { Background } from '@/components/atoms/Background/Background.style';
 import { useGetInventory } from '@/apis/Inventory/Queries/useGetInventory';
 import PurchaseChekModal from './Modal/PurchaseCheckModal';
 import { useAtom } from 'jotai';
-import {  modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
+import { modalOpenAtom, selectedItemAtom } from '@/states/inventoryModalStates';
 import { Category, InventoryItemProps, InventoryData } from '@/types/inventory';
 import { useGetUserInfo } from '@/apis/User/Queries/useGetUserInfo';
 import { startTransition } from 'react';
