@@ -20,10 +20,7 @@ import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsSt
 import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
 
 const PATPage = () => {
-  let response = useGetThings();
-  if (response) {
-    console.log('useGetThings-devices', response.data.devices);
-  }
+  let { data: response, isLoading } = useGetThings();
 
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
@@ -31,11 +28,14 @@ const PATPage = () => {
   const toggleThingsStatusMutation = useCommandThingsStatus();
 
   useEffect(() => {
+    if (response) {
+      console.log('useGetThings-devices', response.data.devices);
+    }
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
     if (response?.data?.devices) {
       setThingsList(response.data.devices);
     }
-  }, [response]);
+  }, [response, isLoading]);
 
   const queryClient = new QueryClient();
 
@@ -68,7 +68,7 @@ const PATPage = () => {
 
     eventSource.onerror = (e: any) => {
       eventSource.close();
-      console.log(e.error.message);
+      console.log('에러 메시지', e.error.message);
 
       if (e.error) {
         console.log('SSE 에러');
