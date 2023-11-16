@@ -15,14 +15,12 @@ import { useGetThings } from '@/apis/Things/Queries/useGetThings';
 import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { QueryClient } from '@tanstack/react-query';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
 
 const PATPage = () => {
-  const response = useGetThings();
-  if (response) {
-    console.log('useGetThings-devices', response.data.devices);
-  }
+  let { data: response, isLoading } = useGetThings();
 
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
@@ -31,20 +29,18 @@ const PATPage = () => {
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
 
   useEffect(() => {
+    if (response) {
+      console.log('useGetThings-devices', response.data.devices);
+    }
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
     if (response?.data?.devices) {
       setThingsList(response.data.devices);
     }
-  }, [response]);
+  }, [response, isLoading]);
+
+  const queryClient = new QueryClient();
 
   useEffect(() => {
-    const eventSourceInitDict = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-        installedappid: localStorage.getItem('installedAppId'),
-      },
-    };
-
     const url = `${process.env.REACT_APP_SERVER_URL}/smart/events`;
 
     const eventSource = new EventSourcePolyfill(url, {
@@ -64,13 +60,16 @@ const PATPage = () => {
     };
 
     eventSource.onmessage = async event => {
-      const response = await event.data;
-      const data = JSON.parse(response);
-      console.log('SSE Data', data);
+      queryClient.invalidateQueries({ queryKey: ['things'] });
+      console.log('SSE 메시지 수신');
+      // const response = await event.data;
+      // const data = JSON.parse(response);
+      // console.log('SSE Data', data);
     };
 
     eventSource.onerror = (e: any) => {
       eventSource.close();
+      console.log('에러 메시지', e.error.message);
 
       if (e.error) {
         console.log('SSE 에러');
