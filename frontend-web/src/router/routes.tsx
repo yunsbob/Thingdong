@@ -47,6 +47,7 @@ const router = createBrowserRouter([
   { path: PATH.SIGNUP, element: <SignUpPage /> },
   { path: PATH.SPLASH, element: <SplashPage /> },
   { path: PATH.LOGIN, element: <LoginPage /> },
+  { path: PATH.FRIENDROOM, element: <FriendRoomPage /> },
   { path: PATH.REDIRECT, element: <Redirect /> },
 ]);
 

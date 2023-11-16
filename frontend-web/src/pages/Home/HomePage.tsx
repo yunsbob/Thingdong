@@ -38,7 +38,7 @@ import { roomColorAtom } from '@/states/roomState';
 import { ThingsStatus } from '../../types/things';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 import { useUpdateDarkMode } from '@/apis/Room/Mutations/useUpdateDarkMode';
-import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
+import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -288,7 +288,7 @@ const HomePage = () => {
   };
 
   const updateThingsStatusMutation = useUpdateThingsStatus();
-  const toggleThingsStatusMutation = useToggleThingsStatus();
+  const commandThingsStatusMutation = useCommandThingsStatus();
 
   // 선택된 객체 인식
   const [selectedObjectName, setSelectedObjectName] = useState('');
@@ -326,14 +326,20 @@ const HomePage = () => {
       //   },
       // };
 
-      toggleThingsStatusMutation.mutate({
+      commandThingsStatusMutation.mutate({
         deviceId: obj.deviceId,
         data: {
           commands: [
             {
               component: 'main',
-              capability: 'switch',
-              command: newStatus ? 'on' : 'off',
+              capability: obj.name.includes('lamp') ? 'switch' : 'windowShade',
+              command: obj.name.includes('lamp')
+                ? newStatus
+                  ? 'on'
+                  : 'off'
+                : newStatus
+                ? 'open'
+                : 'close',
               arguments: [],
             },
           ],
