@@ -13,6 +13,7 @@ type InventoryButtonsProps = {
 const categories = ['가구', '가전', '소품', '바닥', '띵즈', '언박띵'] as const;
 
 const InventoryButtons: React.FC<InventoryButtonsProps> = ({ activeCategory, onCategoryClick, $isRoom }) => {
+  
   return (
     <InventoryButtonContainer>
       {categories.map((category) => (
