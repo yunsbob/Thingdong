@@ -240,11 +240,13 @@ const PATPage = () => {
               >
                 <S.ThingStatusWrapper
                   src={
-                    things.status === 'ON' ||
-                    things.status === 'ONLINE' ||
-                    things.status === 'OPEN'
-                      ? IMAGES.THIGNS.ON_ICON
-                      : IMAGES.THIGNS.OFF_ICON
+                    (things.category === 'switch' && things.status === 'ON')
+                      ? IMAGES.THIGNS.OFF_ICON
+                      : (things.category === 'switch' && things.status === 'OFF')
+                        ? IMAGES.THIGNS.ON_ICON
+                        : (things.status === 'ON' || things.status === 'ONLINE' || things.status === 'OPEN')
+                          ? IMAGES.THIGNS.ON_ICON
+                          : IMAGES.THIGNS.OFF_ICON
                   }
                   width={2.3}
                 />
