@@ -208,7 +208,7 @@ const MyRoom = ({
                           />
                         </>
                       )}
-                      {obj.name.includes('switch') && obj.smartThingsStatus && (
+                      {obj.name.includes('switch') && !obj.smartThingsStatus && (
                         <>
                           <pointLight
                             position={[
