@@ -20,7 +20,7 @@ import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsSt
 import { useCommandThingsStatus } from '@/apis/Things/Mutations/useCommandThingsStatus';
 
 const PATPage = () => {
-  let { data: response, isLoading } = useGetThings();
+  let { data: response, isLoading, refetch } = useGetThings();
 
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
@@ -31,12 +31,11 @@ const PATPage = () => {
   useEffect(() => {
     if (response) {
       console.log('useGetThings-devices', response.data.devices);
-      setThingsList(response.data.devices);
     }
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
-    // if (response?.data?.devices) {
-    //   setThingsList(response.data.devices);
-    // }
+    if (response?.data?.devices) {
+      setThingsList(response.data.devices);
+    }
   }, [response, isLoading]);
 
   const queryClient = new QueryClient();
@@ -61,8 +60,10 @@ const PATPage = () => {
     };
 
     eventSource.onmessage = async event => {
-      queryClient.invalidateQueries({ queryKey: ['things'] });
       console.log('SSE 메시지 수신');
+      // queryClient.invalidateQueries({ queryKey: ['things'] });
+
+      refetch();
       // const response = await event.data;
       // const data = JSON.parse(response);
       // console.log('SSE Data', data);
