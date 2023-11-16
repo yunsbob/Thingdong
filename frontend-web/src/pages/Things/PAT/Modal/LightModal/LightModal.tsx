@@ -10,18 +10,45 @@ import Button from '@/components/atoms/Button/Button';
 import { useEffect, useState } from 'react';
 import { HslStringColorPicker } from 'react-colorful';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useCommandThingsStatus } from '@/apis/Things/Mutations/useCommandThingsStatus';
+import { extractHSL } from '@/utils/extractHSL';
 
-const LightModal = ({ modalOpen, setModalOpen }: ThingsModalProps) => {
+const LightModal = ({
+  modalOpen,
+  setModalOpen,
+  deviceId,
+}: ThingsModalProps) => {
   const [color, setColor] = useState<string>('hsl(100,0%,100%)');
 
   const onChangeColor = (newColor: string) => {
     setColor(newColor);
     console.log(newColor);
   };
+  const commandThingsStatusMutation = useCommandThingsStatus();
 
-  const changeLightColor = (newColor: string) => {
+  const changeLightColor = (newColor: string, deviceId: string) => {
     console.log('버튼을누르면~', newColor);
-    
+    // 버튼을누르면~ hsl(100, 40%, 23%)
+    const { mappedHue, saturation } = extractHSL(newColor);
+
+    commandThingsStatusMutation.mutate({
+      deviceId,
+      data: {
+        commands: [
+          {
+            component: 'main',
+            capability: 'colorControl',
+            command: 'setColor',
+            arguments: [
+              {
+                hue: mappedHue,
+                saturation: saturation,
+              },
+            ],
+          },
+        ],
+      },
+    });
   };
 
   // const colorDebounce = useDebounce(onChangeColor, 200);
@@ -60,7 +87,8 @@ const LightModal = ({ modalOpen, setModalOpen }: ThingsModalProps) => {
         <Button
           size="medium"
           onClick={() => {
-            changeModalOpen(modalOpen, setModalOpen), changeLightColor(color);
+            changeModalOpen(modalOpen, setModalOpen),
+              changeLightColor(color, deviceId!);
           }}
         >
           확인
