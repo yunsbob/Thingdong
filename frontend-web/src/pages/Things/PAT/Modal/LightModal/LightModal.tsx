@@ -29,7 +29,7 @@ const LightModal = ({
   const changeLightColor = (newColor: string, deviceId: string) => {
     console.log('버튼을누르면~', newColor);
     // 버튼을누르면~ hsl(100, 40%, 23%)
-    const { mappedHue, saturation } = extractHSL(newColor);
+    const { mappedHue, saturation, level } = extractHSL(newColor);
 
     commandThingsStatusMutation.mutate({
       deviceId,
@@ -45,6 +45,19 @@ const LightModal = ({
                 saturation: saturation,
               },
             ],
+          },
+        ],
+      },
+    });
+    commandThingsStatusMutation.mutate({
+      deviceId,
+      data: {
+        commands: [
+          {
+            component: 'main',
+            capability: 'switchLevel',
+            command: 'setLevel',
+            arguments: [level],
           },
         ],
       },
