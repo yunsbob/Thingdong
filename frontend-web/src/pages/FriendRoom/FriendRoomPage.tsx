@@ -68,7 +68,6 @@ const FriendRoomPage = () => {
   };
 
   // FriendRoom State
-  // TODO: 데이터바인딩
   const { data: friendRoomState } = useGetRoom(userId);
   const [friendThingsList, setFriendThingsList] = useState<ThingsObject[]>(
     friendRoomState && friendRoomState.smartThingsList
