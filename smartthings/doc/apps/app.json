@@ -10,7 +10,7 @@
   "installMetadata": {},
   "apiOnly": {
     "targetUrl": "https://thingdong.com/smart"
-  },  
+  },
   "oauth": {
     "clientName": "thingdong",
     "scope": [
