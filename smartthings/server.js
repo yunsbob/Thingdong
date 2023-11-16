@@ -35,7 +35,7 @@ const smartApp = new SmartApp()
     if (event.componentId === "main") {
       const locationId = ctx.locationId;
       const sse = userSSEStreams.get(locationId);
-      globalSse = sse;
+      globalSSE = sse;
       if (sse && event.locationId == ctx.locationId) {
         try {
           sse.send({
@@ -59,7 +59,7 @@ const smartApp = new SmartApp()
       if (event.value >= 30) {
         const locationId = ctx.locationId;
         const sse = userSSEStreams.get(locationId);
-        globalSse = sse;
+        globalSSE = sse;
         if (sse && event.locationId == ctx.locationId) {
           try {
             sse.send({
@@ -85,7 +85,7 @@ const smartApp = new SmartApp()
       if (event.value >= 65) {
         const locationId = ctx.locationId;
         const sse = userSSEStreams.get(locationId);
-        globalSse = sse;
+        globalSSE = sse;
         if (sse && event.locationId == ctx.locationId) {
           try {
             sse.send({
@@ -109,7 +109,7 @@ const smartApp = new SmartApp()
     if (event.componentId === "main") {
       const locationId = ctx.locationId;
       const sse = userSSEStreams.get(locationId);
-      globalSse = sse;
+      globalSSE = sse;
       if (sse && event.locationId == ctx.locationId) {
         try {
           sse.send({
@@ -131,7 +131,7 @@ const smartApp = new SmartApp()
     if (event.componentId === "main") {
       const locationId = ctx.locationId;
       const sse = userSSEStreams.get(locationId);
-      globalSse = sse;
+      globalSSE = sse;
       console.log(55, globalSSE);
       if (sse && event.locationId == ctx.locationId) {
         try {
@@ -364,7 +364,7 @@ server.post("/smart/command/:deviceId", async (req, res, next) => {
 server.get("/smart/events", (req, res) => {
   // const ctx = smartApp.withContext(req.headers.installedappid);
   // const userSSE = userSSEStreams.get(ctx.api.config.locationId);
-  const userSSE = globalSse;
+  const userSSE = globalSSE;
   console.log(66, userSSE);
   // If the user has a specific SSE stream, use it; otherwise, use the default SSE stream
   if (userSSE) {
