@@ -15,6 +15,8 @@ import { useGetThings } from '@/apis/Things/Queries/useGetThings';
 import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
+import { useToggleThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
 
 const PATPage = () => {
   const response = useGetThings();
@@ -24,6 +26,9 @@ const PATPage = () => {
 
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
+  const updateThingsStatusMutation = useUpdateThingsStatus();
+  const toggleThingsStatusMutation = useToggleThingsStatus();
+
 
   useEffect(() => {
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
@@ -103,16 +108,58 @@ const PATPage = () => {
     }
   };
 
-  const onClickThingsBlock =
-    (things: ThingsPageProps, idx: number) => (e: any) => {
-      if (things.status !== 'OFFLINE') {
-        let newThings = [...thingsList];
-        newThings[idx] = { ...things, status: changeStatus(things.status) };
+  // const onClickThingsBlock =
+  //   (things: ThingsPageProps, idx: number) => (e: any) => {
+  //     if (things.status !== 'OFFLINE') {
+  //       let newThings = [...thingsList];
+  //       newThings[idx] = { ...things, status: changeStatus(things.status) };
 
-        setThingsList(newThings);
+  //       setThingsList(newThings);
+  //     }
+  //   };
+
+  const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
+    if (things.status !== 'OFFLINE') {
+      let newStatus, smartThingsStatus;
+      switch (things.category) {
+        case 'SmartPlug':
+        case 'Switch':
+        case 'Light':
+          newStatus = things.status === 'ON' ? 'off' : 'on';
+          smartThingsStatus = things.status === 'ON';
+          break;
+        case 'Blind':
+          newStatus = things.status === 'OPEN' ? 'close' : 'open';
+          smartThingsStatus = things.status === 'OPEN';
+          break;
+        default:
+          newStatus = things.status; // 다른 카테고리의 경우 상태를 변경하지 않음
+          smartThingsStatus = false; // 기본값
       }
-    };
-
+  
+      const thingStatus = {
+        deviceId: things.deviceId,
+        smartThingsStatus: smartThingsStatus,
+      };
+  
+      updateThingsStatusMutation.mutate(thingStatus);
+  
+      toggleThingsStatusMutation.mutate({
+        deviceId: things.deviceId,
+        data: {
+          commands: [{
+            component: 'main',
+            capability: things.category === 'Blind' ? 'windowShade' : 'switch',
+            command: newStatus,
+            arguments: [],
+          }],
+        },
+      });
+      let newThings = [...thingsList];
+      newThings[idx] = { ...things, status: changeStatus(things.status) };
+      setThingsList(newThings);
+    }
+  };
   const getDeviceStatusText = (
     category: string,
     status: string,
