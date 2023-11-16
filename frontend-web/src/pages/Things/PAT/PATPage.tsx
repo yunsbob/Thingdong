@@ -15,6 +15,7 @@ import { useGetThings } from '@/apis/Things/Queries/useGetThings';
 import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { QueryClient } from '@tanstack/react-query';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
 
@@ -29,7 +30,6 @@ const PATPage = () => {
   const updateThingsStatusMutation = useUpdateThingsStatus();
   const toggleThingsStatusMutation = useCommandThingsStatus();
 
-
   useEffect(() => {
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
     if (response?.data?.devices) {
@@ -37,14 +37,9 @@ const PATPage = () => {
     }
   }, [response]);
 
-  useEffect(() => {
-    const eventSourceInitDict = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-        installedappid: localStorage.getItem('installedAppId'),
-      },
-    };
+  const queryClient = new QueryClient();
 
+  useEffect(() => {
     const url = `${process.env.REACT_APP_SERVER_URL}/smart/events`;
 
     const eventSource = new EventSourcePolyfill(url, {
@@ -64,13 +59,15 @@ const PATPage = () => {
     };
 
     eventSource.onmessage = async event => {
-      const response = await event.data;
-      const data = JSON.parse(response);
-      console.log('SSE Data', data);
+      queryClient.invalidateQueries({ queryKey: ['things'] });
+      // const response = await event.data;
+      // const data = JSON.parse(response);
+      // console.log('SSE Data', data);
     };
 
     eventSource.onerror = (e: any) => {
       eventSource.close();
+      console.log(e.error.message);
 
       if (e.error) {
         console.log('SSE 에러');
@@ -118,48 +115,53 @@ const PATPage = () => {
   //     }
   //   };
 
-  const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
-    if (things.status !== 'OFFLINE') {
-      let newStatus, smartThingsStatus;
-      switch (things.category) {
-        case 'SmartPlug':
-        case 'Switch':
-        case 'Light':
-          newStatus = things.status === 'ON' ? 'off' : 'on';
-          smartThingsStatus = things.status === 'ON';
-          break;
-        case 'Blind':
-          newStatus = things.status === 'OPEN' ? 'close' : 'open';
-          smartThingsStatus = things.status === 'OPEN';
-          break;
-        default:
-          newStatus = things.status; // 다른 카테고리의 경우 상태를 변경하지 않음
-          smartThingsStatus = false; // 기본값
+  const onClickThingsBlock =
+    (things: ThingsPageProps, idx: number) => (e: any) => {
+      if (things.status !== 'OFFLINE') {
+        let newStatus, smartThingsStatus;
+        switch (things.category) {
+          case 'SmartPlug':
+          case 'Switch':
+          case 'Light':
+            newStatus = things.status === 'ON' ? 'off' : 'on';
+            smartThingsStatus = things.status === 'ON';
+            break;
+          case 'Blind':
+            newStatus = things.status === 'OPEN' ? 'close' : 'open';
+            smartThingsStatus = things.status === 'OPEN';
+            break;
+          default:
+            newStatus = things.status; // 다른 카테고리의 경우 상태를 변경하지 않음
+            smartThingsStatus = false; // 기본값
+        }
+
+        const thingStatus = {
+          deviceId: things.deviceId,
+          smartThingsStatus: smartThingsStatus,
+        };
+
+        updateThingsStatusMutation.mutate(thingStatus);
+
+        toggleThingsStatusMutation.mutate({
+          deviceId: things.deviceId,
+          data: {
+            commands: [
+              {
+                component: 'main',
+                capability:
+                  things.category === 'Blind' ? 'windowShade' : 'switch',
+                command: newStatus,
+                arguments: [],
+              },
+            ],
+          },
+        });
+        let newThings = [...thingsList];
+        newThings[idx] = { ...things, status: changeStatus(things.status) };
+        setThingsList(newThings);
       }
-  
-      const thingStatus = {
-        deviceId: things.deviceId,
-        smartThingsStatus: smartThingsStatus,
-      };
-  
-      updateThingsStatusMutation.mutate(thingStatus);
-  
-      toggleThingsStatusMutation.mutate({
-        deviceId: things.deviceId,
-        data: {
-          commands: [{
-            component: 'main',
-            capability: things.category === 'Blind' ? 'windowShade' : 'switch',
-            command: newStatus,
-            arguments: [],
-          }],
-        },
-      });
-      let newThings = [...thingsList];
-      newThings[idx] = { ...things, status: changeStatus(things.status) };
-      setThingsList(newThings);
-    }
-  };
+    };
+
   const getDeviceStatusText = (
     category: string,
     status: string,
