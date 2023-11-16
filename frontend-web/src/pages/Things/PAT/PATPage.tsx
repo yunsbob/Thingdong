@@ -140,7 +140,7 @@ const PATPage = () => {
 
         const thingStatus = {
           deviceId: things.deviceId,
-          smartThingsStatus: smartThingsStatus,
+          smartThingsStatus: !smartThingsStatus,
         };
 
         updateThingsStatusMutation.mutate(thingStatus);
