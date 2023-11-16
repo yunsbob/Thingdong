@@ -20,7 +20,7 @@ import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsSt
 import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
 
 const PATPage = () => {
-  const response = useGetThings();
+  let response = useGetThings();
   if (response) {
     console.log('useGetThings-devices', response.data.devices);
   }
