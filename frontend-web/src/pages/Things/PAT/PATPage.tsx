@@ -30,11 +30,12 @@ const PATPage = () => {
   useEffect(() => {
     if (response) {
       console.log('useGetThings-devices', response.data.devices);
-    }
-    // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
-    if (response?.data?.devices) {
       setThingsList(response.data.devices);
     }
+    // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
+    // if (response?.data?.devices) {
+    //   setThingsList(response.data.devices);
+    // }
   }, [response, isLoading]);
 
   const queryClient = new QueryClient();
