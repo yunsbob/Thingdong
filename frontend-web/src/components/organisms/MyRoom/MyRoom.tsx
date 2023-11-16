@@ -99,28 +99,25 @@ const MyRoom = ({
 
               {userObject ? (
                 userObject.map(obj => {
-                  console.log('userObject', obj);
-                  //TODO: obj의 objectModalPath에 unbox가 들어있으면 height 계산해서 위치 조정
-
                   const glb = useLoader(GLTFLoader, obj.objectModelPath);
                   let size;
                   let yPosition = obj.position[1];
 
                   glb.scene.traverse(node => {
-                    console.log('node', node);
+                    // console.log('node', node);
                     if (node.type === 'Mesh') {
                       if (obj.objectModelPath.includes('unbox')) {
                         if (node instanceof THREE.Mesh) {
                           node.material.metalness = 0;
-                          console.log('node material', node.material);
+                          // console.log('node material', node.material);
                         }
 
                         const box = new THREE.Box3().setFromObject(glb.scene);
                         size = box.getSize(new THREE.Vector3());
                         yPosition += size.y / 2;
-                        console.log('object의 원래 y index', obj.position[1]);
-                        console.log('zPosition', yPosition);
-                        console.log('size : ', size);
+                        // console.log('object의 원래 y index', obj.position[1]);
+                        // console.log('zPosition', yPosition);
+                        // console.log('size : ', size);
                       }
 
                       node.castShadow = true;
