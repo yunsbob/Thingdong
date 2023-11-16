@@ -26,7 +26,9 @@ const PATPage = () => {
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
   const updateThingsStatusMutation = useUpdateThingsStatus();
   const commandThingsStatusMutation = useCommandThingsStatus();
-  const [selectedDeviceId, setSelectedDeviceId] = useState('');
+  const [selectedDeviceId, setSelectedDeviceId] = useState(
+    'f46e189b-d634-4a99-b37e-c2c4a6bc3af1'
+  );
 
   useEffect(() => {
     if (response) {
@@ -133,7 +135,7 @@ const PATPage = () => {
           case 'Light':
             newStatus = things.status === 'ON' ? 'off' : 'on';
             smartThingsStatus = things.status === 'ON';
-            setSelectedDeviceId(things.deviceId);
+            // setSelectedDeviceId(things.deviceId);
             break;
           case 'Blind':
             newStatus = things.status === 'OPEN' ? 'close' : 'open';
@@ -198,6 +200,8 @@ const PATPage = () => {
   };
   const [lightModalOpen, setLightModalOpen] = useState(false);
   const thingsBlockLongPress = useLongPress(() => {
+    // TODO: lamp 찾아서 things.deviceId로 할당
+    // setSelectedDeviceId()
     changeModalOpen(lightModalOpen, setLightModalOpen);
   }, 800);
 
