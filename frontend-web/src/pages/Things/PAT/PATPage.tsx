@@ -15,36 +15,32 @@ import { useGetThings } from '@/apis/Things/Queries/useGetThings';
 import { thingsInstance } from '@/apis/instance';
 import { ThingsPageProps } from '@/types/things';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { QueryClient } from '@tanstack/react-query';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
-import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
+import { useCommandThingsStatus } from '@/apis/Things/Mutations/useCommandThingsStatus';
 
 const PATPage = () => {
-  const response = useGetThings();
-  if (response) {
-    console.log('useGetThings-devices', response.data.devices);
-  }
+  let { data: response, isLoading, refetch } = useGetThings();
 
   const [thingsList, setThingsList] = useState<ThingsPageProps[]>([]);
   const [newThingsModalOpen, setNewThingsModalOpen] = useState(false);
   const updateThingsStatusMutation = useUpdateThingsStatus();
-  const toggleThingsStatusMutation = useCommandThingsStatus();
-
+  const commandThingsStatusMutation = useCommandThingsStatus();
+  const [selectedDeviceId, setSelectedDeviceId] = useState('');
 
   useEffect(() => {
+    if (response) {
+      console.log('useGetThings-devices', response.data.devices);
+    }
     // 옵셔널 체이닝을 사용하여 data와 devices에 안전하게 접근
     if (response?.data?.devices) {
       setThingsList(response.data.devices);
     }
-  }, [response]);
+  }, [response, isLoading]);
+
+  const queryClient = new QueryClient();
 
   useEffect(() => {
-    const eventSourceInitDict = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-        installedappid: localStorage.getItem('installedAppId'),
-      },
-    };
-
     const url = `${process.env.REACT_APP_SERVER_URL}/smart/events`;
 
     const eventSource = new EventSourcePolyfill(url, {
@@ -64,13 +60,18 @@ const PATPage = () => {
     };
 
     eventSource.onmessage = async event => {
-      const response = await event.data;
-      const data = JSON.parse(response);
-      console.log('SSE Data', data);
+      console.log('SSE 메시지 수신');
+      // queryClient.invalidateQueries({ queryKey: ['things'] });
+
+      refetch();
+      // const response = await event.data;
+      // const data = JSON.parse(response);
+      // console.log('SSE Data', data);
     };
 
     eventSource.onerror = (e: any) => {
       eventSource.close();
+      console.log('에러 메시지', e.error.message);
 
       if (e.error) {
         console.log('SSE 에러');
@@ -118,48 +119,54 @@ const PATPage = () => {
   //     }
   //   };
 
-  const onClickThingsBlock = (things: ThingsPageProps, idx: number) => (e: any) => {
-    if (things.status !== 'OFFLINE') {
-      let newStatus, smartThingsStatus;
-      switch (things.category) {
-        case 'SmartPlug':
-        case 'Switch':
-        case 'Light':
-          newStatus = things.status === 'ON' ? 'off' : 'on';
-          smartThingsStatus = things.status === 'ON';
-          break;
-        case 'Blind':
-          newStatus = things.status === 'OPEN' ? 'close' : 'open';
-          smartThingsStatus = things.status === 'OPEN';
-          break;
-        default:
-          newStatus = things.status; // 다른 카테고리의 경우 상태를 변경하지 않음
-          smartThingsStatus = false; // 기본값
+  const onClickThingsBlock =
+    (things: ThingsPageProps, idx: number) => (e: any) => {
+      if (things.status !== 'OFFLINE') {
+        let newStatus, smartThingsStatus;
+        switch (things.category) {
+          case 'SmartPlug':
+          case 'Switch':
+          case 'Light':
+            newStatus = things.status === 'ON' ? 'off' : 'on';
+            smartThingsStatus = things.status === 'ON';
+            setSelectedDeviceId(things.deviceId);
+            break;
+          case 'Blind':
+            newStatus = things.status === 'OPEN' ? 'close' : 'open';
+            smartThingsStatus = things.status === 'OPEN';
+            break;
+          default:
+            newStatus = things.status; // 다른 카테고리의 경우 상태를 변경하지 않음
+            smartThingsStatus = false; // 기본값
+        }
+
+        const thingStatus = {
+          deviceId: things.deviceId,
+          smartThingsStatus: smartThingsStatus,
+        };
+
+        updateThingsStatusMutation.mutate(thingStatus);
+
+        commandThingsStatusMutation.mutate({
+          deviceId: things.deviceId,
+          data: {
+            commands: [
+              {
+                component: 'main',
+                capability:
+                  things.category === 'Blind' ? 'windowShade' : 'switch',
+                command: newStatus,
+                arguments: [],
+              },
+            ],
+          },
+        });
+        let newThings = [...thingsList];
+        newThings[idx] = { ...things, status: changeStatus(things.status) };
+        setThingsList(newThings);
       }
-  
-      const thingStatus = {
-        deviceId: things.deviceId,
-        smartThingsStatus: smartThingsStatus,
-      };
-  
-      updateThingsStatusMutation.mutate(thingStatus);
-  
-      toggleThingsStatusMutation.mutate({
-        deviceId: things.deviceId,
-        data: {
-          commands: [{
-            component: 'main',
-            capability: things.category === 'Blind' ? 'windowShade' : 'switch',
-            command: newStatus,
-            arguments: [],
-          }],
-        },
-      });
-      let newThings = [...thingsList];
-      newThings[idx] = { ...things, status: changeStatus(things.status) };
-      setThingsList(newThings);
-    }
-  };
+    };
+
   const getDeviceStatusText = (
     category: string,
     status: string,
@@ -192,7 +199,11 @@ const PATPage = () => {
 
   return (
     <S.PATPageContainer>
-      <LightModal modalOpen={lightModalOpen} setModalOpen={setLightModalOpen} />
+      <LightModal
+        modalOpen={lightModalOpen}
+        setModalOpen={setLightModalOpen}
+        deviceId={selectedDeviceId}
+      />
       <NewThingsModal
         modalOpen={newThingsModalOpen}
         setModalOpen={setNewThingsModalOpen}

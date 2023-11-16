@@ -38,7 +38,7 @@ import { roomColorAtom } from '@/states/roomState';
 import { ThingsStatus } from '../../types/things';
 import { useUpdateThingsStatus } from '@/apis/Things/Mutations/useUpdateThingsStatus';
 import { useUpdateDarkMode } from '@/apis/Room/Mutations/useUpdateDarkMode';
-import { useCommandThingsStatus } from '@/apis/Things/Mutations/useToggleThingsStatus';
+import { useCommandThingsStatus } from '@/apis/Things/Mutations/useCommandThingsStatus';
 
 const toastVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -325,7 +325,6 @@ const HomePage = () => {
       //     arguments: [],
       //   },
       // };
-
       commandThingsStatusMutation.mutate({
         deviceId: obj.deviceId,
         data: {
