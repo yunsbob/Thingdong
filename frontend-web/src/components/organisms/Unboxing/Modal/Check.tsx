@@ -20,8 +20,13 @@ import {
   usePresentUnboxing,
 } from '@/apis/Inventory/Mutations/usePresentUnboxing';
 import { resetUnboxingModal } from '@/utils/resetUnboxingModal';
+import { useNavigate } from 'react-router-dom';
+import { CHILDREN_PATH, PATH } from '@/constants/path';
+import { useState } from 'react';
+import { Category } from '@/types/inventory';
 
 const Check = () => {
+  const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
   const [, setModalContent] = useAtom(modalContentAtom);
   const [sendingFriend] = useAtom(sendingFriendAtom);
   const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
@@ -54,9 +59,12 @@ const Check = () => {
       gifPath: '',
       userObjectId: 0,
     });
+
     setTimeout(() => {
-      window.location.reload();
+      location.reload();
+      setActiveCategory('언박띵');
     }, 500);
+    
   };
 
   return (

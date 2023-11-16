@@ -17,7 +17,8 @@ import { startTransition } from 'react';
 import { motion } from 'framer-motion';
 
 const InventoryPage = () => {
-  const [activeCategory, setActiveCategory] = useState<Category | null>('가구');
+
+  const [activeCategory, setActiveCategory] = useState<Category|null>('가구');
   const [, setModalOpen] = useAtom(modalOpenAtom);
   const [selectedItem, setSelectedItem] = useAtom(selectedItemAtom);
   const { thingAmount } = useGetUserInfo();

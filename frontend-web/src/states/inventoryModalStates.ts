@@ -1,4 +1,4 @@
-import { InventoryItemProps } from '@/types/inventory';
+import { Category, InventoryItemProps } from '@/types/inventory';
 import { atom } from 'jotai';
 
 export const modalOpenAtom = atom(false);

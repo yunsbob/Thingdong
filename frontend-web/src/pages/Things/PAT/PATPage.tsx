@@ -171,31 +171,33 @@ const PATPage = () => {
       }
     };
 
-  const getDeviceStatusText = (
-    category: string,
-    status: string,
-    temperature?: number
-  ): string => {
-    switch (category) {
-      case 'SmartPlug':
-        return status === 'ON' ? '켜짐' : '꺼짐';
-      case 'Switch':
-        return status === 'ON' ? '눌림' : '안눌림';
-      case 'Hub':
-      case 'Thermostat':
-        let text = status === 'ONLINE' ? '온라인' : '오프라인';
-        if (category === 'Thermostat' && status === 'ONLINE' && temperature) {
-          `${temperature}°C`;
-        }
-        return text;
-      case 'Light':
-        return status === 'ON' ? '켜짐' : '꺼짐';
-      case 'Blind':
-        return status === 'OPEN' ? '열림' : '닫힘';
-      default:
-        return status === 'ONLINE' ? '온라인' : '오프라인';
-    }
-  };
+    const getDeviceStatusText = (
+      category: string,
+      status: string,
+      temperature?: number,
+      humidity?:number
+    ): string => {
+      switch (category) {
+        case 'SmartPlug':
+          return status === 'ON' ? '켜짐' : '꺼짐';
+        case 'Switch':
+          return status === 'ON' ? '눌림' : '안눌림';
+        case 'Hub':
+          return status === 'ONLINE' ? '온라인' : '오프라인';
+        case 'Thermostat':
+          if (status === 'ONLINE') {
+            return temperature ? `${temperature}°C, ${humidity}%` : '온라인';
+          } else {
+            return '오프라인';
+          }
+        case 'Light':
+          return status === 'ON' ? '켜짐' : '꺼짐';
+        case 'Blind':
+          return status === 'OPEN' ? '열림' : '닫힘';
+        default:
+          return status === 'ONLINE' ? '온라인' : '오프라인';
+      }
+    };
   const [lightModalOpen, setLightModalOpen] = useState(false);
   const thingsBlockLongPress = useLongPress(() => {
     // TODO: lamp 찾아서 things.deviceId로 할당
@@ -258,7 +260,8 @@ const PATPage = () => {
                   {getDeviceStatusText(
                     things.category,
                     things.status,
-                    things.temperature
+                    things.temperature,
+                    things.humidity
                   )}
                 </Text>
                 {things.status === 'OFFLINE' && <S.ThingsWrapper />}
