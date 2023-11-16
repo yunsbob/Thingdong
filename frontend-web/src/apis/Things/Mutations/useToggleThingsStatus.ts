@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toggleThingsStatus } from '@/apis/Things/thingsAPI';
-import { ToggleThingsStatus } from '@/types/things';
+import { commandThingsStatus } from '@/apis/Things/thingsAPI';
+import { ThingsStatusCommands } from '@/types/things';
 
-const useToggleThingsStatus = () => {
+const useCommandThingsStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -11,12 +11,12 @@ const useToggleThingsStatus = () => {
       data,
     }: {
       deviceId: string;
-      data: ToggleThingsStatus;
-    }) => toggleThingsStatus(deviceId, data),
+      data: ThingsStatusCommands;
+    }) => commandThingsStatus(deviceId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['things'] });
     },
   });
 };
 
-export { useToggleThingsStatus };
+export { useCommandThingsStatus };

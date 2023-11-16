@@ -19,6 +19,11 @@ const LightModal = ({ modalOpen, setModalOpen }: ThingsModalProps) => {
     console.log(newColor);
   };
 
+  const changeLightColor = (newColor: string) => {
+    console.log('버튼을누르면~', newColor);
+    
+  };
+
   // const colorDebounce = useDebounce(onChangeColor, 200);
 
   return (
@@ -54,7 +59,9 @@ const LightModal = ({ modalOpen, setModalOpen }: ThingsModalProps) => {
         </S.LightModalPreviewWrapper>
         <Button
           size="medium"
-          onClick={() => changeModalOpen(modalOpen, setModalOpen)}
+          onClick={() => {
+            changeModalOpen(modalOpen, setModalOpen), changeLightColor(color);
+          }}
         >
           확인
         </Button>
