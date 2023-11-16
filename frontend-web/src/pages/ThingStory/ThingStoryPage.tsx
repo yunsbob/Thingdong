@@ -11,6 +11,11 @@ import { IMAGES } from '@/constants/images';
 const ThingStoryPage = () => {
   const userInfo = useGetUserInfo();
   const navigate = useNavigate();
+  const handleLogOut = () => {
+    localStorage.clear()
+    navigate('/')
+    
+  }
   return (
     <Background>
       <Header text="띵스토리" hasBackButton={true} />
@@ -21,6 +26,7 @@ const ThingStoryPage = () => {
             $unit={'px'}
             width={37}
             height={37}
+            onClick={handleLogOut}
           />
           <Text size="subtitle2" fontWeight="bold" $marginLeft="2px">
             {userInfo?.thingAmount} 띵
