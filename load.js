@@ -3,8 +3,8 @@ import { check, group, sleep, fail } from "k6";
 
 export let options = {
   stages: [
-    { duration: "1m", target: 1500 }, //3분 동안 Vuser 0으로 내려온다.
-    { duration: "13m", target: 1500 }, //Vuser 25에서 10분간 유지한다.
+    { duration: "1m", target: 2000 }, //3분 동안 Vuser 0으로 내려온다.
+    { duration: "7m", target: 2000 }, //Vuser 25에서 10분간 유지한다.
     { duration: "1m", target: 0 }, //3분 동안 Vuser 0으로 내려온다.
   ],
 
@@ -31,11 +31,11 @@ function getRoom() {
   };
 
   let pathRes = http.get(url, params);
-  sleep(1);
   check(pathRes, {
     // 결과를 체크
     "success to get path": (res) => res.status === 200, //응답 상태코드가 200이면 성공
   });
+  sleep(1);
 }
 
 // 띵구 목록 조회 /api/thinggus
@@ -46,11 +46,11 @@ function getThinggus() {
   };
 
   let pathRes = http.get(url, params);
-  sleep(1);
   check(pathRes, {
     // 결과를 체크
     "success to get path": (res) => res.status === 200, //응답 상태코드가 200이면 성공
   });
+  sleep(1);
 }
 // 방명록 조회 /api/guest-books
 function getGuestBook() {
@@ -60,11 +60,11 @@ function getGuestBook() {
   };
 
   let pathRes = http.get(url, params);
-  sleep(1);
   check(pathRes, {
     // 결과를 체크
     "success to get path": (res) => res.status === 200, //응답 상태코드가 200이면 성공
   });
+  sleep(1);
 }
 // 룸 인벤토리에서 오브제 조회 /api/objects/roomInventory
 function getObjectFromRoomInventory() {
@@ -74,11 +74,11 @@ function getObjectFromRoomInventory() {
   };
 
   let pathRes = http.get(url, params);
-  sleep(1);
   check(pathRes, {
     // 결과를 체크
     "success to get path": (res) => res.status === 200, //응답 상태코드가 200이면 성공
   });
+  sleep(1);
 }
 // 인벤토리에서 오브제 조회 /api/objects/inventory
 function getObjectFromInventory() {
@@ -88,11 +88,11 @@ function getObjectFromInventory() {
   };
 
   let pathRes = http.get(url, params);
-  sleep(1);
   check(pathRes, {
     // 결과를 체크
     "success to get path": (res) => res.status === 200, //응답 상태코드가 200이면 성공
   });
+  sleep(1);
 }
 
 export default function () {
