@@ -1,6 +1,7 @@
 package com.bell.thingdong.domain.thinggu.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -45,8 +46,8 @@ public class ThingguService {
 		}
 
 		ThingguRes thingguRes = new ThingguRes();
-		thingguRes.setThingguList(thingguList);
-		thingguRes.setThingguAlarmList(thingguAlarmList);
+		thingguRes.setThingguList(thingguList.stream().sorted(Comparator.comparing(ThingguDto::getNickname)).toList());
+		thingguRes.setThingguAlarmList(thingguAlarmList.stream().sorted(Comparator.comparing(ThingguDto::getNickname)).toList());
 
 		return thingguRes;
 	}

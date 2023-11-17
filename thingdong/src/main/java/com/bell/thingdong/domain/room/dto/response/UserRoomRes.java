@@ -25,9 +25,15 @@ public class UserRoomRes {
 	@Schema(description = "해당 방의 벽지 색상", example = "yellow, green, purple, white, black, pink")
 	private String roomColor;
 
+	@Schema(description = "해당 방 색상 path", example = "green.glb")
+	private String roomColorPath;
+
 	@Schema(description = "해당 방 번호", example = "2")
 	private Long roomId;
 
 	@Schema(description = "해당 방 주인의 id", example = "hello")
 	private String userId;
+
+	@Schema(description = "다크 모드 여부", example = "true")
+	private Boolean darkMode;
 }

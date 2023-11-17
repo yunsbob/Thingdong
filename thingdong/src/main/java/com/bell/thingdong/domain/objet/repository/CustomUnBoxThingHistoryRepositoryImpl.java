@@ -20,7 +20,7 @@ public class CustomUnBoxThingHistoryRepositoryImpl implements CustomUnBoxThingHi
 			                      Projections.bean(UnBoxThingHistoryDto.class, unBoxThingHistory.objet.objectImagePath, unBoxThingHistory.objetName.as("objectName"), unBoxThingHistory.purchaseDay))
 		                      .from(unBoxThingHistory)
 		                      .where(unBoxThingHistory.user.id.eq(userId))
-		                      .orderBy(unBoxThingHistory.purchaseDay.desc())
+		                      .orderBy(unBoxThingHistory.unBoxThingHistoryId.desc())
 		                      .fetch();
 	}
 }

@@ -1,6 +1,7 @@
 package com.bell.thingdong.domain.objet.dto;
 
 import com.bell.thingdong.domain.objet.entity.Objet;
+import com.bell.thingdong.domain.objet.entity.UserObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FindObjectDto {
-	private Long userObjectId;
-	private UserObjectStatus objectStatus;
+	private UserObject userObject;
 	private Objet objet;
 }

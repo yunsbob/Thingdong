@@ -22,8 +22,10 @@ import com.bell.thingdong.domain.objet.service.ObjetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/objects")
 @RequiredArgsConstructor
 @Tag(name = "object", description = "오브제 관련 컨트롤러")
@@ -71,7 +73,9 @@ public class ObjetController {
 	@Operation(summary = "오브제 배치", description = "오브제를 사용자가 원하는 위치에 배치한다.")
 	@PostMapping("/position")
 	public ResponseEntity<?> arrangeObject(@RequestBody UserObjectPositionReq userObjectPositionReq) {
+		log.info("arrangeObject Controller Start");
 		objetService.setUserObjectPosition(userObjectPositionReq);
+		log.info("arrangeObject Controller Finish");
 
 		return ResponseEntity.ok().build();
 	}

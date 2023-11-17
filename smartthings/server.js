@@ -1,6 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const express = require("express");
+const cors = require("cors");
 const cookieSession = require("cookie-session");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
@@ -20,7 +21,8 @@ const redirectUri = `${serverUrl}/oauth/callback`;
 const scope = encodeUrl("r:locations:* r:devices:* x:devices:*");
 const contextStore = new FileContextStore("data");
 const userSSEStreams = new Map();
-const apiApp = new SmartApp()
+let globalSSE;
+const smartApp = new SmartApp()
   .appId(appId)
   .clientId(clientId)
   .clientSecret(clientSecret)
@@ -33,6 +35,7 @@ const apiApp = new SmartApp()
     if (event.componentId === "main") {
       const locationId = ctx.locationId;
       const sse = userSSEStreams.get(locationId);
+      globalSSE = sse;
       if (sse && event.locationId == ctx.locationId) {
         try {
           sse.send({
@@ -56,6 +59,7 @@ const apiApp = new SmartApp()
       if (event.value >= 30) {
         const locationId = ctx.locationId;
         const sse = userSSEStreams.get(locationId);
+        globalSSE = sse;
         if (sse && event.locationId == ctx.locationId) {
           try {
             sse.send({
@@ -81,6 +85,7 @@ const apiApp = new SmartApp()
       if (event.value >= 65) {
         const locationId = ctx.locationId;
         const sse = userSSEStreams.get(locationId);
+        globalSSE = sse;
         if (sse && event.locationId == ctx.locationId) {
           try {
             sse.send({
@@ -104,6 +109,7 @@ const apiApp = new SmartApp()
     if (event.componentId === "main") {
       const locationId = ctx.locationId;
       const sse = userSSEStreams.get(locationId);
+      globalSSE = sse;
       if (sse && event.locationId == ctx.locationId) {
         try {
           sse.send({
@@ -125,6 +131,8 @@ const apiApp = new SmartApp()
     if (event.componentId === "main") {
       const locationId = ctx.locationId;
       const sse = userSSEStreams.get(locationId);
+      globalSSE = sse;
+      console.log(55, globalSSE);
       if (sse && event.locationId == ctx.locationId) {
         try {
           sse.send({
@@ -146,6 +154,9 @@ const apiApp = new SmartApp()
  * Webserver setup
  */
 const server = express();
+
+server.use(cors());
+
 server.set("views", path.join(__dirname, "views"));
 server.use(
   cookieSession({
@@ -164,69 +175,100 @@ server.use(function (req, res, next) {
   res.flush = function () {};
   next();
 });
+
 server.post("/smart", async (req, res) => {
   req.url = req.originalUrl;
-  apiApp.handleHttpCallback(req, res);
+  smartApp.handleHttpCallback(req, res);
 });
 
 /**
  * 메인(기기 전체 리스트 + 상태 + 카테고리)
  */
 server.get("/smart", async (req, res) => {
-  const ctx = await apiApp.withContext(req.headers.installedappid);
+  const ctx = await smartApp.withContext(req.headers.installedappid);
   try {
     const deviceList = await ctx.api.devices.list();
-    const ops = deviceList.map((it) => {
-      return ctx.api.devices.getStatus(it.deviceId).then((state) => {
-        let switchStatus = "";
-        let humidityStatus = "";
-        let temperatureStatus = "";
-        let blindStatus = "";
-        let levelStatus = "";
-        let hueStatus = "";
-        let saturationStatus = "";
-        if (state.components.main) {
-          if (Object.keys(state.components.main).includes("switch")) {
-            switchStatus = state.components.main.switch.switch.value;
-          }
-          if (
-            Object.keys(state.components.main).includes(
-              "relativeHumidityMeasurement"
-            )
-          ) {
-            humidityStatus =
-              state.components.main.relativeHumidityMeasurement.humidity.value;
-            temperatureStatus =
-              state.components.main.temperatureMeasurement.temperature.value;
-          }
-          if (Object.keys(state.components.main).includes("windowShade")) {
-            blindStatus = state.components.main.windowShade.windowShade.value;
-          }
+    const ops = deviceList
+      .filter((it) => it.components[0].categories[0].name != "Charger")
+      .map(async (it) => {
+        const health = await ctx.api.devices
+          .getHealth(it.deviceId)
+          .then((state) => {
+            return state.state;
+          });
+        return ctx.api.devices.getStatus(it.deviceId).then((state) => {
+          let humidityStatus = "";
+          let temperatureStatus = "";
+          let levelStatus = "";
+          let hueStatus = "";
+          let saturationStatus = "";
+          let status = health;
+          let imgUrl = "";
+          if (state.components.main) {
+            if (Object.keys(state.components.main).includes("switch")) {
+              status = state.components.main.switch.switch.value;
+            }
+            if (
+              Object.keys(state.components.main).includes(
+                "relativeHumidityMeasurement"
+              )
+            ) {
+              humidityStatus =
+                state.components.main.relativeHumidityMeasurement.humidity
+                  .value;
+              temperatureStatus =
+                state.components.main.temperatureMeasurement.temperature.value;
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-sensor.png";
+            }
+            if (Object.keys(state.components.main).includes("windowShade")) {
+              status = state.components.main.windowShade.windowShade.value;
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-curtain.png";
+            }
 
-          if (Object.keys(state.components.main).includes("switchLevel")) {
-            levelStatus = state.components.main.switchLevel.level.value;
+            if (Object.keys(state.components.main).includes("switchLevel")) {
+              levelStatus = state.components.main.switchLevel.level.value;
+            }
+            if (Object.keys(state.components.main).includes("colorControl")) {
+              hueStatus = state.components.main.colorControl.hue.value;
+              saturationStatus =
+                state.components.main.colorControl.saturation.value;
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-light.png";
+            }
+            if (it.components[0].categories[0].name == "Switch") {
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-switch.png";
+            }
+            if (it.components[0].categories[0].name == "SmartPlug") {
+              imgUrl =
+                "https://thingdong.com/resources/png/things/smartThings-plug.png";
+            }
           }
-          if (Object.keys(state.components.main).includes("colorControl")) {
-            hueStatus = state.components.main.colorControl.hue.value;
-            saturationStatus =
-              state.components.main.colorControl.saturation.value;
+          if (it.components[0].categories[0].name == "Hub") {
+            imgUrl =
+              "https://thingdong.com/resources/png/things/smartThings-station.png";
           }
-        }
-        return {
-          deviceId: it.deviceId,
-          ownerId: it.ownerId,
-          category: it.components[0].categories[0].name,
-          label: it.label,
-          switchStatus: switchStatus,
-          humidityStatus: humidityStatus,
-          temperatureStatus: temperatureStatus,
-          blindStatus: blindStatus,
-          levelStatus: levelStatus,
-          hueStatus: hueStatus,
-          saturationStatus: saturationStatus,
-        };
+          const lightStatus = {
+            h: hueStatus,
+            s: saturationStatus,
+            l: levelStatus,
+          };
+          return {
+            // main: state.components,
+            deviceId: it.deviceId,
+            category: it.components[0].categories[0].name,
+            label: it.label,
+            status: status.toUpperCase(),
+            ownerId: it.ownerId,
+            temperature: temperatureStatus,
+            humidity: humidityStatus,
+            hsl: lightStatus,
+            img: imgUrl,
+          };
+        });
       });
-    });
 
     // Wait for all those queries to complete
     const devices = await Promise.all(ops);
@@ -248,21 +290,6 @@ server.get("/smart", async (req, res) => {
     });
   }
 });
-
-/*
- * Logout. Uninstalls app and clears context cookie
- */
-server.get("/smart/logout", async function (req, res) {
-  try {
-    const ctx = await apiApp.withContext(req.headers.installedappid);
-    await ctx.api.installedApps.delete();
-  } catch (error) {
-    console.error("Error logging out", error.message);
-  }
-  // Delete the session data
-  res.redirect("/");
-});
-
 /*
  * Handles OAuth redirect
  */
@@ -270,7 +297,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
   try {
     // Store the SmartApp context including access and refresh tokens. Returns a context object for use in making
     // API calls to SmartThings
-    const ctx = await apiApp.handleOAuthCallback(req);
+    const ctx = await smartApp.handleOAuthCallback(req);
 
     // Get the location name (for display on the web page)
     const location = await ctx.api.locations.get(ctx.locationId);
@@ -311,7 +338,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
       "*",
       "switchLevelHandler"
     );
-    const url = `?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
+    const url = `https://thingdong.com/oauth/redirect?authToken=${ctx.authToken}&installedAppId=${ctx.installedAppId}`;
     res.redirect(url);
   } catch (error) {
     next(error);
@@ -323,7 +350,7 @@ server.get("/smart/oauth/callback", async (req, res, next) => {
  */
 server.post("/smart/command/:deviceId", async (req, res, next) => {
   try {
-    const ctx = await apiApp.withContext(req.headers.installedappid);
+    const ctx = await smartApp.withContext(req.headers.installedappid);
     await ctx.api.devices.executeCommands(
       req.params.deviceId,
       req.body.commands
@@ -335,10 +362,10 @@ server.post("/smart/command/:deviceId", async (req, res, next) => {
 });
 
 server.get("/smart/events", (req, res) => {
-  //   const ctx = req.session.smartThings;
-  const ctx = apiApp.withContext(req.headers.installedappid);
-  const userSSE = userSSEStreams.get(ctx.api.config.locationId);
-
+  // const ctx = smartApp.withContext(req.headers.installedappid);
+  // const userSSE = userSSEStreams.get(ctx.api.config.locationId);
+  const userSSE = globalSSE;
+  console.log(66, userSSE);
   // If the user has a specific SSE stream, use it; otherwise, use the default SSE stream
   if (userSSE) {
     userSSE.init(req, res);
