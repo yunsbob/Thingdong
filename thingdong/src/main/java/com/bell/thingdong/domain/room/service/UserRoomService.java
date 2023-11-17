@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bell.thingdong.domain.room.dto.request.ColorReq;
+import com.bell.thingdong.domain.room.dto.request.DarkModeReq;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.entity.RoomColor;
 import com.bell.thingdong.domain.room.entity.UserRoom;
@@ -58,5 +59,11 @@ public class UserRoomService {
 		RoomColor findRoomColor = roomColorRepository.findById(colorReq.getRoomColor()).orElseThrow(RoomColorNotFoundException::new);
 
 		userRoom.setRoomColor(findRoomColor);
+	}
+
+	@Transactional
+	public void updateDarkMode(DarkModeReq darkModeReq) {
+		UserRoom userRoom = userRoomRepository.findById(darkModeReq.getRoomId()).orElseThrow(RoomNotFoundException::new);
+		userRoom.setDarkMode(darkModeReq.getDarkMode() ? "Y" : "N");
 	}
 }

@@ -45,7 +45,15 @@ public class UserRoom {
 	@OneToMany(mappedBy = "room")
 	private List<UserObject> userObjectList;
 
+	@Builder.Default
+	@Column(name = "dark_mode", nullable = false)
+	private String darkMode = "N";
+
 	public void setRoomColor(RoomColor roomColor) {
 		this.roomColor = roomColor;
+	}
+
+	public void setDarkMode(String darkMode) {
+		this.darkMode = darkMode;
 	}
 }

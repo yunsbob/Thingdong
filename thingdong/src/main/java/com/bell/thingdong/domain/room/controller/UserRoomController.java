@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bell.thingdong.domain.room.dto.request.ColorReq;
+import com.bell.thingdong.domain.room.dto.request.DarkModeReq;
 import com.bell.thingdong.domain.room.dto.response.UserRoomRes;
 import com.bell.thingdong.domain.room.service.UserRoomService;
 
@@ -56,6 +57,14 @@ public class UserRoomController {
 	@PutMapping("/colors")
 	public ResponseEntity<?> changeRoomColor(@RequestBody ColorReq colorReq) {
 		userRoomService.updateRoomColor(colorReq);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@Operation(summary = "다크 모드 변경", description = "다크 모드를 설정한다.")
+	@PutMapping("/dark-mode")
+	public ResponseEntity<?> changeDarkMode(@RequestBody DarkModeReq darkModeReq) {
+		userRoomService.updateDarkMode(darkModeReq);
 
 		return ResponseEntity.ok().build();
 	}

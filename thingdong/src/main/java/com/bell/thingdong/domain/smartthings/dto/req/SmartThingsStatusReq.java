@@ -15,5 +15,5 @@ public class SmartThingsStatusReq {
 	private String deviceId;
 
 	@Schema(description = "스마트 띵스 상태", example = "true")
-	private Boolean status;
+	private Boolean smartThingsStatus;
 }
