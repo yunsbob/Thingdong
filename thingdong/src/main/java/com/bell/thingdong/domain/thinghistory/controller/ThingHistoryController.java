@@ -24,7 +24,7 @@ public class ThingHistoryController {
 
 	@Operation(summary = "띵 내역 조회", description = "자신의 띵 내역을 불러온다.")
 	@GetMapping
-	public ResponseEntity<List<ThingHistoryRes>> loadRoom(Principal principal) {
+	public ResponseEntity<List<ThingHistoryRes>> loadThingHistory(Principal principal) {
 		String email = principal.getName();
 
 		List<ThingHistoryRes> thingHistoryResList = thingHistoryService.getThingHistory(email);
