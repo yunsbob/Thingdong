@@ -171,33 +171,33 @@ const PATPage = () => {
       }
     };
 
-    const getDeviceStatusText = (
-      category: string,
-      status: string,
-      temperature?: number,
-      humidity?:number
-    ): string => {
-      switch (category) {
-        case 'SmartPlug':
-          return status === 'ON' ? '켜짐' : '꺼짐';
-        case 'Switch':
-          return status === 'ON' ? '눌림' : '안눌림';
-        case 'Hub':
-          return status === 'ONLINE' ? '온라인' : '오프라인';
-        case 'Thermostat':
-          if (status === 'ONLINE') {
-            return temperature ? `${temperature}°C, ${humidity}%` : '온라인';
-          } else {
-            return '오프라인';
-          }
-        case 'Light':
-          return status === 'ON' ? '켜짐' : '꺼짐';
-        case 'Blind':
-          return status === 'OPEN' ? '열림' : '닫힘';
-        default:
-          return status === 'ONLINE' ? '온라인' : '오프라인';
-      }
-    };
+  const getDeviceStatusText = (
+    category: string,
+    status: string,
+    temperature?: number,
+    humidity?: number
+  ): string => {
+    switch (category) {
+      case 'SmartPlug':
+        return status === 'ON' ? '켜짐' : '꺼짐';
+      case 'Switch':
+        return status === 'ON' ? '눌림' : '안눌림';
+      case 'Hub':
+        return status === 'ONLINE' ? '온라인' : '오프라인';
+      case 'Thermostat':
+        if (status === 'ONLINE') {
+          return temperature ? `${temperature}°C, ${humidity}%` : '온라인';
+        } else {
+          return '오프라인';
+        }
+      case 'Light':
+        return status === 'ON' ? '켜짐' : '꺼짐';
+      case 'Blind':
+        return status === 'OPEN' ? '열림' : '닫힘';
+      default:
+        return status === 'ONLINE' ? '온라인' : '오프라인';
+    }
+  };
   const [lightModalOpen, setLightModalOpen] = useState(false);
   const thingsBlockLongPress = useLongPress(() => {
     // TODO: lamp 찾아서 things.deviceId로 할당
@@ -210,7 +210,7 @@ const PATPage = () => {
       <LightModal
         modalOpen={lightModalOpen}
         setModalOpen={setLightModalOpen}
-        deviceId={'f46e189b-d634-4a99-b37e-c2c4a6bc3af1'}
+        deviceId={'8abaf7fb-9c0e-4b7f-9255-7ce9f4a08000'} // 고정값
       />
       <NewThingsModal
         modalOpen={newThingsModalOpen}
@@ -240,13 +240,15 @@ const PATPage = () => {
               >
                 <S.ThingStatusWrapper
                   src={
-                    (things.category === 'switch' && things.status === 'ON')
+                    things.category === 'switch' && things.status === 'ON'
                       ? IMAGES.THIGNS.OFF_ICON
-                      : (things.category === 'switch' && things.status === 'OFF')
-                        ? IMAGES.THIGNS.ON_ICON
-                        : (things.status === 'ON' || things.status === 'ONLINE' || things.status === 'OPEN')
-                          ? IMAGES.THIGNS.ON_ICON
-                          : IMAGES.THIGNS.OFF_ICON
+                      : things.category === 'switch' && things.status === 'OFF'
+                      ? IMAGES.THIGNS.ON_ICON
+                      : things.status === 'ON' ||
+                        things.status === 'ONLINE' ||
+                        things.status === 'OPEN'
+                      ? IMAGES.THIGNS.ON_ICON
+                      : IMAGES.THIGNS.OFF_ICON
                   }
                   width={2.3}
                 />
