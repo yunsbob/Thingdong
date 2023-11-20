@@ -42,6 +42,9 @@ public class SmartThings {
 	@Column(name = "activation_path", nullable = false)
 	private String activationPath;
 
+	@Column(name = "name", nullable = false)
+	private String name;
+
 	public void setStatus(String status) {
 		this.status = status;
 	}

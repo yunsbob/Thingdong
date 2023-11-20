@@ -77,6 +77,7 @@ public class SmartThingsService {
 					                                     .activationPath("https://thingdong.com/resources/glb/things/curtain-open1.glb")
 					                                     .deviceId(smartThingsReq.getDeviceId())
 					                                     .status(smartThingsReq.getStatus().equals("OPEN") ? "Y" : "N")
+					                                     .name(smartThingsReq.getLabel())
 					                                     .build();
 
 					smartThingsRepository.save(smartThings);
@@ -101,6 +102,7 @@ public class SmartThingsService {
 					                                     .activationPath("https://thingdong.com/resources/glb/things/lamp1.glb")
 					                                     .deviceId(smartThingsReq.getDeviceId())
 					                                     .status(smartThingsReq.getStatus().equals("ON") ? "Y" : "N")
+					                                     .name(smartThingsReq.getLabel())
 					                                     .build();
 
 					smartThingsRepository.save(smartThings);
@@ -125,6 +127,7 @@ public class SmartThingsService {
 					                                     .activationPath("https://thingdong.com/resources/glb/things/switch-on1.glb")
 					                                     .deviceId(smartThingsReq.getDeviceId())
 					                                     .status(smartThingsReq.getStatus().equals("ON") ? "Y" : "N")
+					                                     .name(smartThingsReq.getLabel())
 					                                     .build();
 
 					smartThingsRepository.save(smartThings);
