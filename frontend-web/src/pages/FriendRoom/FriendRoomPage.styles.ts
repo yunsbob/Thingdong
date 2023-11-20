@@ -120,3 +120,23 @@ export const GuestbookDelBtn = styled(Button)<GuestbookBtnProps>`
   width: 25px;
 `;
 
+export const ThingsName = styled.div`
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  position: absolute;
+  width: 80vw;
+  height: 4rem;
+  background-color: ${({ theme }) => theme.color.white3};
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4rem;
+  padding: 0rem 0.5rem;
+
+  p {
+    width: 100%;
+    text-align: center;
+  }
+`;
