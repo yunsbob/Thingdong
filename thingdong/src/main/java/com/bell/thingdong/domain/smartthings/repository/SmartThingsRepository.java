@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.bell.thingdong.domain.objet.entity.UserObject;
 import com.bell.thingdong.domain.smartthings.entity.SmartThings;
 
-public interface SmartThingsRepository extends JpaRepository<SmartThings, Long> {
+public interface SmartThingsRepository extends JpaRepository<SmartThings, Long>, CustomSmartThingsRepository {
 	List<SmartThings> findAllByDeviceId(String deviceId);
 
 	SmartThings findByUserObject(UserObject userObject);
