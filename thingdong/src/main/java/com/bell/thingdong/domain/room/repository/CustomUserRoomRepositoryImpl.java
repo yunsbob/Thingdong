@@ -51,7 +51,7 @@ public class CustomUserRoomRepositoryImpl implements CustomUserRoomRepository {
 				                                                          .userObjectId(userObject.getUserObjectId())
 				                                                          .objectModelPath(smartThings.getStatus().equals("Y") ? smartThings.getActivationPath() :
 					                                                          userObject.getObjet().getObjectModelPath())
-				                                                          .name(userObject.getObjet().getObjectName())
+				                                                          .name(smartThings.getName())
 				                                                          .isWall(userObject.getObjet().getIsWall().equals("Y") ? Boolean.TRUE : Boolean.FALSE)
 				                                                          .position(positionList)
 				                                                          .rotation(rotationList)

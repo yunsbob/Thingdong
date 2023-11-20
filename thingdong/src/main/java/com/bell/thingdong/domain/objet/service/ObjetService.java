@@ -95,7 +95,7 @@ public class ObjetService {
 				                                                                                     .userObjectId(findObjectDto.getUserObject().getUserObjectId())
 				                                                                                     .objectImagePath(findObjectDto.getObjet().getObjectImagePath())
 				                                                                                     .objectModelPath(findObjectDto.getObjet().getObjectModelPath())
-				                                                                                     .name(findObjectDto.getObjet().getObjectName())
+				                                                                                     .name(smartThings.getName())
 				                                                                                     .isWall(findObjectDto.getObjet().getIsWall().equals("Y") ? Boolean.TRUE :
 					                                                                                     Boolean.FALSE)
 				                                                                                     .objectStatus(findObjectDto.getUserObject()
