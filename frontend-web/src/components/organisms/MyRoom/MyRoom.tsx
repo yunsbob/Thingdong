@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, OrthographicCamera, useGLTF } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
-import { MyRoomProps, RoomStyle } from '@/types/room';
+import { MyRoomProps, Position, RoomStyle } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { SkeletonUtils } from 'three-stdlib';
 import { Mesh } from 'three';
@@ -16,14 +16,13 @@ import * as THREE from 'three';
 
 import curtainClose from '@/assets/models/curtains/curtain-close1.glb';
 import curtainOpen from '@/assets/models/curtains/curtain-open1.glb';
-import switchOn from '@/assets/models/switchs/switch-on1.glb';
-import switchOff from '@/assets/models/switchs/switch-off1.glb';
 
 const MyRoom = ({
   isEditing,
   userObject,
   thingsObject,
   onObjectClick,
+  onThingsClick,
   selectedRoomColor,
   darkMode,
 }: MyRoomProps) => {
@@ -101,8 +100,10 @@ const MyRoom = ({
 
               {userObject ? (
                 userObject.map(obj => {
+                  console.log('userObject', obj);
+                  //TODO: obj의 objectModalPath에 unbox가 들어있으면 height 계산해서 위치 조정
+
                   const glb = useLoader(GLTFLoader, obj.objectModelPath);
-                  let size;
                   let yPosition = obj.position[1];
 
                   glb.scene.traverse(node => {
@@ -111,15 +112,11 @@ const MyRoom = ({
                       if (obj.objectModelPath.includes('unbox')) {
                         if (node instanceof THREE.Mesh) {
                           node.material.metalness = 0;
-                          // console.log('node material', node.material);
                         }
 
                         const box = new THREE.Box3().setFromObject(glb.scene);
-                        size = box.getSize(new THREE.Vector3());
+                        const size = box.getSize(new THREE.Vector3());
                         yPosition += size.y / 2;
-                        // console.log('object의 원래 y index', obj.position[1]);
-                        // console.log('zPosition', yPosition);
-                        // console.log('size : ', size);
                       }
 
                       node.castShadow = true;
@@ -157,13 +154,10 @@ const MyRoom = ({
               {thingsObject ? (
                 thingsObject.map(obj => {
                   let modelPath = obj.objectModelPath;
-                  // TODO: API로 경로 받아서 뿌렸을때 렌더링 깜빡임 심한지
                   if (obj.name.includes('curtain')) {
                     modelPath = obj.smartThingsStatus
                       ? curtainOpen
                       : curtainClose;
-                  } else if (obj.name.includes('switch')) {
-                    modelPath = obj.smartThingsStatus ? switchOn : switchOff;
                   }
                   const glb = useLoader(GLTFLoader, modelPath);
 
@@ -185,12 +179,19 @@ const MyRoom = ({
                           obj.position[2] - 0.2,
                         ]}
                         rotation={obj.rotation}
-                        scale={obj.isWall ? 1.05 : 1}
+                        scale={obj.name.includes('curtain') ? 1.05 : 1}
                         onClick={(e: any) => {
                           e.stopPropagation();
                           onObjectClick(obj);
+                          onThingsClick && onThingsClick(obj);
                         }}
                       />
+                      {/* <Sphere
+                          position={spherePosition}
+                          onClick={() => {
+                            onThingsClick && onThingsClick(obj);
+                          }}
+                        /> */}
 
                       {obj.name.includes('lamp') && obj.smartThingsStatus && (
                         <>
@@ -205,22 +206,6 @@ const MyRoom = ({
                             distance={5}
                             intensity={100}
                             power={100}
-                          />
-                        </>
-                      )}
-                      {obj.name.includes('switch') && !obj.smartThingsStatus && (
-                        <>
-                          <pointLight
-                            position={[
-                              0,
-                              4,
-                              0,
-                            ]}
-                            color="#ffd563"
-                            castShadow
-                            distance={6}
-                            intensity={200}
-                            power={130}
                           />
                         </>
                       )}
