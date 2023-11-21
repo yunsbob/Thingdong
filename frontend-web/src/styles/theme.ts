@@ -10,6 +10,7 @@ const color = {
   grey5: '#F5F5F5',
   white: '#FFFFFF',
   white2: '#FFFFFF50',
+  white3: '#FFFFFFc4',
 
   // main color
   blue: '#5C76FF',

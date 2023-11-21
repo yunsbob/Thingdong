@@ -24,6 +24,7 @@ const MyRoom = ({
   userObject,
   thingsObject,
   onObjectClick,
+  onThingsClick,
   selectedRoomColor,
   darkMode,
 }: MyRoomProps) => {
@@ -102,7 +103,7 @@ const MyRoom = ({
               {userObject ? (
                 userObject.map(obj => {
                   const glb = useLoader(GLTFLoader, obj.objectModelPath);
-                  let size;
+
                   let yPosition = obj.position[1];
 
                   glb.scene.traverse(node => {
@@ -111,15 +112,11 @@ const MyRoom = ({
                       if (obj.objectModelPath.includes('unbox')) {
                         if (node instanceof THREE.Mesh) {
                           node.material.metalness = 0;
-                          // console.log('node material', node.material);
                         }
 
                         const box = new THREE.Box3().setFromObject(glb.scene);
-                        size = box.getSize(new THREE.Vector3());
+                        const size = box.getSize(new THREE.Vector3());
                         yPosition += size.y / 2;
-                        // console.log('object의 원래 y index', obj.position[1]);
-                        // console.log('zPosition', yPosition);
-                        // console.log('size : ', size);
                       }
 
                       node.castShadow = true;
@@ -158,11 +155,11 @@ const MyRoom = ({
                 thingsObject.map(obj => {
                   let modelPath = obj.objectModelPath;
                   // TODO: API로 경로 받아서 뿌렸을때 렌더링 깜빡임 심한지
-                  if (obj.name.includes('curtain')) {
+                  if (obj.objectModelPath.includes('curtain')) {
                     modelPath = obj.smartThingsStatus
                       ? curtainOpen
                       : curtainClose;
-                  } else if (obj.name.includes('switch')) {
+                  } else if (obj.objectModelPath.includes('switch')) {
                     modelPath = obj.smartThingsStatus ? switchOn : switchOff;
                   }
                   const glb = useLoader(GLTFLoader, modelPath);
@@ -189,41 +186,40 @@ const MyRoom = ({
                         onClick={(e: any) => {
                           e.stopPropagation();
                           onObjectClick(obj);
+                          onThingsClick && onThingsClick(obj);
                         }}
                       />
 
-                      {obj.name.includes('lamp') && obj.smartThingsStatus && (
-                        <>
-                          <pointLight
-                            position={[
-                              obj.position[0],
-                              obj.position[1] + 3,
-                              obj.position[2],
-                            ]}
-                            color="#ffd000"
-                            castShadow
-                            distance={5}
-                            intensity={100}
-                            power={100}
-                          />
-                        </>
-                      )}
-                      {obj.name.includes('switch') && !obj.smartThingsStatus && (
-                        <>
-                          <pointLight
-                            position={[
-                              0,
-                              4,
-                              0,
-                            ]}
-                            color="#ffd563"
-                            castShadow
-                            distance={6}
-                            intensity={200}
-                            power={130}
-                          />
-                        </>
-                      )}
+                      {obj.objectModelPath.includes('lamp') &&
+                        obj.smartThingsStatus && (
+                          <>
+                            <pointLight
+                              position={[
+                                obj.position[0],
+                                obj.position[1] + 3,
+                                obj.position[2],
+                              ]}
+                              color="#ffd000"
+                              castShadow
+                              distance={5}
+                              intensity={100}
+                              power={100}
+                            />
+                          </>
+                        )}
+                      {obj.objectModelPath.includes('switch') &&
+                        !obj.smartThingsStatus && (
+                          <>
+                            <pointLight
+                              position={[0, 4, 0]}
+                              color="#ffd563"
+                              castShadow
+                              distance={6}
+                              intensity={200}
+                              power={130}
+                            />
+                          </>
+                        )}
                     </React.Fragment>
                   );
                 })
