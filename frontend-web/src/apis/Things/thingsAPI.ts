@@ -32,6 +32,7 @@ const commandThingsStatus = async (
     console.error('update toggle things status error', error);
     console.log('내가 넣은 데이타~', data);
     console.log('디바이스아이디~', deviceId);
+    
     throw error;
   }
 };
