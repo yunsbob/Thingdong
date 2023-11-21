@@ -332,11 +332,13 @@ const HomePage = () => {
             {
               component: 'main',
               capability:
-                obj.name.includes('lamp') || obj.name.includes('switch')
+                obj.objectModelPath.includes('lamp') ||
+                obj.objectModelPath.includes('switch')
                   ? 'switch'
                   : 'windowShade',
               command:
-                obj.name.includes('lamp') || obj.name.includes('switch')
+                obj.objectModelPath.includes('lamp') ||
+                obj.objectModelPath.includes('switch')
                   ? newStatus
                     ? 'on'
                     : 'off'

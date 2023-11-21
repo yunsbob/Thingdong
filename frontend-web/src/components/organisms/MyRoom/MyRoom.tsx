@@ -183,7 +183,9 @@ const MyRoom = ({
                           obj.position[2] - 0.2,
                         ]}
                         rotation={obj.rotation}
-                        scale={obj.name.includes('curtain') ? 1.05 : 1}
+                        scale={
+                          obj.objectModelPath.includes('curtain') ? 1.05 : 1
+                        }
                         onClick={(e: any) => {
                           e.stopPropagation();
                           onObjectClick(obj);
