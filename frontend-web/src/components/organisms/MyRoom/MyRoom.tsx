@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, OrthographicCamera, useGLTF } from '@react-three/drei';
 import { Spinner } from '../../molecules/Spinner/Spinner';
-import { MyRoomProps, RoomStyle } from '@/types/room';
+import { MyRoomProps, Position, RoomStyle } from '@/types/room';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { SkeletonUtils } from 'three-stdlib';
 import { Mesh } from 'three';
@@ -18,7 +18,6 @@ import curtainClose from '@/assets/models/curtains/curtain-close1.glb';
 import curtainOpen from '@/assets/models/curtains/curtain-open1.glb';
 import switchOn from '@/assets/models/switchs/switch-on1.glb';
 import switchOff from '@/assets/models/switchs/switch-off1.glb';
-
 const MyRoom = ({
   isEditing,
   userObject,
@@ -102,8 +101,10 @@ const MyRoom = ({
 
               {userObject ? (
                 userObject.map(obj => {
-                  const glb = useLoader(GLTFLoader, obj.objectModelPath);
+                  console.log('userObject', obj);
+                  //TODO: obj의 objectModalPath에 unbox가 들어있으면 height 계산해서 위치 조정
 
+                  const glb = useLoader(GLTFLoader, obj.objectModelPath);
                   let yPosition = obj.position[1];
 
                   glb.scene.traverse(node => {
@@ -182,13 +183,19 @@ const MyRoom = ({
                           obj.position[2] - 0.2,
                         ]}
                         rotation={obj.rotation}
-                        scale={obj.isWall ? 1.05 : 1}
+                        scale={obj.name.includes('curtain') ? 1.05 : 1}
                         onClick={(e: any) => {
                           e.stopPropagation();
                           onObjectClick(obj);
                           onThingsClick && onThingsClick(obj);
                         }}
                       />
+                      {/* <Sphere
+                          position={spherePosition}
+                          onClick={() => {
+                            onThingsClick && onThingsClick(obj);
+                          }}
+                        /> */}
 
                       {obj.objectModelPath.includes('lamp') &&
                         obj.smartThingsStatus && (
