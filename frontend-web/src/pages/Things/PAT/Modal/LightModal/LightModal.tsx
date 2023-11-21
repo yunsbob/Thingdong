@@ -32,7 +32,7 @@ const LightModal = ({
     const { mappedHue, saturation, level } = extractHSL(newColor);
 
     commandThingsStatusMutation.mutate({
-      deviceId: '8abaf7fb-9c0e-4b7f-9255-7ce9f4a08000',
+      deviceId: '1b976ae5-6044-4684-92b0-342d0789fa84',
       data: {
         commands: [
           {
@@ -50,7 +50,7 @@ const LightModal = ({
       },
     });
     commandThingsStatusMutation.mutate({
-      deviceId: '8abaf7fb-9c0e-4b7f-9255-7ce9f4a08000', // 고정값
+      deviceId: '1b976ae5-6044-4684-92b0-342d0789fa84', // 고정값
       data: {
         commands: [
           {

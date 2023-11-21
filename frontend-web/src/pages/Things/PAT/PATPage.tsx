@@ -210,7 +210,7 @@ const PATPage = () => {
       <LightModal
         modalOpen={lightModalOpen}
         setModalOpen={setLightModalOpen}
-        deviceId={'8abaf7fb-9c0e-4b7f-9255-7ce9f4a08000'} // 고정값
+        deviceId={'1b976ae5-6044-4684-92b0-342d0789fa84'} // 고정값
       />
       <NewThingsModal
         modalOpen={newThingsModalOpen}
