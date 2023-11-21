@@ -23,7 +23,7 @@ import MyRoom from '@/components/organisms/MyRoom/MyRoom';
 import { useGetRoom } from '@/apis/Room/Queries/useGetRoom';
 import { useAtom } from 'jotai';
 import { roomColorAtom } from '@/states/roomState';
-import { translate } from 'ol/transform';
+
 import thingsIcon from '@/assets/images/bottomNavBar/things-activate.png';
 
 const FriendRoomPage = () => {

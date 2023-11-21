@@ -16,7 +16,8 @@ import * as THREE from 'three';
 
 import curtainClose from '@/assets/models/curtains/curtain-close1.glb';
 import curtainOpen from '@/assets/models/curtains/curtain-open1.glb';
-
+import switchOn from '@/assets/models/switchs/switch-on1.glb';
+import switchOff from '@/assets/models/switchs/switch-off1.glb';
 const MyRoom = ({
   isEditing,
   userObject,
@@ -154,10 +155,13 @@ const MyRoom = ({
               {thingsObject ? (
                 thingsObject.map(obj => {
                   let modelPath = obj.objectModelPath;
-                  if (obj.name.includes('curtain')) {
+                  // TODO: API로 경로 받아서 뿌렸을때 렌더링 깜빡임 심한지
+                  if (obj.objectModelPath.includes('curtain')) {
                     modelPath = obj.smartThingsStatus
                       ? curtainOpen
                       : curtainClose;
+                  } else if (obj.objectModelPath.includes('switch')) {
+                    modelPath = obj.smartThingsStatus ? switchOn : switchOff;
                   }
                   const glb = useLoader(GLTFLoader, modelPath);
 
@@ -193,22 +197,36 @@ const MyRoom = ({
                           }}
                         /> */}
 
-                      {obj.name.includes('lamp') && obj.smartThingsStatus && (
-                        <>
-                          <pointLight
-                            position={[
-                              obj.position[0],
-                              obj.position[1] + 3,
-                              obj.position[2],
-                            ]}
-                            color="#ffd000"
-                            castShadow
-                            distance={5}
-                            intensity={100}
-                            power={100}
-                          />
-                        </>
-                      )}
+                      {obj.objectModelPath.includes('lamp') &&
+                        obj.smartThingsStatus && (
+                          <>
+                            <pointLight
+                              position={[
+                                obj.position[0],
+                                obj.position[1] + 3,
+                                obj.position[2],
+                              ]}
+                              color="#ffd000"
+                              castShadow
+                              distance={5}
+                              intensity={100}
+                              power={100}
+                            />
+                          </>
+                        )}
+                      {obj.objectModelPath.includes('switch') &&
+                        !obj.smartThingsStatus && (
+                          <>
+                            <pointLight
+                              position={[0, 4, 0]}
+                              color="#ffd563"
+                              castShadow
+                              distance={6}
+                              intensity={200}
+                              power={130}
+                            />
+                          </>
+                        )}
                     </React.Fragment>
                   );
                 })
