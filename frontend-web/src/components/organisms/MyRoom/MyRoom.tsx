@@ -217,7 +217,7 @@ const MyRoom = ({
                           </>
                         )}
                       {obj.objectModelPath.includes('switch') &&
-                        !obj.smartThingsStatus && (
+                        obj.smartThingsStatus && (
                           <>
                             <pointLight
                               position={[0, 4, 0]}
