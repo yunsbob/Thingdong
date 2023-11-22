@@ -49,19 +49,19 @@ const LightModal = ({
         ],
       },
     });
-    commandThingsStatusMutation.mutate({
-      deviceId: '925298aa-de9b-42b3-bc5a-b5b1aad223f6', // 고정값
-      data: {
-        commands: [
-          {
-            component: 'main',
-            capability: 'switchLevel',
-            command: 'setLevel',
-            arguments: [level],
-          },
-        ],
-      },
-    });
+    // commandThingsStatusMutation.mutate({
+    //   deviceId: '925298aa-de9b-42b3-bc5a-b5b1aad223f6', // 고정값
+    //   data: {
+    //     commands: [
+    //       {
+    //         component: 'main',
+    //         capability: 'switchLevel',
+    //         command: 'setLevel',
+    //         arguments: [level],
+    //       },
+    //     ],
+    //   },
+    // });
   };
 
   // const colorDebounce = useDebounce(onChangeColor, 200);
