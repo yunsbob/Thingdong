@@ -38,14 +38,10 @@
 <br>
 <img src="https://img.shields.io/badge/Gradle-C71A36?style=flat-square&logo=Gradle&logoColor=white"/>
 <img src="https://img.shields.io/badge/JWT-000000?style=flat-square&logo=JSON Web Tokens&logoColor=white"/>
-<img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=
-fastapi&logoColor=white"/>
-<img src="https://img.shields.io/badge/Smartthings-15BFFF?style=flat-square&logo=
-smartthings&logoColor=white"/>
-<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=
-Node.js&logoColor=white"/>
-<img src="https://img.shields.io/badge/Pytorch-EE4C2C?style=flat-square&logo=
-pytorch&logoColor=white"/>
+<img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white"/>
+<img src="https://img.shields.io/badge/Smartthings-15BFFF?style=flat-square&logo=smartthings&logoColor=white"/>
+<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>
+<img src="https://img.shields.io/badge/Pytorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white"/>
 
 </td>
     </tr>
@@ -291,6 +287,10 @@ SSAFY에서의 마지막 프로젝트를 이렇게 멋지고 완벽한 벨튀팀
 다들 마음속에 띵동 저장해두고 멋진곳으로 나가서 자랑스럽게 우리 팀원들, 띵동 프로젝트 자랑해주기 ~!!
 
 ### 원재현
+
+힘들고 지쳐도 팀원들 모두가 서로 배려하고 도우면서 항상 긍정적인 마음가짐로 임했기 때문에 프로젝트를 성공적으로 마무리할 수 있었던 것 같아요
+
+React Three Fiber와 아토믹디자인시스템과 같은 새로운 기술과 방법론을 익히고 효율적인 코드와 클린한 코드를 작성하기 위해 고민하면서 기술적으로도 성장했던 시간이었어요
 
 ### 윤민재
 
