@@ -109,6 +109,11 @@
 
 ### **✅ 기능 소개**
 
+### 스플래쉬
+
+![01_landing](![thingdong_splash](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/a0238940-9d9f-41fc-88b3-d89aabb4c43c)
+)
+
 ### 랜딩 페이지
 
 ![01_landing](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/2a4f66a1-9b26-44c8-b15e-cf144e721c3c)
