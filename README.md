@@ -87,7 +87,31 @@ pytorch&logoColor=white"/>
 
 ![시스템아키텍처](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/ed0aebbe-5779-489d-9b3a-5e1c026ef4a5)
 
-## **✅ 기능 소개**
+## **✅ 스마트 싱스 제어**
+
+### 전구 색상 제어
+
+![bulb_color_change](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/ae5e7415-b4e8-43a5-ae0b-3b837735d5ac)
+
+### 전구 on/off
+
+![bulb_off_and_on](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/6c3e2cda-4ee7-4ab2-a232-715173d9a77f)
+
+![bulb_off](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/e076df77-1369-4a38-b356-f3e16c5cac46)
+
+### 커튼 on/off
+
+![curtain_on](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/f424aa1b-40a5-4f1e-841b-2505a0905728)
+
+![curtain_off](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/391017d0-4241-4b4e-a0c5-e7bc0c4bcdd8)
+
+### 스위치 on/off
+
+![switch_on](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/19554167-c0ae-411b-9a60-a9c1d75876cf)
+
+![switch_off](https://github.com/tjsduq0423/project_thingdong_ssafy/assets/84220249/5d13d5e3-df0b-4bb6-86e7-b624c4b9dc65)
+
+### **✅ 기능 소개**
 
 ### 랜딩 페이지
 
