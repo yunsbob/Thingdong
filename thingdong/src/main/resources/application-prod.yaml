@@ -12,9 +12,9 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://thingdong.com:5555/ssafy_b304?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    username: ssafy_b304
-    password: ssafy_b304_1
+    url: 
+    username: 
+    password: 
 
   jpa:
     hibernate:
@@ -35,20 +35,20 @@ logging:
       hibernate: info
 
 jwt:
-  key: fsdnvnskvnnfnvfksdvfgvkbnsdjflbajkdvsdnfklsndvklnfsdvkkdlsfnklsfdvnkl
+  key: 
 
 server:
   ec2-url: https://thingdong.com
   ssl:
-    key-store: classpath:keystore.p12
-    key-store-password: ssafy
-    key-store-type: PKCS12
+    key-store: 
+    key-store-password: 
+    key-store-type: 
 
 translator:
   papago:
-    url: https://openapi.naver.com/v1/papago/n2mt
-    client-id: Q4sb0BCOsE0xX3M19V8J
-    client-secret: a5h1RIcsLF
+    url:
+    client-id:
+    client-secret:
 
 generator:
   stable-diffusion:
